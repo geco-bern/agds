@@ -11,7 +11,19 @@ Contributing authors: Koen Hufkens, Pepa Aran
 
 The course introduces the typical data science workflow using various examples of geographical and environmental data. With a strong hands-on component and a series of input lectures, the course introduces the basic concepts of data science and teaches how to conduct each step of the data science workflow. This includes the handling of various data formats, the formulation and fitting of robust statistical models, including basic machine learning algorithms, the effective visualisation and communication of results, and the implementation of reproducible workflows, founded in Open Science principles. The overall course goal is to teach students to tell a story with data.
 
-# About this repository
+# Tutorial design
+
+- Tutorials teach the 'how' - implementations, functions, etc. (while input lectures teach the 'why' - intuition, concepts, motivation)
+- Each chapter should be readable in ~15 min. (when read by an expert)
+- Example for the level of detail and style of the tutorial: [ml4ec_workshop](https://stineb.github.io/ml4ec_workshop/)
+- Coding style and conventions: [tidyverse style guide](https://style.tidyverse.org/index.html)
+- Each chapter consists of the following (high-level) sections: motivation, learning objectives, tutorial, exercises, solutions.
+- Required R libraries are kept to a minimum and dependencies to non-R libraries should be avoided. Students should be able to run all (easily) on their personal laptops.
+- Data used in the course should cover typical data types used in geography and environmental sciences:
+	- FLUXNET data (time series)
+	- MODIS data (MODISTools)
+
+# Working with Bookdown
 
 Each **bookdown** chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter *must* start with a first-level heading: `# A good chapter`, and can contain one (and only one) first-level heading.
 

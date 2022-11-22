@@ -16,3 +16,13 @@ Contents:
     - input and output
     - intro to visualisation
     - Performance assessment: [link](https://stineb.netlify.app/files/ex1.pdf) to my exercise, [link to Dietze exercise](https://github.com/stineb/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)
+
+    ## Motivation
+
+    ## Learning objectives
+
+    ## Tutorial
+
+    ## Exercises
+
+    ## Solutions
