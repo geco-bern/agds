@@ -1,0 +1,12 @@
+# Data wrangling {#data_wrangling}
+
+**Chapter lead author: Benjamin Stocker**
+
+Contents: 
+
+    - Lecture (Beni): Tidy data, “bad” data
+    - Data frame manipulations with tidyverse
+    - Tidy data
+    - Dealing with missingness, bad data, outliers
+    - Imputation (note also imputation as part of the modelling workflow)
+    - Performance assessment: **CAT 1,** [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1), Make table tidy

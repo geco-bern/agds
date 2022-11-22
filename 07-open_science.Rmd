@@ -1,0 +1,13 @@
+# Open science practices {#open_science}
+
+**Chapter lead author: Koen Hufkens**
+
+Contents:
+
+    - Lecture (Koen): Open science - history, motivation, reproducibility crisis, current initiatives, overview of practices
+    - Environmental data repositories
+    - Methods to create visualised reproducible workflow
+    - RMarkdown files
+    - Performance assessment: **CAT 3**, [link to Dietze exercise on pair coding](https://github.com/stineb/EF_Activities/blob/master/Exercise_04_PairCoding.Rmd)
+    
+    **MILESTONE 1: Communicating a reproducible workflow (→ LO1)**

@@ -1,0 +1,9 @@
+# Data visualisation {#data_vis}
+
+**Chapter lead author: Benjamin Stocker**
+
+Contents:
+
+    - Lecture (Isabelle Bentz?): The art of visualising data, grammar of graphics
+    - Exercise: Develop decision tree for what type of visualisation to apply
+    - Performance assessment: Interactive work sequence

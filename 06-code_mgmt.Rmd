@@ -1,0 +1,8 @@
+# Code management {#code_mgmt}
+
+**Chapter lead author: Koen Hufkens**
+
+Contents:
+
+    - git: repositories, stage, commit, push, fork, pull request, fetch upstream
+    - Performance assessment: **CAT 2**

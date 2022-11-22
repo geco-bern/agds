@@ -33,46 +33,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{248,248,248}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -110,32 +70,15 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={A Minimal Book Example},
-  pdfauthor={John Doe},
+  pdftitle={Applied Geodata Science},
+  pdfauthor={Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing)},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{A Minimal Book Example}
-\author{John Doe}
+\title{Applied Geodata Science}
+\author{Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing)}
 \date{2022-11-22}
 
-\usepackage{amsthm}
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
-\newtheorem{conjecture}{Conjecture}[chapter]
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[chapter]
-\theoremstyle{definition}
-\newtheorem{example}{Example}[chapter]
-\theoremstyle{definition}
-\newtheorem{exercise}{Exercise}[chapter]
-\theoremstyle{definition}
-\newtheorem{hypothesis}{Hypothesis}[chapter]
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
-\newtheorem*{solution}{Solution}
 \begin{document}
 \maketitle
 
@@ -143,256 +86,163 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{about}{%
-\chapter{About}\label{about}}
+\hypertarget{about-this-book}{%
+\chapter*{About this book}\label{about-this-book}}
+\addcontentsline{toc}{chapter}{About this book}
 
-This is a \emph{sample} book written in \textbf{Markdown}. You can use anything that Pandoc's Markdown supports; for example, a math equation \(a^2 + b^2 = c^2\).
+This book accompanies the course(s) \emph{Applied Geodata Science}, taught at the Institute of Geography, University of Bern.
 
-\hypertarget{usage}{%
-\section{Usage}\label{usage}}
+The course introduces the typical data science workflow using various examples of geographical and environmental data. With a strong hands-on component and a series of input lectures, the course introduces the basic concepts of data science and teaches how to conduct each step of the data science workflow. This includes the handling of various data formats, the formulation and fitting of robust statistical models, including basic machine learning algorithms, the effective visualisation and communication of results, and the implementation of reproducible workflows, founded in Open Science principles. The overall course goal is to teach students to tell a story with data.
 
-Each \textbf{bookdown} chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter \emph{must} start with a first-level heading: \texttt{\#\ A\ good\ chapter}, and can contain one (and only one) first-level heading.
-
-Use second-level and higher headings within chapters like: \texttt{\#\#\ A\ short\ section} or \texttt{\#\#\#\ An\ even\ shorter\ section}.
-
-The \texttt{index.Rmd} file is required, and is also your first book chapter. It will be the homepage when you render the book.
-
-\hypertarget{render-book}{%
-\section{Render book}\label{render-book}}
-
-You can render the HTML version of this example book without changing anything:
+\hypertarget{course-plan}{%
+\chapter*{Course plan}\label{course-plan}}
+\addcontentsline{toc}{chapter}{Course plan}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Find the \textbf{Build} pane in the RStudio IDE, and
+  Getting started
 \item
-  Click on \textbf{Build Book}, then select your output format, or select ``All formats'' if you'd like to use multiple formats from the same book source files.
+  Programming primer
+\item
+  Data wrangling
+\item
+  Data visualisation
+\item
+  Data variety
+\item
+  Code management
+\item
+  Open Science practice
+
+  \textbf{MILESTONE 1: Communicating a reproducible workflow (→ LO1)}
+\item
+  Regression
+\item
+  Supervised machine learning fundamentals
+\item
+  Random Forest
+\item
+  Neural Networks
+\item
+  Interpretable machine learning
+\item
+  Unsupervised machine learning
+
+  \textbf{MILESTONE 2: Identify patterns and demonstrate how explained (→ LO2)}
 \end{enumerate}
 
-Or build the book from the R console:
+\hypertarget{getting_started}{%
+\chapter{Getting started}\label{getting_started}}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{bookdown}\SpecialCharTok{::}\FunctionTok{render\_book}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+\textbf{Chapter lead author: Pepa Aran}
 
-To render this example to PDF as a \texttt{bookdown::pdf\_book}, you'll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.org/tinytex/}.
+TBC
 
-\hypertarget{preview-book}{%
-\section{Preview book}\label{preview-book}}
+Contents:
 
-As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in ``Preview book'', or from the R console:
+\begin{verbatim}
+- Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
+- installing environment
+- workspace management
+- R, RStudio
+- R libraries, other libraries and applications
+\end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{bookdown}\SpecialCharTok{::}\FunctionTok{serve\_book}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
+\hypertarget{programming_primers}{%
+\chapter{Programming primers}\label{programming_primers}}
 
-\hypertarget{hello-bookdown}{%
-\chapter{Hello bookdown}\label{hello-bookdown}}
-
-All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (\texttt{\#}) per .Rmd file.
-
-\hypertarget{a-section}{%
-\section{A section}\label{a-section}}
-
-All chapter sections start with a second-level (\texttt{\#\#}) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.
-
-\hypertarget{an-unnumbered-section}{%
-\subsection*{An unnumbered section}\label{an-unnumbered-section}}
-\addcontentsline{toc}{subsection}{An unnumbered section}
+\textbf{Chapter lead author: Pepa Aran}
 
-Chapters and sections are numbered by default. To un-number a heading, add a \texttt{\{.unnumbered\}} or the shorter \texttt{\{-\}} at the end of the heading, like in this section.
+TBC
 
-\hypertarget{cross}{%
-\chapter{Cross-references}\label{cross}}
+Contents:
 
-Cross-references make it easier for your readers to find and link to elements in your book.
+\begin{verbatim}
+- Lecture (Beni): Models and data
+- Base R
+- variables, classes
+- data frames
+- loops
+- conditional statements
+- functions
+- input and output
+- intro to visualisation
+- Performance assessment: [link](https://stineb.netlify.app/files/ex1.pdf) to my exercise, [link to Dietze exercise](https://github.com/stineb/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)
+\end{verbatim}
 
-\hypertarget{chapters-and-sub-chapters}{%
-\section{Chapters and sub-chapters}\label{chapters-and-sub-chapters}}
+\hypertarget{data_wrangling}{%
+\chapter{Data wrangling}\label{data_wrangling}}
 
-There are two steps to cross-reference any heading:
+\textbf{Chapter lead author: Benjamin Stocker}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Label the heading: \texttt{\#\ Hello\ world\ \{\#nice-label\}}.
+Contents:
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Leave the label off if you like the automated heading generated based on your heading title: for example, \texttt{\#\ Hello\ world} = \texttt{\#\ Hello\ world\ \{\#hello-world\}}.
-  \item
-    To label an un-numbered heading, use: \texttt{\#\ Hello\ world\ \{-\#nice-label\}} or \texttt{\{\#\ Hello\ world\ .unnumbered\}}.
-  \end{itemize}
-\item
-  Next, reference the labeled heading anywhere in the text using \texttt{\textbackslash{}@ref(nice-label)}; for example, please see Chapter \ref{cross}.
+\begin{verbatim}
+- Lecture (Beni): Tidy data, “bad” data
+- Data frame manipulations with tidyverse
+- Tidy data
+- Dealing with missingness, bad data, outliers
+- Imputation (note also imputation as part of the modelling workflow)
+- Performance assessment: **CAT 1,** [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1), Make table tidy
+\end{verbatim}
 
-  \begin{itemize}
-  \tightlist
-  \item
-    If you prefer text as the link instead of a numbered reference use: \protect\hyperlink{cross}{any text you want can go here}.
-  \end{itemize}
-\end{enumerate}
+\hypertarget{data_vis}{%
+\chapter{Data visualisation}\label{data_vis}}
 
-\hypertarget{captioned-figures-and-tables}{%
-\section{Captioned figures and tables}\label{captioned-figures-and-tables}}
+\textbf{Chapter lead author: Benjamin Stocker}
 
-Figures and tables \emph{with captions} can also be cross-referenced from elsewhere in your book using \texttt{\textbackslash{}@ref(fig:chunk-label)} and \texttt{\textbackslash{}@ref(tab:chunk-label)}, respectively.
+Contents:
 
-See Figure \ref{fig:nice-fig}.
+\begin{verbatim}
+- Lecture (Isabelle Bentz?): The art of visualising data, grammar of graphics
+- Exercise: Develop decision tree for what type of visualisation to apply
+- Performance assessment: Interactive work sequence
+\end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, .}\DecValTok{1}\NormalTok{, .}\DecValTok{1}\NormalTok{))}
-\FunctionTok{plot}\NormalTok{(pressure, }\AttributeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\hypertarget{data_variety}{%
+\chapter{Data variety}\label{data_variety}}
 
-\begin{figure}
+\textbf{Chapter lead author: Koen Hufkens}
 
-{\centering \includegraphics[width=0.8\linewidth]{_main_files/figure-latex/nice-fig-1} 
+Contents:
 
-}
+\begin{verbatim}
+- Lecture (Mirko): Mapping data
+- Data formats, standards, metadata
+- Geographic data
+- Scraping, wget
+- APIs
+\end{verbatim}
 
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
+\hypertarget{code_mgmt}{%
+\chapter{Code management}\label{code_mgmt}}
 
-Don't miss Table \ref{tab:nice-tab}.
+\textbf{Chapter lead author: Koen Hufkens}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
-  \FunctionTok{head}\NormalTok{(pressure, }\DecValTok{10}\NormalTok{), }\AttributeTok{caption =} \StringTok{\textquotesingle{}Here is a nice table!\textquotesingle{}}\NormalTok{,}
-  \AttributeTok{booktabs =} \ConstantTok{TRUE}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+Contents:
 
-\begin{table}
+\begin{verbatim}
+- git: repositories, stage, commit, push, fork, pull request, fetch upstream
+- Performance assessment: **CAT 2**
+\end{verbatim}
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rr}
-\toprule
-temperature & pressure\\
-\midrule
-0 & 0.0002\\
-20 & 0.0012\\
-40 & 0.0060\\
-60 & 0.0300\\
-80 & 0.0900\\
-\addlinespace
-100 & 0.2700\\
-120 & 0.7500\\
-140 & 1.8500\\
-160 & 4.2000\\
-180 & 8.8000\\
-\bottomrule
-\end{tabular}
-\end{table}
+\hypertarget{open_science}{%
+\chapter{Open science practices}\label{open_science}}
 
-\hypertarget{parts}{%
-\chapter{Parts}\label{parts}}
+\textbf{Chapter lead author: Koen Hufkens}
 
-You can add parts to organize one or more book chapters together. Parts can be inserted at the top of an .Rmd file, before the first-level chapter heading in that same file.
-
-Add a numbered part: \texttt{\#\ (PART)\ Act\ one\ \{-\}} (followed by \texttt{\#\ A\ chapter})
-
-Add an unnumbered part: \texttt{\#\ (PART\textbackslash{}*)\ Act\ one\ \{-\}} (followed by \texttt{\#\ A\ chapter})
-
-Add an appendix as a special kind of un-numbered part: \texttt{\#\ (APPENDIX)\ Other\ stuff\ \{-\}} (followed by \texttt{\#\ A\ chapter}). Chapters in an appendix are prepended with letters instead of numbers.
-
-\hypertarget{footnotes-and-citations}{%
-\chapter{Footnotes and citations}\label{footnotes-and-citations}}
-
-\hypertarget{footnotes}{%
-\section{Footnotes}\label{footnotes}}
-
-Footnotes are put inside the square brackets after a caret \texttt{\^{}{[}{]}}. Like this one \footnote{This is a footnote.}.
-
-\hypertarget{citations}{%
-\section{Citations}\label{citations}}
-
-Reference items in your bibliography file(s) using \texttt{@key}.
-
-For example, we are using the \textbf{bookdown} package \citep{R-bookdown} (check out the last code chunk in index.Rmd to see how this citation key was added) in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015} (this citation was added manually in an external file book.bib).
-Note that the \texttt{.bib} files need to be listed in the index.Rmd with the YAML \texttt{bibliography} key.
-
-The RStudio Visual Markdown Editor can also make it easier to insert citations: \url{https://rstudio.github.io/visual-markdown-editing/\#/citations}
-
-\hypertarget{blocks}{%
-\chapter{Blocks}\label{blocks}}
-
-\hypertarget{equations}{%
-\section{Equations}\label{equations}}
-
-Here is an equation.
-
-\begin{equation} 
-  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
-  \label{eq:binom}
-\end{equation}
-
-You may refer to using \texttt{\textbackslash{}@ref(eq:binom)}, like see Equation \eqref{eq:binom}.
-
-\hypertarget{theorems-and-proofs}{%
-\section{Theorems and proofs}\label{theorems-and-proofs}}
-
-Labeled theorems can be referenced in text using \texttt{\textbackslash{}@ref(thm:tri)}, for example, check out this smart theorem \ref{thm:tri}.
-
-\begin{theorem}
-\protect\hypertarget{thm:tri}{}\label{thm:tri}For a right triangle, if \(c\) denotes the \emph{length} of the hypotenuse
-and \(a\) and \(b\) denote the lengths of the \textbf{other} two sides, we have
-\[a^2 + b^2 = c^2\]
-\end{theorem}
-
-Read more here \url{https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html}.
-
-\hypertarget{callout-blocks}{%
-\section{Callout blocks}\label{callout-blocks}}
-
-The R Markdown Cookbook provides more help on how to use custom blocks to design your own callouts: \url{https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html}
-
-\hypertarget{sharing-your-book}{%
-\chapter{Sharing your book}\label{sharing-your-book}}
-
-\hypertarget{publishing}{%
-\section{Publishing}\label{publishing}}
-
-HTML books can be published online, see: \url{https://bookdown.org/yihui/bookdown/publishing.html}
-
-\hypertarget{pages}{%
-\section{404 pages}\label{pages}}
-
-By default, users will be directed to a 404 page if they try to access a webpage that cannot be found. If you'd like to customize your 404 page instead of using the default, you may add either a \texttt{\_404.Rmd} or \texttt{\_404.md} file to your project root and use code and/or Markdown syntax.
-
-\hypertarget{metadata-for-sharing}{%
-\section{Metadata for sharing}\label{metadata-for-sharing}}
-
-Bookdown HTML books will provide HTML metadata for social sharing on platforms like Twitter, Facebook, and LinkedIn, using information you provide in the \texttt{index.Rmd} YAML. To setup, set the \texttt{url} for your book and the path to your \texttt{cover-image} file. Your book's \texttt{title} and \texttt{description} are also used.
-
-This \texttt{gitbook} uses the same social sharing data across all chapters in your book- all links shared will look the same.
-
-Specify your book's source repository on GitHub using the \texttt{edit} key under the configuration options in the \texttt{\_output.yml} file, which allows users to suggest an edit by linking to a chapter's source file.
-
-Read more about the features of this output format here:
-
-\url{https://pkgs.rstudio.com/bookdown/reference/gitbook.html}
-
-Or use:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{?bookdown}\SpecialCharTok{::}\NormalTok{gitbook}
-\end{Highlighting}
-\end{Shaded}
-
+Contents:
+
+\begin{verbatim}
+- Lecture (Koen): Open science - history, motivation, reproducibility crisis, current initiatives, overview of practices
+- Environmental data repositories
+- Methods to create visualised reproducible workflow
+- RMarkdown files
+- Performance assessment: **CAT 3**, [link to Dietze exercise on pair coding](https://github.com/stineb/EF_Activities/blob/master/Exercise_04_PairCoding.Rmd)
+
+**MILESTONE 1: Communicating a reproducible workflow (→ LO1)**
+\end{verbatim}
 
   \bibliography{book.bib,packages.bib}
 

@@ -1,0 +1,13 @@
+# Getting started {#getting_started}
+
+**Chapter lead author: Pepa Aran**
+
+TBC
+
+Contents:
+
+    - Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
+    - installing environment
+    - workspace management
+    - R, RStudio
+    - R libraries, other libraries and applications
