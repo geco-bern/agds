@@ -1,0 +1,17 @@
+# Interpretable machine learning {#interpretable_ml}
+
+**Chapter lead author: Benjamin Stocker**
+
+Contents:
+
+- Variable importance
+- Partial dependency
+- Performance assessment: Compare partial dependency to a given predictor, detected with RF and with NN.
+
+## Learning objectives
+
+## Tutorial
+
+## Exercises
+
+## Solutions

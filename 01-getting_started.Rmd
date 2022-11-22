@@ -6,8 +6,16 @@ TBC
 
 Contents:
 
-    - Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
-    - installing environment
-    - workspace management
-    - R, RStudio
-    - R libraries, other libraries and applications
+- Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
+- installing environment
+- workspace management
+- R, RStudio
+- R libraries, other libraries and applications
+
+## Learning objectives
+
+## Tutorial
+
+## Exercises
+
+## Solutions

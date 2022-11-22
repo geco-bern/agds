@@ -6,6 +6,7 @@ The course introduces the typical data science workflow using various examples o
 
 Lead author: Benjamin Stocker
 Contributing authors: Koen Hufkens, Pepa Aran
+Exercises: Pascal Schneider
 
 # About the course
 

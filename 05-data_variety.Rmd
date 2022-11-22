@@ -4,8 +4,16 @@
 
 Contents:
 
-    - Lecture (Mirko): Mapping data
-    - Data formats, standards, metadata
-    - Geographic data
-    - Scraping, wget
-    - APIs
+- Lecture (Mirko): Mapping data
+- Data formats, standards, metadata
+- Geographic data
+- Scraping, wget
+- APIs
+
+## Learning objectives
+
+## Tutorial
+
+## Exercises
+
+## Solutions

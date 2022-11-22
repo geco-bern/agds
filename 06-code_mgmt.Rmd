@@ -4,5 +4,13 @@
 
 Contents:
 
-    - git: repositories, stage, commit, push, fork, pull request, fetch upstream
-    - Performance assessment: **CAT 2**
+- git: repositories, stage, commit, push, fork, pull request, fetch upstream
+- Performance assessment: **CAT 2**
+
+## Learning objectives
+
+## Tutorial
+
+## Exercises
+
+## Solutions

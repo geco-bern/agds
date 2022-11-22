@@ -1,6 +1,6 @@
 --- 
 title: "Applied Geodata Science"
-author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing)"
+author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
