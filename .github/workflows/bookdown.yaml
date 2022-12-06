@@ -12,7 +12,9 @@ name: bookdown
 
 jobs:
   bookdown:
-    runs-on: ubuntu-latest
+    # run on mac - generally faster
+    runs-on: macOS-latest
+    timeout-minutes: 15
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
@@ -28,6 +30,11 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-renv@v2
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache: true
+          extra-packages: any::bookdown
 
       - name: Cache bookdown results
         uses: actions/cache@v3
