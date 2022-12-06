@@ -19,6 +19,13 @@ Contents:
 
 ## Learning objectives
 
+After you've gone over the lecture and solved the exercises, you should be able to:
+
+- Use loops and functions in your code
+- Install and load libraries and packages
+- Read, inspect and visualize data frames
+- Organize your R project for data analysis
+
 ## Tutorial
 
 ## Exercises

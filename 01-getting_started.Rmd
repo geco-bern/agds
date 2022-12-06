@@ -19,51 +19,116 @@ After you've gone over the lecture and solved the exercises, you should be able 
 - Work with R and RStudio on your computer
 - Organize your workspace, using R projects
 - Use R libraries, other libraries and applications
-- Fork and clone a GitHub repository
+- Save your code and progress in an organized way
 
 ## Tutorial
 
-This tutorial will guide you through the process of installing an environment for working with the R programming language, managing your workspace, and using R libraries and other applications such as netcdf.
+In this first tutorial, we will install R and RStudio and introduce how to use RStudio to run R code. We will learn to load and use R libraries. Finally, we will explain what an R workspace is and how to manage it, including how to save your coding progress.
 
-### Working with RStudio
+### Installing R and RStudio
 
-First, you will need to install R and RStudio on your computer. R is a free, open-source programming language for statistical computing and data analysis, while RStudio is an integrated development environment (IDE) that makes it easier to work with R.
-To install R and RStudio, download the installers for R (https://cran.r-project.org/) and RStudio (https://posit.co/download/rstudio-desktop/) corresponding to your OS, then double-click on the downloaded files and follow the on-screen instructions.
+R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used among statisticians and data miners for developing statistical software and data analysis. RStudio is an integrated development environment (IDE) for R that makes it easy to use R for data analysis and visualization.
 
+To use R and RStudio, you will first need to download and install them on your computer.
 
+- To install R, go to the [CRAN website](https://cran.r-project.org/) and download the latest version of R for your operating system. Once the download is complete, follow the on-screen installation instructions for your operating system to install R.
 
-### Git
+- To install RStudio, go to the [RStudio website](https://posit.co/download/rstudio-desktop/) and download the latest version of RStudio for your operating system. Once the download is complete, follow the installation instructions for your operating system to install RStudio.
 
-*Git* is a program for code version control and managing collaborative code development. The basic unit of a Git project is a *repository*, which usually contains multiple source code files that may be organised in (sub) directories. Git keeps track of the entire history of a repository in steps of *commits*. A commit is a "bundle" of multiple edits and additions of new files and is specified by the user. Since Git knows the entire history of all the files that have ever been added or removed to and from a repository, it allows you to recover previous versions of files (previous commits) and track changes between them. Git also allows you to have multiple versions of your repository (*branches*) for parallel developments on the same code base, but we will not use this feature. Since Git stores the entire history, the content of a Git repository should always be kept light. For example, it is advisable to only add code and other (small, <10 MB) plain text files to a repository, but not data, and no other outputs that is created by the code of the repository. 
+### Using RStudio
 
-A Git repository exists locally, that is, on your computer. But the power of Git plays out when your local repository has a counterpart in the cloud, for example on [GitHub](https://github.com). Git lets you *push* (upload) your commits to your repository's *remote* copy, and *pull* (download) changes that have been uploaded by your collaborator(s) or yourself from a different *clone* (local copy) of your repository.
+Once you have installed R and RStudio, you can start using RStudio to write and run R code. RStudio is an IDE that provides a user-friendly interface for writing, running, and debugging R code.
 
-### Installing R environment
+#### The RStudio interface
+
+When you open RStudio, you will see the following interface:
+
+*include screenshot here*
+
+The interface is divided into four main panels:
+
+- The **source editor** is where you can write, edit, and save your R code.
+- The **console** is where you can enter R commands and see the output.
+- The **environment** panel shows you the objects (variables, data frames, etc.) that are currently in your R session, as well as their values.
+- The **files, plots, help, etc.** panel shows you the files, plots, and other items that are currently in your R workspace, as well as help and documentation for R functions and packages. We will cover this in more detail later in this course.
+
+#### Writing and running R code
+
+To write and run R code, follow these steps:
+
+- In the **source editor** panel, type your R code.
+- To run the code, you can either press the **Run** button or use the **keyboard shortcut** Ctrl + Enter (Windows) or Command + Enter (Mac).
+- The code will be executed in the *console* panel, and any output will be displayed there.
+- Alternatively, you can directly type R commands in the console and run them by pressing Enter.
+
+For example, let's say you want to calculate the sum of the numbers 1, 2, and 3. You can write the following code in the source editor:
+```{r}
+# Calculate the sum of 1, 2, and 3
+1 + 2 + 3
+```
+
+Then, you can press the *Run* button or use the keyboard shortcut to run the code. The output will be displayed in the console:
+```{}
+> 1 + 2 + 3
+[1] 6
+```
+
+### Variables and classes
+
+In R, a variable is a names location in memory that stores a value. To create a variable, you simply assign a value to a name using the `<-` operator (or the `=` operator, which is equivalent, but `<-` is preferred). For example:
+
+```{r}
+my_variable <- 5```
+
+This code creates a variable called `my_variable` and assigns the value `5`  to it. You can access the value of a variable by simply referring to its name, like this:
+
+```{r}
+my_variable
+```
+
+When you run this code, the value of `my_variable` will be printed to the console.
+
+In R, every value has a **class** that determines how it is stored and how it behaves. For examples, the `5` in our example above is an integer, so its class is `integer`. to find out the class of a value or a variable, you can use the `class()` function, like this:
+
+```{r}
+class(5) # returns "integer"
+class(my_variable)
+```
+
+The most common common classes in R are `numeric` (for numbers), `integer`, `character` (for text), and `logical` (for `TRUE`/`FALSE` values). Furthermore, variables can also be assigned vectors, matrices, data.frames or many other R objects.
+
+```{r}
+class("hello") # returns "character"
+class(c(1, 2, 3)) # returns "numeric"
+```
 
 ### Workspace management
 
-Having an organized workspace from the start of a project is key for reproducibility, making it easier to collaborate with others and also to revisit your own code in the future. Here we present some basics of workspace management:
+Your **R workspace** is where you store the objects (variables, data frames, etc.) that you create while working with R. You can view the objects in your workspace in the **environment** panel.
 
-- Create an *R project*.
-- Create a folder structure.
-- Use a Git repository.
+To save your workspace, go to the **Session** menu and select **Save Workspace As...***. This will save your workspace in a `.RData` file in your working directory.
 
+#### Working with scripts and R projects
 
+In addition to running R code directly in the console, you can also save your code as a script. A script is a text file that contains a sequence of R commands, which you can run all at once or one at a time.
 
-On the GECO GitHub account, there is an open [R project repository template](https://github.com/computationales/R_proj_template) which you can take inspiration from. It also includes detailed instructions on how you can start your own R project repository from the template, using Git. This gets rid of the overhead of designing your folder structure for each project and helps you keep your code tidy.
+To create a new script in RStudio, go to the **File** menu and select **New File > R Script**. This will open a new script file in the **source** editor. You can then type your R code in the script file and save it to your computer.
 
-### R libraries, other libraries and applications
+To run a script, you can either use the Source button in the source editor or use the keyboard shortcut Ctrl + Shift + Enter (Windows) or Command + Shift + Enter (Mac). This will run all of the commands in the script file, in the order they are written, in the console.
 
-This tutorial uses a set of libraries. Libraries provide a set of functions and/or other objects targeted for specific applications and are not available through base R. To run commands of this tutorial, make sure to install and load all packages on your computer. This can be done by:
+In addition to scripts, RStudio also allows you to work with R projects. An R project is a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.
 
-```{r}
-list_pkgs <- c("tidyverse")
-new_pkgs <- list_pkgs[!(list_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-library(tidyverse)
-```
+To create a new R project, go to the File menu and select New Project.... This will open the New Project dialog, where you can choose where to save your project and what type of project to create.
 
-In each chapter of this tutorial, you’ll find a similar statement to specify which package the respective chapter’s tutorial will use and to install them if not available.
+Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the files, plots, help, etc. panel.
+
+Working with scripts and R projects can help you keep your work organized and make it easier to reuse and share your code.
+
+Conclusion
+
+In this tutorial, we have covered the basics of using R and RStudio for geographic data analysis. We have shown how to install and use R and RStudio, and we have discussed how to manage your workspace and work with scripts and R projects.
+
+R and RStudio are powerful tools for data analysis and visualization, and we hope this tutorial has provided a good introduction to using them for geographic data.
 
 ## Exercises
 
