@@ -37,13 +37,13 @@ To use R and RStudio, you will first need to download and install them on your c
 
 ### Using RStudio
 
-Once you have installed R and RStudio, you can start using RStudio to write and run R code. RStudio is an IDE that provides a user-friendly interface for writing, running, and debugging R code.
+Once you have installed R and RStudio, you can start using RStudio to write and run R code. RStudio provides a user-friendly interface for writing, running, and debugging R code.
 
 #### The RStudio interface
 
 When you open RStudio, you will see the following interface:
 
-*include screenshot here*
+![RStudio interface.](figures/RStudio_interface_screenshot.png)
 
 The interface is divided into four main panels:
 
@@ -75,10 +75,11 @@ Then, you can press the *Run* button or use the keyboard shortcut to run the cod
 
 ### Variables and classes
 
-In R, a variable is a names location in memory that stores a value. To create a variable, you simply assign a value to a name using the `<-` operator (or the `=` operator, which is equivalent, but `<-` is preferred). For example:
+In R, a variable is a named location in memory that stores a value. To create a variable, you simply assign a value to a name using the `<-` operator (or the `=` operator, which is equivalent, but `<-` is preferred). For example:
 
 ```{r}
-my_variable <- 5```
+my_variable <- 5
+```
 
 This code creates a variable called `my_variable` and assigns the value `5`  to it. You can access the value of a variable by simply referring to its name, like this:
 
@@ -88,14 +89,14 @@ my_variable
 
 When you run this code, the value of `my_variable` will be printed to the console.
 
-In R, every value has a **class** that determines how it is stored and how it behaves. For examples, the `5` in our example above is an integer, so its class is `integer`. to find out the class of a value or a variable, you can use the `class()` function, like this:
+In R, every value has a **class** that determines how it is stored and how it behaves. For example, the `5` in our example above is an integer, so its class is `integer`. To find out the class of a value or a variable, you can use the `class()` function, like this:
 
 ```{r}
 class(5) # returns "integer"
 class(my_variable)
 ```
 
-The most common common classes in R are `numeric` (for numbers), `integer`, `character` (for text), and `logical` (for `TRUE`/`FALSE` values). Furthermore, variables can also be assigned vectors, matrices, data.frames or many other R objects.
+The most common classes in R are `numeric` (for numbers), `integer`, `character` (for text), and `logical` (for `TRUE`/`FALSE` values). Furthermore, variables can also be assigned vectors, matrices, data.frames or many other R objects.
 
 ```{r}
 class("hello") # returns "character"
@@ -118,13 +119,19 @@ To run a script, you can either use the Source button in the source editor or us
 
 In addition to scripts, RStudio also allows you to work with R projects. An R project is a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.
 
-To create a new R project, go to the File menu and select New Project.... This will open the New Project dialog, where you can choose where to save your project and what type of project to create.
+To create a new R project, go to the **File** menu and select **New Project...**. This will open the New Project dialog, where you can choose where to save your project and what type of project to create.
+
+When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory and stores
 
 Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the files, plots, help, etc. panel.
 
 Working with scripts and R projects can help you keep your work organized and make it easier to reuse and share your code.
 
-Conclusion
+#### Organizing your files
+
+
+
+###Conclusion
 
 In this tutorial, we have covered the basics of using R and RStudio for geographic data analysis. We have shown how to install and use R and RStudio, and we have discussed how to manage your workspace and work with scripts and R projects.
 
