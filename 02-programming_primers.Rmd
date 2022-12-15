@@ -23,10 +23,220 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 - Use loops and functions in your code
 - Install and load libraries and packages
+- Look for help
 - Read, inspect and visualize data frames
 - Organize your R project for data analysis
 
 ## Tutorial
+
+### Libraries
+
+*Packages*, also called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
+
+For example, the `tidyverse` package is used for data wrangling and will be covered in this course. You can install a new package as follows:
+```{r}
+install.packages("tidyverse")
+```
+
+Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.
+```{r}
+library(tidyverse)
+```
+
+You can also see a list of your installed packages with the following command:
+```{r}
+library()
+```
+*
+And a list of the packages currently loaded:
+```{r}
+search()
+```
+
+This information, you can also find on the *Packages* panel in RStudio. The loaded packages are shown with a tick mark.
+
+#### Other libraries and applications
+
+For this course, we will also need software that is not available as an R package. 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!COMPLETE
+
+### Working with data frames
+
+In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio. 
+
+We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
+
+The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an *Excel* spreadsheat (`.xlsx`), or a *Matlab* data object (`.mat`), or an R data object (`.RData`, or `.rds`). 
+
+#### Reading data
+
+To import the data into the R workspace (environment), we use the function `read_csv()` from the tidyverse package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc.
+
+```{r message=FALSE}
+# use a relative path to read the data
+df <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-3.csv")
+print(df) # to print an overview of the data frame
+```
+
+The file is automatically machine-readable because we have:
+
+- Only one header row, containing the column (variable) names.
+- Variables organised by columns, and observations by rows.
+- Each column consists of a single data type (e.g., character, numeric, logical; see below for more info) - Here, all columns are interpreted as numeric (`<dbl>').
+- One value per cell.
+- No merged cells.
+In short, the data frame is tidy.
+To understand the sort of object we work with, i.e. the *class*, we can do:
+```{r}
+class(df)
+```
+
+Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df","tbl_df", "tbl"`) which gives it additional features. 
+
+#### Understanding the data structure
+
+There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
+
+- Size
+  - `dim()`  - Returns the size of the dimensions of an object (here: number of rows and columns).
+  - `nrow()` - Returns the number of rows of an object.
+  - `ncol()` - Returns the number of columns of an object.
+- Content
+  - `head()` - Returns the first 6 rows.
+  - `tail()` - Returns the last 6 rows.
+  - `View()` - look at the entire data set in the form of a table (It is not supported by the Jupyter environment. In RStudio however, it works).
+- Names
+  - `names()` - Returns the column names (for `data.frame`-objects it is synonymous to `colnames()`).
+  - `rownames()` - Returns the row names.
+- Summary
+  - `class()` - Returns the class of an object.
+  - `str()` - Returns the structure of an object and information about the class, length and content of each column.
+  - `summary()` - Returns generic statistics information, depending on the class of the object.
+  
+For example, the data frame `df` has 4018 rows and 334 columns:
+
+```{r}
+dim(df)
+```
+
+
+A description of standardized FLUXNET data variables is available [here](https://fluxnet.org/data/aboutdata/data-variables/). A selection of available variables that we will use in subsequent chapters are:
+
+- `GPP` (gC m$^{−2}$ s$^{-1}$): Gross primary production
+- `WS` (m s$^{-1}$): horizontal wind speed
+- `USTAR` (m s$^{-1}$): friction velocity
+- `TA` (deg C): air temperature
+- `RH` (%): relative humidity (range 0–100%)
+- `PA` (kPa): atmospheric pressure
+- `G` (W m$^{−2}$): ground heat flux, not mandatory, but needed for the energy balance closure calculations
+- `NETRAD` (W m$^{−2}$): net radiation, not mandatory, but needed for the energy balance closure calculations
+- `SW_IN` (W m$^{−2}$): incoming shortwave radiation
+- `SW_IN_POT` (W m$^−2$): potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
+- `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): incoming photosynthetic photon flux density
+- `P` (mm): precipitation total of each 30 or 60 minute period
+- `LW_IN` (W m$^{−2}$): incoming (down-welling) longwave radiation
+- `SWC` (%): soil water content (volumetric), range 0–100%
+- `TS` (deg C): soil temperature
+- `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon Dioxide (CO$_2$) mole fraction in moist air
+
+#### Selecting data and entering the tidyverse
+
+`df` is a data frame. This is similar to a matrix and has two dimensions (rows and columns). If we want to extract specific data from it, we specify the indices, i.e. the "coordinates", of the data. For two-dimensional objects (data frames, matrices), the first index refers to rows and the second to columns. For example, to refer to the element on the third row in the first column, we write:
+```{r}
+df[3,1]
+```
+
+Reducing a data frame (tibble) to only the first columns can be done by:
+```{r}
+df[, 1]
+```
+
+The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g. `[1:3,]`, indicates we want to select the rows numbers starting at the first and ending with the second number. So here `[1:3,]` will give us rows one, two and three.
+```{r}
+df[1:3, 3] # reduces the data frame (tibble) to its first three rows and the 3rd column
+```
+
+To reduce the data frame (tibble) to several columns, the function `c()` is used. `c()` stands for concatenate, which means to link together in a series or chain. This outputs the data frame (tibble) reduced to the selected row or column numbers inside `c()`. 
+```{r}
+df[, c(1,4,7)]
+```
+
+Another method is to select the columns by column names, i.e. giving as input a string vector with the name of each column we want to select (again, this is Base R notation). This is especially useful if the columns we want to select are not contiguous. For example:
+
+```{r}
+# Selecting data by name in base R
+df[,c("TIMESTAMP", "TA_F_MDS", "TA_F_MDS_QC")]
+```
+
+In Chapter \@ref(ch-02) of this tutorial tutorial, we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in such a way as to emphasize and better understand the "workflow aspect" of it. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
+
+```{r}
+select(df, 1) # reduces the data frame (tibble) to its first column
+select(df, TIMESTAMP, TA_F_MDS, TA_F_MDS_QC)  # reduces the data frame to columns specified by names
+```
+
+As a further shortcut in tidyverse, we can use the pipe `%>%` operator. The data frame is still reduced to its first column:
+
+```{r}
+df %>% select(1)
+```
+
+We *pipe* the object `df` into the `select()` function with argument `1`. Note that the `%>%` operator can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument.
+
+For the remainder of the tutorial several variables will be required. The methods of variable selection demonstrated above will be utilised below to get the desired variables.
+
+```{r}
+df_small <- df %>% 
+  select(TIMESTAMP, TA_F, PPFD_IN)
+```
+
+Note: In the code above, an indentation was used to highlight which parts go together and make the code easy to understand. Indentations and line breaks take no effect in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
+ 
+#### Renaming
+
+TIMESTAMP_START, TA_F and PPFD_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligle.
+
+```{r}
+df_small <- df_small %>% 
+  rename(time = TIMESTAMP, temp = TA_F, ppfd = PPFD_IN)
+```
+
+#### Writing data
+
+A data frame can be written to a CSV file by:
+
+```{r eval = F}
+write_csv(df_small, path = "data/df_small.csv")
+```
+
+The function `saveRDS()` allows you save individual objects of any form (not just a data frame). `saveRDS()` creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. For example:
+
+```{r eval=F}
+saveRDS(temp_sum, file = "data/temp_sum.rds")
+```
+
+This file can then be read into the R workspace. Sometimes, it is useful to give it a new name, e.g.:
+
+```{r eval=F}
+temp_sum <- readRDS("data/temp_sum.rds")
+```
+
+Note that making a file publicly available as a `.rds` file violates the FAIR principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in chapter \@ref(ch-02).
+
+
+### Loops
+
+### Conditional statements
+
+### Functions
+
+#### Input and output
+
+### Intro to visualisation
+
+### Where to find help
+
+
 
 ## Exercises
 
