@@ -31,7 +31,7 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 ### Libraries
 
-*Packages*, also called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
+*Packages*, also called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R, utils, stats...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
 
 For example, the `tidyverse` package is used for data wrangling and will be covered in this course. You can install a new package as follows:
 ```{r}
@@ -42,8 +42,9 @@ Then, you can load it with the following code. Note that now the name of the pac
 ```{r}
 library(tidyverse)
 ```
+You can now use the functions and features provided by the `tidyverse` package in your R scripts.
 
-You can also see a list of your installed packages with the following command:
+You can see a list of your installed packages with the following command:
 ```{r}
 library()
 ```
@@ -53,12 +54,16 @@ And a list of the packages currently loaded:
 search()
 ```
 
-This information, you can also find on the *Packages* panel in RStudio. The loaded packages are shown with a tick mark.
+This information can also be found on the **Packages** panel in RStudio. The loaded packages are shown with a tick mark.
 
 #### Other libraries and applications
 
-For this course, we will also need software that is not available as an R package. 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!COMPLETE
+For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer. 
+
+For example, to work with *netcdf* files in R, you would need to install the `"ncdf4"` library and the `netCDF` command-line tools:
+- To install the `"ncdf4"` library, follow the same steps as above for installing an R library.
+- To install the `netCDF` command-line tools, follow the instructions on the [netCDF website]{https://www.unidata.ucar.edu/downloads/netcdf/index.jsp}.
+- Once the `"ncdf4"` library and the `netCDF` command-line tools are installed, you can use them to work with `.ncd` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
 
 ### Working with data frames
 
@@ -221,7 +226,7 @@ This file can then be read into the R workspace. Sometimes, it is useful to give
 temp_sum <- readRDS("data/temp_sum.rds")
 ```
 
-Note that making a file publicly available as a `.rds` file violates the FAIR principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in chapter \@ref(ch-02).
+Note that making a file publicly available as a `.rds` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in chapter \@ref(ch-02).
 
 
 ### Loops
