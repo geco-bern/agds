@@ -2,14 +2,6 @@
 
 **Chapter lead author: Koen Hufkens**
 
-Contents:
-
--   Lecture (Mirko): Mapping data
--   Data formats, standards, metadata
--   Geographic data
--   Scraping, wget
--   APIs
-
 ## Introduction
 
 As a scientist you will encounter variety of [data]([https://en.wikipedia.org/wiki/Data\_(computing)](https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and [databases](<https://en.wikipedia.org/wiki/Database>) are not covered although some files (formats) might have a mixed use.
