@@ -141,29 +141,131 @@ Environmental sciences have particular file formats which dominate the field. So
 | \*.nc                   | [NetCDF data](<https://en.wikipedia.org/wiki/NetCDF>) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4         |
 | \*.hdf                  | HDF array data                                                   | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf           |
 | \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)                | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster |
-| \*.shp                  | Shapefile of vector data (see below)                             |                                                                                                                                     |               |
+| \*.shp                  | Shapefile of vector data (see below)                             | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sf            |
+
+## Meta-data
+
+Meta-data, or data which is associated with the main data file is key to understanding the content of a data file (or the data set to which the file belongs). In some cases you will find this data only as a general description referencing the file(s) itself. In other cases meta-data is included in the file itself.
+
+For example, many tabular CSV data files contain a header specifying the content of each column, and at times a couple of lines of data specifying the content of the file itself - or context within which the data should be considered.
+
+``` bash
+# This is meta-data associated with the tabulated CSV file
+# for which the data is listed below.
+# 
+# In addition to some meta-data, the first row of the data
+# contains the column header data
+column_one, column_two, column_three
+1, 2, 3
+1, 2, 3
+1, 2, 3
+```
+
+In the case of binary files it will not be possible to read the meta-data as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file.
+
+``` bash
+# list geospatial data for a geotiff file
+gdalinfo your_geotiff.tiff
+```
+
+> TIP: Always keep track of your meta-data if not, or only partially, included in the file itself. Meta-data is key in making science reproducible and guaranteeing consistency between projects. Key meta-data to retain are: the source of your data (url, manuscript, doi), the date when the data was downloaded, and any manipulations on the data before using the data in a final workflow.
 
 ## Spatial data representation
 
 Environmental data often has an explicit spatial and temporal component. For example, climate data is often represented as 2D maps which vary over time. This spatial data requires an additional level of understanding of commonly used data formats and structures.
 
-In general, we can distinguish two important data formats when dealing with spatial data, raster and vector data. Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided.
+In general, we can distinguish two important data models when dealing with spatial data, the [raster](<https://wiki.gis.com/wiki/index.php/Raster_data_model>) and [vector data model](<https://wiki.gis.com/wiki/index.php/Vector_data_model>). Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided.
 
-### Raster data
+### Raster data model
 
-### Vector data
+The basic raster model represents geographic (2D) continuous data as a two-dimensional array, where each position has a geographic (x, y) coordinate, a cell size (or resolution) and a given extent. Using this definition any image adheres to the raster model. However, in most geographic applications coordinates are referenced and correspond to a geographic position, e.g. a particular latitude longitude. Often, the model is expanded with a time dimension, stacking various two-dimensional arrays into a three-dimensional array.
 
-## Online data
+The raster data model is common for all data sources which use either imaging sensors, such as satellites or UAVs, or model based output which operates on a fixed grid, such as climate/weather models.
 
-Many of the data described in previous sections are currently warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels.
+Additional meta-data stores both the geographic reference system, the time components as well as other data which might be helpful to end users. Within the environmental sciences NetCDF and GeoTiff are common raster data file formats.
 
-Many of these services allow you to access the underlying (original) data using an API. Mastering the use of these services is key in gathering research data.
+![](<https://eo4geo.sbg.ac.at/GEOF/Basic-GIS-knowledge-and-raster-data/rastervector.png>)
 
-### GET
+### Vector data model
 
-Retrieving data
+The vector data model, in contrast to the raster data model, describes (unbound) features using a geometry (location, shape) using coordinates and linked feature attributes. Geometries can be points, lines, polygons, or even volumes.
 
-\-\-\--
+Vector data does not have a defined resolution, making them scale independent. This makes the vector data model ideal for discrete features such as road or building outlines. Conversely, vector data is poorly suited for continuous data.
+
+Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data.
+
+## Data sources 
+
+The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser and get on with it.
+
+But, many of the data described in previous sections are currently warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels. These services allow you to access the underlying (original) data using an API, hence programmatically using code. Mastering the use of these services is key in gathering research data.
+
+### Direct downloads
+
+Before diving into a description of APIs we remind you that some file reading functions in R are web aware, and not only can read local files but also remote ones (i.e., URLs). Getting ahead of ourselves a bit (see tutorials below), the example code shows you how to read the content of a URL directly into your R environment.
+
+Although using this functionality isn't equivalent to using an API, the concept is the same i.e., you load a remote data source.
+
+``` r
+# define a URL with data of interest
+# in this case annual mean CO2 levels at Mauna Loa
+url <- "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv"
+
+# read in the data directly from URL
+df <- read.table(
+  url,
+  header = TRUE,
+  sep = ","
+)
+```
+
+### APIs
+
+Web based Application Programming Interfaces (APIs) offers a way to specify the scope of the returned data, and ultimately the processing which goes on behind the scene in response to a (data) query. APIs are a way to, in a limited way, control a remote server to execute a certain (data) action. In most (RESTful) APIs such query takes the form of an HTTP URL via an URL encoded scheme using an API endpoint (or base URL).
+
+#### GET
+
+Depending on your data source you will either need to rely on a dedicated R package to query the API or study the API documentation. A dedicated package to query an API is for example the {ecmwfr} package to download ECMWF climate data from the Copernicus data services.
+
+The general scheme to follow to use an API follows the use of the GET() command of the {httr} R library. You define a query using API parameters, as a named list, and then use a GET() statement to download the data from the endpoint (url).
+
+``` r
+  # formulate a named list query to pass to httr
+  query <- list(
+    "argument" = "2",
+    "another_argument" = "3"
+  )
+  
+  # create url string (varies per product / param)
+  url <- "https://your.service.endpoint.com"
+  
+  # download data using the
+  # API endpoint and query data
+  status <- httr::GET(
+    url = url,
+    query = query,
+    httr::write_disk(
+      path = "/where/to/store/data/filename.ext",
+      overwrite = TRUE
+      )
+    )
+```
+
+##### Authentication
+
+Depending on the API authentication using a user name and a key or password is required. Then the template should be slightly altered to accommodate for these requirements. Note that instead of the GET() command we use POST() as we need to post some authentication data before we can get the data in return.
+
+``` r
+# an authenticated API query
+status <- httr::POST(
+  url = url,
+  httr::authenticate(user, key),
+  httr::add_headers("Accept" = "application/json",
+                    "Content-Type" = "application/json"),
+  body = query,
+  encode = "json"
+)
+```
 
 ## Learning objectives
 
