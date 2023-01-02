@@ -4,11 +4,166 @@
 
 Contents:
 
-- Lecture (Mirko): Mapping data
-- Data formats, standards, metadata
-- Geographic data
-- Scraping, wget
-- APIs
+-   Lecture (Mirko): Mapping data
+-   Data formats, standards, metadata
+-   Geographic data
+-   Scraping, wget
+-   APIs
+
+## Introduction
+
+As a scientist you will encounter variety of [data]([https://en.wikipedia.org/wiki/Data\_(computing)](https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and [databases](<https://en.wikipedia.org/wiki/Database>) are not covered although some files (formats) might have a mixed use.
+
+However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](<https://en.wikipedia.org/wiki/API>). Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.
+
+In this section you will learn:
+
+-   how to recognize data/file formats
+
+-   understand data/file format limitations
+
+    -   manipulation wise
+
+    -   content wise
+
+-   how to read and or write data in a particular file format
+
+-   how to query an API
+
+    -   and store it locally
+
+## Files and file formats
+
+### File extensions
+
+In order to manipulate data and make some distinctions on what a data file might contain they carry a particular [file format extension](<https://en.wikipedia.org/wiki/Filename_extension>). This file extensions denotes the intended content and use of a particular file.
+
+For example a file ending in `.txt` suggests that it contains text. A file extension allows you, or a computer, to assess the content of a file without opening the file.
+
+File extensions are therefore an important tool in assessing what data you are dealing with, and what tools you will need to manipulated (read / write) the data.
+
+> NOTE: It is important to note that file extensions can be changed. In some cases the file extension does not represent the content and or use case of the data contained within the file.
+
+> TIP: If a file doesn't read it is always wise to check the first couple of lines to verify if the data has a structure which corresponds to the file extension.
+>
+> ``` bash
+> # On a linux/macos system you can use the below command
+> # to show the first couple of lines of a file
+> head your_file
+>
+> # alternatively you can show the last few lines
+> # of a file using
+> tail your_file
+> ```
+
+#### Human readable data
+
+One of the most important distinctions in data formats falls along the line of it being human readable or not. Human readable data is, as the term specifies, made up of normal text characters. Human readable text has the advantage that it is easily read, and or edited using conventional text processors. This convenience comes at the cost of the files not being compressed in any way, and file sizes can become unsustainable. However, for many applications where file sizes are limited (\<50MB), human readable formats are the preferred option. Most human readable data falls in two broad categories, tabulated data and structured data.
+
+##### Tabulated data
+
+Often, human readable formats provide data in tabulated form using a consistent delimiter. This delimiter is a character separating columns of a table.
+
+    column_one, column_two, column_three
+    1, 2, 3
+    1, 2, 3
+    1, 2, 3
+
+Common delimiters in this context are the comma (,), as shown in the above example. A file with this particular format often carries the [comma-separated values file extension (*.csv)](<https://en.wikipedia.org/wiki/Comma-separated_values>). Other delimiters are the [tabulation (tab) character](<https://en.wikipedia.org/wiki/Tab_key#Tab_characters>). Files with tab delimited values have the* format.
+
+> TIP: File extensions aren't always a true indication of the delimiter used. For example, `.txt` files often contain comma or tab separated data. If reading a file using a particular delimiter fails it is best to check the first few lines of a file.
+
+##### Structured data
+
+Tabulated delimited data is row and column oriented and therefore doesn't allow complex structured content, e.g. tables within tables. This issue is sidestepped by for example the [JSON format](<https://www.json.org/json-en.html>). The JSON format in particular uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below you see an example of details describing a person, with entries being fo varying length and data content.
+
+``` json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "office",
+      "number": "646 555-4567"
+    }
+  ],
+  "children": [
+      "Catherine",
+      "Thomas",
+      "Trevor"
+  ],
+  "spouse": null
+}
+```
+
+Note, despite being human readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.
+
+Other human readable structured data formats include the eXtensible Markup Language (XML), which is commonly used in web infrastructure. XML is used for storing, transmitting, and reconstructing arbitrary data but uses (text) markup instead of attribute-value pairs.
+
+``` xml
+<note>
+<to>Tove</to>
+<from>Jani</from>
+<heading>Reminder</heading>
+<body>Don't forget me this weekend!</body>
+</note>
+```
+
+#### Binary data
+
+All digital data which is not represented as text characters can be considered binary data. Binary data can vary in its content from the executable, which runs a program, to the digital representation of an image. However, in all cases the data is represented as bytes (made of eight bits) and not text characters.
+
+One of the advantages of binary data is that it is an efficient representation of data, saving spaces. This comes at the cost of requiring a dedicated software, other than a text editor, to manipulate the data. For example, digital images in a binary format require image manipulation software.
+
+More so than human readable data the file format (extension) determines how to treat the data. Knowing common data formats and their use cases is therefore key.
+
+### File formats
+
+Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
+
+| File format (extension) | Format description                                               | Use case                                                                                                                            | R Library     |
+|------------------------|----------------|----------------|----------------|
+| \*.csv                  | comma separated tabulated data                                   | General purpose flat files with row and column oriented data                                                                        | base R        |
+| \*.txt                  | tabulated data with various delimiters                           | General purpose flat files with row and column oriented data                                                                        | base R        |
+| \*.json                 | structured human readable data                                   | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite      |
+| \*.nc                   | [NetCDF data](<https://en.wikipedia.org/wiki/NetCDF>) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4         |
+| \*.hdf                  | HDF array data                                                   | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf           |
+| \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)                | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster |
+| \*.shp                  | Shapefile of vector data (see below)                             |                                                                                                                                     |               |
+
+## Spatial data representation
+
+Environmental data often has an explicit spatial and temporal component. For example, climate data is often represented as 2D maps which vary over time. This spatial data requires an additional level of understanding of commonly used data formats and structures.
+
+In general, we can distinguish two important data formats when dealing with spatial data, raster and vector data. Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided.
+
+### Raster data
+
+### Vector data
+
+## Online data
+
+Many of the data described in previous sections are currently warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels.
+
+Many of these services allow you to access the underlying (original) data using an API. Mastering the use of these services is key in gathering research data.
+
+### GET
+
+Retrieving data
+
+\-\-\--
 
 ## Learning objectives
 
