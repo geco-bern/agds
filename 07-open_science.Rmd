@@ -4,11 +4,86 @@
 
 Contents:
 
-- Lecture (Koen): Open science - history, motivation, reproducibility crisis, current initiatives, overview of practices
-- Environmental data repositories
-- Methods to create visualised reproducible workflow
-- RMarkdown files
-- Performance assessment: **CAT 3**, [link to Dietze exercise on pair coding](https://github.com/stineb/EF_Activities/blob/master/Exercise_04_PairCoding.Rmd)
+-   Lecture (Koen): Open science - history, motivation, reproducibility crisis, current initiatives, overview of practices
+-   Environmental data repositories
+-   Methods to create visualised reproducible workflow
+-   RMarkdown files
+-   Performance assessment: **CAT 3**, [link to Dietze exercise on pair coding](https://github.com/stineb/EF_Activities/blob/master/Exercise_04_PairCoding.Rmd)
+
+## Introduction
+
+The reproducibility crisis, or the inability to reproduce experimental results, is a complex problem. The last decades scientific research has seen a steady increase in speed due to the increasing digitization of many fields as well as the slow creeping comodification of science. Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality to outright fraud. However, on a socio-cultural level a part of the crisis has its origins in both the structure of academia and the interaction with how research is disseminated.
+
+Through digitization, speeding up scientific publishing and comodification of knowledge, pressure has mounted on academics to 'publish or perish'. Invariably, this cut throat environment increasingly rewards fraud, poor quality (high volume) research and unethical behaviour.
+
+Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. However, both the reproducibility crisis as digital tools have made this position untenable. Open science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable (as at times exceptions do apply).
+
+In this section, we focus solely on the relation of open science to data management and coding practices. For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices I refer to the reference list.
+
+## Project structure
+
+Reproducible science relies on a number of key components. Data management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, preferably structured, location.
+
+It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structure a project in one folder also makes projects portable. All parts reside in one location making it easy to create a github project from this location, or just copy the project to a new drive.
+
+An example data structure for raw data processing is given below and we provided an [R project template](<https://github.com/computationales/R_proj_template>) to work from and adjust on the lab website.
+
+``` bash
+data-raw/
+├─ raw_data_product/
+├─ 00_download_raw_data.R
+├─ 01_process_raw_data.R
+```
+
+## Managing workflows
+
+Although some code is agnostic to the order of execution many projects are effectively workflows, where the output of one routine is required for the successful execution of the next routine.
+
+In order to make sure that a future you, or a collaborator, understands in which order things should be executed it is best to number scripts / code properly. This is the most basic approach to managing workflows.
+
+In the example below all statistics code is stored in the statistics folder in an overall analysis folder (which also includes code for figures). All statistical analysis are numbered, to ensure that the output of a first analysis is available to the following one.
+
+``` bash
+analysis/
+├─ statistics/
+│  ├─ 00_random_forest_model.R
+│  ├─ 01_random_forest_tuning.R
+├─ figures/
+│  ├─ global_model_results_map.R
+│  ├─ complex_process_visualization.R
+```
+
+### Automating and visualizing workflows with targets
+
+To sidestep some of the manual management in R you can use dedicated pipeline tool like the **{targets} package** in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.
+
+![](<https://books.ropensci.org/targets/man/figures/tar_watch.png>)
+
+Due to the added complexity of the targets package we won't include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples (TBD?).
+
+<https://books.ropensci.org/targets/walkthrough.html>
+
+### Self-contained environments
+
+Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the [**{renv} package**](<https://rstudio.github.io/renv/>) which manages package version (environments) for you. The {renv} package creates a snapshot of your system and allows you to recreate this state elsewhere.
+
+When tasks are even more complex and include components outside of R you can use [**Docker**](<https://www.docker.com/>) to provide containerization of an operating system and the included application. You can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components.
+
+## Rmarkdown
+
+Within Rstudio you can use Rmarkdown dynamic documents to combine both text and code. Rmarkdown is ideal for **reporting** i.e., writing your final document presenting your analysis results.
+
+However, as they are commonly used as singular central dynamic document containing all aspects from data cleaning to reporting, R markdown files are rarely portable. In this use case, R markdown documents mix two cognitive tasks, writing text (reporting, not commenting code) and writing code. Switching between these two modes comes with undue overhead. If you code, you should not be writing prose, and vise versa.
+
+Unless applied to small, educational, examples a markdown file has little place
+in a code heavy environment. In short, if your R markdown file contains more
+code than it does text, it should be considered an R script or function
+(with comments or documentation). Conversely, if your markdown file contains more text than code it probably is easier to collaborate on a true word processing file (or a Google Docs file). The use case where the notebooks might serve some importance is true reporting of general statistics.
+
+Finally, the use of R markdown also encourages bad project management practices. Most commonly this originates from the fact that rendering of the document is relative to the location of the document itself. If no session management tools such as the package [`here`](https://here.r-lib.org/) are used this automatically causes files to pile up in the top most level of a project, undoing most efforts
+to physically structure data and code. This is further compounded by the fact that there is a tendency to remain within the working environment document), and therefore code blocks which should be functions are not translated as such.
+
+In short, R markdown files have their function for reporting concise results, once generated (through functions or analysis scripts) but should be generally be avoided to develop code / ideas (see cognitive switching remark)!
 
 ## Learning objectives
 
@@ -17,3 +92,7 @@ Contents:
 ## Exercises
 
 ## Solutions
+
+## References
+
+-   complete references
