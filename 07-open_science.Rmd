@@ -1,3 +1,7 @@
+---
+---
+---
+
 # Open science practices {#open_science}
 
 **Chapter lead author: Koen Hufkens**
@@ -154,6 +158,22 @@ R markdown files have their function for reporting concise results, once generat
 ## Tutorial
 
 ## Exercises
+
+-   clone the R project template
+
+-   automatically download data of choice to disk (in the `data`) directory
+
+    -   reference previous API workflow
+
+-   create a new Rmd file in `analysis` or `vignettes`
+
+-   render a simple Rmarkdown file using the data downloaded to `data`
+
+-   create a simple targets project using the above workflow
+
+    -   make changes to the API download routine
+
+    -   rerun the targets project
 
 ## Solutions
 
