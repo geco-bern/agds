@@ -2,18 +2,60 @@
 
 **Chapter lead author: Benjamin Stocker**
 
-Contents: 
+Contents:
 
-- Lecture (Beni): Tidy data, “bad” data
-- Data frame manipulations with tidyverse
-- Tidy data
-- Dealing with missingness, bad data, outliers
-- Imputation (note also imputation as part of the modelling workflow)
-- Performance assessment: **CAT 1,** [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1), Make table tidy
+-   Exploratory data analysis, "understanding the data"
+
+-   Tabular data
+
+-   Read in the example data, tidyverse
+
+-   Tidy data, variables
+
+    -   Selecting variables by their names: `select()`
+    -   Renaming: `rename()`
+
+-   Dimensions of variation
+
+-   Dealing with missingness, bad data, outliers, gap-filling (distinguished from *imputation* as part of the modelling workflow)
+
+    -   Selecting observations by their values: `filter()`
+    -   Creating new variables: `mutate()`
+
+-   Data aggregation:
+
+    -   multiple values down to a single summary: `summarise()`
+
+-   Combining relational data: `*_join()`
+
+-   More common wrangling
+
+    -   strings (stringr)
+    -   time, date (lubridate)
+    -   nesting (tidyr)
+    -   functional programming (purrr)
+
+-   Performance assessment: **CAT 1,** [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1), make table tidy
 
 ## Learning objectives
 
 ## Tutorial
+
+Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
+
+<!-- Working on a (geo-) data science project, we want to efficiently progress through the multiple circles of exploratory data analysis. The following aspects are particularly important for fast and error-free progression. First, the programming language should be conducive of fast, intuitive, and error-free coding. Second, code that we have written once should be legible by others and by our future selves (even after a long holiday or after the manuscript has been seen by all reviewers months after we finished the analysis for our initial submission). It's the daily reality of us (geo-) data scientist that the code we write is harder to read than text in a newspaper, and that it will have bugs. There is (so far) no magic solution to this. But the R tidyverse comes close. From the above-mentioned two design principles, even the most convoluted code and implementation of data transformation steps fall into place and fast and error-free progression through exploratory data analysis is facilitated. Therefore, you will be introduced to the R tidyverse here and we heavily rely on this dialect of the R language throughout the remainder of this course. -->
+
+### Tabular data
+
+Tabular data is organised in rows and columns. For example, a data frame in R is tabular data, or each Excel sheet contains tabular data. In Chapter \@ref(data_variety), you will be introduced to other types of data.
+
+### Tidyverse
+
+The tidyverse is a collection of R packages and functions that share a common design philosophy, enabling a particularly efficient implementation of transformation steps on tabular data. The most important data and function design principle of the tidyverse is that each function takes a data frame as its first argument and returns a data frame as its output.
+
+### Tidy data
+
+The contents of this tutorial are inspired by the (freely available online) book [\*R for Data Science\* by Grolemund & Wickham](%5Bhttps://r4ds.had.co.nz/).](<https://r4ds.had.co.nz/>).)
 
 ## Exercises
 

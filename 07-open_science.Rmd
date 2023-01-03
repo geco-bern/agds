@@ -57,7 +57,7 @@ analysis/
 
 To sidestep some of the manual management in R you can use dedicated pipeline tool like the **{targets} package** in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.
 
-![](<https://books.ropensci.org/targets/man/figures/tar_watch.png>)
+<!-- ![](<https://books.ropensci.org/targets/man/figures/tar_watch.png>) -->
 
 Due to the added complexity of the targets package we won't include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples (TBD?).
 

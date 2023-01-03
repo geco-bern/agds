@@ -1,4 +1,4 @@
---- 
+---
 title: "Applied Geodata Science"
 author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)"
 date: "`r Sys.Date()`"
@@ -13,29 +13,60 @@ link-citations: yes
 github-repo: rstudio/bookdown-demo
 ---
 
-# About this book {-}
+# About this book {.unnumbered}
 
 This book accompanies the course(s) *Applied Geodata Science*, taught at the Institute of Geography, University of Bern.
 
 The course introduces the typical data science workflow using various examples of geographical and environmental data. With a strong hands-on component and a series of input lectures, the course introduces the basic concepts of data science and teaches how to conduct each step of the data science workflow. This includes the handling of various data formats, the formulation and fitting of robust statistical models, including basic machine learning algorithms, the effective visualisation and communication of results, and the implementation of reproducible workflows, founded in Open Science principles. The overall course goal is to teach students to tell a story with data.
 
-# Course plan {-}
+# Course plan {.unnumbered}
 
-1. Getting started
-2. Programming primer
-3. Data wrangling
-4. Data visualisation
-5. Data variety
-6. Code management
-7. Open Science practice
-    
+1.  Getting started
+
+2.  Programming primer
+
+3.  Data wrangling
+
+4.  Data visualisation
+
+5.  Data variety
+
+6.  Code management
+
+7.  Open Science practice
+
     **MILESTONE 1: Communicating a reproducible workflow (→ LO1)**
-    
-8. Regression
-9. Supervised machine learning fundamentals
+
+8.  Regression
+
+9.  Supervised machine learning fundamentals
+
 10. Random Forest
+
 11. Neural Networks
+
 12. Interpretable machine learning
+
 13. Unsupervised machine learning
-    
+
     **MILESTONE 2: Identify patterns and demonstrate how explained (→ LO2)**
+
+# Introduction {.unnumbered}
+
+-   What is Data Science?
+-   Why "Applied Geo-" Data Science?
+
+## The (data) science workflow {#data-science-workflow}
+
+Applied (geodata-) data science projects typically start with research questions and hypotheses, and some data at hand, and (ideally) end with an answer to the research questions. What lies in between is not a linear process, but a cycle. One has to "understand" the data in order to identify appropriate analyses for answering the research questions. Such an understanding of the data is gradually established by repeated cycles of transforming the data, visualizing it, and modelling relationships. Before we've visualized the data, we don't know how to transform it. And before we've modeled it, we don't know the most appropriate visualization. In practice, we approach answers to our research questions gradually, through repeated cycles of *exploratory data analysis* [Fig. data-science-workflow].
+
+[Fig. data-science-workflow]
+
+As we work our way through repeated cycles of exploratory data analysis (Chapter \@ref(data-science-workflow)), we take decisions based on our data analysis, modelling, and visualizations. And we write code. The final conclusions we draw, the answers to research questions we find, and the results we communicate rest on the combination of all steps of our data processing, analysis, and visualization. Simply put, it rests on the reproducibility (and legibility) of our code. This course teaches you the tools and concepts to effectively learn from (large volumes of) data, and to put reproducibility of a geodata science project into practice.
+
+Three general developments set the stage for this course. First, Geography and Environmental Sciences (as many other realms of today's world) have entered a data-rich era (Chapters \@ref(data_variety). \@ref(data-rich-era)). Second, machine learning algorithms have revolutionized the way we can extract information from large volumes of data (Chapters \@ref(supervised_ml) - \\\@ref(interpretable_ml). Third, Open Science principles (Chapter \@ref(open_science)) - essential for inclusive research, boundless progress, and for diffusing science to society - are becoming a prerequisite for getting research funded and published (Chapter \@ref(open_science))). This teaches you the skills to benefit from these developments.
+
+-   What is data? How do we learn from data? What is a model?
+-   Geography in a data rich era {#data-rich-era}
+-   Course overview, scope, and target audience
+-   Our practice at GECO

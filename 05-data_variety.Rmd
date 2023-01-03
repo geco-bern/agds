@@ -176,7 +176,7 @@ The raster data model is common for all data sources which use either imaging se
 
 Additional meta-data stores both the geographic reference system, the time components as well as other data which might be helpful to end users. Within the environmental sciences NetCDF and GeoTiff are common raster data file formats.
 
-![](<https://eo4geo.sbg.ac.at/GEOF/Basic-GIS-knowledge-and-raster-data/rastervector.png>)
+<!-- ![](<https://eo4geo.sbg.ac.at/GEOF/Basic-GIS-knowledge-and-raster-data/rastervector.png>) -->
 
 ### Vector data model
 
