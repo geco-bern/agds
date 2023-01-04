@@ -4,9 +4,9 @@
 
 ## Introduction
 
-As a scientist you will encounter variety of [data]([https://en.wikipedia.org/wiki/Data\_(computing)](https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and [databases](<https://en.wikipedia.org/wiki/Database>) are not covered although some files (formats) might have a mixed use.
+As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
-However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](<https://en.wikipedia.org/wiki/API>). Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.
+However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.
 
 In this section you will learn:
 
@@ -28,7 +28,7 @@ In this section you will learn:
 
 ### File extensions
 
-In order to manipulate data and make some distinctions on what a data file might contain they carry a particular [file format extension](<https://en.wikipedia.org/wiki/Filename_extension>). This file extensions denotes the intended content and use of a particular file.
+In order to manipulate data and make some distinctions on what a data file might contain they carry a particular [file format extension](https://en.wikipedia.org/wiki/Filename_extension). This file extensions denotes the intended content and use of a particular file.
 
 For example a file ending in `.txt` suggests that it contains text. A file extension allows you, or a computer, to assess the content of a file without opening the file.
 
@@ -61,13 +61,13 @@ Often, human readable formats provide data in tabulated form using a consistent 
     1, 2, 3
     1, 2, 3
 
-Common delimiters in this context are the comma (,), as shown in the above example. A file with this particular format often carries the [comma-separated values file extension (*.csv)](<https://en.wikipedia.org/wiki/Comma-separated_values>). Other delimiters are the [tabulation (tab) character](<https://en.wikipedia.org/wiki/Tab_key#Tab_characters>). Files with tab delimited values have the* format.
+Common delimiters in this context are the comma (,), as shown in the above example. A file with this particular format often carries the [comma-separated values file extension (\*.csv)](https://en.wikipedia.org/wiki/Comma-separated_values). Other delimiters are the [tabulation (tab) character](https://en.wikipedia.org/wiki/Tab_key#Tab_characters). Files with tab delimited values have the\* format.
 
 > TIP: File extensions aren't always a true indication of the delimiter used. For example, `.txt` files often contain comma or tab separated data. If reading a file using a particular delimiter fails it is best to check the first few lines of a file.
 
 ##### Structured data
 
-Tabulated delimited data is row and column oriented and therefore doesn't allow complex structured content, e.g. tables within tables. This issue is sidestepped by for example the [JSON format](<https://www.json.org/json-en.html>). The JSON format in particular uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below you see an example of details describing a person, with entries being fo varying length and data content.
+Tabulated delimited data is row and column oriented and therefore doesn't allow complex structured content, e.g. tables within tables. This issue is sidestepped by for example the [JSON format](https://www.json.org/json-en.html). The JSON format in particular uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below you see an example of details describing a person, with entries being fo varying length and data content.
 
 ``` json
 {
@@ -100,7 +100,7 @@ Tabulated delimited data is row and column oriented and therefore doesn't allow 
 }
 ```
 
-Note, despite being human readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.
+> NOTE: despite being human readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.
 
 Other human readable structured data formats include the eXtensible Markup Language (XML), which is commonly used in web infrastructure. XML is used for storing, transmitting, and reconstructing arbitrary data but uses (text) markup instead of attribute-value pairs.
 
@@ -125,15 +125,15 @@ More so than human readable data the file format (extension) determines how to t
 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
-| File format (extension) | Format description                                               | Use case                                                                                                                            | R Library     |
-|------------------------|----------------|----------------|----------------|
-| \*.csv                  | comma separated tabulated data                                   | General purpose flat files with row and column oriented data                                                                        | base R        |
-| \*.txt                  | tabulated data with various delimiters                           | General purpose flat files with row and column oriented data                                                                        | base R        |
-| \*.json                 | structured human readable data                                   | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite      |
-| \*.nc                   | [NetCDF data](<https://en.wikipedia.org/wiki/NetCDF>) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4         |
-| \*.hdf                  | HDF array data                                                   | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf           |
-| \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)                | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster |
-| \*.shp                  | Shapefile of vector data (see below)                             | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sf            |
+| File format (extension) | Format description                                             | Use case                                                                                                                            | R Library     |
+|----------------------|-----------------|-----------------|-----------------|
+| \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R        |
+| \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R        |
+| \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite      |
+| \*.nc                   | [NetCDF data](https://en.wikipedia.org/wiki/NetCDF) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4         |
+| \*.hdf                  | HDF array data                                                 | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf           |
+| \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)              | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster |
+| \*.shp                  | Shapefile of vector data (see below)                           | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sf            |
 
 ## Meta-data
 
@@ -166,7 +166,7 @@ gdalinfo your_geotiff.tiff
 
 Environmental data often has an explicit spatial and temporal component. For example, climate data is often represented as 2D maps which vary over time. This spatial data requires an additional level of understanding of commonly used data formats and structures.
 
-In general, we can distinguish two important data models when dealing with spatial data, the [raster](<https://wiki.gis.com/wiki/index.php/Raster_data_model>) and [vector data model](<https://wiki.gis.com/wiki/index.php/Vector_data_model>). Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided.
+In general, we can distinguish two important data models when dealing with spatial data, the [raster](https://wiki.gis.com/wiki/index.php/Raster_data_model) and [vector data model](https://wiki.gis.com/wiki/index.php/Vector_data_model). Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided.
 
 ### Raster data model
 
@@ -176,8 +176,6 @@ The raster data model is common for all data sources which use either imaging se
 
 Additional meta-data stores both the geographic reference system, the time components as well as other data which might be helpful to end users. Within the environmental sciences NetCDF and GeoTiff are common raster data file formats.
 
-![](<https://eo4geo.sbg.ac.at/GEOF/Basic-GIS-knowledge-and-raster-data/rastervector.png>)
-
 ### Vector data model
 
 The vector data model, in contrast to the raster data model, describes (unbound) features using a geometry (location, shape) using coordinates and linked feature attributes. Geometries can be points, lines, polygons, or even volumes.
@@ -186,7 +184,7 @@ Vector data does not have a defined resolution, making them scale independent. T
 
 Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data.
 
-## Data sources 
+## Data sources
 
 The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser and get on with it.
 
