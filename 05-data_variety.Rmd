@@ -343,25 +343,63 @@ Depending on your data source you will either need to rely on a dedicated R pack
 The general scheme to follow to use an API follows the use of the GET() command of the {httr} R library. You define a query using API parameters, as a named list, and then use a GET() statement to download the data from the endpoint (url).
 
 ``` r
-  # formulate a named list query to pass to httr
-  query <- list(
-    "argument" = "2",
-    "another_argument" = "3"
+# formulate a named list query to pass to httr
+query <- list(
+  "argument" = "2",
+  "another_argument" = "3"
+)
+
+# create url string (varies per product / param)
+url <- "https://your.service.endpoint.com"
+
+# download data using the
+# API endpoint and query data
+status <- httr::GET(
+  url = url,
+  query = query,
+  httr::write_disk(
+    path = "/where/to/store/data/filename.ext",
+    overwrite = TRUE
   )
-  
-  # create url string (varies per product / param)
-  url <- "https://your.service.endpoint.com"
-  
-  # download data using the
-  # API endpoint and query data
-  status <- httr::GET(
-    url = url,
-    query = query,
-    httr::write_disk(
-      path = "/where/to/store/data/filename.ext",
-      overwrite = TRUE
-      )
-    )
+)
+```
+
+Below we provide an example of using the GET command to download data from the [Regridded Harmonized World Soil Database (v1.2)](<https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1247>) as hosted on the Oak Ridge National Laboratory computer infrastructure.
+
+```{r}
+# set API URL endpoint
+# for the total sand content
+url <- "https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SAND.nc4"
+
+# formulate query to pass to httr
+query <- list(
+   "var" = "T_SAND",
+  "south" = 32,
+  "west" = -81,
+  "east" = -80,
+  "north" = 34,
+  "disableProjSubset" = "on",
+  "horizStride"= 1,
+  "accept"="netcdf4"
+)
+
+# download data using the
+# API endpoint and query data
+status <- httr::GET(
+  url = url,
+  query = query,
+  httr::write_disk(
+    path = file.path(tempdir(), "T_SAND.nc"),
+    overwrite = TRUE
+  )
+)
+
+# to visualize the data
+# we need to load the {terra}
+# library
+library("terra")
+r <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
+terra::plot(r)
 ```
 
 ##### Authentication
