@@ -113,6 +113,83 @@ Other human readable structured data formats include the eXtensible Markup Langu
 </note>
 ```
 
+#### Writing and reading human readable files in R
+
+There are number of ways to read human readable formats into an R work environment. Here the basic approaches are listed, in particular reading `CSV` and `JSON` data.
+
+Large volumes of data are still available as `CSV` files or similar. Understanding how to read in such data into a programming environment is key. In this context the `read.table()` function is a general purpose tool to read in text data. Depending on the format, additional meta-data or comments, certain parameters need to be specified.
+
+It's counterpart is a function to write human readable data to file called, you guessed it, `write.table()`. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
+
+Below you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.
+
+``` r
+# create a data frame with demo data
+df <- data.frame(
+  col_1 = c("a", "b", "c"),
+  col_2 = c("d", "e", "f"),
+  col_3 = c(1,2,3)
+)
+
+# write table as CSV to disk
+write.table(
+  x = df,
+  file = file.path(tempdir(), "your_file.csv"),
+  sep = ",",
+  row.names = FALSE
+)
+
+# Read a CSV file
+df <- read.table(
+  file.path(tempdir(), "your_file.csv"),
+  header = TRUE,
+  sep = ","
+)
+
+# help files of both functions can be accessed by
+# typing ?write.table or ?read.table in the R console
+```
+
+In this example a data frame is generated with three columns. This file is than written to a temporary file in the temporary file directory `tempdir()`. Here, `tempdir()` returns the location of the temporary R directory, which you can use to store intermediate files.
+
+We use the `file.path()` function to combine the path (`tempdir()`) with the filename (your_file.csv). Using `file.path()` is good practice as directory structures are denoted differently between operating systems e.g., using a backslash (\\) no Windows vs. a slash (/) on Unix based systems (Linux/macOS). The `file.path()` function ensures that the correct directory separator is used.
+
+Note that in this command we have to manually set the separator (sep = ",") and if a header is there (header = TRUE). Depending on the content of a file you will have to alter these parameters. Additional parameters of the `read.table()` function allow you to specify comment characters, skip empty lines etc.
+
+Similar to this simple `CSV` file we can generate and read `JSON` files. For this we do need an additional library, as default R install does not provide this capability. However, the rest of the example follows the above workflow.
+
+``` r
+# we'll re-use the data frame as generated for the CSV
+# example, so walk through the above example if you
+# skipped ahead
+
+# install the required package
+install.packages("jsonlite")
+
+# load the library
+library("jsonlite")
+
+# write the file to a temporary location
+jsonlite::write_json(
+  x = df,
+  path = file.path(tempdir(), "your_json_file.json")
+)
+
+# read the freshly generated json file
+df_json <- jsonlite::read_json(
+  file.path(tempdir(), "your_json_file.json"),
+  simplifyVector = TRUE
+)
+
+# check if the two data sets
+# are identical (they should be)
+identical(df, df_json)
+```
+
+Note that the reading and writing `JSON` data is easier, as the structure of the data (e.g. field separators) are more strictly defined. While reading the data we use the `simplifyVector` argument to return a data frame rather than a nested list. This works as our data has a tabulated structure, this might not always be the case. Finally we compare the original data with the data read in using `identical()`.
+
+> TIP: In calling the external library we use the :: notation. Although by loading the library with `library()` makes all `jsonlite` functions available, the explicit referencing of the origin of the function makes debugging often easier.
+
 #### Binary data
 
 All digital data which is not represented as text characters can be considered binary data. Binary data can vary in its content from the executable, which runs a program, to the digital representation of an image. However, in all cases the data is represented as bytes (made of eight bits) and not text characters.
@@ -125,15 +202,15 @@ More so than human readable data the file format (extension) determines how to t
 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
-| File format (extension) | Format description                                             | Use case                                                                                                                            | R Library     |
-|----------------------|-----------------|-----------------|-----------------|
-| \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R        |
-| \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R        |
-| \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite      |
-| \*.nc                   | [NetCDF data](https://en.wikipedia.org/wiki/NetCDF) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4         |
-| \*.hdf                  | HDF array data                                                 | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf           |
-| \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)              | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster |
-| \*.shp                  | Shapefile of vector data (see below)                           | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sf            |
+| File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
+|---------------------|-----------------|-----------------|-----------------|
+| \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
+| \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
+| \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
+| \*.nc                   | [NetCDF data](https://en.wikipedia.org/wiki/NetCDF) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4, terra, raster |
+| \*.hdf                  | HDF array data                                                 | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf                  |
+| \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)              | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster        |
+| \*.shp                  | Shapefile of vector data (see below)                           | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sp, sf               |
 
 ## Meta-data
 
@@ -160,7 +237,13 @@ In the case of binary files it will not be possible to read the meta-data as pla
 gdalinfo your_geotiff.tiff
 ```
 
-> TIP: Always keep track of your meta-data if not, or only partially, included in the file itself. Meta-data is key in making science reproducible and guaranteeing consistency between projects. Key meta-data to retain are: the source of your data (url, manuscript, doi), the date when the data was downloaded, and any manipulations on the data before using the data in a final workflow.
+> TIP: Always keep track of your meta-data if not, or only partially, included in the file itself. Meta-data is key in making science reproducible and guaranteeing consistency between projects. Key meta-data to retain are:
+>
+> -   the source of your data (URL, manuscript, DOI)
+>
+> -   the date when the data was downloaded
+>
+> -   manipulations on the data before using the data in a final workflow
 
 ## Spatial data representation
 
@@ -212,6 +295,46 @@ df <- read.table(
 ### APIs
 
 Web based Application Programming Interfaces (APIs) offers a way to specify the scope of the returned data, and ultimately the processing which goes on behind the scene in response to a (data) query. APIs are a way to, in a limited way, control a remote server to execute a certain (data) action. In most (RESTful) APIs such query takes the form of an HTTP URL via an URL encoded scheme using an API endpoint (or base URL).
+
+To reduce some of the complexity of APIs it is common that a wrapper is written around an API in the language of choice (e.g. R, python). These dedicated API libraries make it easier to access data and limit coding overhead, as more concisely written.
+
+#### Dedicated API libraries
+
+As an example of a dedicated library we use the [{MODISTools} R package](<https://github.com/bluegreen-labs/MODISTools>) which queries remote sensing data from the Oak Ridge National Laboratories data archive.
+
+``` r
+# install the MODISTools package
+install.packages("MODISTools")
+
+# load the library
+library("MODISTools")
+
+# list all available products
+products <- MODISTools::mt_products()
+
+# print the first few lines
+# of available products
+print(head(products))
+
+# download a demo dataset
+# download data
+subset <- MODISTools::mt_subset(
+  product = "MOD11A2",
+  lat = 40,
+  lon = -110,
+  band = "LST_Day_1km",
+  start = "2004-01-01",
+  end = "2004-02-01",
+  km_lr = 1,
+  km_ab = 1,
+  internal = TRUE
+)
+
+# print the dowloaded data
+print(head(subset))
+```
+
+A detailed description of all functions of the MODISTools R package is beyond the scope of this course. However, the listed command show you what a dedicated API package does. It is a shortcut to functional elements of an API. For example `mt_products()` allows you to quickly list all products without any knowledge of an API URL. Although more complex, as requiring parameters, the `mt_subset()` routine allows you to query remote sensing data for a single location (specified with a latitude lat and longitude lon), and a given date range (e.g. start, end parameters), a physical extent (in km left-right and above-below).
 
 #### GET
 
