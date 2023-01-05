@@ -231,18 +231,63 @@ Note also that these temporal axes are *hierarchical* (several half-hours within
 
 ### Tidy data
 
+Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in tabular form and merged cells as we will see in the Exercises. A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.
+
+```{r echo=FALSE}
+## this is hidden - used to create the objects printed in next chunk
+## using the ts object 'co2'
+df1 <- tibble(co2_concentration = as.vector(co2), 
+       year_dec = time(co2)
+       ) |> 
+  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+  mutate(year = year_dec - month_dec) |> 
+  mutate(month = as.integer(month_dec * 12)) |> 
+  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+  mutate(month = month(date, label = TRUE)) |> 
+  select(year, month, co2_concentration) |> 
+  slice(1:36)
+
+df2 <- df1 |> 
+  pivot_wider(names_from = month, values_from = co2_concentration)
+
+df3 <- df1 |> 
+  # mutate(year = as.character(year)) |> 
+  pivot_wider(names_from = year, values_from = co2_concentration)
+```
+
+```{r}
+df1
+df2
+df3
+```
+
+There are advantages for interoperability and ease of use when data frames come with consistent layouts, adhering to certain design principles. We have learned that in tabular data, each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). And that each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. Following these principles strictly leads to *tidy data*. In essence, quoting [Wickham](https://r4ds.had.co.nz/tidy-data.html), data is tidy if:
+
+- Each variable has its own column.
+- Each observation has its own row.
+- Each value has its own cell.
+
+![Rules for tidy data](./fig/tidy_data.png)
+<!-- Figure from https://r4ds.had.co.nz/tidy-data.html -->
+<!-- Figure URL: https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png -->
+
+The concept of tidy data can even be taken further by understanding a “value” as any object type, e.g. a list or a data frame. This leads to a list or data frame “nested” within a data frame. You will learn more about this below.
+
 The contents of this tutorial are inspired by the (freely available online) book [\*R for Data Science\* by Grolemund & Wickham](%5Bhttps://r4ds.had.co.nz/).](<https://r4ds.had.co.nz/>).)
 
 
 ### Aggregating data
 
-Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation") that groups a vector of values for collapsing it into a single value, and the function used for collapsing values. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the *dplyr* functions `group_by()` and `summarise()`. Aggregating half-hourly incoming shortwave radiation to daily values by averaging (mean) is implemented by the following code:
+Aggregating data refers to collapsing a larger set of values into a smaller set of values that are derived from the larger set. For example, we can aggregate over all $N$ rows in a data frame ($N\times M$), calculating the sum for each of the $M$ columns. This returns a data frame ($1 \times M$) with the same number of columns as the initial data frame, but only one row. Often, aggregations are done not across all rows but for rows within $G$ groups of rows. This yiels a data frame ($G \times M$) with the number of rows corresponding to the number of groups.
+
+Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the *dplyr* functions `group_by()` and `summarise()`. This aggregation workflow is implemented by the following code:
 
 ```{r message=FALSE}
 ddf <- hhdf |>  
   mutate(date = as_date(TIMESTAMP_START)) |>  # converts the ymd_hm-formatted date-time object to a date-only object (ymd)
   group_by(date) |> 
   summarise(SW_IN_F = mean(SW_IN_F))
+ddf
 ```
 
 The seasonal course can now be more clearly be visualized with the data aggregated to daily values.
@@ -251,6 +296,48 @@ plot(ddf[1:365,]$date, ddf[1:365,]$SW_IN_F, type = "l")
 ```
 
 More info on how to group values using summarise functions [here](https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise), or a summary on the inputs the function [group_by()](https://dplyr.tidyverse.org/reference/group_by.html) and [summarise()](https://dplyr.tidyverse.org/reference/summarise.html) take.
+
+### Data cleaning
+
+Data cleaning is often a time-consuming task and decisions taking during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data.
+
+#### Cleaning formats
+
+As a general principle, we want to make our data *machine readable*. Key for achieving machine-readability is that a cell should only contain one value of one type. For example, avoid entries like `>10 m`. Here, we have three pieces of information (`>` as in "greater than", `10`, and `m` indicating the units). A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see Exercises).
+
+#### Bad data
+
+- outliers (sensor error, human error, representing a different population, unsuitable measurement conditions [eddy covariance example, remote sensing example])
+- identification via distributions [hist(), boxplot(), qqnorm()], multivariate (Cook's Distance to get influential values), spurious value (large count of numeric values)
+- randomly missing or not?
+- replace by NA? filter row?
+- -> anomaly detection
+
+```{r eval=FALSE}
+data <- data[!data %in% boxplot.stats(data)$out]
+```
+
+The question about what is "bad data" and whether or when it should be removed is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human analyzing the data or writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during the data collection process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions.
+
+
+
+Several ML algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* (Kuhn & Johnson, 2003) and its information can be used for predictions. For categorical data, we may replace such data with `"none"` (instead of `NA`), while randomly missing data may be dropped altogether. Some ML algorithms (mainly tree-based methods, e.g., random forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
+
+Visualising missing data is essential for making decisions about dropping rows with missing data versus removing predictors from the model (which would imply too much data removal). The cells with missing data in a data frame can be eaily visualised e.g. with `vis_miss()` from the *visdat* package.
+
+```{r warning=FALSE, message=FALSE}
+library(visdat)
+vis_miss(
+  ddf,
+  cluster = FALSE, 
+  warn_large_data = FALSE
+  )
+```
+
+
+#### Gap-filling
+
+tbc
 
 ## Exercises
 
