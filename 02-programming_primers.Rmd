@@ -24,7 +24,7 @@ After you've gone over the lecture and solved the exercises, you should be able 
 - Use loops and functions in your code
 - Install and load libraries and packages
 - Look for help
-- Read, inspect and visualize data frames
+- Read, inspect and visualise data frames
 - Organize your R project for data analysis
 
 ## Tutorial
@@ -63,7 +63,7 @@ For this course, we will also need software that is not available as an R packag
 For example, to work with *netcdf* files in R, you would need to install the `"ncdf4"` library and the `netCDF` command-line tools:
 - To install the `"ncdf4"` library, follow the same steps as above for installing an R library.
 - To install the `netCDF` command-line tools, follow the instructions on the [netCDF website]{https://www.unidata.ucar.edu/downloads/netcdf/index.jsp}.
-- Once the `"ncdf4"` library and the `netCDF` command-line tools are installed, you can use them to work with `.ncd` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
+- Once the `"ncdf4"` library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
 
 ### Working with data frames
 
@@ -75,11 +75,11 @@ The data is stored as a Comma Separated Values file (`.csv`). This is a plain-te
 
 #### Reading data
 
-To import the data into the R workspace (environment), we use the function `read_csv()` from the tidyverse package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc.
+To import the data into the R environment, we use the function `read_csv()` from the tidyverse package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
 
 ```{r message=FALSE}
 # use a relative path to read the data
-df <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-3.csv")
+df <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv")
 print(df) # to print an overview of the data frame
 ```
 
@@ -87,7 +87,7 @@ The file is automatically machine-readable because we have:
 
 - Only one header row, containing the column (variable) names.
 - Variables organised by columns, and observations by rows.
-- Each column consists of a single data type (e.g., character, numeric, logical; see below for more info) - Here, all columns are interpreted as numeric (`<dbl>').
+- Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (`<dbl>').
 - One value per cell.
 - No merged cells.
 In short, the data frame is tidy.
@@ -96,27 +96,27 @@ To understand the sort of object we work with, i.e. the *class*, we can do:
 class(df)
 ```
 
-Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df","tbl_df", "tbl"`) which gives it additional features. 
+Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features. 
 
 #### Understanding the data structure
 
 There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
 
 - Size
-  - `dim()`  - Returns the size of the dimensions of an object (here: number of rows and columns).
+  - `dim()`  - Returns the dimensions of an object (here: number of rows and columns).
   - `nrow()` - Returns the number of rows of an object.
   - `ncol()` - Returns the number of columns of an object.
 - Content
   - `head()` - Returns the first 6 rows.
   - `tail()` - Returns the last 6 rows.
-  - `View()` - look at the entire data set in the form of a table (It is not supported by the Jupyter environment. In RStudio however, it works).
+  - `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
 - Names
-  - `names()` - Returns the column names (for `data.frame`-objects it is synonymous to `colnames()`).
+  - `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
   - `rownames()` - Returns the row names.
 - Summary
-  - `class()` - Returns the class of an object.
+  - `class()` - Returns the classes of an object.
   - `str()` - Returns the structure of an object and information about the class, length and content of each column.
-  - `summary()` - Returns generic statistics information, depending on the class of the object.
+  - `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
   
 For example, the data frame `df` has 4018 rows and 334 columns:
 
@@ -124,25 +124,24 @@ For example, the data frame `df` has 4018 rows and 334 columns:
 dim(df)
 ```
 
-
-A description of standardized FLUXNET data variables is available [here](https://fluxnet.org/data/aboutdata/data-variables/). A selection of available variables that we will use in subsequent chapters are:
+It is important to know the meaning of the column namesA description of standardized FLUXNET data variables is available [here](https://fluxnet.org/data/aboutdata/data-variables/). A selection of available variables that we will use in subsequent chapters are:
 
 - `GPP` (gC m$^{−2}$ s$^{-1}$): Gross primary production
-- `WS` (m s$^{-1}$): horizontal wind speed
-- `USTAR` (m s$^{-1}$): friction velocity
-- `TA` (deg C): air temperature
-- `RH` (%): relative humidity (range 0–100%)
-- `PA` (kPa): atmospheric pressure
-- `G` (W m$^{−2}$): ground heat flux, not mandatory, but needed for the energy balance closure calculations
-- `NETRAD` (W m$^{−2}$): net radiation, not mandatory, but needed for the energy balance closure calculations
-- `SW_IN` (W m$^{−2}$): incoming shortwave radiation
-- `SW_IN_POT` (W m$^−2$): potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
-- `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): incoming photosynthetic photon flux density
-- `P` (mm): precipitation total of each 30 or 60 minute period
-- `LW_IN` (W m$^{−2}$): incoming (down-welling) longwave radiation
-- `SWC` (%): soil water content (volumetric), range 0–100%
-- `TS` (deg C): soil temperature
-- `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon Dioxide (CO$_2$) mole fraction in moist air
+- `WS` (m s$^{-1}$): Horizontal wind speed
+- `USTAR` (m s$^{-1}$): Friction velocity
+- `TA` ($^{o}$ C): Air temperature
+- `RH` (%): Relative humidity (range 0–100%)
+- `PA` (kPa): Atmospheric pressure
+- `G` (W m$^{−2}$): Ground heat flux, not mandatory, but needed for the energy balance closure calculations
+- `NETRAD` (W m$^{−2}$): Net radiation, not mandatory, but needed for the energy balance closure calculations
+- `SW_IN` (W m$^{−2}$): Incoming shortwave radiation
+- `SW_IN_POT` (W m$^−2$): Potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
+- `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): Incoming photosynthetic photon flux density
+- `P` (mm): Precipitation total of each 30 or 60 minute period
+- `LW_IN` (W m$^{−2}$): Incoming (down-welling) long-wave radiation
+- `SWC` (%): Soil water content (volumetric), range 0–100%
+- `TS` ($^{o}$ C): Soil temperature
+- `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon dioxide (CO$_2$) mole fraction in moist air
 
 #### Selecting data and entering the tidyverse
 
@@ -173,7 +172,7 @@ Another method is to select the columns by column names, i.e. giving as input a 
 df[,c("TIMESTAMP", "TA_F_MDS", "TA_F_MDS_QC")]
 ```
 
-In Chapter \@ref(ch-02) of this tutorial tutorial, we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in such a way as to emphasize and better understand the "workflow aspect" of it. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
+In [Tutorial 3]{#data_wrangling}, we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in a way that makes the "workflow" more clear and understandable. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
 
 ```{r}
 select(df, 1) # reduces the data frame (tibble) to its first column
@@ -186,20 +185,20 @@ As a further shortcut in tidyverse, we can use the pipe `%>%` operator. The data
 df %>% select(1)
 ```
 
-We *pipe* the object `df` into the `select()` function with argument `1`. Note that the `%>%` operator can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument.
+We *pipe* the object `df` into the `select()` function with argument `1`. Note that the pipe operator `%>%` can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument.
 
-For the remainder of the tutorial several variables will be required. The methods of variable selection demonstrated above will be utilised below to get the desired variables.
+For the remainder of the tutorial several variables will be required. The methods of data selection demonstrated above will be used below to get the desired variables.
 
 ```{r}
 df_small <- df %>% 
   select(TIMESTAMP, TA_F, PPFD_IN)
 ```
 
-Note: In the code above, an indentation was used to highlight which parts go together and make the code easy to understand. Indentations and line breaks take no effect in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
+Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
  
 #### Renaming
 
-TIMESTAMP_START, TA_F and PPFD_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligle.
+TIMESTAMP_START, TA_F and PPFD_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligible.
 
 ```{r}
 df_small <- df_small %>% 
@@ -210,34 +209,144 @@ df_small <- df_small %>%
 
 A data frame can be written to a CSV file by:
 
-```{r eval = F}
+```{r, eval = F}
 write_csv(df_small, path = "data/df_small.csv")
 ```
 
-The function `saveRDS()` allows you save individual objects of any form (not just a data frame). `saveRDS()` creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. For example:
+The function `saveRDS()` allows you save individual R objects of any form (not just a data frame). `saveRDS()` creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. For example:
 
-```{r eval=F}
-saveRDS(temp_sum, file = "data/temp_sum.rds")
+```{r, eval=F}
+saveRDS(df_small, file = "data/df_small.rds")
 ```
 
-This file can then be read into the R workspace. Sometimes, it is useful to give it a new name, e.g.:
+This file can then be read into the R environment. Sometimes, it is useful to give it a new name, e.g.:
 
-```{r eval=F}
-temp_sum <- readRDS("data/temp_sum.rds")
+```{r, eval=F}
+df_small <- readRDS("data/df_small.rds")
 ```
 
-Note that making a file publicly available as a `.rds` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in chapter \@ref(ch-02).
+Note that making a file publicly available as a `.rds` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in [Tutorial 5]{#data_variety}.
 
+### Programming basics
 
-### Loops
+In this section, we will review the most basic programming elements (conditional statements, loops, functions...) for the R syntax.
 
-### Conditional statements
+#### Conditional statements
 
-### Functions
+In cases where we want certain statements to be executed or not, depending on a criterion, we can use *conditional statements* `if`, `else if`, and `else`. Conditionals are an essential feature of programming and available in all languages. The R syntax for conditional statements looks like this:
+
+```{}
+if (temp < 0.0){
+  is_frozen <- TRUE
+}
+```
+
+The evaluation of the criterion (here `(temp < 0.0)`) has to return either `TRUE` or `FALSE`. Whenever the statement between parenthesis is true, the chunk of code between curly brackets is executed. Otherwise, nothing happens.
+
+```{}
+if (temp < 0.0){
+  is_frozen <- TRUE
+} else {
+  is_frozen <- FALSE
+}
+```
+
+You can also write a conditional that covers all possibilities, like the one above. When the temperature is below 0, the first chunk of code is executed. Whenever it is greater or equal that 0 (i.e. the condition returns `FALSE`) the second chunk of code is evaluated.
+
+You can also write more than two conditions, covering several cases. Conditionals are evaluated in order, so if the first condition is not true, it checks the second. If the second is false, it checks the third, and so on. The statements after `else` are evaluated when everything before was `FALSE`.
+
+#### Loops
+
+*Loops* are another essential feature of programming. `for` and `while` loops exist in probably all programming languages. We introduce them here because they are a simple and powerful tool for solving many common tasks.
+  
+`for` and `while` loops let us repeatedly execute the same set of commands, while changing an index or counter variable to take a sequence of different values. The following example calculates the sum of the first ten temperature values in `df`, by iteratively adding them together. Of course, this is equivalent to just using the `sum()` function. 
+
+```{r}
+temp_sum <- 0   # initialize sum
+for (i in 1:10){
+  temp_sum <- temp_sum + df_small$temp[i]
+}
+print(temp_sum)
+
+print(sum(df_small$temp[1:10]))
+```
+
+Instead of directly telling R how many iterations it should do we can also define a condition. As long as the condition is `TRUE`, R will continue iterating. As soon as it is `FALSE`, R stops the loop. The following lines of code do the same operation as the `for` loop we just wrote. What is different? What is the same?
+
+```{r}
+i = 1           # initialize counter
+temp_sum <- 0   # initialize sum
+while (i <= 10){
+  temp_sum <- temp_sum + df_small$temp[i]
+  i = i+1
+}
+print(temp_sum)
+
+print(sum(df_small$temp[1:10]))
+```
+
+#### Functions
+
+Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new *function* and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
+
+For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
+```{}
+## NOT ADVISABLE
+temp_soil <- (temp_soil - 32) * 5 / 9
+temp_air  <- (temp_air  - 32) * 5 / 9
+temp_leaf <- (temp_leaf - 32) * 5 / 9
+```
+
+Functions are a set of instructions encapsulated within curly brackets (`{}`) that generate a desired outcome. Functions contain three main elements: 
+-   They start with a _name_ to describe their purpose, 
+-   then they need arguments, which are a list of the objects being input,
+-   and lastly enclosed by curly brackets `function(x){ ... }` the code making up the 'body' of the function.
+
+They become increasingly important the more experienced one gets at coding. Using functions minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only 'live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again. 
+
+Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). We can combine the set of operations presented above into a single function. Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
+
+We will now write our first function and implement the data cleaning steps we described above. The function consists of multiple sequences of code as it contains the different steps presented above and applies them sequentially.
+
+The same, but using our own function `convert_fahrenheit_to_celsius()`:
+```{}
+## ADVISABLE
+convert_fahrenheit_to_celsius <- function(temp_f){
+  temp_c <- (temp_f - 32) * 5 / 9
+}
+
+temp_soil <- convert_fahrenheit_to_celsius(temp_soil)
+temp_air  <- convert_fahrenheit_to_celsius(temp_air)
+temp_leaf <- convert_fahrenheit_to_celsius(temp_leaf)
+```
+
+Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function.
 
 #### Input and output
 
+A good practice when writing a function is to document what the function does, the meaning and structure of every input (argument) and the output (value) of the function. 
+
 ### Intro to visualisation
+
+Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In later tutorials, you will get introduced to additional methods for visualising data. Our data frame `fluxes_subset` contains three variables, one of which is `time`. In other words, we are dealing with a time series. Let's look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (`type = "l"`).
+
+```{r}
+plot(1:1440, df_small$temp[1:1440], type = "l") 
+```
+
+Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram. 
+A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a 'bin'. Below you will see the temperature on the x-axis split into these 'bins' ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.
+
+```{r}
+hist(df_small$temp, xlab = "Temperature (°C)")
+```
+
+Plots can be saved as files, as long as the file size does not get too large.It will write vector graphics as outputs, i.e. PDF. In base R, this can be done by:
+
+```{r eval=F}
+pdf("./figures/filename.pdf")
+hist(df_small$temp)
+```
 
 ### Where to find help
 

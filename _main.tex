@@ -1,0 +1,1920 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Applied Geodata Science},
+  pdfauthor={Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Applied Geodata Science}
+\author{Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)}
+\date{2023-01-04}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{about-this-book}{%
+\chapter*{About this book}\label{about-this-book}}
+\addcontentsline{toc}{chapter}{About this book}
+
+This book accompanies the course(s) \emph{Applied Geodata Science}, taught at the Institute of Geography, University of Bern.
+
+The course introduces the typical data science workflow using various examples of geographical and environmental data. With a strong hands-on component and a series of input lectures, the course introduces the basic concepts of data science and teaches how to conduct each step of the data science workflow. This includes the handling of various data formats, the formulation and fitting of robust statistical models, including basic machine learning algorithms, the effective visualisation and communication of results, and the implementation of reproducible workflows, founded in Open Science principles. The overall course goal is to teach students to tell a story with data.
+
+\hypertarget{course-plan}{%
+\chapter*{Course plan}\label{course-plan}}
+\addcontentsline{toc}{chapter}{Course plan}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Getting started
+\item
+  Programming primer
+\item
+  Data wrangling
+\item
+  Data visualisation
+\item
+  Data variety
+\item
+  Code management
+\item
+  Open Science practice
+
+  \textbf{MILESTONE 1: Communicating a reproducible workflow (→ LO1)}
+\item
+  Regression
+\item
+  Supervised machine learning fundamentals
+\item
+  Random Forest
+\item
+  Neural Networks
+\item
+  Interpretable machine learning
+\item
+  Unsupervised machine learning
+
+  \textbf{MILESTONE 2: Identify patterns and demonstrate how explained (→ LO2)}
+\end{enumerate}
+
+\hypertarget{getting_started}{%
+\chapter{Getting started}\label{getting_started}}
+
+\textbf{Chapter lead author: Pepa Aran}
+
+TBC
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
+\item
+  installing environment
+\item
+  workspace management
+\item
+  R, RStudio
+\item
+  R libraries, other libraries and applications
+\end{itemize}
+
+\hypertarget{learning-objectives}{%
+\section{Learning objectives}\label{learning-objectives}}
+
+After you've gone over the lecture and solved the exercises, you should be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Work with R and RStudio on your computer
+\item
+  Know some R objects and basic classes
+\item
+  Follow basic good coding practices
+\item
+  Organize your workspace using R projects
+\item
+  Save your code and progress in an organized way
+\end{itemize}
+
+\hypertarget{tutorial}{%
+\section{Tutorial}\label{tutorial}}
+
+\hypertarget{working-with-r-and-rstudio}{%
+\subsection{Working with R and RStudio}\label{working-with-r-and-rstudio}}
+
+R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used among statisticians and data miners for developing statistical software and data analysis. RStudio is an integrated development environment (IDE) for R that makes it easy to use R for data analysis and visualization.
+
+\hypertarget{installing-r-and-rstudio}{%
+\subsubsection{Installing R and RStudio}\label{installing-r-and-rstudio}}
+
+To use R and RStudio, you will first need to download and install them on your computer.
+
+\begin{itemize}
+\item
+  To install R, go to the \href{https://cran.r-project.org/}{CRAN website} and download the latest version of R for your operating system. Once the download is complete, follow the on-screen installation instructions for your operating system to install R.
+\item
+  To install RStudio, go to the \href{https://posit.co/download/rstudio-desktop/}{RStudio website} and download the latest version of RStudio for your operating system. Once the download is complete, follow the installation instructions for your operating system to install RStudio.
+\end{itemize}
+
+\hypertarget{the-rstudio-interface}{%
+\subsubsection{The RStudio interface}\label{the-rstudio-interface}}
+
+RStudio provides a user-friendly interface for writing, running, and debugging R code. When you open RStudio, you will see the following:
+
+\begin{figure}
+\centering
+\includegraphics{figures/RStudio_interface_screenshot.png}
+\caption{RStudio interface.}
+\end{figure}
+
+The interface is divided into four main panels:
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{source editor} is where you can write, edit, and save your R code.
+\item
+  The \textbf{console} is where you can enter R commands and see the output.
+\item
+  The \textbf{environment} panel shows you the objects (variables, data frames, etc.) that are currently in your R session, as well as their values.
+\item
+  The \textbf{files, plots, help, etc.} panel shows you the files, plots, and other items that are currently in your R workspace, as well as help and documentation for R functions and packages. We will cover this in more detail later in this course.
+\end{itemize}
+
+\hypertarget{running-r-code}{%
+\subsubsection{Running R code}\label{running-r-code}}
+
+Once you have both programs installed, you can open RStudio and begin a new \emph{R session}. To run R code using R Studio, follow these steps:
+
+\begin{itemize}
+\tightlist
+\item
+  In the \emph{source editor} panel, type your R code.
+\item
+  To run the code, you can either press the \textbf{Run} button or use the keyboard shortcut Ctrl + Enter (Windows) or Command + Enter (Mac).
+\item
+  The code will be executed in the \emph{console} panel, and any output will be displayed there.
+\item
+  Alternatively, you can directly type single-statement R commands in the console and run them by pressing Enter.
+\end{itemize}
+
+For example, let's say you want to calculate the sum of the numbers 1, 2, and 3. You can write the following code in the source editor:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate the sum of 1, 2, and 3}
+\DecValTok{1} \SpecialCharTok{+} \DecValTok{2} \SpecialCharTok{+} \DecValTok{3}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+Then, you can press the \textbf{Run} button or use the keyboard shortcut to run the code. The output will be displayed in the console:
+
+\begin{verbatim}
+    > 1 + 2 + 3
+    [1] 6
+\end{verbatim}
+
+\hypertarget{base-r-operations}{%
+\subsubsection{Base R operations}\label{base-r-operations}}
+
+The R \texttt{base} package contains the basic functions which let R function as a programming language: arithmetic, input/output, basic programming support, etc. Its contents are always available when you start an R session. Here we introduce the main binary operators, which work on vectors, matrices and scalars.
+
+Arithmetic operators:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{+} addition
+\item
+  \texttt{-} subtraction
+\item
+  \texttt{*} multiplication
+\item
+  \texttt{/} division
+\item
+  \texttt{\^{}} or \texttt{**} exponentiation
+\end{itemize}
+
+Logical operators:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{\textgreater{}} greater than
+\item
+  \texttt{\textgreater{}=} greater than or equal to
+\item
+  \texttt{==} exactly equal to
+\item
+  \texttt{\textless{}} less than
+\item
+  \texttt{\textless{}=} less than or equal to
+\item
+  \texttt{!=} not equal
+\end{itemize}
+
+\hypertarget{r-objects}{%
+\subsection{R objects}\label{r-objects}}
+
+In addition to running single statements in the R console, the output of a statement can be saved as a new \emph{object}. There are many kinds of R objects, some of which are covered here and in \protect\hypertarget{programming_primers}{}{Tutorial 2}.
+
+\hypertarget{variables-and-classes}{%
+\subsubsection{Variables and classes}\label{variables-and-classes}}
+
+In R, a \emph{variable} is a named location in memory that stores a value. To create a variable, you simply assign a value to a name using the \texttt{\textless{}-} operator (or the \texttt{=} operator, which is equivalent, but \texttt{\textless{}-} is preferred). For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_variable }\OtherTok{\textless{}{-}} \DecValTok{5}
+\end{Highlighting}
+\end{Shaded}
+
+This code creates a variable called \texttt{my\_variable} and assigns the value \texttt{5} to it. You can access the value of a variable or any other object by simply referring to its name, like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_variable}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+
+When you run this code, the value of \texttt{my\_variable} will be printed to the console.
+
+In R, every object and value has a \emph{class} that determines how it is stored and how it behaves. For example, the \texttt{5} in our example above is a number, so its class is \texttt{numeric}. To find out the class of a value or a variable, you can use the \texttt{class()} function, like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(}\DecValTok{5}\NormalTok{) }\CommentTok{\# returns "numeric"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "numeric"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(my\_variable)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "numeric"
+\end{verbatim}
+
+The most basic classes are:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{numeric} (\texttt{num}) - any real number, e.g.~2.375
+\item
+  \texttt{integer} (\texttt{int}) - integer numbers, e.g.~2
+\item
+  \texttt{character} (\texttt{chr}) - any string, e.g.~``fluxes''
+\item
+  \texttt{logical} (\texttt{logi}) - boolean, i.e.~\texttt{TRUE}/\texttt{FALSE} values
+\item
+  \texttt{factor} (\texttt{Factor}) - categorical data, the variable can only be one of a defined amount of options, e.g.~female/male/other
+\item
+  \texttt{function} - a set of statements organized to perform a specific task, for example \texttt{mean()}
+\end{itemize}
+
+By default, any number is coerced as \texttt{"numeric"}. So if you want an integer value to have class \texttt{"integer"}, you need to specify it like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_variable }\OtherTok{\textless{}{-}} \FunctionTok{as.integer}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\FunctionTok{class}\NormalTok{(my\_variable)  }\CommentTok{\# returns "integer"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "integer"
+\end{verbatim}
+
+Sometimes you need to convert the class of an object, for example turning a \texttt{"integer"} number into a \texttt{"character"}. You can do so as follows:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my\_variable }\OtherTok{\textless{}{-}} \FunctionTok{as.character}\NormalTok{(my\_variable)}
+\NormalTok{my\_variable}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "5"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(my\_variable) }\CommentTok{\# returns "character"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+Notice that now the values are in quotes \texttt{"5"}. This way, R interprets it as a text and you will not be able to do any numeric calculations with it anymore.
+
+\hypertarget{vectors}{%
+\subsubsection{Vectors}\label{vectors}}
+
+A \emph{vector} in R is a sequence of data elements of the same class. Vectors can be created with the \texttt{c()} function, which stands for \emph{concatenate}. For example, the following code creates a numeric vector:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+To access the elements of a vector, you can use the square bracket notation. For example, the following code retrieves the second element of the vector \texttt{x}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x[}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+
+You can also use the square bracket notation to extract a subvector from a larger vector. For example, you can extract the second to fourth elements of the vector x:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x[}\DecValTok{2}\SpecialCharTok{:}\DecValTok{4}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2 3 4
+\end{verbatim}
+
+Another useful property of vectors in R is that they can be easily combined using arithmetic operators. For example, adding the elements of two vectors \texttt{x} and \texttt{y} element-wise:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{)}
+\NormalTok{x }\SpecialCharTok{+}\NormalTok{ y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5 7 9
+\end{verbatim}
+
+R also supports vectors of other classes, for example character vectors. Since all elements must be of the same class, the most general class will be adopted. The following code concatenates the vectors \texttt{x} and \texttt{y}, followed by new character elements:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{z }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(x, y, }\StringTok{"seven"}\NormalTok{, }\StringTok{"eight"}\NormalTok{)}
+\NormalTok{z}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "1"     "2"     "3"     "4"     "5"     "6"     "seven" "eight"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(z)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+Operations on vectors are performed element-wise. For example, if we ask what numbers in \texttt{x} are greater than 2, we obtain a vector of logical values (and class \texttt{"logical"}):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\SpecialCharTok{\textgreater{}} \DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] FALSE FALSE  TRUE
+\end{verbatim}
+
+\hypertarget{lists}{%
+\subsubsection{Lists}\label{lists}}
+
+\emph{Lists} are another R object, of class \texttt{"list"}. They are extremely flexible. They allow us to store different types of data, even if they are of different lengths or classes. They are created with the function \texttt{list()} and can be named or not. Here is an example where each element of the list is named.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mylist }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
+    \AttributeTok{temperatures =} \FunctionTok{c}\NormalTok{(}\FloatTok{2.234}\NormalTok{, }\FloatTok{1.987}\NormalTok{, }\FloatTok{4.345}\NormalTok{), }
+    \AttributeTok{my\_favourite\_function =}\NormalTok{ mean, }
+    \AttributeTok{best\_course =} \StringTok{"Applied Geodata Science"}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+Similar to vectors, we can extract elements from lists, either by index \texttt{{[}{[}1{]}{]}} or by the name using \texttt{{[}{[}"temperatures"{]}{]}} or \texttt{\$temperatures}. Note the double \texttt{{[}{[}{]}{]}} here, indicating an element of a list as opposed to \texttt{{[}{]}} indicating an element of a vector. To get the entire vector of temperatures, do either of the three:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mylist[[}\DecValTok{1}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.234 1.987 4.345
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mylist[[}\StringTok{"temperatures"}\NormalTok{]]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.234 1.987 4.345
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mylist}\SpecialCharTok{$}\NormalTok{temperatures}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.234 1.987 4.345
+\end{verbatim}
+
+And to get the first temperature value:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mylist[[}\StringTok{"temperatures"}\NormalTok{]][}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.234
+\end{verbatim}
+
+You can also append elements to the list (either way is possible):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mylist[[}\StringTok{"my\_second\_favourite\_function"}\NormalTok{]] }\OtherTok{\textless{}{-}}\NormalTok{ median}
+\NormalTok{mylist}\SpecialCharTok{$}\NormalTok{my\_second\_favourite\_function }\OtherTok{\textless{}{-}}\NormalTok{ median}
+\end{Highlighting}
+\end{Shaded}
+
+This was a very condensed introduction to vectors and lists. A more complete introduction is given \href{https://r4ds.had.co.nz/vectors.html}{here}.
+
+\hypertarget{data-frames}{%
+\subsubsection{Data frames}\label{data-frames}}
+
+A \emph{data frame}, of class \texttt{"data.frame"} is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.
+
+A data frame can be created as follows:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{name =} \FunctionTok{c}\NormalTok{(}\StringTok{"Maria"}\NormalTok{, }\StringTok{"Peter"}\NormalTok{, }\StringTok{"Alex"}\NormalTok{),}
+                 \AttributeTok{age =} \FunctionTok{c}\NormalTok{(}\DecValTok{13}\NormalTok{, }\DecValTok{56}\NormalTok{, }\DecValTok{30}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+The elements of a data frame can be accessed the same way that we treated lists. Furthermore, they can be treated as a \emph{matrix}. For example, the following code gets the first column and second row of the data frame:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[, }\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Maria" "Peter" "Alex"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\DecValTok{2}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    name age
+## 2 Peter  56
+\end{verbatim}
+
+You notice that the first index refers to rows and the second to columns. So to get the age of Peter, you can use one of the following options:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 56
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{age[}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 56
+\end{verbatim}
+
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Tutorial 2 and have dedicated all of \protect\hypertarget{data_wrangling}{}{Tutorial 3} to teach you how to work with data frames in a tidy way.
+
+\hypertarget{r-environment-and-working-directory}{%
+\subsubsection{R environment and working directory}\label{r-environment-and-working-directory}}
+
+The set of objects (variables, data frames, etc.) defined during an R session are referred to as the \emph{environment}. You can view the objects in RStudio in the \textbf{environment} panel, grouped as Data, Values and Functions (functions that you write, which we cover in Tutorial 2).
+
+After closing an existing R session (e.g.~after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the \textbf{Session} menu and select \textbf{Save Workspace As\ldots{}}. This will save all your objects in a \texttt{.RData} file in your working directory.
+
+The \emph{working directory} is the default location to which R writes to and reads files from, and you can specify it by going to \textbf{Session \textgreater{} Set Working Directory\ldots{}} and navigating to your desired folder. Alternatively, you can check what is your current working directory or change it by entering the following in the console:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{() }\CommentTok{\# get working directory}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "/home/pepa/agds"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"\textasciitilde{}/agds"}\NormalTok{) }\CommentTok{\# set working directory}
+\end{Highlighting}
+\end{Shaded}
+
+Ideally, the working directory is a folder containing only the files relevant to your data analysis project. Next, we will go over some more sophisticated ways of writing code and saving your progress.
+
+\hypertarget{r-scripts}{%
+\subsection{R scripts}\label{r-scripts}}
+
+Usually, multiple statements are needed to get, e.g., from reading data into R to final numbers and figures that make up a further analysis. Together, these multiple statements constitute a \emph{workflow}. It is essential that all workflows that underlie results of publications are \emph{reproducible}, that is, that another person can replicate your results using your code and data.
+
+To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R \emph{script}. A script is a text file named with the suffix \texttt{.R} to indicate that it is executable by R. It contains a sequence of R commands, which you can run all at once or one at a time. These commands will always be run line-by-line, starting from the top.
+
+To create a new script in RStudio, go to the \textbf{File} menu and select \textbf{New File \textgreater{} R Script}. This will open a new script file in the source editor. You can then type your R code in the script file and save it to your computer.
+
+To run a script, you can either use the \textbf{Source} button in the source editor or use the keyboard shortcut Ctrl + Shift + Enter (Windows) or Command + Shift + Enter (Mac). This will run all of the commands in the script file, in the order they are written, in the console. Alternatively, you can type into the console:
+
+\begin{verbatim}
+source("my_r_script.R")
+\end{verbatim}
+
+Note that, to be able to run the code above, the file \texttt{my\_r\_script.R} must be in your working directory.
+
+You can find more useful information about scripts and workflows in \href{https://r4ds.had.co.nz/workflow-scripts.html}{R for Data Science} \citep{Wickham2017R}.
+
+We should always strive to write nice scripts and good code. Good code is clean, readable, consistent, and extensible (easily modified or adapted). To achieve this, here are a few points to consider - inspired by \href{https://www.r-bloggers.com/r-code-best-practices/}{best practices for coding} and by the \href{https://style.tidyverse.org/}{Tidyverse style guide} \citep{wickham_welcome_nodate}.
+
+\hypertarget{structure-your-script}{%
+\subsubsection{Structure your script}\label{structure-your-script}}
+
+At the beginning of each file add a \textbf{header} as a fully commented text section, describing what the code contains, and how it fits into the larger analysis framework.
+
+Note that Git stores all meta information about the file, including who created it, who modified it and when. This information should not be added to the header. Then, load all libraries needed within the script. Then, source any scripts and load data, and only then, start with the sequence of statements. To visually separate parts, break up your code using, commented lines.
+
+For example, a script could look like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\#////////////////////////////////////////}
+\DocumentationTok{\#\# Demonstrating script structure}
+\DocumentationTok{\#\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"R/my\_functions.R"}\NormalTok{)}
+\NormalTok{my\_df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/my\_df.csv"}\NormalTok{)}
+\DocumentationTok{\#\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\DocumentationTok{\#\# Main part}
+\DocumentationTok{\#\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\DocumentationTok{\#\# convert units}
+\NormalTok{my\_df}\SpecialCharTok{$}\NormalTok{temp }\OtherTok{\textless{}{-}}\NormalTok{ my\_df}\SpecialCharTok{$}\NormalTok{temp }\SpecialCharTok{+} \FloatTok{273.15}  \CommentTok{\# deg C {-}\textgreater{} K}
+\DocumentationTok{\#\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\DocumentationTok{\#\# Writing output}
+\DocumentationTok{\#\#{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{filn }\OtherTok{\textless{}{-}} \StringTok{"data/my\_df\_kelvin.csv"}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Writing file"}\NormalTok{, filn, }\StringTok{"..."}\NormalTok{))}
+\FunctionTok{write\_csv}\NormalTok{(my\_df, filn)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{comments}{%
+\subsubsection{Comments}\label{comments}}
+
+Adding comments in the code helps to explain exactly what the code is doing and why. This makes it easy to understand and modify the code, and can be key when debugging. In R source files, comments are prefixed with a \texttt{\#}, which means that all what is right of the \texttt{\#} is not interpreted by R. Avoid obsolete comments like
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# take the mean }
+\NormalTok{myvar\_mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(myvar)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{spaces-and-breaks}{%
+\subsubsection{Spaces and breaks}\label{spaces-and-breaks}}
+
+Adding enough white spaces and line breaks in the right locations greatly helps the legibility of any code. Cramping it up too much leads to an unintelligible sequence of characters and it will not be clear what parts go together (operators, variable names, brackets). Therefore, consider the following points:
+
+\begin{itemize}
+\tightlist
+\item
+  Use spaces around operators (\texttt{=}, \texttt{+}, \texttt{-}, \texttt{\textless{}-}, \texttt{\textgreater{}}, etc.).
+\item
+  Use \texttt{\textless{}-}, not \texttt{=}, for allocating a value to a variable.
+\item
+  An opening curly bracket (\texttt{\{}) should be followed by a line break and never stand alone on a line. A closing curly bracket (\texttt{\}}) should stand alone on a line unless followed by \texttt{else}.
+\item
+  Code inside curly brackets should be \emph{indented} (recommended: two white spaces at the beginning of each line for each indentation level - don't use tabs).
+\end{itemize}
+
+For example, well written code looks like this:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (temp }\SpecialCharTok{\textgreater{}} \FloatTok{5.0}\NormalTok{)\{}
+\NormalTok{  growth\_temp }\OtherTok{\textless{}{-}}\NormalTok{ growth\_temp }\SpecialCharTok{+}\NormalTok{ temp  }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{variable-naming}{%
+\subsubsection{Variable naming}\label{variable-naming}}
+
+It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (\texttt{\_}) to separate words within a name (\texttt{\_}). Avoid (\texttt{.}) as they are reserved for S3 objects (base R). Also, you should avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.
+
+For example, \texttt{df\_daily} is a data frame with data at a daily resolution. Or \texttt{clean\_daily} is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (\texttt{\_}) is used to separate words.
+
+It is also recommendable to avoid variable names consisting of only one character. This makes it practically impossible to search for that variable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Good}
+\NormalTok{day\_01}
+\CommentTok{\# Bad}
+\NormalTok{DayOne}
+\NormalTok{day.one}
+\NormalTok{first\_day\_of\_the\_month}
+\NormalTok{djm1}
+\CommentTok{\# Very bad}
+\NormalTok{mean }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(x)}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(x) }\CommentTok{\# mean() itself is already a function}
+\NormalTok{T }\OtherTok{\textless{}{-}} \ConstantTok{FALSE} \CommentTok{\# T is an abbreviation of TRUE}
+\NormalTok{c }\OtherTok{\textless{}{-}} \DecValTok{10} \CommentTok{\# c() is used to create a vector (example \textless{}{-} c(1, 2, 3))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{r-markdown}{%
+\subsubsection{R Markdown}\label{r-markdown}}
+
+\href{https://rmarkdown.rstudio.com/}{RMarkdown} files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (\emph{knitted}) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. When run (not knitted), objects defined by the executed code are available in the environment.
+
+Text can be formatted using the \href{https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html}{Markdown syntax}. For example, a top-level section title is specified by \texttt{\#} and a title of a section one level lower by \texttt{\#\#}.
+
+RMarkdown documents are also the basis of this book, with each chapter written in a separate RMarkdown file. This lets you use the book in an interactive fashion.
+
+When opened in RStudio, you can knit an RMarkdown document by clicking the \textbf{Knit} button at the top of the source panel. To run the chunks of code in an RMarkdown file, you can click on the \textbf{Run} button also on the source panel and select an option from the drop-down menu. For example, \textbf{Run All} runs all the chunks in the document. Alternatively, individual chunks can be executed by clicking the green right-pointing triangle in the upper right corner of each chunk.
+
+{[}Screenshot of the RStudio source panel and an opened RMarkdown document.{]}\{figures/RMarkdown.png\}
+
+\hypertarget{workspace-management}{%
+\subsection{Workspace management}\label{workspace-management}}
+
+Using \emph{R projects} in combination with Git (covered in \protect\hypertarget{code_mgmt}{}{Tutorial 6}) is the essence of efficient workspace management in R. All files that belong together are organised within one directory. This can be regarded as the project directory and is typically congruent with what belongs to the respective Git repository. By keeping an organized workspace, another person (or your future self) can find relevant files, run your code and reproduce your analysis workflow easily.
+
+\hypertarget{r-projects}{%
+\subsubsection{R projects}\label{r-projects}}
+
+RStudio also allows you to work with R projects. An R project is a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.
+
+To create a new R project, go to the \textbf{File} menu and select \textbf{New Project\ldots{}}. This will open the \emph{New Project} dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
+
+\begin{figure}
+\centering
+\includegraphics{figures/RStudio_RProject_screenshot.png}
+\caption{Create R Project dialog.}
+\end{figure}
+
+When starting a new project, a file \texttt{\textless{}project\_name.Rproj\textgreater{}} is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
+
+When you want to continue working on an existing R project, you can start a new session by clicking on your \texttt{\textless{}project\_name.Rproj\textgreater{}} file. This restores settings from your last R session. Nevertheless, we recommend to start with an empty environment and load your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
+
+\hypertarget{folder-structure}{%
+\subsubsection{Folder structure}\label{folder-structure}}
+
+Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the \textbf{files, plots, help, etc.} panel.
+
+For example, keep source files where R functions are defined in \texttt{./R} (where . refers to the current project directory), data files in \texttt{./data} and visualizations in \texttt{./fig}. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files should be done using relative paths, like any of the two equivalent following options:
+
+\begin{verbatim}
+source("./R/my_r_script.R")
+source("R/my_r_script.R")
+\end{verbatim}
+
+A project directory should only contain code, data and outputs that belong to this one project. Stuff that may belong to multiple projects should be kept somewhere else. For example, keep original data (e.g., the raw data files that you created when collecting the data in the field, or data files you downloaded from the web) outside the project directory. Exceptions are small data files, which you can keep in \texttt{./data\_raw}.
+
+It is advisable to create a separate data directory outside (e.g., \texttt{\textasciitilde{}/data/}, where \textasciitilde{} refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., \texttt{\textasciitilde{}/data/some\_data\_source/README}) defining who, from where and when the data was obtained and defining data use policy.
+
+You can find an {[}R project template{]}\{\url{https://github.com/computationales/R_proj_template}\} in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
+
+\hypertarget{exercises}{%
+\section{Exercises}\label{exercises}}
+
+\hypertarget{solutions}{%
+\section{Solutions}\label{solutions}}
+
+\hypertarget{programming_primers}{%
+\chapter{Programming primers}\label{programming_primers}}
+
+\textbf{Chapter lead author: Pepa Aran}
+
+TBC
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Beni): Models and data
+\item
+  Base R
+\item
+  variables, classes
+\item
+  data frames
+\item
+  loops
+\item
+  conditional statements
+\item
+  functions
+\item
+  input and output
+\item
+  intro to visualisation
+\item
+  Performance assessment: \href{https://stineb.netlify.app/files/ex1.pdf}{link} to my exercise, \href{https://github.com/stineb/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd}{link to Dietze exercise}
+\end{itemize}
+
+\hypertarget{learning-objectives-1}{%
+\section{Learning objectives}\label{learning-objectives-1}}
+
+After you've gone over the lecture and solved the exercises, you should be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Use loops and functions in your code
+\item
+  Install and load libraries and packages
+\item
+  Look for help
+\item
+  Read, inspect and visualise data frames
+\item
+  Organize your R project for data analysis
+\end{itemize}
+
+\hypertarget{tutorial-1}{%
+\section{Tutorial}\label{tutorial-1}}
+
+\hypertarget{libraries}{%
+\subsection{Libraries}\label{libraries}}
+
+\emph{Packages}, also called \emph{libraries}, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R, utils, stats\ldots) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
+
+For example, the \texttt{tidyverse} package is used for data wrangling and will be covered in this course. You can install a new package as follows:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Installing package into '/home/pepa/R/x86_64-pc-linux-gnu-library/4.2'
+## (as 'lib' is unspecified)
+\end{verbatim}
+
+Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.2 --
+## v ggplot2 3.3.6      v purrr   0.3.4 
+## v tibble  3.1.8      v dplyr   1.0.10
+## v tidyr   1.2.0      v stringr 1.4.0 
+## v readr   2.1.2      v forcats 0.5.1 
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+You can now use the functions and features provided by the \texttt{tidyverse} package in your R scripts.
+
+You can see a list of your installed packages with the following command:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in library(): libraries '/usr/local/lib/R/site-library', '/usr/lib/R/
+## site-library' contain no packages
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  And a list of the packages currently loaded:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{search}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] ".GlobalEnv"        "package:forcats"   "package:stringr"  
+##  [4] "package:dplyr"     "package:purrr"     "package:readr"    
+##  [7] "package:tidyr"     "package:tibble"    "package:ggplot2"  
+## [10] "package:tidyverse" "package:stats"     "package:graphics" 
+## [13] "package:grDevices" "package:utils"     "package:datasets" 
+## [16] "package:methods"   "Autoloads"         "package:base"
+\end{verbatim}
+
+This information can also be found on the \textbf{Packages} panel in RStudio. The loaded packages are shown with a tick mark.
+
+\hypertarget{other-libraries-and-applications}{%
+\subsubsection{Other libraries and applications}\label{other-libraries-and-applications}}
+
+For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
+
+For example, to work with \emph{netcdf} files in R, you would need to install the \texttt{"ncdf4"} library and the \texttt{netCDF} command-line tools:
+- To install the \texttt{"ncdf4"} library, follow the same steps as above for installing an R library.
+- To install the \texttt{netCDF} command-line tools, follow the instructions on the {[}netCDF website{]}\{\url{https://www.unidata.ucar.edu/downloads/netcdf/index.jsp}\}.
+- Once the \texttt{"ncdf4"} library and the \texttt{netCDF} command-line tools are installed, you can use them to work with \texttt{.nc} files in R. For example, you could use the \texttt{nc\_open()} function from the \texttt{"ncdf4"} library to open a file.
+
+\hypertarget{working-with-data-frames}{%
+\subsection{Working with data frames}\label{working-with-data-frames}}
+
+In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio.
+
+We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset \citep{Pastorello2020}, which you can \href{https://www.nature.com/articles/s41597-020-0534-3}{see here}. The data we're using below comes from a flux tower near Zürich (\href{https://gl.ethz.ch/research/bage/fluxnet-ch.html}{CH-Lae}, located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
+
+The data is stored as a Comma Separated Values file (\texttt{.csv}). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an \emph{Excel} spreadsheat (\texttt{.xlsx}), or a \emph{Matlab} data object (\texttt{.mat}), or an R data object (\texttt{.RData}, or \texttt{.rds}).
+
+\hypertarget{reading-data}{%
+\subsubsection{Reading data}\label{reading-data}}
+
+To import the data into the R environment, we use the function \texttt{read\_csv()} from the tidyverse package. In other R code, you will also encounter the base R \texttt{read.csv()} function. However, \texttt{read\_csv()} is much faster and reads data into a tidyverse-data frame (a \emph{tibble}) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an \emph{absolute path}, starting from \texttt{C:/} on a Windows computer or \texttt{\textasciitilde{}/} on a Mac or Linux. Or, alternatively, you can provide a \emph{relative path}, where \texttt{./} points to the present working directory and \texttt{../} is one level up, or \texttt{../../} is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# use a relative path to read the data}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"./data/FLX\_CH{-}Lae\_FLUXNET2015\_FULLSET\_DD\_2004{-}2014\_1{-}4.csv"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(df) }\CommentTok{\# to print an overview of the data frame}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 334
+##    TIMESTAMP TA_F_MDS TA_F_MDS~1 TA_F_~2 TA_F_~3 TA_F_~4 TA_F_~5 TA_F_~6 TA_F_~7
+##        <dbl>    <dbl>      <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+##  1  20040101    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  2  20040102    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  3  20040103    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  4  20040104    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  5  20040105    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  6  20040106    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  7  20040107    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  8  20040108    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+##  9  20040109    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+## 10  20040110    -9999      -9999   -9999   -9999   -9999   -9999   -9999   -9999
+## # ... with 4,008 more rows, 325 more variables: TA_ERA <dbl>,
+## #   TA_ERA_NIGHT <dbl>, TA_ERA_NIGHT_SD <dbl>, TA_ERA_DAY <dbl>,
+## #   TA_ERA_DAY_SD <dbl>, TA_F <dbl>, TA_F_QC <dbl>, TA_F_NIGHT <dbl>,
+## #   TA_F_NIGHT_SD <dbl>, TA_F_NIGHT_QC <dbl>, TA_F_DAY <dbl>,
+## #   TA_F_DAY_SD <dbl>, TA_F_DAY_QC <dbl>, SW_IN_POT <dbl>, SW_IN_F_MDS <dbl>,
+## #   SW_IN_F_MDS_QC <dbl>, SW_IN_ERA <dbl>, SW_IN_F <dbl>, SW_IN_F_QC <dbl>,
+## #   LW_IN_F_MDS <dbl>, LW_IN_F_MDS_QC <dbl>, LW_IN_ERA <dbl>, ...
+## # i Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names
+\end{verbatim}
+
+The file is automatically machine-readable because we have:
+
+\begin{itemize}
+\tightlist
+\item
+  Only one header row, containing the column (variable) names.
+\item
+  Variables organised by columns, and observations by rows.
+\item
+  Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (`').
+\item
+  One value per cell.
+\item
+  No merged cells.
+  In short, the data frame is tidy.
+  To understand the sort of object we work with, i.e.~the \emph{class}, we can do:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "spec_tbl_df" "tbl_df"      "tbl"         "data.frame"
+\end{verbatim}
+
+Fundamentally, \texttt{df} is a \texttt{data.frame}. In addition, it is also of some other classes (\texttt{spec\_tbl\_df",\ "tbl\_df",\ "tbl"}) which gives it additional features.
+
+\hypertarget{understanding-the-data-structure}{%
+\subsubsection{Understanding the data structure}\label{understanding-the-data-structure}}
+
+There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
+
+\begin{itemize}
+\tightlist
+\item
+  Size
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{dim()} - Returns the dimensions of an object (here: number of rows and columns).
+  \item
+    \texttt{nrow()} - Returns the number of rows of an object.
+  \item
+    \texttt{ncol()} - Returns the number of columns of an object.
+  \end{itemize}
+\item
+  Content
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{head()} - Returns the first 6 rows.
+  \item
+    \texttt{tail()} - Returns the last 6 rows.
+  \item
+    \texttt{View()} - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
+  \end{itemize}
+\item
+  Names
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{names()} - Returns the column names (for \texttt{data.frame} objects it is synonymous to \texttt{colnames()}).
+  \item
+    \texttt{rownames()} - Returns the row names.
+  \end{itemize}
+\item
+  Summary
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{class()} - Returns the classes of an object.
+  \item
+    \texttt{str()} - Returns the structure of an object and information about the class, length and content of each column.
+  \item
+    \texttt{summary()} - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
+  \end{itemize}
+\end{itemize}
+
+For example, the data frame \texttt{df} has 4018 rows and 334 columns:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4018  334
+\end{verbatim}
+
+It is important to know the meaning of the column namesA description of standardized FLUXNET data variables is available \href{https://fluxnet.org/data/aboutdata/data-variables/}{here}. A selection of available variables that we will use in subsequent chapters are:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{GPP} (gC m\(^{−2}\) s\(^{-1}\)): Gross primary production
+\item
+  \texttt{WS} (m s\(^{-1}\)): Horizontal wind speed
+\item
+  \texttt{USTAR} (m s\(^{-1}\)): Friction velocity
+\item
+  \texttt{TA} (\(^{o}\) C): Air temperature
+\item
+  \texttt{RH} (\%): Relative humidity (range 0--100\%)
+\item
+  \texttt{PA} (kPa): Atmospheric pressure
+\item
+  \texttt{G} (W m\(^{−2}\)): Ground heat flux, not mandatory, but needed for the energy balance closure calculations
+\item
+  \texttt{NETRAD} (W m\(^{−2}\)): Net radiation, not mandatory, but needed for the energy balance closure calculations
+\item
+  \texttt{SW\_IN} (W m\(^{−2}\)): Incoming shortwave radiation
+\item
+  \texttt{SW\_IN\_POT} (W m\(^−2\)): Potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
+\item
+  \texttt{PPFD\_IN} (\(\mu\)mol photons m\(^{−2}\) s\(^{-1}\)): Incoming photosynthetic photon flux density
+\item
+  \texttt{P} (mm): Precipitation total of each 30 or 60 minute period
+\item
+  \texttt{LW\_IN} (W m\(^{−2}\)): Incoming (down-welling) long-wave radiation
+\item
+  \texttt{SWC} (\%): Soil water content (volumetric), range 0--100\%
+\item
+  \texttt{TS} (\(^{o}\) C): Soil temperature
+\item
+  \texttt{CO2} (\(\mu\)molCO\textsubscript{2} mol\(^{-1}\)): Carbon dioxide (CO\(_2\)) mole fraction in moist air
+\end{itemize}
+
+\hypertarget{selecting-data-and-entering-the-tidyverse}{%
+\subsubsection{Selecting data and entering the tidyverse}\label{selecting-data-and-entering-the-tidyverse}}
+
+\texttt{df} is a data frame. This is similar to a matrix and has two dimensions (rows and columns). If we want to extract specific data from it, we specify the indices, i.e.~the ``coordinates'', of the data. For two-dimensional objects (data frames, matrices), the first index refers to rows and the second to columns. For example, to refer to the element on the third row in the first column, we write:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\DecValTok{3}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   TIMESTAMP
+##       <dbl>
+## 1  20040103
+\end{verbatim}
+
+Reducing a data frame (tibble) to only the first columns can be done by:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[, }\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 1
+##    TIMESTAMP
+##        <dbl>
+##  1  20040101
+##  2  20040102
+##  3  20040103
+##  4  20040104
+##  5  20040105
+##  6  20040106
+##  7  20040107
+##  8  20040108
+##  9  20040109
+## 10  20040110
+## # ... with 4,008 more rows
+## # i Use `print(n = ...)` to see more rows
+\end{verbatim}
+
+The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g.~\texttt{{[}1:3,{]}}, indicates we want to select the rows numbers starting at the first and ending with the second number. So here \texttt{{[}1:3,{]}} will give us rows one, two and three.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\DecValTok{3}\NormalTok{] }\CommentTok{\# reduces the data frame (tibble) to its first three rows and the 3rd column}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 1
+##   TA_F_MDS_QC
+##         <dbl>
+## 1       -9999
+## 2       -9999
+## 3       -9999
+\end{verbatim}
+
+To reduce the data frame (tibble) to several columns, the function \texttt{c()} is used. \texttt{c()} stands for concatenate, which means to link together in a series or chain. This outputs the data frame (tibble) reduced to the selected row or column numbers inside \texttt{c()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 3
+##    TIMESTAMP TA_F_MDS_NIGHT TA_F_MDS_DAY
+##        <dbl>          <dbl>        <dbl>
+##  1  20040101          -9999        -9999
+##  2  20040102          -9999        -9999
+##  3  20040103          -9999        -9999
+##  4  20040104          -9999        -9999
+##  5  20040105          -9999        -9999
+##  6  20040106          -9999        -9999
+##  7  20040107          -9999        -9999
+##  8  20040108          -9999        -9999
+##  9  20040109          -9999        -9999
+## 10  20040110          -9999        -9999
+## # ... with 4,008 more rows
+## # i Use `print(n = ...)` to see more rows
+\end{verbatim}
+
+Another method is to select the columns by column names, i.e.~giving as input a string vector with the name of each column we want to select (again, this is Base R notation). This is especially useful if the columns we want to select are not contiguous. For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Selecting data by name in base R}
+\NormalTok{df[,}\FunctionTok{c}\NormalTok{(}\StringTok{"TIMESTAMP"}\NormalTok{, }\StringTok{"TA\_F\_MDS"}\NormalTok{, }\StringTok{"TA\_F\_MDS\_QC"}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 3
+##    TIMESTAMP TA_F_MDS TA_F_MDS_QC
+##        <dbl>    <dbl>       <dbl>
+##  1  20040101    -9999       -9999
+##  2  20040102    -9999       -9999
+##  3  20040103    -9999       -9999
+##  4  20040104    -9999       -9999
+##  5  20040105    -9999       -9999
+##  6  20040106    -9999       -9999
+##  7  20040107    -9999       -9999
+##  8  20040108    -9999       -9999
+##  9  20040109    -9999       -9999
+## 10  20040110    -9999       -9999
+## # ... with 4,008 more rows
+## # i Use `print(n = ...)` to see more rows
+\end{verbatim}
+
+In \protect\hypertarget{data_wrangling}{}{Tutorial 3}, we will use the \href{https://www.tidyverse.org/}{tidyverse}, which is a set of R packages designed for working with tidy data and writing code in a way that makes the ``workflow'' more clear and understandable. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{select}\NormalTok{(df, }\DecValTok{1}\NormalTok{) }\CommentTok{\# reduces the data frame (tibble) to its first column}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 1
+##    TIMESTAMP
+##        <dbl>
+##  1  20040101
+##  2  20040102
+##  3  20040103
+##  4  20040104
+##  5  20040105
+##  6  20040106
+##  7  20040107
+##  8  20040108
+##  9  20040109
+## 10  20040110
+## # ... with 4,008 more rows
+## # i Use `print(n = ...)` to see more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{select}\NormalTok{(df, TIMESTAMP, TA\_F\_MDS, TA\_F\_MDS\_QC)  }\CommentTok{\# reduces the data frame to columns specified by names}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 3
+##    TIMESTAMP TA_F_MDS TA_F_MDS_QC
+##        <dbl>    <dbl>       <dbl>
+##  1  20040101    -9999       -9999
+##  2  20040102    -9999       -9999
+##  3  20040103    -9999       -9999
+##  4  20040104    -9999       -9999
+##  5  20040105    -9999       -9999
+##  6  20040106    -9999       -9999
+##  7  20040107    -9999       -9999
+##  8  20040108    -9999       -9999
+##  9  20040109    -9999       -9999
+## 10  20040110    -9999       -9999
+## # ... with 4,008 more rows
+## # i Use `print(n = ...)` to see more rows
+\end{verbatim}
+
+As a further shortcut in tidyverse, we can use the pipe \texttt{\%\textgreater{}\%} operator. The data frame is still reduced to its first column:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4,018 x 1
+##    TIMESTAMP
+##        <dbl>
+##  1  20040101
+##  2  20040102
+##  3  20040103
+##  4  20040104
+##  5  20040105
+##  6  20040106
+##  7  20040107
+##  8  20040108
+##  9  20040109
+## 10  20040110
+## # ... with 4,008 more rows
+## # i Use `print(n = ...)` to see more rows
+\end{verbatim}
+
+We \emph{pipe} the object \texttt{df} into the \texttt{select()} function with argument \texttt{1}. Note that the pipe operator \texttt{\%\textgreater{}\%} can be used on any function. It tells the function to interpret what's coming from the left of \texttt{\%\textgreater{}\%} as its \textbf{first} argument.
+
+For the remainder of the tutorial several variables will be required. The methods of data selection demonstrated above will be used below to get the desired variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_small }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(TIMESTAMP, TA\_F, PPFD\_IN)}
+\end{Highlighting}
+\end{Shaded}
+
+Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
+
+\hypertarget{renaming}{%
+\subsubsection{Renaming}\label{renaming}}
+
+TIMESTAMP\_START, TA\_F and PPFD\_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligible.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_small }\OtherTok{\textless{}{-}}\NormalTok{ df\_small }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{time =}\NormalTok{ TIMESTAMP, }\AttributeTok{temp =}\NormalTok{ TA\_F, }\AttributeTok{ppfd =}\NormalTok{ PPFD\_IN)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{writing-data}{%
+\subsubsection{Writing data}\label{writing-data}}
+
+A data frame can be written to a CSV file by:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{write\_csv}\NormalTok{(df\_small, }\AttributeTok{path =} \StringTok{"data/df\_small.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The function \texttt{saveRDS()} allows you save individual R objects of any form (not just a data frame). \texttt{saveRDS()} creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix \texttt{.rds}. It is recommended to name the \texttt{.rds} files according to the single object they contain. For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{saveRDS}\NormalTok{(df\_small, }\AttributeTok{file =} \StringTok{"data/df\_small.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+This file can then be read into the R environment. Sometimes, it is useful to give it a new name, e.g.:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_small }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/df\_small.rds"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that making a file publicly available as a \texttt{.rds} file violates the open science principles. It is not \emph{interoperable}. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use \texttt{write\_csv()} whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in \protect\hypertarget{data_variety}{}{Tutorial 5}.
+
+\hypertarget{programming-basics}{%
+\subsection{Programming basics}\label{programming-basics}}
+
+In this section, we will review the most basic programming elements (conditional statements, loops, functions\ldots) for the R syntax.
+
+\hypertarget{conditional-statements}{%
+\subsubsection{Conditional statements}\label{conditional-statements}}
+
+In cases where we want certain statements to be executed or not, depending on a criterion, we can use \emph{conditional statements} \texttt{if}, \texttt{else\ if}, and \texttt{else}. Conditionals are an essential feature of programming and available in all languages. The R syntax for conditional statements looks like this:
+
+\begin{verbatim}
+if (temp < 0.0){
+  is_frozen <- TRUE
+}
+\end{verbatim}
+
+The evaluation of the criterion (here \texttt{(temp\ \textless{}\ 0.0)}) has to return either \texttt{TRUE} or \texttt{FALSE}. Whenever the statement between parenthesis is true, the chunk of code between curly brackets is executed. Otherwise, nothing happens.
+
+\begin{verbatim}
+if (temp < 0.0){
+  is_frozen <- TRUE
+} else {
+  is_frozen <- FALSE
+}
+\end{verbatim}
+
+You can also write a conditional that covers all possibilities, like the one above. When the temperature is below 0, the first chunk of code is executed. Whenever it is greater or equal that 0 (i.e.~the condition returns \texttt{FALSE}) the second chunk of code is evaluated.
+
+You can also write more than two conditions, covering several cases. Conditionals are evaluated in order, so if the first condition is not true, it checks the second. If the second is false, it checks the third, and so on. The statements after \texttt{else} are evaluated when everything before was \texttt{FALSE}.
+
+\hypertarget{loops}{%
+\subsubsection{Loops}\label{loops}}
+
+\emph{Loops} are another essential feature of programming. \texttt{for} and \texttt{while} loops exist in probably all programming languages. We introduce them here because they are a simple and powerful tool for solving many common tasks.
+
+\texttt{for} and \texttt{while} loops let us repeatedly execute the same set of commands, while changing an index or counter variable to take a sequence of different values. The following example calculates the sum of the first ten temperature values in \texttt{df}, by iteratively adding them together. Of course, this is equivalent to just using the \texttt{sum()} function.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{temp\_sum }\OtherTok{\textless{}{-}} \DecValTok{0}   \CommentTok{\# initialize sum}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{)\{}
+\NormalTok{  temp\_sum }\OtherTok{\textless{}{-}}\NormalTok{ temp\_sum }\SpecialCharTok{+}\NormalTok{ df\_small}\SpecialCharTok{$}\NormalTok{temp[i]}
+\NormalTok{\}}
+\FunctionTok{print}\NormalTok{(temp\_sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -12.97
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{sum}\NormalTok{(df\_small}\SpecialCharTok{$}\NormalTok{temp[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -12.97
+\end{verbatim}
+
+Instead of directly telling R how many iterations it should do we can also define a condition. As long as the condition is \texttt{TRUE}, R will continue iterating. As soon as it is \texttt{FALSE}, R stops the loop. The following lines of code do the same operation as the \texttt{for} loop we just wrote. What is different? What is the same?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{i }\OtherTok{=} \DecValTok{1}           \CommentTok{\# initialize counter}
+\NormalTok{temp\_sum }\OtherTok{\textless{}{-}} \DecValTok{0}   \CommentTok{\# initialize sum}
+\ControlFlowTok{while}\NormalTok{ (i }\SpecialCharTok{\textless{}=} \DecValTok{10}\NormalTok{)\{}
+\NormalTok{  temp\_sum }\OtherTok{\textless{}{-}}\NormalTok{ temp\_sum }\SpecialCharTok{+}\NormalTok{ df\_small}\SpecialCharTok{$}\NormalTok{temp[i]}
+\NormalTok{  i }\OtherTok{=}\NormalTok{ i}\SpecialCharTok{+}\DecValTok{1}
+\NormalTok{\}}
+\FunctionTok{print}\NormalTok{(temp\_sum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -12.97
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{sum}\NormalTok{(df\_small}\SpecialCharTok{$}\NormalTok{temp[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{]))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -12.97
+\end{verbatim}
+
+\hypertarget{functions}{%
+\subsubsection{Functions}\label{functions}}
+
+Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new \emph{function} and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
+
+For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
+
+\begin{verbatim}
+## NOT ADVISABLE
+temp_soil <- (temp_soil - 32) * 5 / 9
+temp_air  <- (temp_air  - 32) * 5 / 9
+temp_leaf <- (temp_leaf - 32) * 5 / 9
+\end{verbatim}
+
+Functions are a set of instructions encapsulated within curly brackets (\texttt{\{\}}) that generate a desired outcome. Functions contain three main elements:
+- They start with a \emph{name} to describe their purpose,
+- then they need arguments, which are a list of the objects being input,
+- and lastly following the curly opening bracket \texttt{function(x)\{...} the code making up the `body' of the function.
+
+They become increasingly important the more experienced one gets at coding. Using functions minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only `live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again.
+
+Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). We can combine the set of operations presented above into a single function. Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
+
+We will now write our first function and implement the data cleaning steps we described above. The function consists of multiple sequences of code as it contains the different steps presented above and applies them sequentially.
+
+The same, but using our own function \texttt{convert\_fahrenheit\_to\_celsius()}:
+
+\begin{verbatim}
+## ADVISABLE
+convert_fahrenheit_to_celsius <- function(temp_f){
+  temp_c <- (temp_f - 32) * 5 / 9
+}
+
+temp_soil <- convert_fahrenheit_to_celsius(temp_soil)
+temp_air  <- convert_fahrenheit_to_celsius(temp_air)
+temp_leaf <- convert_fahrenheit_to_celsius(temp_leaf)
+\end{verbatim}
+
+Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your \texttt{./R} directory, to keep your workspace organized. Preferably, the file has the same name as the function.
+
+\hypertarget{input-and-output}{%
+\subsubsection{Input and output}\label{input-and-output}}
+
+\hypertarget{intro-to-visualisation}{%
+\subsection{Intro to visualisation}\label{intro-to-visualisation}}
+
+Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In later tutorials, you will get introduced to additional methods for visualising data. Our data frame \texttt{fluxes\_subset} contains three variables, one of which is \texttt{time}. In other words, we are dealing with a time series. Let's look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (\texttt{type\ =\ "l"}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{1440}\NormalTok{, df\_small}\SpecialCharTok{$}\NormalTok{temp[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{1440}\NormalTok{], }\AttributeTok{type =} \StringTok{"l"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-46-1.pdf}
+
+Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram.
+A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a `bin'. Below you will see the temperature on the x-axis split into these `bins' ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(df\_small}\SpecialCharTok{$}\NormalTok{temp, }\AttributeTok{xlab =} \StringTok{"Temperature (°C)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{_main_files/figure-latex/unnamed-chunk-47-1.pdf}
+
+Plots can be saved as files, as long as the file size does not get too large.It will write vector graphics as outputs, i.e.~PDF. In base R, this can be done by:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pdf}\NormalTok{(}\StringTok{"./figures/filename.pdf"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(df\_small}\SpecialCharTok{$}\NormalTok{temp)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{where-to-find-help}{%
+\subsection{Where to find help}\label{where-to-find-help}}
+
+\hypertarget{exercises-1}{%
+\section{Exercises}\label{exercises-1}}
+
+\hypertarget{solutions-1}{%
+\section{Solutions}\label{solutions-1}}
+
+\hypertarget{data_wrangling}{%
+\chapter{Data wrangling}\label{data_wrangling}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Beni): Tidy data, ``bad'' data
+\item
+  Data frame manipulations with tidyverse
+\item
+  Tidy data
+\item
+  Dealing with missingness, bad data, outliers
+\item
+  Imputation (note also imputation as part of the modelling workflow)
+\item
+  Performance assessment: \textbf{CAT 1,} \href{https://stineb.github.io/esds_book/ch-02.html\#exercise-1}{link}, Make table tidy
+\end{itemize}
+
+\hypertarget{learning-objectives-2}{%
+\section{Learning objectives}\label{learning-objectives-2}}
+
+\hypertarget{tutorial-2}{%
+\section{Tutorial}\label{tutorial-2}}
+
+\hypertarget{exercises-2}{%
+\section{Exercises}\label{exercises-2}}
+
+\hypertarget{solutions-2}{%
+\section{Solutions}\label{solutions-2}}
+
+\hypertarget{data_vis}{%
+\chapter{Data visualisation}\label{data_vis}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Isabelle Bentz?): The art of visualising data, grammar of graphics
+\item
+  Exercise: Develop decision tree for what type of visualisation to apply
+\item
+  Performance assessment: Interactive work sequence
+\end{itemize}
+
+\hypertarget{learning-objectives-3}{%
+\section{Learning objectives}\label{learning-objectives-3}}
+
+\hypertarget{tutorial-3}{%
+\section{Tutorial}\label{tutorial-3}}
+
+\hypertarget{exercises-3}{%
+\section{Exercises}\label{exercises-3}}
+
+\hypertarget{solutions-3}{%
+\section{Solutions}\label{solutions-3}}
+
+\hypertarget{data_variety}{%
+\chapter{Data variety}\label{data_variety}}
+
+\textbf{Chapter lead author: Koen Hufkens}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Mirko): Mapping data
+\item
+  Data formats, standards, metadata
+\item
+  Geographic data
+\item
+  Scraping, wget
+\item
+  APIs
+\end{itemize}
+
+\hypertarget{learning-objectives-4}{%
+\section{Learning objectives}\label{learning-objectives-4}}
+
+\hypertarget{tutorial-4}{%
+\section{Tutorial}\label{tutorial-4}}
+
+\hypertarget{exercises-4}{%
+\section{Exercises}\label{exercises-4}}
+
+\hypertarget{solutions-4}{%
+\section{Solutions}\label{solutions-4}}
+
+\hypertarget{code_mgmt}{%
+\chapter{Code management}\label{code_mgmt}}
+
+\textbf{Chapter lead author: Koen Hufkens}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  git: repositories, stage, commit, push, fork, pull request, fetch upstream
+\item
+  Performance assessment: \textbf{CAT 2}
+\end{itemize}
+
+\hypertarget{learning-objectives-5}{%
+\section{Learning objectives}\label{learning-objectives-5}}
+
+\hypertarget{tutorial-5}{%
+\section{Tutorial}\label{tutorial-5}}
+
+\hypertarget{exercises-5}{%
+\section{Exercises}\label{exercises-5}}
+
+\hypertarget{solutions-5}{%
+\section{Solutions}\label{solutions-5}}
+
+\hypertarget{open_science}{%
+\chapter{Open science practices}\label{open_science}}
+
+\textbf{Chapter lead author: Koen Hufkens}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Koen): Open science - history, motivation, reproducibility crisis, current initiatives, overview of practices
+\item
+  Environmental data repositories
+\item
+  Methods to create visualised reproducible workflow
+\item
+  RMarkdown files
+\item
+  Performance assessment: \textbf{CAT 3}, \href{https://github.com/stineb/EF_Activities/blob/master/Exercise_04_PairCoding.Rmd}{link to Dietze exercise on pair coding}
+\end{itemize}
+
+\hypertarget{learning-objectives-6}{%
+\section{Learning objectives}\label{learning-objectives-6}}
+
+\hypertarget{tutorial-6}{%
+\section{Tutorial}\label{tutorial-6}}
+
+\hypertarget{exercises-6}{%
+\section{Exercises}\label{exercises-6}}
+
+\hypertarget{solutions-6}{%
+\section{Solutions}\label{solutions-6}}
+
+\hypertarget{regression}{%
+\chapter{Regression}\label{regression}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Linear regression
+\item
+  Regression metrics
+\item
+  Logistic regression
+\item
+  classification metrics
+\item
+  Comparing models (AIC, \ldots)
+\item
+  Feature selection, stepwise regression, multi-colinearity (\href{http://www.sthda.com/english/articles/39-regression-model-diagnostics/160-multicollinearity-essentials-and-vif-in-r/}{vif})
+\item
+  Performance assessment: Exercise for stepwise regression \href{https://stineb.github.io/esds_book/ch-08.html}{link}
+\end{itemize}
+
+\hypertarget{learning-objectives-7}{%
+\section{Learning objectives}\label{learning-objectives-7}}
+
+\hypertarget{tutorial-7}{%
+\section{Tutorial}\label{tutorial-7}}
+
+\hypertarget{exercises-7}{%
+\section{Exercises}\label{exercises-7}}
+
+\hypertarget{solutions-7}{%
+\section{Solutions}\label{solutions-7}}
+
+\hypertarget{supervised_ml}{%
+\chapter{Supervised machine learning}\label{supervised_ml}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Beni): Overfitting, training, and cross-validation (\href{https://stineb.github.io/ml4ec_workshop/introduction.html\#overfitting}{link})
+\item
+  K nearest neighbour models
+\item
+  Data splitting
+\item
+  Preprocessing, standardization, imputation, dimension reduction, as part of the model training workflow
+\item
+  formula notation, recipes, generic train()
+\item
+  Training and loss function
+\item
+  Hyperparameters
+\item
+  Resampling
+\item
+  Performance assessment: Exercise comparing performance on test set of linear regression and KNN with different hyperparameter choices (like \href{https://stineb.github.io/ml4ec_workshop/solutions.html}{this}), discuss link to overfitting example
+\end{itemize}
+
+\hypertarget{learning-objectives-8}{%
+\section{Learning objectives}\label{learning-objectives-8}}
+
+\hypertarget{tutorial-8}{%
+\section{Tutorial}\label{tutorial-8}}
+
+\hypertarget{exercises-8}{%
+\section{Exercises}\label{exercises-8}}
+
+\hypertarget{solutions-8}{%
+\section{Solutions}\label{solutions-8}}
+
+\hypertarget{random_forest}{%
+\chapter{Random forest}\label{random_forest}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Beni): Wisdom of the crowds, from decision trees to random forests
+\item
+  Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance
+\end{itemize}
+
+\hypertarget{learning-objectives-9}{%
+\section{Learning objectives}\label{learning-objectives-9}}
+
+\hypertarget{tutorial-9}{%
+\section{Tutorial}\label{tutorial-9}}
+
+\hypertarget{exercises-9}{%
+\section{Exercises}\label{exercises-9}}
+
+\hypertarget{solutions-9}{%
+\section{Solutions}\label{solutions-9}}
+
+\hypertarget{neural_nets}{%
+\chapter{Neural networks}\label{neural_nets}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Lecture (Beni): General introduction
+\item
+  Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance
+\end{itemize}
+
+\hypertarget{learning-objectives-10}{%
+\section{Learning objectives}\label{learning-objectives-10}}
+
+\hypertarget{tutorial-10}{%
+\section{Tutorial}\label{tutorial-10}}
+
+\hypertarget{exercises-10}{%
+\section{Exercises}\label{exercises-10}}
+
+\hypertarget{solutions-10}{%
+\section{Solutions}\label{solutions-10}}
+
+\hypertarget{interpretable_ml}{%
+\chapter{Interpretable machine learning}\label{interpretable_ml}}
+
+\textbf{Chapter lead author: Benjamin Stocker}
+
+Contents:
+
+\begin{itemize}
+\tightlist
+\item
+  Variable importance
+\item
+  Partial dependency
+\item
+  Performance assessment: Compare partial dependency to a given predictor, detected with RF and with NN.
+\end{itemize}
+
+\hypertarget{learning-objectives-11}{%
+\section{Learning objectives}\label{learning-objectives-11}}
+
+\hypertarget{tutorial-11}{%
+\section{Tutorial}\label{tutorial-11}}
+
+\hypertarget{exercises-11}{%
+\section{Exercises}\label{exercises-11}}
+
+\hypertarget{solutions-11}{%
+\section{Solutions}\label{solutions-11}}
+
+  \bibliography{book.bib,packages.bib}
+
+\end{document}

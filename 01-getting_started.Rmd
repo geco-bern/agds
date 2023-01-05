@@ -75,19 +75,21 @@ Then, you can press the **Run** button or use the keyboard shortcut to run the c
 The R `base` package contains the basic functions which let R function as a programming language: arithmetic, input/output, basic programming support, etc. Its contents are always available when you start an R session. Here we introduce the main binary operators, which work on vectors, matrices and scalars.
 
 Arithmetic operators:
-- `+` addition
-- `-` subtraction
-- `*` multiplication
-- `/` division
-- `^` or `**` exponentiation
+
+-   `+` addition
+-   `-` subtraction
+-   `*` multiplication
+-   `/` division
+-   `^` or `**` exponentiation
 
 Logical operators:
-- `>` greater than
-- `>=` greater than or equal to
-- `==` exactly equal to
-- `<` less than
-- `<=` less than or equal to
-- `!=` not equal
+
+-   `>` greater than
+-   `>=` greater than or equal to
+-   `==` exactly equal to
+-   `<` less than
+-   `<=` less than or equal to
+-   `!=` not equal
 
 ### R objects
 
@@ -129,10 +131,10 @@ By default, any number is coerced as `"numeric"`. So if you want an integer valu
 
 ```{r}
 my_variable <- as.integer(5)
-class(my_variable)
+class(my_variable)  # returns "integer"
 ```
 
-Sometimes you need to convert the class of an objects, for example turning a `"integer"` number into a `"character"`. You can do so as follows:
+Sometimes you need to convert the class of an object, for example turning a `"integer"` number into a `"character"`. You can do so as follows:
 
 ```{r}
 my_variable <- as.character(my_variable)
@@ -192,7 +194,7 @@ x > 2
 mylist <- list(
     temperatures = c(2.234, 1.987, 4.345), 
     my_favourite_function = mean, 
-    best_course = "Environmental Systems Data Science"
+    best_course = "Applied Geodata Science"
     )
 ```
 
@@ -244,7 +246,7 @@ df[2,2]
 df$age[2]
 ```
 
-There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in [Tutorial 2]{#programming_primers} and have dedicated all of [Tutorial 3]{#data_wrangling} to teach you how to work with data frames in a tidy way.
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Tutorial 2 and have dedicated all of [Tutorial 3]{#data_wrangling} to teach you how to work with data frames in a tidy way.
 
 #### R environment and working directory
 
@@ -256,7 +258,7 @@ The *working directory* is the default location to which R writes to and reads f
 
 ```{r}
 getwd() # get working directory
-setwd("~/AGDS") # set working directory
+setwd("~/agds") # set working directory
 ```
 
 Ideally, the working directory is a folder containing only the files relevant to your data analysis project. Next, we will go over some more sophisticated ways of writing code and saving your progress.
@@ -265,7 +267,7 @@ Ideally, the working directory is a folder containing only the files relevant to
 
 Usually, multiple statements are needed to get, e.g., from reading data into R to final numbers and figures that make up a further analysis. Together, these multiple statements constitute a *workflow*. It is essential that all workflows that underlie results of publications are *reproducible*, that is, that another person can replicate your results using your code and data.
 
-To make a workflow reproducble, the sequence of statements that you needed to carry out your analysis and produce outputs can be sabed as an R *script*. A script is a text file named with the suffix `.R` to indicate that it is executable by R. It contains a sequence of R commands, which you can run all at once or one at a time. These commands will always be run line-by-line, starting from the top.
+To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R *script*. A script is a text file named with the suffix `.R` to indicate that it is executable by R. It contains a sequence of R commands, which you can run all at once or one at a time. These commands will always be run line-by-line, starting from the top.
 
 To create a new script in RStudio, go to the **File** menu and select **New File \> R Script**. This will open a new script file in the source editor. You can then type your R code in the script file and save it to your computer.
 
@@ -320,7 +322,7 @@ myvar_mean <- mean(myvar)
 
 #### Spaces and breaks
 
-Adding enough white spaces and line breakes in the right locations greatly helps the legibility of any code. Cramping it up too much leads to an unintelligible sequence of characters and it will not be clear what parts go together (operators, variable names, brackets). Therefore, consider the following points:
+Adding enough white spaces and line breaks in the right locations greatly helps the legibility of any code. Cramping it up too much leads to an unintelligible sequence of characters and it will not be clear what parts go together (operators, variable names, brackets). Therefore, consider the following points:
 
 -   Use spaces around operators (`=`, `+`, `-`, `<-`, `>`, etc.).
 -   Use `<-`, not `=`, for allocating a value to a variable.
