@@ -93,7 +93,7 @@ Logical operators:
 
 ### R objects
 
-In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in [Tutorial 2]{#programming_primers}.
+In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in [Tutorial 2](#programming_primers).
 
 #### Variables and classes
 
@@ -114,7 +114,7 @@ When you run this code, the value of `my_variable` will be printed to the consol
 In R, every object and value has a *class* that determines how it is stored and how it behaves. For example, the `5` in our example above is a number, so its class is `numeric`. To find out the class of a value or a variable, you can use the `class()` function, like this:
 
 ```{r}
-class(5) # returns "numeric"
+class(5)
 class(my_variable)
 ```
 
@@ -131,7 +131,7 @@ By default, any number is coerced as `"numeric"`. So if you want an integer valu
 
 ```{r}
 my_variable <- as.integer(5)
-class(my_variable)  # returns "integer"
+class(my_variable)
 ```
 
 Sometimes you need to convert the class of an object, for example turning a `"integer"` number into a `"character"`. You can do so as follows:
@@ -139,7 +139,7 @@ Sometimes you need to convert the class of an object, for example turning a `"in
 ```{r}
 my_variable <- as.character(my_variable)
 my_variable
-class(my_variable) # returns "character"
+class(my_variable)
 ```
 
 Notice that now the values are in quotes `"5"`. This way, R interprets it as a text and you will not be able to do any numeric calculations with it anymore.
@@ -223,7 +223,7 @@ This was a very condensed introduction to vectors and lists. A more complete int
 
 #### Data frames
 
-A *data frame*, of class `"data.frame"` is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.
+A *data frame*, of class `"data.frame"`, is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.
 
 A data frame can be created as follows:
 
@@ -232,7 +232,7 @@ df <- data.frame(name = c("Maria", "Peter", "Alex"),
                  age = c(13, 56, 30))
 ```
 
-The elements of a data frame can be accessed the same way that we treated lists. Furthermore, they can be treated as a *matrix*. For example, the following code gets the first column and second row of the data frame:
+The elements of a data frame can be accessed the same way that we treated lists, with each column being one element of the list. Furthermore, they can be treated as a *matrix*. For example, the following code gets the first column and second row of the data frame:
 
 ```{r}
 df[, 1]
@@ -246,11 +246,11 @@ df[2,2]
 df$age[2]
 ```
 
-There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Tutorial 2 and have dedicated all of [Tutorial 3]{#data_wrangling} to teach you how to work with data frames in a tidy way.
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in [Tutorial 2](#programming_primers) and have dedicated all of [Tutorial 3](#data_wrangling) to teach you how to work with data frames in a tidy way.
 
 #### R environment and working directory
 
-The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel, grouped as Data, Values and Functions (functions that you write, which we cover in Tutorial 2).
+The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel, grouped as Data, Values and Functions (functions that you write, which we cover in [Tutorial 2](#programming_primers)).
 
 After closing an existing R session (e.g. after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory.
 
@@ -273,7 +273,7 @@ To create a new script in RStudio, go to the **File** menu and select **New File
 
 To run a script, you can either use the **Source** button in the source editor or use the keyboard shortcut Ctrl + Shift + Enter (Windows) or Command + Shift + Enter (Mac). This will run all of the commands in the script file, in the order they are written, in the console. Alternatively, you can type into the console:
 
-    source("my_r_script.R")
+    > source("my_r_script.R")
 
 Note that, to be able to run the code above, the file `my_r_script.R` must be in your working directory.
 
@@ -313,7 +313,9 @@ write_csv(my_df, filn)
 
 #### Comments
 
-Adding comments in the code helps to explain exactly what the code is doing and why. This makes it easy to understand and modify the code, and can be key when debugging. In R source files, comments are prefixed with a `#`, which means that all what is right of the `#` is not interpreted by R. Avoid obsolete comments like
+Adding comments in the code helps to explain exactly what the code is doing and why. This makes it easy to understand and modify the code, and can be key when debugging. In R source files, comments are prefixed with a `#`, which means that all what is right of the `#` is not interpreted by R. 
+
+Avoid redundant comments like the one below. Instead, comments should explain the "why" of that chunk of code, not the "what" or "how".
 
 ```{r eval=F}
 ## take the mean 
@@ -361,19 +363,19 @@ c <- 10 # c() is used to create a vector (example <- c(1, 2, 3))
 
 #### R Markdown
 
-[RMarkdown](https://rmarkdown.rstudio.com/) files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (*knitted*) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. When run (not knitted), objects defined by the executed code are available in the environment.
+[R Markdown](https://rmarkdown.rstudio.com/) files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (*knitted*) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. When run (not knitted), objects defined by the executed code are available in the environment.
 
 Text can be formatted using the [Markdown syntax](https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html). For example, a top-level section title is specified by `#` and a title of a section one level lower by `##`.
 
-RMarkdown documents are also the basis of this book, with each chapter written in a separate RMarkdown file. This lets you use the book in an interactive fashion.
+R Markdown documents are also the basis of this book, with each chapter written in a separate R Markdown file. This lets you use the book in an interactive fashion.
 
-When opened in RStudio, you can knit an RMarkdown document by clicking the **Knit** button at the top of the source panel. To run the chunks of code in an RMarkdown file, you can click on the **Run** button also on the source panel and select an option from the drop-down menu. For example, **Run All** runs all the chunks in the document. Alternatively, individual chunks can be executed by clicking the green right-pointing triangle in the upper right corner of each chunk.
+When opened in RStudio, you can knit an R Markdown document by clicking the **Knit** button at the top of the source panel. To run the chunks of code in an R Markdown file, you can click on the **Run** button also on the source panel and select an option from the drop-down menu. For example, **Run All** runs all the chunks in the document. Alternatively, individual chunks can be executed by clicking the green right-pointing triangle in the upper right corner of each chunk.
 
-[Screenshot of the RStudio source panel and an opened RMarkdown document.]{figures/RMarkdown.png}
+[Screenshot of the RStudio source panel and an opened R Markdown document.]{figures/RMarkdown.png}
 
 ### Workspace management
 
-Using *R projects* in combination with Git (covered in [Tutorial 6]{#code_mgmt}) is the essence of efficient workspace management in R. All files that belong together are organised within one directory. This can be regarded as the project directory and is typically congruent with what belongs to the respective Git repository. By keeping an organized workspace, another person (or your future self) can find relevant files, run your code and reproduce your analysis workflow easily.
+Using *R projects* in combination with Git (covered in [Tutorial 6](#code_mgmt)) is the essence of efficient workspace management in R. All files that belong together are organised within one directory. This can be regarded as the project directory and is typically congruent with what belongs to the respective Git repository. By keeping an organized workspace, another person (or your future self) can find relevant files, run your code and reproduce your analysis workflow easily.
 
 #### R projects
 
@@ -385,22 +387,22 @@ To create a new R project, go to the **File** menu and select **New Project...**
 
 When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
 
-When you want to continue working on an existing R project, you can start a new session by clicking on your `<project_name.Rproj>` file. This restores settings from your last R session. Nevertheless, we recommend to start with an empty environment and load your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
+When you want to continue working on an existing R project, you can start a new session by clicking on your `<project_name.Rproj>` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
 
 #### Folder structure
 
 Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the **files, plots, help, etc.** panel.
 
-For example, keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files should be done using relative paths, like any of the two equivalent following options:
+For example, keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project's root directory), like any of the two equivalent following options:
 
-    source("./R/my_r_script.R")
-    source("R/my_r_script.R")
+    > source("./R/my_r_script.R")
+    > source("R/my_r_script.R")
 
 A project directory should only contain code, data and outputs that belong to this one project. Stuff that may belong to multiple projects should be kept somewhere else. For example, keep original data (e.g., the raw data files that you created when collecting the data in the field, or data files you downloaded from the web) outside the project directory. Exceptions are small data files, which you can keep in `./data_raw`.
 
-It is advisable to create a separate data directory outside (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining who, from where and when the data was obtained and defining data use policy.
+It is advisable to create a separate data directory outsidethe project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
 
-You can find an [R project template]{<https://github.com/computationales/R_proj_template>} in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
+You can find an [R project template](<https://github.com/computationales/R_proj_template>) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
 
 ## Exercises
 
