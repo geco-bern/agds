@@ -1,0 +1,22 @@
+# Regression and classification {#regression_classification}
+
+**Chapter lead author: Benjamin Stocker**
+
+Contents:
+
+- Difference between regression and classification
+- Linear regression
+- Logistic regression
+- Regression metrics
+- Classification metrics
+- Comparing models (AIC, ...)
+- Feature selection, stepwise regression, multi-colinearity ([vif](http://www.sthda.com/english/articles/39-regression-model-diagnostics/160-multicollinearity-essentials-and-vif-in-r/))
+- Performance assessment: Exercise for stepwise regression [link](https://stineb.github.io/esds_book/ch-08.html)
+
+## Learning objectives
+
+## Tutorial
+
+## Exercises
+
+## Solutions
