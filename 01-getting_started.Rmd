@@ -371,7 +371,7 @@ R Markdown documents are also the basis of this book, with each chapter written 
 
 When opened in RStudio, you can knit an R Markdown document by clicking the **Knit** button at the top of the source panel. To run the chunks of code in an R Markdown file, you can click on the **Run** button also on the source panel and select an option from the drop-down menu. For example, **Run All** runs all the chunks in the document. Alternatively, individual chunks can be executed by clicking the green right-pointing triangle in the upper right corner of each chunk.
 
-[Screenshot of the RStudio source panel and an opened R Markdown document.]{figures/RMarkdown.png}
+![R Markdown document opened in the source panel.](figures/RMarkdown.png)
 
 ### Workspace management
 
@@ -383,7 +383,7 @@ RStudio also allows you to work with R projects. An R project is a collection of
 
 To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
 
-![Create R Project dialog.](figures/RStudio_RProject_screenshot.png)
+![R Project menu.](figures/RStudio_RProject_screenshot.png)
 
 When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
 
