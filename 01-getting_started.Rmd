@@ -91,6 +91,17 @@ Logical operators:
 -   `<=` less than or equal to
 -   `!=` not equal
 
+#### Working directory
+
+The *working directory* is the default location to which R writes to and reads files from, and you can specify it by going to **Session \> Set Working Directory...** and navigating to your desired folder. Alternatively, you can check what is your current working directory or change it by entering the following in the console:
+
+```{r}
+getwd()         # get working directory
+setwd("~/agds") # set working directory
+```
+
+Ideally, the working directory is a folder containing only the files relevant to your data analysis project.
+
 ### R objects
 
 In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in [Tutorial 2](#programming_primers).
@@ -109,7 +120,7 @@ This code creates a variable called `my_variable` and assigns the value `5` to i
 my_variable
 ```
 
-When you run this code, the value of `my_variable` will be printed to the console.
+When you run this code, the value of `my_variable` will be printed to the console. Running `print(my_variable)` is an alternative syntax, using the `print()` function.
 
 In R, every object and value has a *class* that determines how it is stored and how it behaves. For example, the `5` in our example above is a number, so its class is `numeric`. To find out the class of a value or a variable, you can use the `class()` function, like this:
 
@@ -146,7 +157,7 @@ Notice that now the values are in quotes `"5"`. This way, R interprets it as a t
 
 #### Vectors
 
-A *vector* in R is a sequence of data elements of the same class. Vectors can be created with the `c()` function, which stands for *concatenate*. For example, the following code creates a numeric vector:
+A *vector* in R is a sequence of data elements of the same class. Vectors can be created with the `c()` function, which stands for *concatenate*, i.e. to link together in a series or chain. For example, the following code creates a numeric vector:
 
 ```{r}
 x <- c(1, 2, 3, 4, 5)
@@ -230,38 +241,68 @@ A data frame can be created as follows:
 ```{r}
 df <- data.frame(name = c("Maria", "Peter", "Alex"),
                  age = c(13, 56, 30))
+df
 ```
 
-The elements of a data frame can be accessed the same way that we treated lists, with each column being one element of the list. Furthermore, they can be treated as a *matrix*. For example, the following code gets the first column and second row of the data frame:
+The elements of a data frame can be accessed the same way that we treated lists, with each column being one element of the list.  To get the vector of ages:
 
 ```{r}
-df[, 1]
-df[2, ]
+df$age
 ```
 
-You notice that the first index refers to rows and the second to columns. So to get the age of Peter, you can use one of the following options:
+Furthermore, they can be treated as a *matrix*. Notice that the first index refers to rows and the second to columns. For example:
 
 ```{r}
-df[2,2]
-df$age[2]
+df[, 1]   # first column
+df[2, ]   # second row
+df[2,2]   # age of Peter
 ```
 
 There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in [Tutorial 2](#programming_primers) and have dedicated all of [Tutorial 3](#data_wrangling) to teach you how to work with data frames in a tidy way.
 
-#### R environment and working directory
+#### Functions
 
-The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel, grouped as Data, Values and Functions (functions that you write, which we cover in [Tutorial 2](#programming_primers)).
+R *functions* can be applied to an object (or several objects) and return another object. For example the `mean()` function can take a numeric vector as input and output the mean of its values.
+
+```{r}
+mean(df$age)
+```
+
+Functions are also R objects and have class `"function"`. They are covered in more detail in [Tutorial 2](#programming_primers).
+
+#### R environment
+
+The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel, grouped as Data, Values and Functions.
 
 After closing an existing R session (e.g. after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory.
 
-The *working directory* is the default location to which R writes to and reads files from, and you can specify it by going to **Session \> Set Working Directory...** and navigating to your desired folder. Alternatively, you can check what is your current working directory or change it by entering the following in the console:
+Next, we will go over some more sophisticated ways of writing code and saving your progress.
 
-```{r}
-getwd() # get working directory
-setwd("~/agds") # set working directory
+#### Read and save data
+
+The function `save()` allows to save multiple R objects of any form as a single `.RData` file. This is how the environment of your R session is saved. This is how we would save several R objects:
+
+```{r eval=FALSE}
+save(df, df_small, file = "data/data_frames.RData")
 ```
 
-Ideally, the working directory is a folder containing only the files relevant to your data analysis project. Next, we will go over some more sophisticated ways of writing code and saving your progress.
+`.RData` files are read into your environment using the `load()` function, rather than `read()`. This function loads the objects with the name that they were saved with.
+
+```{r eval=FALSE}
+load("data/data_frames.RData")
+```
+
+Alternatively, the function `saveRDS()` allows you save individual R objects of any form (not just a data frame). `saveRDS()` creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. For example:
+
+```{r, eval=F}
+saveRDS(df_small, file = "data/df_small.rds")
+```
+
+This file can then be read into your R environment. We need to assign a name to the object read, otherwise it will be just printed to the console but not loaded into the R environment. Sometimes, it is useful to give it a new name, for example:
+
+```{r, eval=F}
+df_small_2 <- readRDS("data/df_small.rds")
+```
 
 ### R scripts
 
@@ -294,6 +335,10 @@ For example, a script could look like this:
 ```{r eval=FALSE, message=F}
 ##////////////////////////////////////////
 ## Demonstrating script structure
+##////////////////////////////////////////
+
+##---------------------------------------
+## Load packages, functions and data
 ##---------------------------------------
 library(tidyverse)
 source("R/my_functions.R")
