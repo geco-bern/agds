@@ -44,7 +44,7 @@ library(tidyverse)
 ```
 You can now use the functions and features provided by the `tidyverse` package in your R scripts.
 
-You can see a list of your installed packages on the source panel with the following command:
+At any time, you can see a list of your installed packages on the source panel with the following command:
 ```{r eval=FALSE}
 library()
 ```
@@ -73,12 +73,127 @@ For this course, we will also need software that is not available as an R packag
 For example, to work with *netcdf* files in R, you would need to install the `"ncdf4"` library and the `netCDF` command-line tools:
 
 -   To install the `"ncdf4"` library, follow the same steps as above for installing an R library.
--   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website]{https://www.unidata.ucar.edu/downloads/netcdf/index.jsp}.
+-   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
 -   Once the `"ncdf4"` library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
 
-### Working with data frames {#working_dataframes}
+### Programming basics
 
-In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio. 
+In this section, we will review the most basic programming elements (conditional statements, loops, functions...) for the R syntax.
+
+#### Conditional statements
+
+In cases where we want certain statements to be executed or not, depending on a criterion, we can use *conditional statements* `if`, `else if`, and `else`. Conditionals are an essential feature of programming and available in all languages. The R syntax for conditional statements looks like this:
+
+```{}
+if (temp < 0.0){
+  is_frozen <- TRUE
+}
+```
+
+The evaluation of the criterion (here `(temp < 0.0)`) has to return either `TRUE` or `FALSE`. Whenever the statement between parenthesis is true, the chunk of code between curly brackets is executed. Otherwise, nothing happens.
+
+```{}
+if (temp < 0.0){
+  is_frozen <- TRUE
+} else {
+  is_frozen <- FALSE
+}
+```
+
+You can also write a conditional that covers all possibilities, like the one above. When the temperature is below 0, the first chunk of code is executed. Whenever it is greater or equal that 0 (i.e. the condition returns `FALSE`) the second chunk of code is evaluated.
+
+You can also write more than two conditions, covering several cases. Conditionals are evaluated in order, so if the first condition is not true, it checks the second. If the second is false, it checks the third, and so on. The statements after `else` are evaluated when everything before was `FALSE`.
+
+#### Loops
+
+*Loops* are another essential feature of programming. `for` and `while` loops exist in probably all programming languages. We introduce them here because they are a simple and powerful tool for solving many common tasks.
+  
+`for` and `while` loops let us repeatedly execute the same set of commands, while changing an index or counter variable to take a sequence of different values. The following example calculates the sum of the first ten temperature values in `df_small` (from the previous chapter), by iteratively adding them together.
+
+```{r}
+temp_sum <- 0   # initialize sum
+for (i in 1:10){
+  temp_sum <- temp_sum + df_small$temp[i]
+}
+temp_sum
+```
+
+Of course, this is equivalent to just using the `sum()` function. 
+```{r}
+sum(df_small$temp[1:10])
+```
+
+Instead of directly telling R how many iterations it should do we can also define a condition. As long as the condition is `TRUE`, R will continue iterating. As soon as it is `FALSE`, R stops the loop. The following lines of code do the same operation as the `for` loop we just wrote. What is different? What is the same?
+
+```{r}
+i = 1           # initialize counter
+temp_sum <- 0   # initialize sum
+while (i <= 10){
+  temp_sum <- temp_sum + df_small$temp[i]
+  i = i+1
+}
+temp_sum
+```
+
+#### Functions
+
+Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new *function* and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
+
+For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
+```{r eval=FALSE}
+## NOT ADVISABLE
+temp_soil <- (temp_soil - 32) * 5 / 9
+temp_air  <- (temp_air  - 32) * 5 / 9
+temp_leaf <- (temp_leaf - 32) * 5 / 9
+```
+
+Functions are a set of instructions encapsulated within curly brackets (`{}`) that generate a desired outcome. Functions contain four main elements:
+
+-   They start with a _name_ to describe their purpose, 
+-   then they need _arguments_, which are a list of the objects being input,
+-   enclosed by curly brackets `function(x){ ... }` the code making up the _body_ of the function,
+-   and lastly, within the body, a _return_ statement indicting the output of the function.
+
+Below we define our own function `convert_fahrenheit_to_celsius()`:
+```{r eval=FALSE}
+## ADVISABLE
+convert_fahrenheit_to_celsius <- function(temp_f){
+  # Convert values
+  temp_c <- (temp_f - 32) * 5 / 9
+  # Return statement
+  temp_c
+}
+
+temp_soil <- convert_fahrenheit_to_celsius(temp_soil)
+temp_air  <- convert_fahrenheit_to_celsius(temp_air)
+temp_leaf <- convert_fahrenheit_to_celsius(temp_leaf)
+```
+
+A good practice when writing a function is to document what the function does, the meaning and structure of every input (arguments) and the output (value) of the function. This helps you and others to reuse that function, without having to read and understand what the function does internally. For example, you can write it as a header in the body of the function, or as a header of the script where you define it. Furthermore, one should use the `return()` statement only for early returns (e.g. inside an `if` statement) and otherwise, R returns the result of the last evaluated expression. Note that, without the last line of the function's body, our function wouldn't return anything.
+
+```{r eval=FALSE}
+convert_fahrenheit_to_celsius <- function(temp_f){
+  # This function converts temperature values in Fahrenheit to Celsius
+  # Arguments:
+  #   temp_f:   numerical vector of temperature values in Fahrenheit
+  # Value:
+  #   temp_c:   numerical vector of temperatures in Celsius
+  
+  temp_c <- (temp_f - 32) * 5 / 9
+  temp_c
+}
+```
+
+Functions become increasingly important the more experienced one gets at coding. Using them minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only 'live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again. 
+
+Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
+
+Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `.R/convert_fahrenheit_to_celsius.R` and load it later by running `source(".R/convert_fahrenheit_to_celsius")`.
+
+
+### Working with data frames
+
+In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio. 
 
 We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
 
@@ -248,174 +363,6 @@ Plots can be saved as files, as long as the file size does not get too large. It
 pdf("./figures/filename.pdf")
 hist(df_small$temp)
 ```
-
-### Programming basics
-
-In this section, we will review the most basic programming elements (conditional statements, loops, functions...) for the R syntax.
-
-#### Conditional statements
-
-In cases where we want certain statements to be executed or not, depending on a criterion, we can use *conditional statements* `if`, `else if`, and `else`. Conditionals are an essential feature of programming and available in all languages. The R syntax for conditional statements looks like this:
-
-```{}
-if (temp < 0.0){
-  is_frozen <- TRUE
-}
-```
-
-The evaluation of the criterion (here `(temp < 0.0)`) has to return either `TRUE` or `FALSE`. Whenever the statement between parenthesis is true, the chunk of code between curly brackets is executed. Otherwise, nothing happens.
-
-```{}
-if (temp < 0.0){
-  is_frozen <- TRUE
-} else {
-  is_frozen <- FALSE
-}
-```
-
-You can also write a conditional that covers all possibilities, like the one above. When the temperature is below 0, the first chunk of code is executed. Whenever it is greater or equal that 0 (i.e. the condition returns `FALSE`) the second chunk of code is evaluated.
-
-You can also write more than two conditions, covering several cases. Conditionals are evaluated in order, so if the first condition is not true, it checks the second. If the second is false, it checks the third, and so on. The statements after `else` are evaluated when everything before was `FALSE`.
-
-#### Loops
-
-*Loops* are another essential feature of programming. `for` and `while` loops exist in probably all programming languages. We introduce them here because they are a simple and powerful tool for solving many common tasks.
-  
-`for` and `while` loops let us repeatedly execute the same set of commands, while changing an index or counter variable to take a sequence of different values. The following example calculates the sum of the first ten temperature values in `df`, by iteratively adding them together.
-
-```{r}
-temp_sum <- 0   # initialize sum
-for (i in 1:10){
-  temp_sum <- temp_sum + df_small$temp[i]
-}
-temp_sum
-```
-
-Of course, this is equivalent to just using the `sum()` function. 
-```{r}
-sum(df_small$temp[1:10])
-```
-
-Instead of directly telling R how many iterations it should do we can also define a condition. As long as the condition is `TRUE`, R will continue iterating. As soon as it is `FALSE`, R stops the loop. The following lines of code do the same operation as the `for` loop we just wrote. What is different? What is the same?
-
-```{r}
-i = 1           # initialize counter
-temp_sum <- 0   # initialize sum
-while (i <= 10){
-  temp_sum <- temp_sum + df_small$temp[i]
-  i = i+1
-}
-temp_sum
-```
-
-#### Functions
-
-Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new *function* and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
-
-For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
-```{r eval=FALSE}
-## NOT ADVISABLE
-temp_soil <- (temp_soil - 32) * 5 / 9
-temp_air  <- (temp_air  - 32) * 5 / 9
-temp_leaf <- (temp_leaf - 32) * 5 / 9
-```
-
-Functions are a set of instructions encapsulated within curly brackets (`{}`) that generate a desired outcome. Functions contain four main elements:
-
--   They start with a _name_ to describe their purpose, 
--   then they need _arguments_, which are a list of the objects being input,
--   enclosed by curly brackets `function(x){ ... }` the code making up the _body_ of the function,
--   and lastly, within the body, a _return_ statement indicting the output of the function.
-
-Below we define our own function `convert_fahrenheit_to_celsius()`:
-```{r eval=FALSE}
-## ADVISABLE
-convert_fahrenheit_to_celsius <- function(temp_f){
-  # Convert values
-  temp_c <- (temp_f - 32) * 5 / 9
-  # Return statement
-  temp_c
-}
-
-temp_soil <- convert_fahrenheit_to_celsius(temp_soil)
-temp_air  <- convert_fahrenheit_to_celsius(temp_air)
-temp_leaf <- convert_fahrenheit_to_celsius(temp_leaf)
-```
-
-A good practice when writing a function is to document what the function does, the meaning and structure of every input (arguments) and the output (value) of the function. This helps you and others to reuse that function, without having to read and understand what the function does internally. For example, you can write it as a header in the body of the function, or as a header of the script where you define it. Furthermore, one should use the `return()` statement only for early returns (e.g. inside an `if` statement) and otherwise, R returns the result of the last evaluated expression. Note that, without the last line of the function's body, our function wouldn't return anything.
-
-```{r eval=FALSE}
-convert_fahrenheit_to_celsius <- function(temp_f){
-  # This function converts temperature values in Fahrenheit to Celsius
-  # Arguments:
-  #   temp_f:   numerical vector of temperature values in Fahrenheit
-  # Value:
-  #   temp_c:   numerical vector of temperatures in Celsius
-  
-  temp_c <- (temp_f - 32) * 5 / 9
-  temp_c
-}
-```
-
-Functions become increasingly important the more experienced one gets at coding. Using them minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only 'live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again. 
-
-Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). We can combine the set of operations presented in the ["Working with data frames" section](#working_dataframes) into a single function. Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
-
-```{r}
-clean_fluxnet_hh <- function(df){
-  # Argument: 
-  #   df: raw data frame, as read from file
-  # Output:
-  #   df: cleaned data frame
-  
-  df <- df %>% 
-    
-    ## select only the variables we are interested in
-    select(
-      starts_with("TIMESTAMP"),
-      ends_with("_F"),
-      CO2_F_MDS,
-      PPFD_IN, 
-      GPP_NT_VUT_REF,
-      starts_with("SWC_F_MDS"),
-      NEE_VUT_REF_QC,
-      WS, WD, USTAR, RH,
-      ends_with("QC"),
-      -contains("JSB"),
-      NIGHT
-      ) %>% 
-    
-    ## convert to nice time object
-    mutate_at(vars(starts_with("TIMESTAMP_")), ymd_hm) %>% 
-  
-    ## set poor quality data to NA for multiple variables
-    mutate(
-      GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC %in% c(0,1), GPP_NT_VUT_REF, NA),
-      TA_F = ifelse(TA_F_QC %in% c(0,1,2), TA_F, NA),
-      SW_IN_F = ifelse(SW_IN_F_QC %in% c(0,1,2), SW_IN_F, NA),
-      LW_IN_F = ifelse(LW_IN_F_QC %in% c(0,1,2), LW_IN_F, NA),   # relaxing filter criterion
-      VPD_F = ifelse(VPD_F_QC %in% c(0,1,2), VPD_F, NA),
-      PA_F = ifelse(PA_F_QC %in% c(0,1,2), PA_F, NA),   # relaxing filter criterion
-      P_F = ifelse(P_F_QC %in% c(0,1,2), P_F, NA),   # relaxing filter criterion
-      WS_F = ifelse(WS_F_QC %in% c(0,1,2), WS_F, NA),
-      CO2_F_MDS = ifelse(CO2_F_MDS_QC %in% c(0,1,2), CO2_F_MDS, NA),
-      SWC_F_MDS_1 = ifelse(SWC_F_MDS_1_QC %in% c(0,1,2), SWC_F_MDS_1, NA),
-      SWC_F_MDS_2 = ifelse(SWC_F_MDS_2_QC %in% c(0,1,2), SWC_F_MDS_2, NA),
-      SWC_F_MDS_3 = ifelse(SWC_F_MDS_3_QC %in% c(0,1,2), SWC_F_MDS_3, NA),
-      SWC_F_MDS_4 = ifelse(SWC_F_MDS_4_QC %in% c(0,1,2), SWC_F_MDS_4, NA)
-      ) %>%
-    
-    ## set all -9999 to NA
-    na_if(-9999) %>%
-  
-    ## drop QC variables (no longer needed), except NEE_VUT_REF_QC
-    select(-ends_with("_QC"), NEE_VUT_REF_QC)
-  
-  df
-}
-```
-
-Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. Here we would write the previous function to an R script called `./R/clean_fluxnet_hh.R`. We will be able to load it in the future simply by typing `source("./R/clean_fluxnet_hh.R")`.
 
 ### Where to find help
 
