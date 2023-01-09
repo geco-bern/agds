@@ -104,7 +104,21 @@ Ideally, the working directory is a folder containing only the files relevant to
 
 ### R objects
 
-In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in [Tutorial 2](#programming_primers).
+In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in future chapters.
+
+#### Types of data
+
+First, we will introduce the different types of data that one can encounter. We can classify statistical variables according to what values they take.
+
+-   *Numerical*:    These statistical variables can be measured quantitatively and their value is a number.
+    -   *Continuous*:   We say that a variable is continuous when it can take an infinite number of real values within an interval (for example, the altitude of a mountain). One could consider unbounded variables (temperature) or restricted variables, like positive variables (weight of a person) or an interval (a proportion between 0 and 1).
+    -   *Discrete*:   When the variable can only take a finite number of values in an interval, we say it is discrete. A common example is count data, like the population of a city.
+-   *Categorical*:    The values are characteristics that cannot be quantified.
+    -   *Binary*:   These variables have two possible values: TRUE or FALSE (a variable indicating whether the person has siblings or not).
+    -   *Nominal*:    They describe a name, label or category without natural order (name of a person).
+    -   *Ordinal*:    Like their name indicates, ordinal variables are categorical and follow a natural order. For example, "terrible", "bad", "neutral", "good", "great". A numerical variable can sometimes be discreticized and put into categories, like dividing people into age groups "toddler", "child", "teenager", "adult".
+  
+Next, we will see how these different types of variables can be treated in R.
 
 #### Variables and classes
 
@@ -134,8 +148,8 @@ The most basic classes are:
 -   `numeric` (`num`) - any real number, e.g. 2.375
 -   `integer` (`int`) - integer numbers, e.g. 2
 -   `character` (`chr`) - any string, e.g. "fluxes"
--   `logical` (`logi`) - boolean, i.e. `TRUE`/`FALSE` values
--   `factor` (`Factor`) - categorical data, the variable can only be one of a defined amount of options, e.g. female/male/other
+-   `logical` (`logi`) - binary, i.e. `TRUE`/`FALSE` values
+-   `factor` (`Factor`) - categorical data, the variable can only be one of a defined amount of options, e.g. female/male/other. Factors can also be given an order.
 -   `function` - a set of statements organized to perform a specific task, for example `mean()`
 
 By default, any number is coerced as `"numeric"`. So if you want an integer value to have class `"integer"`, you need to specify it like this:
