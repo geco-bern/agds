@@ -60,7 +60,7 @@ Finally, let's install all the missing packages and load all required packages f
 
 ```{r message=FALSE, warning=FALSE}
 use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
-              "tidyverse")
+              "tidyverse", "visdat")
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
