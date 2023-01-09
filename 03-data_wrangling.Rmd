@@ -39,7 +39,7 @@ Contents:
     -   nesting (tidyr)
     -   functional programming (purrr)
 
--   Performance assessment: **CAT 1,** [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1), make table tidy
+
 
 ## Learning objectives
 
@@ -75,7 +75,7 @@ Suffixes `_*` indicate that multiple estimates for respective variables are avai
 Install missing packages and load all required packages for this tutorial.
 
 ```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr")
+use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr", "visdat")
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
@@ -161,7 +161,6 @@ month(dates[1])
 
 The number 1 stands for the month of the year, i.e., January. You can find more information on formatting dates and time within the **tidyverse** [here](https://r4ds.had.co.nz/dates-and-times.html), and a complete reference of the **lubridate** package is available [here](https://lubridate.tidyverse.org/).
 
-
 ### Variable (re-) definition
 
 Since `read_csv()` did not interpret the `TIMESTAMP_*` variables as desired, we may convert the entire column in the data frame into a date-time object. In base-R, we would do this by:
@@ -194,14 +193,15 @@ hhdf <- hhdf |>
 
 We will encounter more ways to use mutate later in this tutorial. A complete reference to `mutate()` is available [here](https://r4ds.had.co.nz/transform.html#add-new-variables-with-mutate).
 
-
 ### Axes of variation
 
-Tabular data is two-dimensional (rows $\times$ columns), but not all two-dimensional data is tabular. In Chapter \@ref(data_variety), you will encounter raster data - a two-dimensional array of data (a matrix) representing variables on an evenly spaced grid, for example pixels in remotely sensed imagery. For example the `volcano` data (provided as an example dataset in R) is a 2-dimensional array, each column contains the same variable, and no variable names are provided. 
+Tabular data is two-dimensional (rows $\times$ columns), but not all two-dimensional data is tabular. In Chapter \@ref(data_variety), you will encounter raster data - a two-dimensional array of data (a matrix) representing variables on an evenly spaced grid, for example pixels in remotely sensed imagery. For example the `volcano` data (provided as an example dataset in R) is a 2-dimensional array, each column contains the same variable, and no variable names are provided.
+
 ```{r}
 dim(volcano)
 volcano[1:5, 1:5]
 ```
+
 In the `volcano` dataset, rows and columns represent different geographic positions in latitude and longitude, respectively. The `volcano` data is not tabular data. Another typical example for non-tabular data are climate model outputs. They are typically given for each pixel along a longitudinal, latitudinal, and vertical axis, and for multiple time steps. Such data is four-dimensional and, as such, definitely not tabular.
 
 However, tabular data, although formatted in two dimensions by rows and columns, may represent data that varies along multiple axes. Our example data contains values recorded at each half-hourly time interval over the course of eleven years (check by `nrow(hhdf)/(2*24*365)`). The data is recorded at a site, located in the temperate climate zone, where solar radiation and therefore also other meteorological variables and ecosystem fluxes vary substantially over the course of a day and over the course of a year. Although not explicitly separated, the date-time object thus encodes information along multiple *axes of variation* in the data. For example, over the course of one day (`2*24` rows in our data), the shortwave incoming radiation `SW_IN_F` varies over a typical diurnal cycle:
@@ -263,18 +263,15 @@ df3
 
 There are advantages for interoperability and ease of use when data frames come with consistent layouts, adhering to certain design principles. We have learned that in tabular data, each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). And that each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. Following these principles strictly leads to *tidy data*. In essence, quoting [Wickham](https://r4ds.had.co.nz/tidy-data.html), data is tidy if:
 
-- Each variable has its own column.
-- Each observation has its own row.
-- Each value has its own cell.
+-   Each variable has its own column.
+-   Each observation has its own row.
+-   Each value has its own cell.
 
-![Rules for tidy data](./fig/tidy_data.png)
-<!-- Figure from https://r4ds.had.co.nz/tidy-data.html -->
-<!-- Figure URL: https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png -->
+![Rules for tidy data](./fig/tidy_data.png) <!-- Figure from https://r4ds.had.co.nz/tidy-data.html --> <!-- Figure URL: https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png -->
 
-The concept of tidy data can even be taken further by understanding a “value” as any object type, e.g. a list or a data frame. This leads to a list or data frame “nested” within a data frame. You will learn more about this below.
+The concept of tidy data can even be taken further by understanding a "value" as any object type, e.g. a list or a data frame. This leads to a list or data frame "nested" within a data frame. You will learn more about this below.
 
 The contents of this tutorial are inspired by the (freely available online) book [\*R for Data Science\* by Grolemund & Wickham](%5Bhttps://r4ds.had.co.nz/).](<https://r4ds.had.co.nz/>).)
-
 
 ### Aggregating data
 
@@ -291,6 +288,7 @@ ddf
 ```
 
 The seasonal course can now be more clearly be visualized with the data aggregated to daily values.
+
 ```{r}
 plot(ddf[1:365,]$date, ddf[1:365,]$SW_IN_F, type = "l")
 ```
@@ -299,46 +297,209 @@ More info on how to group values using summarise functions [here](https://r4ds.h
 
 ### Data cleaning
 
-Data cleaning is often a time-consuming task and decisions taking during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data.
+Data cleaning is often a time-consuming task and decisions taken during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data.
 
 #### Cleaning formats
 
-As a general principle, we want to make our data *machine readable*. Key for achieving machine-readability is that a cell should only contain one value of one type. For example, avoid entries like `>10 m`. Here, we have three pieces of information (`>` as in "greater than", `10`, and `m` indicating the units). A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see Exercises).
+As a general principle, we want to have data *machine readable*. Key for achieving machine-readability is that a cell should only contain one value of one type. Hence, for example, character strings should be kept in separate columns (as separate variables) from numeric data. Character strings can impose particular challenges for achieving machine-readability. Typically, they encode categorical or ordinal information, but are prone to spelling inconsistencies or errors that undermine the ordering or categorization. Here are typical examples for challenges working with character strings and lessons for avoiding problems:
+
+-   Often, character strings encode the units of a measurement, and entries are `c("kg m-2", "kg/m2", "Kg / m2", "1000 g m-2")` . They are all equivalent, but "the machine" treats them as non-identical. To clean such data, one may compile a lookup-table to identify equivalent (but not identical) strings. Much better is to specify a consistent treatment of units before data collection.
+
+-   Even if the data is clean and contains a consistently spelled categorical variable in the form of a character string, R doesn't necessarily treat it as categorical. For certain downstream steps of the workflow, it may be necessary to transform such a variable to one of type `factor`. For example, as entries of an unordered categorical variable, we have `unique(df$gender) = c("female", "male", "non-binary")`. To treat them as categorical and not just mere character strings, we would have to do:
+
+    ```{r, eval=FALSE}
+    df <- df |> mutate(gender = as.factor(gender))
+    ```
+
+-   Character strings may encode ordinal information. For example, entries specify quality control information and are one of `c("good quality", "fair quality, "poor quality")`. A challenge could be that the spelling is inconsistent (`c("Good quality", "good quality", …)`). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable `NEE_VUT_REF_QC` in our example dataset `hhdf` follows this approach:
+
+    ```{r}
+    unique(hhdf$NEE_VUT_REF_QC)
+    ```
+
+-   An entry like `>10 m` is not a friend of a data scientist. Here, we have three pieces of information: `>` as in "greater than", `10`, and `m` indicating the units. A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see Exercises).
+
+-   Can you think of more such examples? (-\> Exercises)
+
+String manipulations are usually required for cleaning data. The section Strings below demonstrates some simple examples.
+
+Note that a majority of machine learning algorithms and other statistical model types require all data to be numeric. Methods exist to convert categorical data into numeric data, as we will learn later. We re-visit data cleaning in the form of data *preprocessing* as part of the modelling workflow in Chapter \@ref(supervised_ml).
 
 #### Bad data
 
-- outliers (sensor error, human error, representing a different population, unsuitable measurement conditions [eddy covariance example, remote sensing example])
-- identification via distributions [hist(), boxplot(), qqnorm()], multivariate (Cook's Distance to get influential values), spurious value (large count of numeric values)
-- randomly missing or not?
-- replace by NA? filter row?
-- -> anomaly detection
+Data may be "bad" for different reasons, including sensor error, human error, a data point representing a different population, or unsuitable measurement conditions. In this sense, data is "bad" if it doesn't represent what it is assumed to represent. Its presence in analyses and modelling may undermine the model skill or even lead to spurious results. A goal of data cleaning typically is to remove bad data. But how to detect them? And how safe is it to remove them?
 
-```{r eval=FALSE}
-data <- data[!data %in% boxplot.stats(data)$out]
+A diversity of processes may generate bad data and it is often not possible to formulate rules and criteria for their identification *a priori*. Therefore, an understanding of the data and the data generation processes is important for the identification and treatment of bad data. Often, such an understanding is gained by repeated exploratory data analysis cycles, involving the visualization, transformation, and analysis of the data.
+
+Ideally, information about the quality of the data is provided as part of the dataset. Also other meta-information (e.g., sensor type, human recording the data, environmental conditions during the data collection) may be valuable for data cleaning purposes. In our example dataset, the column with suffices `_QC` provide such information (see 'Example data' section above) and an example for their use in data cleaning is given below.
+
+Bad data may come in the form of *outliers*, which are commonly defined based on their value with respect to the *distribution* of all values of the same variable in a dataset. Hence, their identification most commonly relies on quantifying their distance from the center of the empirical distribution. The default boxplot plotting function in R (which we will learn about more in Chapter \@ref(data_vis)) shows the median (bold line in the center), the upper and lower quartiles (corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot) and the range of $( Q_1 - 1.5 (Q_3 - Q_1), Q_3 + 1.5 (Q_3 - Q_1))$. Any point outside this range is plotted by a circle and labeled an "outlier". However, this definition is very restrictive and may lead to a false labeling of outliers, in particular if they are drawn from a distribution with a fat tail or from asymmetrical distributions.
+
+Outliers may also be identified via multivariate distributions. We will re-visit such methods later, in Chapter \@ref(regression_classification). For certain applications, outliers or *anomalies* may be the target of the investigation, not the noise in the data. This has spurred the field of [*anomaly detection*](https://en.wikipedia.org/wiki/Anomaly_detection) which relies on machine learning algorithms.
+
+Sensor error may generate spurious values, identified, for example when a continuous variable attains the numerically identical value with a spuriously high frequency.
+
+XXX spurious?
+
+```{r}
+hhdf$SWC_F_MDS_1 |> 
+  table() |> 
+  sort(decreasing = TRUE) |> 
+  head()
 ```
 
-The question about what is "bad data" and whether or when it should be removed is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human analyzing the data or writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during the data collection process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions.
+Other processes may lead to spurious trends or *drift* in the data, for example caused by sensor degradation. Spurious *step changes* or *change points* in time series or in (multivariate) regressions may be related to the replacement or deplacement of the measuring device. Different methods and R libraries help identifying such cases (see for example [this](https://www.marinedatascience.co/blog/2019/09/28/comparison-of-change-point-detection-methods/) tutorial). Solutions have to be found for the remediation of such spurious patterns in the data on a case-by-case basis.
 
+#### Handling missing data
 
+The question about when data is "bad" and whether to remove it is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human analyzing the data or writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during the data collection process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions. In practice, this means that the removal of data and entire rows should be avoided and implemented only at the very last step if necessary (e.g., when passing the data into a model fitting function). Instead, information about whether data is bad or not should be kept in a separate, categorical, variable (a *quality control* variable, like `*_QC` variables in our example data `hhdf`).
 
-Several ML algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* (Kuhn & Johnson, 2003) and its information can be used for predictions. For categorical data, we may replace such data with `"none"` (instead of `NA`), while randomly missing data may be dropped altogether. Some ML algorithms (mainly tree-based methods, e.g., random forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
+Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* (Kuhn & Johnson, 2003) and its information can be used for modelling. For categorical data, we may replace such data with `"none"` (instead of `NA`), while randomly missing data may be dropped altogether. Some machine learning algorithms (mainly tree-based methods, e.g., Random Forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
 
-Visualising missing data is essential for making decisions about dropping rows with missing data versus removing predictors from the model (which would imply too much data removal). The cells with missing data in a data frame can be eaily visualised e.g. with `vis_miss()` from the *visdat* package.
+Most machine learning algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. This generally leads to a loss of information contained in the remaining variables that are not missing. Methods exist to *impute* missing values in order to avoid this information loss. However, the gain of data imputation has to be traded off against effects of associating the available variables with the imputed (knowingly wrong) values, and effects of *data leakage* have to be considered. Data imputation as part of the modelling process will be dealt with in Chapter \@ref(supervised_ml).
+
+In our example dataset, some values of `SWC_F_MDS_*` are given as `-9999`.
+
+```{r}
+hhdf |> 
+  select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
+  head()
+```
+
+When reading the documentation of this specific dataset, we learn that `-9999` is the code for *missing data*. We can replace such values in any column with `NA` using the *dplyr* function `na_if()`.
+
+```{r}
+hhdf <- hhdf |>  
+  na_if(-9999)
+```
+
+This lets us visualise the data and its gaps with `vis_miss()` from the *visdat* package. Visualising missing data is can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
 
 ```{r warning=FALSE, message=FALSE}
-library(visdat)
 vis_miss(
-  ddf,
+  hhdf,
   cluster = FALSE, 
   warn_large_data = FALSE
   )
 ```
 
+For many applications, we want to filter the data so that the values of particular variables satisfy certain conditions. The *dplyr* function used for such tasks is `filter()`. As argument, it takes the expressions that specify the criterion for filtering using logical operators (`>, >=, <, ==, !-, ...`, see Chapter \@ref(getting_started)). Multiple filtering criteria can be combined with logical (boolean) operators:
 
-#### Gap-filling
+-   `&`: logical AND
+-   `|`: logical OR
+-   `!` logical NOT
 
-tbc
+For example, if we wanted only those rows in our data where NEE is based on measured or good quality gap-filled NEE data, we write:
+
+```{r eval=FALSE}
+hhdf |>
+  filter(NEE_VUT_REF_QC == 0 | NEE_VUT_REF_QC == 1)
+```
+
+For evaluating multiple OR operations simultaneously, we can write alternatively and equivalently:
+
+```{r eval=FALSE}
+hhdf |>
+  filter(NEE_VUT_REF_QC %in% c(0,1))
+```
+
+Note that `filter()` removes entire rows. In some cases this is undesired and it is preferred to replace bad quality values with `NA`. It is important to note that specifying a value as missing is information itself. Dropping an entire row leads to the loss of this information. For cases where we do not want to drop entire rows when applying `filter()`, we can just replace certain values with `NA`. In our case, where we want to retain only data where NEE is based on actual measurements or good quality gap-filling, we can do this by:
+
+```{r eval=FALSE}
+hhdf |> 
+    mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC %in% c(0,1), GPP_NT_VUT_REF, NA))
+```
+
+If we decide to drop a row containing `NA` in any of the variables later during the workflow, we can do this, for example using the useful *tidyr* function `drop_na()`.
+
+```{r eval=FALSE}
+hhdf |> 
+  drop_na()
+```
+
+An excellent source for a more comprehensive introduction to missing data handling is given in [Kuhn & Johnson](https://bookdown.org/max/FES/handling-missing-data.html).
+
+### Combining relational data
+
+Often, data is spread across multiple files and tables and needs to be combined for the planned analysis. In the simplest case, data frames have a corresponding set of columns and we can "stack" them along rows:
+
+```{r echo=FALSE}
+df4 <- df3[1:6,]
+df5 <- df3[7:12,]
+```
+
+```{r}
+df4
+df5
+bind_rows(df4, df5)
+```
+
+..., or data frames have a corresponding set of rows (and in the same order) and we can "stack" them along columns
+
+```{r echo=FALSE}
+df6 <- df3[, c(1,2,3)]
+df7 <- df3[, c(1,4)]
+```
+
+```{r}
+df6
+df7
+bind_cols(df6, df7)
+```
+
+But beware! In particular the stacking along columns (`bind_cols()`) is very error-prone. Since a tidy data frame regards each row as an instance of associated measurements, the rows of the two data frames and their order must match exactly. Otherwise, an error is raised or (even worse) rows get associated when they shouldn't be. In such cases, where information about a common set of observations is distributed across multiple data objects, we are dealing with *relational data*. The key for their combination (or "merging") is a *unique identification key* - the column that is present in both data frames and which contains values along which the merging of the two data frames is performed. In our example from above, this is `month`, and we can use the dplyr function `left_join()`.
+
+```{r}
+df6 |>
+  slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
+  left_join(df7, by = "month") |> 
+  arrange(month)
+```
+
+Note that here, we first re-shuffled (permuted) the rows of `df6` for demonstration purposes, and arranged the output data frame again by `month` - an ordinal variable. `left_join()` is not compromised by the order of the rows, but instead relies on the unique identification key, specified by the argument `by = "month"`, for associating (merging, joining) the two data frames. In some cases, multiple columns may act as the unique identification key in their combination (for example `by = c("year", "month")`).
+
+Other variants of `*_join()` are available as described [here](https://r4ds.had.co.nz/relational-data.html).
 
 ## Exercises
+
+- find a way to encode `>` in `>10 m` in machine-readable way.
+- Exercise: hhdf cleaning based on QC info, non-random missingness (more at night), removing data implies shift of the mean.
+- aggregate the `CO2` data, calculating the mean by `Treatment.`
+```{r}
+CO2 |> 
+  group_by(Treatment) |> 
+  summarise(uptake = mean(uptake))
+```
+
+- make the following tables tidy:
+  - `df_sunspots`
+```{r}
+df1 <- tibble(count = as.vector(sunspots), 
+       year_dec = time(sunspots)
+       ) |> 
+  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+  mutate(year = year_dec - month_dec) |> 
+  mutate(month = as.integer(month_dec * 12)) |> 
+  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+  mutate(month = month(date, label = TRUE)) |> 
+  select(year, month, count)
+```
+  - [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1)
+- Exercises: identify outliers in VPD and temperature in our example dataset.
+
+```{r}
+hhdf |> 
+  select(TA_F, VPD_F) |> 
+  boxplot()
+
+# the function used to calculate boxplot statistics
+# returning "outliers" in TA_F
+hhdf$TA_F[hhdf$TA_F %in% boxplot.stats(hhdf$TA_F)$out] |> head()
+
+# returning "outliers" in VPD_F
+hhdf$VPD_F[hhdf$VPD_F %in% boxplot.stats(hhdf$VPD_F)$out] |> head()
+```
+
+- combine `df_sunspots` and `df_co2` along years and months.
 
 ## Solutions
