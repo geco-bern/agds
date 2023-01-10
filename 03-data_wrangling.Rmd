@@ -2,54 +2,17 @@
 
 **Chapter lead author: Benjamin Stocker**
 
-Contents:
-
--   Exploratory data analysis, "understanding the data"
-
--   Tabular data
-
--   Read in the example data, tidyverse
-
--   Tidy data, variables
-
-    -   Selecting variables by their names: `select()`
-    -   Renaming: `rename()`
-
--   Dimensions of variation
-
--   Dealing with missingness, bad data, outliers, gap-filling (distinguished from *imputation* as part of the modelling workflow)
-
-    -   Selecting observations by their values: `filter()`
-    -   Creating new variables: `mutate()`
-
--   Data aggregation:
-
-    -   multiple values down to a single summary: `summarise()`
-
--   Combining data
-
-    -   `bind_*()`
-
-    -   relational data: `*_join()`
-
--   More common wrangling
-
-    -   strings (stringr)
-    -   time, date (lubridate)
-    -   nesting (tidyr)
-    -   functional programming (purrr)
-
-
-
 ## Learning objectives
+
+TBC
 
 ## Tutorial
 
-Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
+Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them in a transparent fashin and efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
 
 ### Example data
 
-The example data used in this chapter are parallel time series of (gaseous) CO2 and water vapor exchange fluxes between the vegetation and the atmosphere, along with various meteorological variables measured in parallel. Quasi-continuous measurements of temporally changing gas exchange fluxes are measured with the eddy covariance technique which relies on the parallel quantification of vertical wind speeds and gas concentrations.
+The example data used in this chapter are parallel time series of (gaseous) CO$_2$ and water vapor exchange fluxes between the vegetation and the atmosphere, along with various meteorological variables measured in parallel. Quasi-continuous measurements of temporally changing gas exchange fluxes are measured with the eddy covariance technique which relies on the parallel quantification of vertical wind speeds and gas concentrations.
 
 The data is provided at half-hourly resolution for the site [CH-Lae](https://www.swissfluxnet.ethz.ch/index.php/sites/ch-lae-laegeren/site-info-ch-lae/), located on the south slope of the Lägern mountain on the Swiss Plateau at 689 m a.s.l. in a mixed forest with a distinct seasonal course of active green leaves (a substantial portion of the trees are deciduous). The dataset is generated and formatted following standard protocols ([FLUXNET2015](https://fluxnet.org//data/fluxnet2015-dataset/)). For more information of the variables in the dataset, see the [FLUXNET2015 website](http://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) and [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3) for a comprehensive documentation of variable definitions and methods.
 
@@ -65,8 +28,8 @@ For our demonstrations most relevant are the following variables:
 -   `P_*` (mm): Precipitation
 -   `WS_*` (m $^{-1}$): Wind speed
 -   `SWC_*` (%): Volumetric soil water content
--   `GPP_*` ($\mu$mol CO$_2$ m$^{-1}$ s$^{-1}$): Gross primary production (the ecosystem-level gross CO2 uptake flux driven by photosynthesis)
--   `*_QC`: Quality control information for the variable `*`. Important for us: `NEE_*_QC` is the quality control information for the net ecosystem CO2 exchange flux (`NEE_*`) and for GPP derived from the corresponding NEE estimate (`GPP_*`). 0 = measured, 1 = good quality gap-filled, 2 = medium, 3 = poor.
+-   `GPP_*` ($\mu$mol CO$_2$ m$^{-1}$ s$^{-1}$): Gross primary production (the ecosystem-level gross CO$_2$ uptake flux driven by photosynthesis)
+-   `*_QC`: Quality control information for the variable `*`. Important for us: `NEE_*_QC` is the quality control information for the net ecosystem CO$_2$ exchange flux (`NEE_*`) and for GPP derived from the corresponding NEE estimate (`GPP_*`). 0 = measured, 1 = good quality gap-filled, 2 = medium, 3 = poor.
 
 Suffixes `_*` indicate that multiple estimates for respective variables are available and distinguished by different suffixes. For example, variables `TA_*` contain the same information, but are derived with slightly different assumptions and gap-filling techniques. The meanings of suffixes are described in [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3).
 
@@ -295,6 +258,16 @@ plot(ddf[1:365,]$date, ddf[1:365,]$SW_IN_F, type = "l")
 
 More info on how to group values using summarise functions [here](https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise), or a summary on the inputs the function [group_by()](https://dplyr.tidyverse.org/reference/group_by.html) and [summarise()](https://dplyr.tidyverse.org/reference/summarise.html) take.
 
+Aggregating is related to *nesting* performed by the *tidyr* function `nest()`:
+```{r message=FALSE}
+hhdf |>  
+  mutate(date = as_date(TIMESTAMP_START)) |>
+  group_by(date) |> 
+  nest()
+```
+
+Here, the data frame has one row per date and therefore the same number of rows as the data frame `ddf`, but  the data itself is not reduced by a summarising function. Instead, the data is kept at the half-hourly level, but it's nested inside the new column `data`, which now contains a list of half-hourly data frames for each day. This is just a brief perspective of what nesting is about. More is explained in the Section Extra material below. More comprehensive tutorials on nesting and functional programming are available in [Altman, Behrman and Wickham (2021)](https://dcl-prog.stanford.edu/) or in [Wickham & Grolemund (2017), Chapter 21](https://r4ds.had.co.nz/iteration.html).
+
 ### Data cleaning
 
 Data cleaning is often a time-consuming task and decisions taken during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data.
@@ -453,39 +426,264 @@ But beware! In particular the stacking along columns (`bind_cols()`) is very err
 df6 |>
   slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
   left_join(df7, by = "month") |> 
-  arrange(month)
+  arrange(month)  # sort in ascending order
 ```
 
 Note that here, we first re-shuffled (permuted) the rows of `df6` for demonstration purposes, and arranged the output data frame again by `month` - an ordinal variable. `left_join()` is not compromised by the order of the rows, but instead relies on the unique identification key, specified by the argument `by = "month"`, for associating (merging, joining) the two data frames. In some cases, multiple columns may act as the unique identification key in their combination (for example `by = c("year", "month")`).
 
 Other variants of `*_join()` are available as described [here](https://r4ds.had.co.nz/relational-data.html).
 
+## Extra material
+
+### Functional programming I
+
+Above, we read a CSV table into R and applied several data transformation steps. In practice, we often have to apply the same data transformation steps repeatedly over a set of similar objects. This *extra material* section outlines an example workflow for demonstrating how to efficiently work with lists of similar objects - in particular, lists of data frames.
+
+Our aim is to read a set of files into R data frames and apply transformation steps to each data frame separately. Here, we will work with daily data, not half-hourly data. The daily data contains largely identical variables with consistent naming and units as in the half-hourly data (description above). Let's start by creating a list of paths that point to the files with daily data. They are all located in the directory `"./data"` and share a certain string of characters in their file names `"_FLUXNET2015_FULLSET_DD_"`.
+
+```{r}
+vec_files <- list.files("./data", pattern = "_FLUXNET2015_FULLSET_DD_", full.names = TRUE)
+print(vec_files)
+```
+
+`vec_files` is now a vector of three files paths as character strings. To read in the three files and combine the three data frames (`list_df` below) into a list of data frames, we could use a `for` loop:
+
+```{r message=FALSE, eval=FALSE}
+list_df <- list()
+for (ifil in vec_files){
+  list_df[[ifil]] <- read_csv(ifil)
+}
+```
+
+Repeatedly applying a function (here `read_csv()`) over a list similar objects is facilitated by the `map*()` family of functions from the *purrr* package. An (almost) equivalent statement is:
+
+```{r message=FALSE}
+list_df <- map(as.list(vec_files), ~read_csv(.))
+```
+
+Here, `map()` applies the function `read_csv()` to elements of a *list*. Hence, we first have to convert the vector `vec_files` to a list. A list is always the first argument within the `map()` function. Note two new symbols (`~` and `.`). The `~` always goes before the function that is repeatedly applied (or "mapped") to elements of the list. The `.` indicates where the elements of the list would go if spelled out (e.g., here, `read_csv(.)` would be `read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")` for the first iteration). The output of `map()` is again a list. There are many variants of the function `map()` that each have a specific use. A complete reference for all *purrr* functions is available [here](https://purrr.tidyverse.org/reference/index.html). A useful and more extensive tutorial on purrr is available [here](https://www.r-bloggers.com/one-stop-tutorial-on-purrr-package-in-r/).
+
+The above `map()` call does not return a *named* list as our `for` loop created. But we can give each element of the returned list of data frames different names by:
+
+```{r}
+names(list_df) <- vec_files  # this makes it a named list
+```
+
+Next, we will apply a similar data cleaning procedure to this data set as we did above for half-hourly data. To do so, we "package" the individual cleaning steps into a function ...
+
+```{r}
+# function definition
+clean_data_dd <- function(df){
+
+  df <- df |>
+
+    # select only the variables we are interested in
+    select(
+      TIMESTAMP,
+      ends_with("_F"),
+      GPP_NT_VUT_REF,
+      NEE_VUT_REF_QC,
+      starts_with("SWC_F_MDS_"),
+      -contains("JSB")) |> 
+
+    # convert to a nice date object
+    mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
+
+    # set all -9999 to NA
+    na_if(-9999)
+  
+  return(df)
+}
+```
+
+... and apply this function to each data frame within our list of data frames:
+
+```{r}
+list_df <- map(list_df, ~clean_data_dd(.))
+```
+
+Having different data frames as elements of a list may be impractical. Since we read in similarly formatted files and selected always the same variables in each data frame, all elements of the list of data frames `list_df` share the same columns. This suggests that we can collapse our list of data frames and "stack" data frames along rows. As described above, this can be done using `bind_rows()` and we can automatically create a new column `"siteid"` in the stacked data frame that takes the name of the corresponding list element.
+
+```{r}
+ddf_allsites <- bind_rows(list_df, .id = "siteid")
+ddf_allsites
+```
+
+A visualisation of missing data indicates that soil water content data (`SWC_F_MDS_*`) are often missing.
+
+```{r}
+vis_miss(
+  ddf_allsites,
+  cluster = FALSE,
+  warn_large_data = FALSE
+  )
+```
+
+### Strings
+
+The column `siteid` currently contains strings specifying the full paths of the files that were read in earlier. The next task is to extract the site name from these strings. The file names follow a clear pattern (this also highlights why naming files wisely can often make life a lot simpler).
+
+```{r}
+ddf_allsites$siteid |> head()
+```
+
+The paths each start with the subdirectory where they are located (`"./data/"`), then `"FLX_"`, followed by the site name (the first three entries of the table containing data from all sites are for the site `"CH-Dav"`), and then some more specifications, including the years that respective files' data cover.
+
+The [*stringr*](https://stringr.tidyverse.org/) package [@R-stringr] (part of tidyverse) offers a set of functions for working with strings. [Wikham (XXX)](https://r4ds.had.co.nz/strings.html) provide a more comprehensive introduction to working with strings. Here, we would like to extract the six characters, starting at position 12. The function `str_sub()` does that job.
+
+```{r}
+vec_sites <- str_sub(vec_files, start = 12, end = 17)
+head(vec_sites)
+```
+
+We can use this function to mutate all values of column `"siteid"`, overwriting it with just these six characters.
+
+```{r}
+ddf_allsites <- ddf_allsites |>
+  mutate(siteid = str_sub(siteid, start = 12, end = 17))
+
+ddf_allsites
+```
+
+### Functional programming II
+
+Functions can be applied to a list of objects of any type. Therefore, `map()` is a powerful approach to "iterating" over multiple instances of the same object type and can be used for all sorts of tasks. In the following, list elements are data frames of daily data and the function `lm()` fits a linear regression model of GPP versus shortwave radiation to each sites' data. We'll learn more about fitting statistical models in R in Chapter \@ref(regression_classification).
+
+```{r}
+list_linmod <- map(list_df, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))
+```
+
+Note how the `.` indicates where the elements of `list_df` go when evaluating the `lm()` function. This returns a list of linear model objects (the type of objects returned by the `lm()` function call).
+
+We can spin the functional programming concept further and apply (or map) the `summary()` function to the `lm`-model objects to get a list of useful statistics and metrics, and then further extract the element `"r.squared"` from that list as:
+
+```{r}
+list_linmod |>
+  map(summary) |>       # applyting a function
+  map_dbl("r.squared")  # extracting from a named list
+```
+
+`map_dbl()` is a variant of the `map()` function that returns not a list, but a vector of numeric values of class "double" (hence, the name `_dbl`). Note further, that providing a character (`"r.squared"`) as an argument instead of an (unquoted) function name, `map()` extracts the correspondingly named list element, instead of applying a function to a list element.
+
+When writing code for an analysis, it's useful, if not essential, to understand the objects we're working with, understand its type and shape, and make sense of the results of simple `print <object>` statements. Data frames are particularly handy as they provide an organisation of data that is particularly intuitive (variables along columns, observations along rows, values in cells). Here, we're dealing with a list of linear model objects. Can such a list fit into the paradigm of *tidy* data frames?
+
+Yes, they can. Think of the linear model objects as 'values'. Values don't necessarily have to be scalars, but they can be of any type (class).
+
+```{r}
+tibble(
+  siteid = vec_sites,
+  linmod = list_linmod
+  )
+```
+
+The fact that cells can contain any type of object offers a powerful concept. Instead of a linear model object as in the example above, each cell may even contain another data frame. In such a case, we say that the data frame is no longer *flat*, but *nested*.
+
+The following creates a nested data frame, where the column `data` is defined by the list of data frames read from files above (`list_df`).
+
+```{r}
+tibble(
+  siteid = vec_sites,
+  data = list_df
+  )
+```
+
+We can achieve the same result by directly nesting the flat data frame holding all sites' data (`ddf_allsites`). This is done by combining the `group_by()`, which we have encountered above when aggregating using `summarise()`, with the function `nest()` from the *tidyr* package.
+
+```{r}
+ddf_allsites |>
+  group_by(siteid) |>
+  nest()
+```
+
+The function `nest()` names the nested data column automatically `"data"`.
+
+This structure is very useful. For example, for applying functions over sites' data frames separately (and not over the entire data frame). By combining `map()` and `mutate()`, we can fit linear models on each site's data frame individually in one go.
+
+```{r eval=FALSE}
+ddf_allsites |>
+  group_by(siteid) |>
+  nest() |>
+  mutate(linmod = map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
+```
+
+This is approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column `"data"` has time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by `siteid`), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of `summarise()` (see above).
+
+Combining the steps described above into a single workflow, we have:
+
+```{r}
+ddf_allsites_nested <- ddf_allsites |>
+  group_by(siteid) |>
+  nest() |>
+  mutate(linmod = map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
+  mutate(summ = map(linmod, ~summary(.))) |>
+  mutate(rsq = map_dbl(summ, "r.squared")) |>
+  arrange(desc(rsq))  # to arrange output, with highest r-squared on top
+
+ddf_allsites_nested
+```
+
+This code is a demonstration for the power of tidy and nested data frames and for the clarity of the *tidyverse* syntax.
+
+Nesting is useful also for avoiding value duplication when joining relational data objects. Above, we nested time series data objects (where time steps and sites are both organised along rows) by sites and got a data frame where only sites are organised along rows, while time steps are nested inside the column `"data"`. This now fits the structure of a relational data object (`siteinfo_fluxnet2015`) containing site-specific meta information (also with only sites along rows).
+
+```{r}
+load("data/siteinfo_fluxnet2015.rda")  # loads siteinfo_fluxnet2015
+```
+
+Joining the nested data frame with site meta information results in a substantially smaller and much handier data frame compared to an alternative, where the site meta information is joined into the un-nested (daily) data frame, and therefore duplicated for each day within sites.
+
+```{r}
+ddf_allsites_nested_joined <- siteinfo_fluxnet2015 |>
+  rename(siteid = sitename) |>
+  right_join(select(ddf_allsites_nested, -linmod, -summ, -rsq),
+             by = "siteid")
+
+ddf_allsites_joined <- siteinfo_fluxnet2015 |>
+  rename(siteid = sitename) |>
+  right_join(ddf_allsites,
+             by = "siteid")
+
+print(paste("Flat and joined:", 
+            format(object.size(ddf_allsites_joined),  
+                   units = "auto", 
+                   standard = "SI")))
+print(paste("Nested and joined:", 
+            format(object.size(ddf_allsites_nested_joined),  
+                   units = "auto", 
+                   standard = "SI")))
+```
+
 ## Exercises
 
-- find a way to encode `>` in `>10 m` in machine-readable way.
-- Exercise: hhdf cleaning based on QC info, non-random missingness (more at night), removing data implies shift of the mean.
-- aggregate the `CO2` data, calculating the mean by `Treatment.`
+-   find a way to encode `>` in `>10 m` in machine-readable way.
+-   Exercise: hhdf cleaning based on QC info, non-random missingness (more at night), removing data implies shift of the mean.
+-   aggregate the `CO2` data, calculating the mean by `Treatment.`
+
 ```{r}
 CO2 |> 
   group_by(Treatment) |> 
   summarise(uptake = mean(uptake))
 ```
 
-- make the following tables tidy:
-  - `df_sunspots`
-```{r}
-df1 <- tibble(count = as.vector(sunspots), 
-       year_dec = time(sunspots)
-       ) |> 
-  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-  mutate(year = year_dec - month_dec) |> 
-  mutate(month = as.integer(month_dec * 12)) |> 
-  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  select(year, month, count)
-```
-  - [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1)
-- Exercises: identify outliers in VPD and temperature in our example dataset.
+-   make the following tables tidy:
+
+    -   `df_sunspots`
+
+    ```{r}
+    df_sunspots <- tibble(count = as.vector(sunspots), 
+           year_dec = time(sunspots)
+           ) |> 
+      mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+      mutate(year = year_dec - month_dec) |> 
+      mutate(month = as.integer(month_dec * 12)) |> 
+      mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+      mutate(month = month(date, label = TRUE)) |> 
+      select(year, month, count)
+    ```
+
+    -   [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1)
+
+-   Exercises: identify outliers in VPD and temperature in our example dataset.
 
 ```{r}
 hhdf |> 
@@ -500,6 +698,18 @@ hhdf$TA_F[hhdf$TA_F %in% boxplot.stats(hhdf$TA_F)$out] |> head()
 hhdf$VPD_F[hhdf$VPD_F %in% boxplot.stats(hhdf$VPD_F)$out] |> head()
 ```
 
-- combine `df_sunspots` and `df_co2` along years and months.
+-   combine `df_sunspots` and `df_co2` along years and months.
+
+```{r}
+df_co2 <- tibble(co2_concentration = as.vector(co2), 
+       year_dec = time(co2)
+       ) |> 
+  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+  mutate(year = year_dec - month_dec) |> 
+  mutate(month = as.integer(month_dec * 12)) |> 
+  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+  mutate(month = month(date, label = TRUE)) |> 
+  select(year, month, co2_concentration)
+```
 
 ## Solutions

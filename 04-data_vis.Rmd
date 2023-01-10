@@ -12,6 +12,277 @@ Contents:
 
 ## Tutorial
 
+### Data visualisation I
+
+Plotting and visualizing data is an integral part of data processing. We previously created a simple x-y line plot, using base-R, in Chapter \@ref(ch-01). Here, we will be working with the same half-hourly time series data from the eddy covariance flux measurements for the years 2004-2014. 
+  
+A natural first visualisation step is therefore to plot our variables against time, for example, `GPP_NT_VUT_REF` versus `TIMESTAMP_START`:
+
+```{r}
+plot(hhdf$TIMESTAMP_START, hhdf$GPP_NT_VUT_REF, type = "l")
+```
+
+**ggplot2** offers a powerful and (at least after an initial brain-effort) intuitive syntax for building data visualisations in a versatile, elegant, and efficient way. It defines a complete ["grammar of graphics"](https://ggplot2.tidyverse.org/reference/) (thus the name ggplot), which allows you to consistently apply the same syntax for different purposes.
+
+We create the same line plot as done above with `geom_line()`:
+
+```{r}
+library(ggplot2)
+ggplot(data = hhdf, aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
+  geom_line()
+```
+
+This is a dense plot and we cannot distinguish patterns because variations in GPP happen at time scales that are too narrow for displaying 14 years in one plot. GPP varies throughout a day just as much as it varies throughout a season. To see this, we can focus on a narrower time span and make the plot easier to read:
+
+```{r}
+hhdf %>% 
+  slice(24000:25000) %>% 
+  ggplot(aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
+  geom_line(color = "tomato") +
+  labs(title = "Gross primary productivity", subtitle = "Site: CH-Lae", x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  theme_classic()
+```
+
+We can observe a variation in the measured values fluctuating between high and low values during one day. Hence, we see that we have GPP variations at the sub-daily (diurnal) time scale, as well as at the seasonal time scale. This is very typical for environmental time series data. Sometimes, we even observe a long-term trend on top of the daily signal. Dealing with such multiple scales of variations and "hidden dimensions" is something you will have to deal with a lot as an "Environmental Systems Data Scientist".
+
+Above, we have first selected rows of the data frame with the dplyr function `slice()` and then piped its output (which is again a data frame) into `ggplot()`, which takes the data frame as the first argument.
+
+The second type of visualisation that allows one to quickly understand the data better and that often comes early in the exploratory data analysis phase is a histogram. A histogram is a figure that displays the distribution of numerical data. In a histogram data points are combined into specified ranges to display the frequency of points or number of points in each specified range group, also referred to as 'bins'.  It shows the count of how many points of a certain variable (here, `GPP_NT_VUT_REF`) fall into a discrete set of bins. When normalising (scaling) the "bars" of the histogram to unity, we get a density histogram. Histograms can be created with ggplot2 using the `geom_histogram()` function. In the example below, values of the variable of interest (`GPP_NT_VUT_REF`) are plotted along the x-axis (as is common for histograms). To specify the y-axis position of the upper end of the histogram bar as the density, use `y = ..density..` in the `aes()` call. To show counts, use `y = ..count..`.
+
+```{r}
+hhdf %>%
+  ggplot(aes(x = GPP_NT_VUT_REF, y = ..density..)) +
+  geom_histogram(fill = "grey70", color = "black") +
+  geom_density(color = "red")
+```
+
+The histogram shows the highest probability density for values between -2 and 2 `GPP_NT_VUT_REF`. The red line also highlights this as there is a steep drop in values above anf below the bin with the highest probability density. For this histogram, we added two visualisation layers above. First just the histogram (the dark grey bars), and second the continuous density plot as a red line. Both share the same aesthetics specification with `aes()`.
+
+Find a complete reference to ggplot [here](https://ggplot2.tidyverse.org/) [@R-ggplot2]. If you are looking for a more complete tutorial on data visualisation which includes exercises and contains information on how to colour specific points, change the shape of certain data points, add different sized points depending on a factor from the data or to add several plots with `facet_wrap()` go to  [this link](https://r4ds.had.co.nz/data-visualisation.html). For those who want an in-depth, detailed explanation of many different data visualisation options or how to _"make visualizations that accurately reflect the data, tell a story, and look professional"_ go to the following [guide book](https://clauswilke.com/dataviz/) [@wilke_fundamentals_2019].
+
+### Data visualisation II
+
+After completing the aggregation above, we now have a new "hidden dimension" in our data frame: Each GPP measurement is located not only along a time axis, but also along a "data quality axis", measured by the fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). In the next part of the tutorial, we will show you how to make the most of such "hidden dimensions" by adding them as an additional layer to our data plots using extra colours or regressions. 
+  
+We will proceed by using this additional axis to enhance our plot and visualising it the extra dimension in the data. We achieve this by colouring our points according to `f_measured`. In other words, we "map" `f_measured` to the color axis, similar to how we "mapped" time and GPP to the x and y axes before. When adding such an additional mapping to visualisation dimensions ("aesthetics"), we have to specify it using `aes()`. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write `aes(x = date, y = GPP_NT_VUT_REF)` in the `ggplot()` function call (indicating that all subsequent additions of `geom_` layers share this x-y mapping); while `aes(color = f_measured)` is specified only in the `geom_point()` layer.
+
+```{r}
+ddf %>% 
+  filter(year(date)==2007) %>%  # same functions as above can be applied to 'date'
+  ggplot(aes(x = date, y = GPP_NT_VUT_REF)) +
+  geom_line() +
+  geom_point(aes(color = f_measured)) +  # we can overlay multiple plot layers!
+  labs(title = "Gross primary productivity", subtitle = "Site: CH-Lae", x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  scale_color_viridis_c(direction = -1)  # "viridis" continuous color scale in inverse direction
+```
+
+We observe that the points with particularly low GPP during summer months are predominantly based on gap-filled half-hourly data. This is an insight we would never have gotten by just looking at the naked values in our data frames. Data visualisations are essential for guiding analyses and processing throughout all steps. Having learned this, we now have a justification for applying further data filtering criteria.
+
+In our intial research question, we want to know not only about variations in GPP, but also what controls it. We want to know the environmental factors that determine the variations in GPP. The environmental factors that influence GPP are known as the covariates of GPP. In a machine learning context, we call them "predictors" or "features". To answer this question, we will have to turn to modelling. Here, we refer to modelling in the wider sense of predicting observed variations in a target variable based on empirical relationships with a set of predictors. Often, you will start delving into your research question with some *a priori* understanding of the system from which you have observational data. Such an understanding may be informed by previous observations and their interpretations, or by theory. In middle school already we learnt that photosynthesis requires sunlight and it shouldn't come as a surprise that the more sunlight there is in a day, the higher the GPP. Such a presumed positive (maybe even monotonically increasing) relationship is also consistent with the apparent agreement between the scales of variation in GPP and the scales of variation in incoming solar radiation (dark night, bright day; dark winter, bright summer). 
+  
+In our dataset, `PPFD_IN` is the incoming photosynthetic photon flux density, measured in mol photons (that come in the right wavelength to be used for photosynthesis). We can plot this relationship to vizualise how it correlates with GPP using the daily data.
+
+```{r}
+ddf %>%
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF)) +
+  geom_point() +
+  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
+  ylim(-10, 25)
+```
+
+We observe a clear trend of increasing GPP with increasing PPFD, and it looks largely linear. Data collected in the field often has a substantial amount of scatter. Since we previously added a column to the data frame containing the data quality, the next step is to see if the data quality explains some of the scatter in the data. To investiagte this, we can "map" the data quality dimension onto the color aesthetic of the plot.
+
+```{r}
+ddf %>%
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF, color = f_measured)) +
+  geom_point() +
+  scale_color_viridis_c(direction = -1) +
+  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
+  ylim(-10, 25)
+```
+
+We can notice that the colours showing the data quality or `f_measured` are mixed across the range of the values for GPP and PPFD. The high GPP values, we previously found to be associated with low fractions of underlying measured data in the time series plot, are not explained by simultaneously high PPFD. In the plot, we see a core cluster of points in the centre forming a positive trend with fewer points outside this denser 'core' area. These outlying points are lighter and do not fit the linear relationship as well.
+
+Despite scattered data points, there is a positive linear relationship between GPP and PPFD. To find the best fit of this linear relationship, meaning the straight line that best fits our data points, we will move on to modelling using a univariate linear regression. The section below, will serve as a brief introduction, since later chapters will go into more detail on modelling and machine learning.
+
+We start by making a simple linear model using the function `lm()` and adding in our desired variables:
+
+```{r}
+linmod <- lm(GPP_NT_VUT_REF ~ PPFD_IN, data = ddf)
+```
+
+We can also directly plot the fitted linear regression line over the scatter plot using `geom_smooth(method = "lm")`. Rather than first making a linear model and then plotting it onto the data.
+
+```{r}
+ddf %>%
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "red") +
+  ylim(-10, 25) +
+  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) 
+```
+In red in the plot above is the linear regression fitted directly to our data using `geom_smooth()`, without needing an additional step of first making a linear model and then plotting it over the data. 
+  
+Based on our previous finding that the data quality is associated with GPP values, which is reflected in their relationship with PPFD, we can fit separate linear regression models for data where `f_measured` is greater than versus less than 0.5. For this, we can create a new variable with `mutate(more_measured = as.factor(f_measured > 0.5))`). The new variable `more_measured` contains binary information as the data is either greater or less than 0.5. By adding new factors we can add another previously "hidden" dimension to our data. And because it is a categorical variable and not a continuous one, R treats it as a *factor*. We can plot this new variable `more_measured` onto the color aesthetic as we did before. Since we specify this aesthetic below in the `ggplot()` function call, all subsequent visualisation layers will respect it, also `geom_smooth()`.
+
+```{r}
+ddf %>%
+  mutate(more_measured = as.factor(f_measured > 0.5)) %>% 
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF, color = more_measured)) +
+  geom_point(alpha = 0.2) +   # set opacity to 20% to avoid underscernible overplotting
+  geom_smooth(method = "lm")  +
+  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) )  +
+  ylim(-10, 25)
+```
+
+We observe a slight difference in the slopes of the respective linear models. Note also that in the above `ggplot()` call, we specified the aesthetics as `aes(x = PPFD_IN, y = GPP_NT_VUT_REF, color = more_measured)`. This triggers all subsequent additions of visualisation layers (here: `geom_piont()` and `geom_smooth`) to use the same aesthetics for plotting. The distinction by the same colors is applied both to the points and to the smoothing lines.
+
+Scatter plots can appear overcrowded. In this example, particularly in the low PPFD range, many points are plotted over each other, which may hide some information. To avoid obscuring important details in the plot, we may want to visualise the *density* of points. We want to plot how many points fall within bins of a certain range values in GPP and PPFD, this creates grid cells in the GPP-PPFD-space. We can create such a raster plot that measures the density using `stat_density_2d()`:
+
+```{r}
+ddf %>%
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF)) +
+  stat_density_2d(
+    geom = "raster", #the geometric object to display the data (in this case: rectangles)
+    aes(fill = after_stat(density)), #using `density`, a variable calculated by the stat
+    contour = FALSE 
+    ) +
+  scale_fill_viridis_c() +
+  ylim(-5, 15) +
+  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) 
+```
+
+In the figure, we can observe a much higher density of points between PPFD values 0 and 200 and between GPP values of -2 to 5. The density gets weaker as as PPFD increases but GPP stays within the same values. We can also observe a second cluster, albeit at a lower density. This starts at a PPFD value of around 200 and at a GPP value over 5. This second cluster has a steeper slope creating an interesting "separation" of points, where the increase in GPP with increasing PPFD is steeper for some than for others. 
+
+Again, we can use our *a priori* understanding of the system to formulate hypotheses and test them by finding the appropriate visualisation type. Here, one hypothesis could be that the slope is steeper in some months than in others. This is actually more than just a vague guess. Since the relationship between incoming light and ecosystem photosynthesis is strongly affected by how much of this light is actually absorbed by leaves, and because the amount of green foliage varies strongly throughout a year (this is data from a mixed forest), the slope of the regression between PPFD and GPP should change between months.
+
+To test this hypothesis, we will visualize the slopes of each month by fitting separate linear regression models. Note that each month encompasses data from multiple years, so clear trends will only become clear if there is a commonality between the same months of different years.
+
+```{r}
+ddf %>%
+  mutate(month = as.factor(month(date))) %>%
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF, color = month)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  ylim(-5, 15) +
+  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) 
+```
+
+The plot verifies that the relationships indeed differ slightly between months. In spring months (3 = March, 4 = April), light levels can be already quite high, but GPP remains much lower than in summer months. A reason for this may be that GPP is not influenced by PPFD alone. There are other environmental variables, such as temperature or moisture levels, etc., that influence GPP and may not yet be at the levels reached during the summer months.
+
+### Advanced data visualisation
+
+Let's dive a bit further into visualisation.
+We've encountered how to map different dimensions of our data not only onto x and y axes in a cartesian coordinate system, but also along other "aesthetics".
+We mapped it to color, but there are also other aesthetics available for such mapping in ggplot2, in particular for categorical variables (e.g., line type, point type).
+Yet another "mapping" is available with `facet_wrap()`.
+It separates the visualisation into different sub-plots, each showing a part of the data.
+It's not dealt the same way as other aesthetics (not with specifying it with `aes()`), but with adding the `facet_wrap()` with a `+` to the `ggplot()` object.
+
+Remember that our data frame `ddf_allsites` has the time series data nested for each site in the column `data`.
+ggplot doesn't like that.
+Therefore, we can simply `unnest()` the respective column and get a long flat data frame again.
+Let's plot GPP versus PPFD in separate subplots for each site.
+The factor (column name) by which `facet_wrap()` separates the plot has to be specified as an argument with a preceeding `~`.
+Here, this is `~siteid`.
+
+```{r}
+ddf_allsites_joined %>%
+  ggplot(aes(x = PPFD_IN, y = GPP_NT_VUT_REF)) +
+  geom_point(alpha = 0.1) +
+  facet_wrap(~siteid)
+```
+
+What do you notice?
+Does the relationship look similar for all sites?
+
+Again, we get further if we have some *a priori* knowledge about the system that generated out data.
+Of course, PPFD just measures the incoming photosynthetically active light.
+We don't know whether there are any leaves on the trees to absorb that light.
+While some trees shed their leaves during winter or during the dry period, others are evergreen and the fraction of PPFD they actually absorb doesn't vary by far not as much as for deciduous trees.
+Therefore, whether a site is dominated by deciduous or evergreen vegetation should somehow affect how directly GPP is correlated with GPP.
+So there's our hypothesis: Sites with evergreen vegetation should exhibit a higher *R*<sup>2</sup> between GPP and PPFD than sites with deciduous vegetation.
+Remember that we have evaluated the *R*<sup>2</sup> between GPP and PPFD already above and have it stored as a column `rsq` of our nested data frame `ddf_allsites`.
+We have also collected site meta-information about the vegetation type (it's in column `lai_fpar`), and have joined the meta info onto the data.
+Unfortunately, it's not quite ready to use.
+Since we need a `TRUE`/`FALSE` type of information of whether the vegetation type is evergreen or not, we have to take another step.
+Below, we take the strings of column `lai_fpar` and check whether it contains the sub-string `"Evergreen"`, using the function `str_detect()` from the stringr package (part of the tidyverse).
+This boolean information makes up a new column that we call `evergreen`.
+Sounds like a lot of steps, but in the tidyverse, the code is short and clean:
+
+```{r}
+gg <- ddf_allsites_nested_joined %>%
+  mutate(evergreen = str_detect(lai_fpar, "Evergreen")) %>%
+  ggplot(aes(y = rsq, x = evergreen)) +
+  geom_boxplot()
+print(gg)
+```
+
+Eureka II!
+Indeed, the *R*<sup>2</sup> between GPP and PPFD tend to be higher for sites with evergreen vegetation than for sites with deciduous vegetation.
+What we see here is a boxplot.
+It visualises the distribution of *R*<sup>2</sup> by factors (`evergreen`).
+The fat horizontal like inside the box indicates the median, the lower and upper margins of the box are the 25% and 75% quantiles, the whiskers (vertical lines) extend 1.5 times the inter-quartile range, starting at the upper and lower margins of the box, or just to the smallest and largest values if they are within a shorter distance.
+Apparently, in our plot above, they are.
+
+Boxplots are useful because they provide a visualisation of distrubtions that can be based on a very large number of underlying points.
+This yields "light" and clean figures.
+However, they also hide a lot of information and sometimes it's ok to show more information without overloading the plot.
+For example, individual points can be shown in the plot above by `geom_jitter()`.
+Of course, the x-axis represents the level of the factor `evergreen` and when using a simple `geom_points`, all points would be located either at the position (given by the tick mark) of `TRUE` or `FALSE`.
+This would result in overplotting and thus hiding a large number of points.
+`geom_jitter()` takes care of this by slightly rearranging them in a random fashion along the x-axis.
+Note that the rearranged position along the x-axis doesn't actually encode any information.
+However, as long as points are still separable along the "`evergreen`-axis", this is acceptable.
+
+```{r}
+gg + geom_jitter(color = "grey50", width = 0.1)
+```
+
+Note that in the two cells above, we have first stored the output of a `ggplot()` call as a new object that we named `gg`.
+Doing `print(gg)` just creates the respective plot.
+The advantage is that we can add visualisation elements or modify the theme or add labels to that object in a separate step.
+
+Maybe you've asked yourself whether the magnitude of GPP varies much across vegetation types (column `igbp_land_use` in our dataset).
+
+Let's do another boxplot - because we can...
+
+```{r}
+ddf_allsites_joined %>%
+  ggplot(aes(y = GPP_NT_VUT_REF, x = igbp_land_use)) +
+  geom_boxplot() +
+  coord_flip()
+```
+
+Here, you can see a number of points that are beyond the quartiles plot 1.5 times the inter-quartile range.
+They are plotted individually and are referred to as "outlying points".
+We have also flipped the boxes to extend vertically.
+`coord_flip()` overrides what is specified by `aes()` in that it rotates it by 90<sup>º</sup>.
+
+Before we finish, let's save our nice daily data frame, after having selected interesting variables, having nested data by sites, and after having complemented it with site meta information.
+We may use it later in the course ...
+
+Since `ddf_allsites_nested_joined` is no longer a "flat" table (it's nested), we cannot save it in a plain text-based format like CSV.
+Instead, we save it as an R object.
+In can be later loaded into an R session by `load()`.
+
+```{r}
+save(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.RData")
+```
+
+```{r include=FALSE}
+## save cleaned daily data frame for ch-lae only
+ddf_ch_lae <- ddf_allsites_nested_joined %>%
+  filter(siteid == "CH-Lae") %>%
+  select(data) %>%
+  unnest(data)
+
+save(ddf_ch_lae, file = "data/ddf_ch_lae.RData")
+```
+
+
 ## Exercises
+
+- plot `airquality` data along a time axis specified 
 
 ## Solutions
