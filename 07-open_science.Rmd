@@ -167,21 +167,38 @@ R markdown files have their function for reporting concise results, once generat
 
 ## Learning objectives
 
-## Tutorial
-
 ## Exercises
 
--   manually clean a data project
+### Data and code management
 
-    -   provide a dirty project and ask students to tidy it
+#### External data
 
-        -   All scripts data in the top level
+You are inherit a project folder which contains the following files.
 
-        -   no indices indicating execution order
+``` bash
+/home/xyz/project/
+├─ survey.xlsx
+├─ xls conversion.csv
+├─ xls conversion (copy 1).csv
+├─ Model-test_1.R
+├─ Model-test-final.R
+├─ Plots.R
+├─ Figure 1.png
+├─ test.png
+├─ Rplot01.png
+├─ Report.Rmd
+├─ Report.html
+```
 
-        -   random spurious copies of the data included
+What are your steps to make this project more reproducible? Write down how and why you would organize your project.
 
-    -   let students describe their experience
+#### Starting from scratch
+
+What are the basic steps to create a reproducible workflow from a file management perspective? Create your own "mock" project using these principles. Provide details the on steps involved and why they matter.
+
+-   
+
+-   
 
 -   clone the R project template
 
