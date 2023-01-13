@@ -1,0 +1,7 @@
+| Demo dataset 1
+| three columns of data
+| with comments starting with "|"
+"col 1";"col 2";"col 3"
+1;3;4
+4;5;6
+4;6;7

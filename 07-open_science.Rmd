@@ -1,7 +1,3 @@
----
----
----
-
 # Open science practices {#open_science}
 
 **Chapter lead author: Koen Hufkens**
@@ -16,17 +12,29 @@ Contents:
 
 ## Introduction
 
-The reproducibility crisis, or the inability to reproduce experimental results, is a complex problem. The last decades scientific research has seen a steady increase in speed due to the increasing digitization of many fields as well as the slow creeping comodification of science. Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality to outright fraud. However, on a socio-cultural level a part of the crisis has its origins in both the structure of academia and the interaction with how research is disseminated.
+The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
 
-Through digitization, speeding up scientific publishing and comodification of knowledge, pressure has mounted on academics to 'publish or perish'. Invariably, this cut throat environment increasingly rewards fraud, poor quality (high volume) research and unethical behaviour.
+Although this seems trivial this issue has vexed the scientific community. These days, many scientific publications are based on complex analysis with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis, or the inability to reproduce experimental results, is a complex problem.
 
-Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. However, both the reproducibility crisis as digital tools have made this position untenable. Open science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable (as at times exceptions do apply).
+This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the increasing digitization of many fields and the comodification of science.
 
-In this section, we focus solely on the relation of open science to data management and coding practices. For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices I refer to the reference list.
+Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitzation made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
+
+Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
+
+It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on practices for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
+
+![](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg)
+
+For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this section.
 
 ## Project structure
 
-Reproducible science relies on a number of key components. Data management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, preferably structured, location.
+File names??? good vs. bad
+
+R projects
+
+Reproducible science relies on a number of key components. Data management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, structured, location. This structure allows you to determine both the function and or order of a workflow.
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structure a project in one folder also makes projects portable. All parts reside in one location making it easy to create a github project from this location, or just copy the project to a new drive.
 
@@ -155,19 +163,48 @@ R markdown files have their function for reporting concise results, once generat
 
 ## Learning objectives
 
-## Tutorial
-
 ## Exercises
 
--   clone the R project template
+### Data and code management
 
--   automatically download data of choice to disk (in the `data`) directory
+#### External data
 
-    -   reference previous API workflow
+You are inherit a project folder which contains the following files.
 
--   create a new Rmd file in `analysis` or `vignettes`
+``` bash
+/home/xyz/project/
+├─ survey.xlsx
+├─ xls conversion.csv
+├─ xls conversion (copy 1).csv
+├─ Model-test_1.R
+├─ Model-test-final.R
+├─ Plots.R
+├─ Figure 1.png
+├─ test.png
+├─ Rplot01.png
+├─ Report.Rmd
+├─ Report.html
+```
 
--   render a simple Rmarkdown file using the data downloaded to `data`
+What are your steps to make this project more reproducible? Write down how and why you would organize your project.
+
+#### A new project
+
+What are the basic steps to create a reproducible workflow from a file management perspective? Create your own project using these principles. Provide details the on steps involved and why they matter.
+
+The project should a reproducible workflow:
+
+-   to download and plot a MODIS land cover map for Belgium
+
+-   contain a function to count the occurences of land cover classes in the map as a formal function
+
+-   create a plot of the land cover map
+
+-   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
+
+#### Tracking your project
+
+Can you track the state of your project using {targets}?
 
 -   create a simple targets project using the above workflow
 
