@@ -31,13 +31,10 @@ jobs:
 
       - uses: r-lib/actions/setup-renv@v2
       - uses: r-lib/actions/setup-pandoc@v2
-      
-      - name: Install dependencies
-        run: |
-          install.packages("remotes")
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("bookdown")
-        shell: Rscript {0}
+      - name: Install and cache dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: bookdown
 
       - name: Cache bookdown results
         uses: actions/cache@v3
