@@ -119,6 +119,7 @@ temp_sum
 ```
 
 Of course, this is equivalent to just using the `sum()` function. 
+
 ```{r, eval=FALSE}
 sum(df_small$temp[1:10])
 ```

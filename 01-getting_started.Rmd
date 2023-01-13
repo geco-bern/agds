@@ -95,7 +95,7 @@ Logical operators:
 
 The *working directory* is the default location to which R writes to and reads files from, and you can specify it by going to **Session \> Set Working Directory...** and navigating to your desired folder. Alternatively, you can check what is your current working directory or change it by entering the following in the console:
 
-```{r}
+```{r eval = FALSE}
 getwd()         # get working directory
 setwd("~/agds") # set working directory
 ```
