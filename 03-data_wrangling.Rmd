@@ -299,7 +299,7 @@ In essence, quoting [Wickham](https://r4ds.had.co.nz/tidy-data.html), data is ti
 -   Each observation has its own row.
 -   Each value has its own cell.
 
-![Rules for tidy data](./fig/tidy_data.png) <!-- Figure from https://r4ds.had.co.nz/tidy-data.html --> <!-- Figure URL: https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png -->
+![Rules for tidy data](./figures/tidy_data.png) <!-- Figure from https://r4ds.had.co.nz/tidy-data.html --> <!-- Figure URL: https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png -->
 
 The concept of tidy data can even be taken further by understanding a "value" as any object type, e.g. a list or a data frame.
 This leads to a list or data frame "nested" within a data frame.
