@@ -686,6 +686,9 @@ print(paste("Nested and joined:",
             format(object.size(ddf_allsites_nested_joined),  
                    units = "auto", 
                    standard = "SI")))
+
+# save for later use
+write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rds")
 ```
 
 ## Exercises
