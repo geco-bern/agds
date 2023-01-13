@@ -37,6 +37,7 @@ In this chapter, we will be working mainly with the same half-hourly time series
 hhdf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 plot(hhdf$TIMESTAMP_START, hhdf$GPP_NT_VUT_REF, type = "l")
 ```
+
 You may notice the spurious-looking values on the left, in the first third of year 2004. We'll revisit this point later in this Chapter.
 
 From [(Wilke)](https://clauswilke.com/dataviz/):
@@ -74,20 +75,22 @@ Find a complete reference to *ggplot2* [here](https://ggplot2.tidyverse.org/) [@
 
 In the above example, we mapped two continuous variables (`TIMESTAMP_START` and `GPP_NT_VUT_REF`) onto the aesthetics `x`, and `y` to visualize time series data. A line plot is an appropriate choice for such data as points are ordered along the time axis and can be connected by a line. Different "geometries" are suitable for visualizing different aspects of the data, and different variable types are suited to mapping onto different aesthetics. Common, available aesthetics are shown in Fig. XXX and can be allocated to variable types:
 
--   Continuous variables: position, size, color (a color gradient) , line width
--   Categorical variables: shape, color (a discrete color set), line type
+-   Continuous variables: position, size, color (a color gradient), line width, etc.
+-   Categorical variables: shape, color (a discrete set of colors), line type, etc.
 
 <!-- https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png -->
 
-![](./fig/common-aesthetics-1.png)
+![](./figures/common-aesthetics-1.png)
 
-Not only the different aesthetics, but also the each type of *geometry* (the layers of the visualization added to a plot by `+ geom_*()`) goes with certain types of variables and aspects of the data (but not with others). The sub-sections below provide a brief overview into the categorization of data visualization types. A more comprehensive overview is given by [GGPlot2 Essentials for Great Data Visualization in R by Alboukadel Kassambara](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization#geom_bar-bar-plot).
+Not only the different aesthetics, but also the each type of *geometry* (the layers of the visualization added to a plot by `+ geom_*()`) goes with certain types of variables and aspects of the data (but not with others). The sub-sections below provide a brief categorization of data visualization types. A more comprehensive overview is given by [GGPlot2 Essentials for Great Data Visualization in R by Alboukadel Kassambara](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization#geom_bar-bar-plot).
 
 #### One value per category
 
-Probably the simplest case of data vizualisation is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with *ggplot2*. Try to understand the command for creating the object `gg2`.
+Probably the simplest case of data vizualisation is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with *ggplot2*. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(data_wrangling).
 
 ```{r}
+ddf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2006_DERIVED.csv")
+
 gg1 <- ddf |> 
   mutate(month = month(date, label = TRUE)) |> 
   group_by(month) |> 
@@ -121,7 +124,7 @@ plot_grid(gg1, gg2)
 
 Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `plot_grid()` from the *cowplot* library.
 
-Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the count of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the *dplyr* function `summarise()`. This equivalency is demonstrated below.
+Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the *dplyr* function `summarise()`. This equivalency is demonstrated below.
 
 ```{r}
 gg1 <- hhdf |> 
@@ -143,7 +146,7 @@ plot_grid(gg1, gg2)
 
 #### Distribution of one variable
 
-Examining the distribution of a variable is often the first step of exploratory data analysis. A *histogram* displays the distribution of numerical data by mapping the frequency (or count) of values within discrete bins (equally spaced ranges along the full range values the respective variable attains) onto the "height" of a bar, and the range of values itself onto the position of the bar. In other words, it shows the count of how many points of a certain variable (below `GPP_NT_VUT_REF`) fall into a discrete set of bins. When normalizing (scaling) the "bars" of the histogram to unity, we get a *density histogram*. To specify the y-axis position of the upper end of the histogram bar as the density, use `y = ..density..` in the `aes()` call. To show counts, use `y = ..count..`.
+Examining the distribution of a variable is often the first step of exploratory data analysis. A *histogram* displays the distribution of numerical data by mapping the frequency (or count) of values within discrete bins (equally spaced ranges along the full range values of a given variable) onto the "height" of a bar, and the range of values within bins onto the position of the bar. In other words, it shows the count of how many points of a certain variable (below `GPP_NT_VUT_REF`) fall into a discrete set of bins. When normalizing (scaling) the "bars" of the histogram to unity, we get a *density histogram*. To specify the y-axis position of the upper end of the histogram bar as the density, use `y = ..density..` in the `aes()` call. To show counts, use `y = ..count..`.
 
 ```{r}
 hhdf |>
@@ -158,9 +161,9 @@ Note that the red line plotted by `geom_density()` on top of the density histogr
 
 #### Distributions within categories
 
-To visualise distributions of a single continuous variable within categories, perhaps the most common visualisation type is the *box plot*. As described in Chapter \@ref(data_wrangling), it shows the median (bold line in the center), the upper and lower quartiles, corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot. The lines extending from the box edges visualize the range of $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Any point outside this range is plotted by a point.
+To visualize distributions of a single continuous variable within categories, perhaps the most common visualization type is the *box plot*. As described in Chapter \@ref(data_wrangling), it shows the median (bold line in the center), the upper and lower quartiles, corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot. The lines extending from the box edges visualize the range of $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Any point outside this range is plotted by a point.
 
-The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, \$Q_1 , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to the boxes. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The form of their edge is given by the density distribution of the points they represent.
+The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, \$Q_1 , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution and does not reflect information about the data volume. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to each box. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The form of their edge is given by the density distribution of the points they represent.
 
 ```{r}
 set.seed(1985)
@@ -241,35 +244,35 @@ gg4 <- hhdf |>
 plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 ```
 
-Are there additional variables that modify the relationship between solar radiation and GPP? To illustrate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (d).
+Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c).
 
 The above example demonstrates that color schemes have to be chosen depending on the nature of the data. Mapping a continuous variable onto the aesthetics `color` requires a continuous color scheme to be applied, categorical data requires discrete color schemes. Two more distinctions have to be considered:
 
-- Continous variables should be distinguished further if they span a range that includes zero or not. If so, *diverging* color schemes should be used, where zero appears neutral (e.g., white). If zero is not contained within the range of values in the data, diverging color schemes should be avoided.
-- Continuous or ordinal variables may be cyclic in nature. For example, hours in a day are cyclic, although there are twelve discrete numbers. Note that 00:00 is nearer to 23:59 than it is from, for example, 01:00. The cyclical, or periodical nature of the data should be reflected in the choice of a color scheme where the edges of the range are more similar to one another than they are to the center of the range.
+-   Continuous variables should be distinguished further if they span a range that includes zero or not. If so, *diverging* color schemes should be used, where zero appears neutral (e.g., white). If zero is not contained within the range of values in the data, diverging color schemes should be avoided.
+-   Continuous or ordinal variables may be cyclic in nature. For example, hours in a day are cyclic, although there are twelve discrete numbers. The time 00:00 is nearer to 23:59 than it is from, for example, 01:00. The cyclical, or periodical nature of the data should be reflected in the choice of a color scheme where the edges of the range are more similar to one another than they are to the center of the range.
 
-Colors in color schemes (or scales) should be:
+Choices of colors and their combination is far from trivial. Colors in color schemes (or "scales") should be:
 
-- Distinguishable for people with color vision deficiency
-- Distinguishable when printed in black and white
-- Evenly spaced in the color space
-- Intuitively encoding the information in the data (for example, blue-red for cold-hot)
-- Visually appealing
+-   Distinguishable for people with color vision deficiency
+-   Distinguishable when printed in black and white
+-   Evenly spaced in the color space
+-   Intuitively encoding the information in the data (for example, blue-red for cold-hot)
+-   Visually appealing
 
-In (d) of the figure above, we mapped temperature, a continuous variable, onto the color aesthetic of the points and chose the continuous [*viridis*](https://ggplot2.tidyverse.org/reference/scale_viridis.html) color scale by `+ specifying scale_color_viridis_c()`. The viridis scales have become popular for their respect of the points listed above.
+In (d), we mapped temperature, a continuous variable, onto the color aesthetic of the points and chose the continuous [*viridis*](https://ggplot2.tidyverse.org/reference/scale_viridis.html) color scale by specifying `+ scale_color_viridis_c()`. The viridis scales have become popular for their respect of the points listed above.
 
-For further reading, several excellent resources exist that theoretize and guide the use of color in data visualisation. Excellent sources are:
+For further reading, several excellent resources exist that theoretize and guide the use of color in data visualization. Excellent sources are:
 
-- [Fabio Crameri's Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/), [Crameri (2018)](https://gmd.copernicus.org/articles/11/2541/2018/) and its R package *scico* (on CRAN).
-- [Paul Tol's Notes](https://personal.sron.nl/~pault/), available for example in the *khroma* R package (on CRAN).
+-   [Fabio Crameri's Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/), [Crameri (2018)](https://gmd.copernicus.org/articles/11/2541/2018/) and its R package *scico* (on CRAN).
+-   [Paul Tol's Notes](https://personal.sron.nl/~pault/), available for example in the *khroma* R package (on CRAN).
 
 #### Regression within categories
 
-In the sub-plot (d) above, we may observe a pattern: GPP recorded at low temperatures (dark colored points) tend to be located in the lower range of the cloud of points. We may formulate a hypothesis from this observation, guiding further data analysis and modelling. This illustrates how data visualisation is an integral part of any (geo-) data science workflow.
+In the sub-plot (d) above, we may observe a pattern: GPP recorded at low temperatures (dark colored points) tend to be located in the lower range of the cloud of points. We may formulate a hypothesis from this observation, guiding further data analysis and modelling. This illustrates how data visualization is an integral part of any (geo-) data science workflow.
 
-Since the relationship between incoming solar radiation and ecosystem photosynthesis is strongly affected by how much of this light is actually absorbed by leaves, and because the amount of green foliage varies strongly throughout a year (the site CH-Lae is located in a mixed forest), the slope of the regression between solar radiation and GPP should change between months.
+Since the relationship between incoming solar radiation and ecosystem photosynthesis is strongly affected by how much of this light is actually absorbed by leaves, and because the amount of green foliage varies strongly throughout a year (the site CH-Lae from which the data is recorded is located in a mixed forest), the slope of the regression between solar radiation and GPP should change between months.
 
-Hence, let's consider months as the categories to be used for separating the data and analysing the bi-variate relationships separately within. Below, two alternatives are presented. Either the data is separated into a grid of sub-plots, or the data is separated by colors within the same plot panel.
+Hence, let's consider months as the categories to be used for separating the data and analyzing the bi-variate relationships separately within. Below, two alternatives are presented. Either the data is separated into a grid of sub-plots, or the data is separated by colors within the same plot panel.
 
 **Separation by color**
 
@@ -304,47 +307,47 @@ ddf |>
   facet_wrap(~month)
 ```
 
-You may object here that a linear regression is not a good model for our data. Instead, the relationship looks saturating, as indicated for example by the data in August. But we'll get to modelling in later chapters.
+You may object here that a linear regression is not a good model for our data. Instead, the relationship looks saturating, as indicated for example by the data in August. But we'll get to modelling in later chapters. Nevertheless, the two visualizations above confirm our suspicion that the light-GPP relationship varies between months - a demonstration for why data visualization is an integral part of the scientific process.
 
-The two visualisations above confirm our suspicion that the light-GPP relationship varies between months.
+Exercise: using data frame with combined data from multiple sites, visualise the mean seasonal cycle of GPP for each site.
 
 #### Time series
 
-A time series plot can be regarded as a special case of a regression of two variables. In this case, one variable is regressed against time. Although time is continuous *per se*, its representation in a data set is (necessarily) discrete and ordered. There is a natural order in time steps. Therefore, it makes sense to visualise data data using lines that connect the points. The example below shows the time series of daily GPP in year 2005.
+A time series plot can be regarded as a special case of a regression of two variables. In this case, one variable is regressed against time. A defining aspect of time is that there is a natural order in time steps. Therefore, it makes sense to visualize temporal data using lines that connect the points using `geom_line()`. The example below shows the time series of daily GPP in three years.
 
 ```{r}
 ddf |> 
-  #filter(year(date) %in% 2005:2006) |>  # same functions as above can be applied to 'date'
   ggplot(aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
-  geom_smooth(se = FALSE, color = "red") +
   labs(title = "Line plot", x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
   theme_classic()
 ```
 
-After completing the aggregation above, we now have a new "hidden dimension" in our data frame: Each GPP measurement is located not only along a time axis, but also along a "data quality axis", measured by the fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). In the next part of the tutorial, we will show you how to make the most of such "hidden dimensions" by adding them as an additional layer to our data plots using extra colours or regressions.
+In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter \@ref(data_wrangling), we aggregated the half-hourly `hhdf` data frame to a daily data frame `ddf` from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). This yields a "data quality axis". Is there a pattern between `f_measured` and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?
 
-We will proceed by using this additional axis to enhance our plot and visualising it the extra dimension in the data. We achieve this by colouring our points according to `f_measured`. In other words, we "map" `f_measured` to the color axis, similar to how we "mapped" time and GPP to the x and y axes before. When adding such an additional mapping to visualisation dimensions ("aesthetics"), we have to specify it using `aes()`. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write `aes(x = date, y = GPP_NT_VUT_REF)` in the `ggplot()` function call (indicating that all subsequent additions of `geom_` layers share this x-y mapping); while `aes(color = f_measured)` is specified only in the `geom_point()` layer.
+A solution is to "map" `f_measured` to the color axis. When adding such an additional mapping to visualisation dimensions ("aesthetics"), we have to specify it using `aes()`. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write `aes(x = date, y = GPP_NT_VUT_REF)` in the `ggplot()` function call (indicating that all subsequent additions of `geom_` layers share this x-y mapping); while `aes(color = f_measured)` is specified only in the `geom_point()` layer.
 
 ```{r}
 ddf |> 
   ggplot(aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
-  geom_point(aes(color = f_measured), size = 0.9) +  # we can overlay multiple plot layers!
+  geom_point(aes(color = f_measured), size = 0.9) +
   labs(title = "Gross primary productivity", 
        subtitle = "Site: CH-Lae",
        x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
-  scale_color_viridis_c(direction = -1) + # "viridis" continuous color scale in inverse direction
+  scale_color_viridis_c(direction = -1) + # inverse color scale is more intuitive here
   theme_classic()
 ```
 
-We observe that the points with particularly low GPP during summer months are predominantly based on gap-filled half-hourly data. This is an insight we would never have gotten by just looking at the naked values in our data frames. Data visualisations are essential for guiding analyses and processing throughout all steps. Having learned this, we now have a justification for applying further data filtering criteria.
+We observe the presumably bad data appear in yellow, and are therefore indeed characterised with a particularly low fraction of actually measured data from which their values are derived. This is an insight we would never have reached by just looking at the naked values in our data frames. Data visualizations are essential for guiding analyses and data processing throughout all steps. Having learned this, we now have a justification for applying further data filtering criteria.
+
+Exercise: remove data based on f_measured. Visualise data removal, fill missing data with mean seasonal cycle, visualise good data, bad removed data, and filled data in one plot using different colors
 
 #### Periodic data
 
 The seasons are an important axis of variation in our data. Hence our data are periodic - with a periodicity of 365 days in the `ddf` dataset and with both 12 hours and 365 days in the `hhdf` dataset. A polar coordinate system, instead of a cartesian system, lends itself to displaying periodic data. A polar coordinate system reflects the fact that, for example, January 1st is closer to December 31st, although they are located on the extreme end of a linear spectrum of days in a year. In a polar coordinate system, the x-axis spans the angle (360$^\circ$, like the clock hands), while the y-axis spans the radius (distance from the center). This is specified by changing the coordinate system of the ggplot object by `+ coord_polar()`.
 
-Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b), and to get a mean diurnal (daily) cycle from June data in `hhdf` (c, d). To get the mean seasonal cycle, we first determine the day-of-year (counting from 1 for January first to 365 for December 31st) using the lubridate function `yday()`. 
+Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b), and to get a mean diurnal (daily) cycle from June data in `hhdf` (c, d). To get the mean seasonal cycle, we first determine the day-of-year (counting from 1 for January first to 365 for December 31st) using the *lubridate* function `yday()`.
 
 ```{r}
 gg1 <- ddf |>
@@ -386,21 +389,32 @@ plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 
 #### Density along two continuous variables
 
-Scatter plots can appear overcrowded. In this example, particularly in the low PPFD range, many points are plotted over each other, which may hide some information. To avoid obscuring important details in the plot, we may want to visualise the *density* of points. We want to plot how many points fall within bins of a certain range values in GPP and PPFD, this creates grid cells in the GPP-PPFD-space. We can create such a raster plot that measures the density using `stat_density_2d()`:
+Scatter plots can appear "overcrowded" when points are plotted on top of each other and potentially important information is lost in the visualization.
+
+```{r}
+hhdf |>
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+  geom_point() +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
+       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  theme_classic()
+```
+
+To avoid obscuring important details about the data, we may want to visualise the *density* of points. We want to plot how many points fall within bins of a certain range values in GPP and shortwave radiation, or, in other words, within grid cells in the GPP-radiation space. We can visualize the data, for example, with a raster plot that measures the density using `stat_density_2d()` or with a binning into hexagonal cells using the simple `geom_hex()` layer.
 
 ```{r}
 ddf |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   stat_density_2d(
-    geom = "raster", #the geometric object to display the data (in this case: rectangles)
-    aes(fill = after_stat(density)), #using `density`, a variable calculated by the stat
+    geom = "raster", # the geometric object to display the data
+    aes(fill = after_stat(density)), # using `density`, a variable calculated by the stat
     contour = FALSE 
     ) +
   scale_fill_viridis_c() +
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
        y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
   theme_classic() + 
-  scale_x_continuous(expand = c(0, 0)) +
+  scale_x_continuous(expand = c(0, 0)) +  # avoid gap between plotting ara and axis
   scale_y_continuous(expand = c(0, 0))
 
 ddf |>
@@ -415,10 +429,6 @@ ddf |>
 ```
 
 #### Response surfaces and raster data
-
-
-
-
 
 In our intial research question, we want to know not only about variations in GPP, but also what controls it. We want to know the environmental factors that determine the variations in GPP. The environmental factors that influence GPP are known as the covariates of GPP. In a machine learning context, we call them "predictors" or "features". To answer this question, we will have to turn to modelling. Here, we refer to modelling in the wider sense of predicting observed variations in a target variable based on empirical relationships with a set of predictors. Often, you will start delving into your research question with some *a priori* understanding of the system from which you have observational data. Such an understanding may be informed by previous observations and their interpretations, or by theory. In middle school already we learnt that photosynthesis requires sunlight and it shouldn't come as a surprise that the more sunlight there is in a day, the higher the GPP. Such a presumed positive (maybe even monotonically increasing) relationship is also consistent with the apparent agreement between the scales of variation in GPP and the scales of variation in incoming solar radiation (dark night, bright day; dark winter, bright summer).
 
@@ -477,7 +487,6 @@ ddf |>
 ```
 
 We observe a slight difference in the slopes of the respective linear models. Note also that in the above `ggplot()` call, we specified the aesthetics as `aes(x = PPFD_IN, y = GPP_NT_VUT_REF, color = more_measured)`. This triggers all subsequent additions of visualisation layers (here: `geom_piont()` and `geom_smooth`) to use the same aesthetics for plotting. The distinction by the same colors is applied both to the points and to the smoothing lines.
-
 
 ### Advanced data visualisation
 
