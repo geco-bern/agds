@@ -29,9 +29,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          install.packages("remotes")
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("bookdown")
+          install.packages("bookdown", dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Cache bookdown results
