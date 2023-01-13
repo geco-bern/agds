@@ -85,7 +85,7 @@ Not only the different aesthetics, but also the each type of *geometry* (the lay
 Probably the simplest case of data vizualisation is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with *ggplot2*. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(data_wrangling).
 
 ```{r}
-ddf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2006_DERIVED.csv")
+ddf <- read_csv("data/ddf.csv")
 
 # Bar plot
 gg1 <- ddf |> 
@@ -342,9 +342,7 @@ ddf |>
   ggplot(aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
   geom_point(aes(color = f_measured), size = 0.9) +
-  labs(title = "Gross primary productivity", 
-       subtitle = "Site: CH-Lae",
-       x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  labs(x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
   scale_color_viridis_c(direction = -1) + # inverse color scale is more intuitive here
   theme_classic()
 ```
@@ -461,7 +459,7 @@ image(volcano)
 df_volcano <- tibble(
   x = rep(seq(ncol(volcano)), each = nrow(volcano)),
   y = rep(seq(nrow(volcano)), ncol(volcano)),
-  height = c(volcano) - 140  # subtract 150 for example below
+  height = c(volcano) - 140  # subtract 140 for example below
 )
 
 ggplot(df_volcano, aes(x = x, y = y, fill = height)) + 
