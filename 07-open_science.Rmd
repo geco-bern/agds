@@ -1,7 +1,3 @@
----
----
----
-
 # Open science practices {#open_science}
 
 **Chapter lead author: Koen Hufkens**
@@ -22,7 +18,7 @@ Although this seems trivial this issue has vexed the scientific community. These
 
 This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the increasing digitization of many fields and the comodification of science.
 
-Although digitization has opened up new research possibilities it also had less desired outcomes such as, the reproducibility crisis, overall decreasing research quality to outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitzation made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
+Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitzation made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
 
 Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
 
@@ -192,23 +188,23 @@ You are inherit a project folder which contains the following files.
 
 What are your steps to make this project more reproducible? Write down how and why you would organize your project.
 
-#### Starting from scratch
+#### A new project
 
-What are the basic steps to create a reproducible workflow from a file management perspective? Create your own "mock" project using these principles. Provide details the on steps involved and why they matter.
+What are the basic steps to create a reproducible workflow from a file management perspective? Create your own project using these principles. Provide details the on steps involved and why they matter.
 
--   
+The project should a reproducible workflow:
 
--   
+-   to download and plot a MODIS land cover map for Belgium
 
--   clone the R project template
+-   contain a function to count the occurences of land cover classes in the map as a formal function
 
--   automatically download data of choice to disk (in the `data`) directory
+-   create a plot of the land cover map
 
-    -   reference previous API workflow
+-   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
 
--   create a new Rmd file in `analysis` or `vignettes`
+#### Tracking your project
 
--   render a simple Rmarkdown file using the data downloaded to `data`
+Can you track the state of your project using {targets}?
 
 -   create a simple targets project using the above workflow
 
