@@ -24,7 +24,7 @@ Open and reproducible science is in part a counter movement to make scientific r
 
 It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on practices for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
 
-![](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg)
+<!-- ![](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg) -->
 
 For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this section.
 
@@ -69,7 +69,7 @@ analysis/
 
 To sidestep some of the manual management in R you can use dedicated pipeline tool like the **{targets} package** in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.
 
-![](https://books.ropensci.org/targets/man/figures/tar_watch.png)
+<!-- ![](https://books.ropensci.org/targets/man/figures/tar_watch.png) -->
 
 Due to the added complexity of the targets package we won't include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples (TBD?).
 

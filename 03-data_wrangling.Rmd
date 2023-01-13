@@ -242,8 +242,8 @@ Aggregating data refers to collapsing a larger set of values into a smaller set 
 
 Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the *dplyr* functions `group_by()` and `summarise()`. This aggregation workflow is implemented by the following code:
 
-```{r eval=FALSE, message=FALSE}
-hhdf |>  
+```{r}
+ddf <- hhdf |>  
   mutate(date = as_date(TIMESTAMP_START)) |>  # converts the ymd_hm-formatted date-time object to a date-only object (ymd)
   group_by(date) |> 
   summarise(SW_IN_F = mean(SW_IN_F))
@@ -278,7 +278,7 @@ ddf <- hhdf %>%
               .groups = 'drop' # to un-group the resulting data frame
               ) %>% 
     mutate(f_measured = n_measured / n_datapoints) # calculate the fraction of measured values over total observations
-write_csv(ddf, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2006_DERIVED.csv")
+write_csv(ddf, file = "data/ddf.csv")
 ddf
 ```
 
