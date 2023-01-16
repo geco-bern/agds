@@ -84,7 +84,7 @@ In this section, we will review the most basic programming elements (conditional
 
 In cases where we want certain statements to be executed or not, depending on a criterion, we can use *conditional statements* `if`, `else if`, and `else`. Conditionals are an essential feature of programming and available in all languages. The R syntax for conditional statements looks like this:
 
-```{}
+```{r eval=FALSE}
 if (temp < 0.0){
   is_frozen <- TRUE
 }
@@ -92,7 +92,7 @@ if (temp < 0.0){
 
 The evaluation of the criterion (here `(temp < 0.0)`) has to return either `TRUE` or `FALSE`. Whenever the statement between parenthesis is true, the chunk of code between curly brackets is executed. Otherwise, nothing happens.
 
-```{}
+```{r eval=FALSE}
 if (temp < 0.0){
   is_frozen <- TRUE
 } else {
@@ -110,7 +110,7 @@ You can also write more than two conditions, covering several cases. Conditional
   
 `for` and `while` loops let us repeatedly execute the same set of commands, while changing an index or counter variable to take a sequence of different values. The following example calculates the sum of the first ten temperature values in `df_small` (from the previous chapter), by iteratively adding them together.
 
-```{r}
+```{r, eval=FALSE}
 temp_sum <- 0   # initialize sum
 for (i in 1:10){
   temp_sum <- temp_sum + df_small$temp[i]
@@ -119,13 +119,14 @@ temp_sum
 ```
 
 Of course, this is equivalent to just using the `sum()` function. 
-```{r}
+
+```{r, eval=FALSE}
 sum(df_small$temp[1:10])
 ```
 
 Instead of directly telling R how many iterations it should do we can also define a condition. As long as the condition is `TRUE`, R will continue iterating. As soon as it is `FALSE`, R stops the loop. The following lines of code do the same operation as the `for` loop we just wrote. What is different? What is the same?
 
-```{r}
+```{r, eval=FALSE}
 i = 1           # initialize counter
 temp_sum <- 0   # initialize sum
 while (i <= 10){
