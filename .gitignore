@@ -7,6 +7,3 @@
 # rendered files
 _book
 _bookdown_files
-
-# renv
-renv/library/
