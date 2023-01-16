@@ -16,7 +16,157 @@ Contents:
 
 ## Learning objectives
 
+After completing this tutorial, you will be able to:
+
+-   Understand the difference between regression and classification
+-   
+
 ## Tutorial
+
+### Types of models
+
+Models try to explain relationships between variables through a mathematical formulation, particularly to predict a given target variable using other variables. Generally, models are represented as follows:
+$$Y = f(X, \beta, \epsilon)$$
+where 
+-   $Y$ is the target variable, 
+-   $f$ is a function (or the model), 
+-   $X$ are the explanatory variables,
+-   $\beta$ are the model parameters
+-   and $\epsilon$ are the error terms. 
+
+For example, we can try to explain 
+
+Depending on the structure of these components, we get to different modelling approaches.
+
+The first distinction comes from the type of target variable. Whenever $Y$ is a continuous variable, we are facing a *regression* problem. If $Y$ is categorical, we talk about *classification*.
+
+
+|                 | Regression        | Classification            |
+| --------------- | -------------     | -----------------         |
+| Target variable | Continuous        | Categorical               |
+| Common models   | Linear regression | Logistic regression, KNN  |
+| Metrics         | RMSE, $R^2$              | Accuracy, precision, AUC, F1  |
+
+
+### Linear Regression
+
+**Theory**
+
+Let's start with the simplest model: linear regression. We assume a linear relationship between $X$ and $Y$: $$
+Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \;\;\; i = 1, 2, ...n \;,
+$$ where $Y_i$ is the i-th observation of the target variable, and $X_i$ is the i-th value of the (single) predictor variable. The errors $\epsilon_i$ are assumed to be independent from each other (no autocorrelation), normally distributed, have mean of zero and a constant variance. $\beta_0$ and $\beta_1$ are constant coefficients (model parameters). Fitting a linear regression is finding the values for $\beta_0$ and $\beta_1$ so that the sum of the square errors is minimized, that is: $$
+\sum_i \epsilon_i^2 = \sum_i (Y_i - \beta_0 - \beta_1 X_i)^2 = \text{min}.
+$$
+
+Since the expected value of $\epsilon$ is zero (because it's normally distributed with mean zero), predictions of a linear regression model are obtained by $Y_\text{new} = \beta_0 + \beta_1 X_\text{new}$.
+
+It's not hard to imagine that the univariate linear regression can be generalized to a multivariate linear regression, where we assume that the target variable is a linear combination of $p$ predictor variables: $$
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \; ... \; + \beta_p X_p + \epsilon \;.
+$$ Note that here, $X$, $Y$, and $\epsilon$ are vectors of length corresponding to the number of observations in our data set ($n$ - as above). Analogously, calibrating the $p$ coefficients $\beta_1, \beta_2, ..., \beta_p$ is to minimize the sum of square errors $\sum_i \epsilon_i^2$. While the regression is a line in two-dimensional space for the univariate case, it is a plane in three-dimensional space for bi-variate regression, and so on.
+
+**Implementation**
+
+First, let's load some packages that we will use in this tutorial.
+
+```{r message=F, warning=F}
+library(tidyverse)
+library(ggplot2)
+library(modelr)
+library(forcats)
+library(yardstick)
+library(recipes)
+library(caret)
+library(broom)
+```
+
+To fit a univariate linear regression model in R, we can use the `lm()` function. Already in Chapter \@ref(ch-02), we made linear models by doing:
+
+```{r message=F}
+ddf_ch_lae <- read_csv("./data/ddf_ch_lae.csv") # loads 'ddf_ch_lae'
+df <- ddf_ch_lae %>% 
+  dplyr::select(-NEE_VUT_REF_QC, -TIMESTAMP) %>%  # not numeric features
+  drop_na() 
+```
+
+```{r}
+linmod1 <- lm(GPP_NT_VUT_REF ~ PPFD_IN, data = df)
+```
+
+Here, `GPP_NT_VUT_REF` is $Y$, and `PPFD_IN` is $X$. We can include multiple predictors for a multivariate regression, for example as:
+
+```{r}
+linmod2 <- lm(GPP_NT_VUT_REF ~ PPFD_IN + VPD_F + TA_F, data = df)
+```
+
+or all available features in our data set (all columns other than `GPP_NT_VUT_REF` in `df`) as:
+
+```{r}
+linmod3 <- lm(GPP_NT_VUT_REF ~ ., data = df)
+```
+
+`linmod` is now a model object of class `"lm"`. It is a list containing the following components:
+
+```{r}
+ls(linmod1)
+```
+
+Enter `?lm` in the console for a complete documentation of these components and other details of the linear model implementation.
+
+R offers a set of generic functions that work with this type of object. The following returns a human-readable report of the fit.
+
+```{r}
+summary(linmod1)
+```
+
+We can also extract coefficients $\beta$ with
+
+```{r}
+coef(linmod1)
+```
+
+Under the assumption of normally distributed errors $\epsilon$ with mean zero and constant variance $\sigma^2$, the magnitude of the variance can be estimated by
+
+$$ \widehat{\sigma}^2 = \frac{1}{n-p} \sum_{i=1}^n \epsilon_i^2 $$ 
+
+$\widehat{\sigma}^2$ is also referred to as the *mean square error* (MSE), and its root, $\widehat{\sigma}$ is the *root mean square error* (RMSE).
+
+The RMSE can be extracted from the linear regression model object by:
+
+```{r}
+sigma(linmod1)
+```
+
+The RMSE is also reported in the output of `summary()` as the `Residual standard error`. The MSE can be calculated accordingly as:
+
+```{r}
+sigma(linmod1)^2
+```
+
+Although `summary()` provides a nice, human-readable output, you may find it unpractical to work with. A set of relevant quantities are returned in a tidy format using `tidy()` from the broom package:
+
+```{r}
+library(broom)
+tidy(linmod1)
+```
+
+**Model advantages and concerns**
+
+An advantage of linear regression is that the coefficients provide information that is straight-forward to interpret. We've seen above, that `GPP_NT_VUT_REF` increases by 0.014 for a unit increase in `PPFD_IN`. Of course, the units of the coefficients depend on the units of `GPP_NT_VUT_REF` and `PPFD_IN`. This has the advantage that the data does not need to be normalised. That is, a linear regression model with the same predictive skills can be found, irrespective of whether `GPP_NT_VUT_REF` is given in g Cm$^{-2}$s$^{-1}$ or in kg Cm$^{-2}$s$^{-1}$.
+
+Another advantage of linear regression is that it's much less prone to overfit than other algorithms. We've seen this in the overfitting example above. But this can also be a disadvantage. Indeed, we found that the linear model "poly1" is rather under-fitting. It's not able to capture non-linearities in the observed relationship and exhibits a poorer performance than "poly4" also on the validation data set.
+
+A further limitation is that least squares regression requires $n>p$. In words: the number of observations must be greater than the number of predictors. If this is not given, one can resort to step-wise forward regression, where predictors are sequentially added based on which predictor adds the most additional information at each step. You'll encounter stepwise regression in the Application session 8.
+
+When multiple predictors are linearly correlated, then linear regression cannot discern individual effects and individual predictors may appear statistically insignificant when they would be significant if covarying predicotrs were not included in the model. Such instability can get propagated to predictions. Again, stepwise regression can be used to remedy this problem. However, when one predictor covaries with multiple other predictors, this may not work. For many applications in environmental sciences, we deal with limited numbers of predictors. We can use our own knowledge to examine potentially problematic covariations and make an informed pre-selection rather than throwing all predictors we can possibly think of at our models. Such a pre-selection can be guided by the model performance on a validation data set (more on that below).
+
+An alternative strategy is to use *dimension reduction* methods. Principal Component regression reduces the data to capture only the complementary axes along which our data varies and therefore collapses covarying predictors into a single one that represents their common axis of variation. Partial Least Squares regression works similarly but modifies the principal components so that they are maximally correlated to the target variable. You can read more on their implementation in R [here](https://bradleyboehmke.github.io/HOML/linear-regression.html#PCR).
+
+
+### Metrics
+
+### Model comparison
+
+###
 
 ## Exercises
 
