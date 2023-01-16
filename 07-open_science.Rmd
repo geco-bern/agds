@@ -22,7 +22,7 @@ Although digitization has opened up new research possibilities it also had less 
 
 Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
 
-It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on practices for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
+It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on the practical aspects for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
 
 <!-- ![](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg) -->
 
@@ -81,7 +81,7 @@ Often code depends on various components, packages or libraries. These libraries
 
 If you want to ensure full reproducibility, especially across several years, you will need to capture the state of the system and libraries with which you ran the original analysis.
 
-In R the [{renv} package](<https://rstudio.github.io/renv/>) serves this purpose and will provide an index of all the packages used in your project as well as their version.For a particular project it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis, isolated, portable and reproducible. The analogue in python would be the [virtual environments, or venv program](<https://docs.python.org/3/library/venv.html>).
+In R the [{renv} package](https://rstudio.github.io/renv/) serves this purpose and will provide an index of all the packages used in your project as well as their version.For a particular project it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis, isolated, portable and reproducible. The analogue in python would be the [virtual environments, or venv program](https://docs.python.org/3/library/venv.html).
 
 When setting up your project you can run:
 
@@ -108,8 +108,7 @@ When you move your project to a new system, or share a project on github with co
 renv::restore()
 ```
 
-> As noted in the {renv} documentation. "For development and collaboration, the `.Rprofile`, `renv.lock` and `renv/activate.R` files should be committed to your version control system. But the `renv/library` directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore
-> statements to the project `.gitignore`." We refer to the
+> As noted in the {renv} documentation. "For development and collaboration, the `.Rprofile`, `renv.lock` and `renv/activate.R` files should be committed to your version control system. But the `renv/library` directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore statements to the project `.gitignore`." We refer to the
 
 ### Capturing a system state
 
@@ -196,6 +195,14 @@ At the heart of this discussion are not only practical considerations but also t
 If your R markdown file contains more code than it does text, it should be considered an R script or function (with comments or documentation). Conversely, if your markdown file contains more text than code it probably is easier to collaborate on a true word processing file (or cloud based solution). The use case where the notebooks might serve some importance is true reporting of general statistics, or when using consistent git(hub) version control.
 
 R markdown files have their function for reporting concise results, once generated (through functions or analysis scripts) but should be generally be avoided to develop code / ideas (see cognitive switching remark)!
+
+## Data retention
+
+Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long term data and code retention and versioning.
+
+For code online collaboration tools, such as github, gitlab or codeberg, provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly \~2GB). For small projects data can be included in the repository itself, for larger projects this won't be possible.
+
+To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](<https://zenodo.org/>). This effort by the European commission, but accessible to all, allows for the archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable unique digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](<https://datadryad.org/stash>) and the [Center for Open Science](<https://osf.io/>).
 
 ## Learning objectives
 
