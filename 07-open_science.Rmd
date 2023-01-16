@@ -108,6 +108,9 @@ When you move your project to a new system, or share a project on github with co
 renv::restore()
 ```
 
+> As noted in the {renv} documentation. "For development and collaboration, the `.Rprofile`, `renv.lock` and `renv/activate.R` files should be committed to your version control system. But the `renv/library` directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore
+> statements to the project `.gitignore`." We refer to the
+
 ### Capturing a system state
 
 Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the [**{renv} package**](https://rstudio.github.io/renv/) which manages package version (environments) for you.
