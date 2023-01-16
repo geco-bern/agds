@@ -30,6 +30,8 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages("bookdown", dependencies = TRUE)
+          install.packages("renv")
+          renv::restore()
         shell: Rscript {0}
 
       - name: Cache bookdown results
