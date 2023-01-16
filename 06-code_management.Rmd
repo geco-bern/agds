@@ -49,7 +49,7 @@ Otherwise you can select the repository from the template dropdown menu, select 
 
 <!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png) -->
 
-Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. 
+Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities.
 
 <!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png) -->
 

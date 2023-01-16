@@ -14,15 +14,15 @@ Contents:
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
 
-Although this seems trivial this issue has vexed the scientific community. These days, many scientific publications are based on complex analysis with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis, or the inability to reproduce experimental results, is a complex problem.
+Although this seems trivial this issue has vexed the scientific community. These days, many scientific publications are based on complex analysis with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
 
-This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the increasing digitization of many fields and the comodification of science.
+This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the comodification of science.
 
 Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitzation made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
 
 Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
 
-It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on practices for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
+It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on the practical aspects for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
 
 <!-- ![](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg) -->
 
@@ -36,7 +36,7 @@ R projects
 
 Reproducible science relies on a number of key components. Data management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, structured, location. This structure allows you to determine both the function and or order of a workflow.
 
-It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structure a project in one folder also makes projects portable. All parts reside in one location making it easy to create a github project from this location, or just copy the project to a new drive.
+It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
 An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/computationales/R_proj_template) to work from and adjust on the lab website.
 
@@ -75,13 +75,48 @@ Due to the added complexity of the targets package we won't include extensive ex
 
 <https://books.ropensci.org/targets/walkthrough.html>
 
-### Self-contained environments
+### Capturing your session state
 
-Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the [**{renv} package**](https://rstudio.github.io/renv/) which manages package version (environments) for you. The {renv} package creates a snapshot of your system and allows you to recreate this state elsewhere.
+Often code depends on various components, packages or libraries. These libraries and all software come in specific versions, which might or might not alter the behaviour of the cod which relies on them.
 
-When tasks are even more complex and include components outside of R you can use [**Docker**](https://www.docker.com/) to provide containerization of an operating system and the included application. You can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components.
+If you want to ensure full reproducibility, especially across several years, you will need to capture the state of the system and libraries with which you ran the original analysis.
 
-## Rmarkdown
+In R the [{renv} package](https://rstudio.github.io/renv/) serves this purpose and will provide an index of all the packages used in your project as well as their version.For a particular project it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis, isolated, portable and reproducible. The analogue in python would be the [virtual environments, or venv program](https://docs.python.org/3/library/venv.html).
+
+When setting up your project you can run:
+
+``` r
+# Initiate a {renv} environment
+renv::init()
+```
+
+To initiate your static R environment. Whenever you want to save the state of your project (and its packages) you can call:
+
+``` r
+# Save the current state of the environment / project
+renv::snapshot()
+```
+
+To save any changes made to your environment. All data will be saved in a project description file called a lock file (i.e. renv.lock). It is advised to update the state of your project regularly, and in particular before closing a project.
+
+When you move your project to a new system, or share a project on github with collaborators, you can revert to the original state of the analysis by calling:
+
+``` r
+# On a new system, or when inheriting a project
+# from a collaborator you can use a lock file
+# to restore the session/project state using
+renv::restore()
+```
+
+> As noted in the {renv} documentation. "For development and collaboration, the `.Rprofile`, `renv.lock` and `renv/activate.R` files should be committed to your version control system. But the `renv/library` directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore statements to the project `.gitignore`." We refer to the
+
+### Capturing a system state
+
+Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the [**{renv} package**](https://rstudio.github.io/renv/) which manages package version (environments) for you.
+
+When tasks are even more complex and include components outside of R you can use [**Docker**](https://www.docker.com/) to provide containerization of an operating system and the included ancellary application. You can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components.
+
+## Readable reporting using Rmarkdown
 
 Within Rstudio you can use Rmarkdown dynamic documents to combine both text and code. Rmarkdown is ideal for **reporting** i.e., writing your final document presenting your analysis results. A Rmarkdown documents consists of a header document properties, such as how it should be rendered (as an html page, a docx file or a pdf), and the actual content.
 
@@ -160,6 +195,14 @@ At the heart of this discussion are not only practical considerations but also t
 If your R markdown file contains more code than it does text, it should be considered an R script or function (with comments or documentation). Conversely, if your markdown file contains more text than code it probably is easier to collaborate on a true word processing file (or cloud based solution). The use case where the notebooks might serve some importance is true reporting of general statistics, or when using consistent git(hub) version control.
 
 R markdown files have their function for reporting concise results, once generated (through functions or analysis scripts) but should be generally be avoided to develop code / ideas (see cognitive switching remark)!
+
+## Data retention
+
+Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long term data and code retention and versioning.
+
+For code online collaboration tools, such as github, gitlab or codeberg, provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly \~2GB). For small projects data can be included in the repository itself, for larger projects this won't be possible.
+
+To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](<https://zenodo.org/>). This effort by the European commission, but accessible to all, allows for the archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable unique digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](<https://datadryad.org/stash>) and the [Center for Open Science](<https://osf.io/>).
 
 ## Learning objectives
 
