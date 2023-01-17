@@ -8,7 +8,11 @@ TBC
 
 ## Tutorial
 
-Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them in a transparent fashin and efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
+Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them in a transparent fashion and efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
+
+We refer to data *wrangling* here to encompass the steps for preparing the data set *prior* to modelling - including, the combination of variables from different data sources, the removal of bad data, and the aggregation of data to the desired resolution or granularity (e.g., averaging over all time steps in a day, or over all replicates in a sample).
+
+In contrast, *pre-processing* refers to the additional steps that are either required by the the specific machine learning algorithm used with the data (e.g., centering and scaling for K-Nearest Neighbors or Neural Networks), the gap-filling of variables, or the transformation of variables guided by the resulting improvement of the predictive power of the machine learning model. Pre-processing is part of the modelling workflow and includes all steps that apply transformations that use parameters derived from the data. We will introduce and discuss data pre-processing in Chapter \@ref(supervised_ml).
 
 ### Example data
 
@@ -299,7 +303,7 @@ Here, the data frame has one row per date and therefore the same number of rows 
 
 ### Data cleaning
 
-Data cleaning is often a time-consuming task and decisions taken during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data.
+Data cleaning is often a time-consuming task and decisions taken during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data. An excellent source for further reading is the [Quartz Guide to Bad Data](https://github.com/Quartz/bad-data-guide) which provides an overview of how to deal with different types of bad data.
 
 #### Cleaning formats
 
