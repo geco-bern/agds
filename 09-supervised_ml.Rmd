@@ -2,19 +2,471 @@
 
 **Chapter lead author: Benjamin Stocker**
 
-- Lecture (Beni): Overfitting, training, and cross-validation ([link](https://stineb.github.io/ml4ec_workshop/introduction.html#overfitting))
-- K nearest neighbour models
-- Data splitting
-- Preprocessing, standardization, imputation, dimension reduction, as part of the model training workflow
-- formula notation, recipes, generic train()
-- Training and loss function
-- Hyperparameters
-- Resampling
-- Performance assessment: Exercise comparing performance on test set of linear regression and KNN with different hyperparameter choices (like [this](https://stineb.github.io/ml4ec_workshop/solutions.html)), discuss link to overfitting example
+-   Lecture (Beni): Overfitting, training, and cross-validation ([link](https://stineb.github.io/ml4ec_workshop/introduction.html#overfitting))
+-   K nearest neighbour models
+-   Data splitting
+-   Preprocessing, standardization, imputation, dimension reduction, as part of the model training workflow
+-   formula notation, recipes, generic train()
+-   Training and loss function
+-   Hyperparameters
+-   Resampling
+-   Performance assessment: Exercise comparing performance on test set of linear regression and KNN with different hyperparameter choices (like [this](https://stineb.github.io/ml4ec_workshop/solutions.html)), discuss link to overfitting example
 
 ## Learning objectives
 
+In this workshop, we use ecosystem flux data and parallel measurements of meteorological variables to model ecosystem gross primary production (the ecosystem-level CO2 uptake by photosynthesis). These data and prediction task is used to introduce fundamental methods of machine learning (data preprocessing, data splitting, model formulation, and model training) and their implementations in R. After this course, you will ...
+
+- Understand how overfitting models can happen and how it can be avoided.
+- Implement a typical workflow using a machine learning model for a supervised regression problem.
+- Evaluate the power of the model.
+
 ## Tutorial
+
+### Required packages
+
+```{r message=FALSE, warning=FALSE}
+use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "caret", "yardstick", "lubridate", "rsample", "recipes", "modelr", "forcats")
+new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
+if (length(new_pkgs) > 0) install.packages(new_pkgs)
+invisible(lapply(use_pkgs, require, character.only = TRUE))
+```
+
+### Overfitting {#overfitting}
+
+*This example is based on [this example from scikit-learn](https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.html).*
+
+Machine learning (ML) may appear magical. The ability of ML algorithms to detect patterns and make predictions is fascinating. However, several challenges have to be met in the process of formulating, training, and evaluating the models. In this tutorial we will discuss some basics of supervised ML and how to achieve best predictive results.
+
+In general, the aim of supervised ML is to find a model $\hat{y} = f(x)$ that is *trained* (calibrated) using observed relationships between a set of *features* (also known as *predictors*, or *labels*, or *independent variables*) $x$ and the *target* variable $y$. Note, that $y$ is observed. The hat on $\hat{y}$ denotes an estimate. Some algorithms can even handle predictions of multiple target variables simultaneously (e.g., neural networks). ML algorithms consist of (more or less) flexible mathematical models with a certain structure and set of parameters. At the simple extreme end of the model spectrum is the bivariate linear regression. You may not want to call this a ML algorithm because there is no iterative learning involved. Nevertheless, also bivariate linear regression provides a prediction $\hat{y} = f(x)$, just like other (proper) ML algorithms do. The functional form of a linear regression is not particularly flexible (just a straight line for the best fit between predictors and targets) and it has only two parameters (slope and intercept). At the other extreme end are, for example, deep neural networks. They are extremely flexible, can learn highly non-linear relationships and deal with interactions between a large number of predictors. They also contain very large numbers of parameters, typically on the order of $10^4 - 10^5$ . You can imagine that this allows these types of algorithms to very effectively learn from the data, but also bears the risk of *overfitting*.
+
+What is overfitting? The following example illustrates it. Let's assume that there is some true underlying relationship between a single predictor $x$ and the target variable $y$. We don't know this relationship (in the code below, this is `true_fun()`) and the observations contain a (normally distributed) error (`y = true_fun(x) + 0.1 * rnorm(n_samples)`). Based on our training data (`df_train`), we fit three polynomial models of degree 1, 4, and 15 to the observations. A polynomial of degree $N$ is given by: 
+$$
+y = \sum_{n=0}^N a_n x^n
+$$ 
+$a_n$ are the coefficients, i.e., model parameters. The goal of the training is to find the coefficients $a_n$ so that the predicted $\hat{y}$ fits observed $y$ best. From the above definition, the polynomial of degree 15 has 16 parameters, while the polynomial of degree 1 has two parameters (and corresponds to a simple bivariate linear regression). You can imagine that the polynomial of degree 15 is much more flexible and should thus yield the closest fit to the training data. This is indeed the case.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+true_fun <- function(x){
+  cos(1.5 * pi * x)
+}
+
+set.seed(2)
+
+n_samples <- 30
+
+# create training data
+df_train <- tibble( x = runif(n_samples, min = 0, max = 1)) %>%
+  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) %>%
+  arrange(x)
+
+polyfit_1 <- lm(y ~ poly(x, 1), data = df_train)
+polyfit_4 <- lm(y ~ poly(x, 4), data = df_train)
+polyfit_15 <- lm(y ~ poly(x, 15), data = df_train)
+
+# create a function that takes the data set (here training) and the models and returns the evaluation results (plot with annotated RMSE)
+eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
+
+  # training results
+  df <- df %>%
+    rename(y_true = y) %>%
+    add_predictions(polyfit_1, var = "poly1") %>%
+    add_predictions(polyfit_4, var = "poly4") %>%
+    add_predictions(polyfit_15, var = "poly15")
+
+  ## at equally spaced x
+  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) %>%
+    add_predictions(polyfit_1, var = "poly1") %>%
+    add_predictions(polyfit_4, var = "poly4") %>%
+    add_predictions(polyfit_15, var = "poly15") %>%
+    pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") %>%
+    mutate(fit = fct_relevel(fit, "poly1", "poly4", "poly15"))
+
+  ## get a table (data frame) for the RMSE
+  df_metrics_train <- tibble(
+    fittype = "poly1",
+    rmse = metrics(df,
+                   truth = y_true,
+                   estimate = poly1
+                   ) %>%
+      filter(.metric == "rmse") %>%
+      pull(.estimate)) %>%
+    bind_rows(
+      .,
+      tibble(
+       fittype = "poly4",
+        rmse = metrics(df,
+                   truth = y_true,
+                   estimate = poly4
+                   ) %>%
+         filter(.metric == "rmse") %>%
+         pull(.estimate))
+    ) %>%
+    bind_rows(
+      .,
+      tibble(
+       fittype = "poly15",
+        rmse = metrics(df,
+                   truth = y_true,
+                   estimate = poly15
+                   ) %>%
+         filter(.metric == "rmse") %>%
+         pull(.estimate))
+    )
+
+  # plot training results
+  if (justdata){
+    gg <- ggplot() +
+      geom_point(data = df, aes(x, y_true)) +
+      ylim(-1.5, 1) +
+      labs(y = "y")
+    
+  } else {
+    gg <- ggplot() +
+      geom_point(data = df, aes(x, y_true)) +
+      geom_line(data = df_fit, aes(x = x, y = y_pred, color = fit)) +
+      stat_function(fun = true_fun, linetype = "dotted") +
+      ylim(-1.5, 1) +
+      labs(
+        subtitle = paste("RMSE: poly1 =", format(df_metrics_train$rmse[1], digits = 2), ", poly4 =", format(df_metrics_train$rmse[2], digits = 2), ", poly15 =", format(df_metrics_train$rmse[3], digits = 2)),
+        y = "y")
+    
+  }
+
+  return(gg)
+}
+
+# gg <- eval_fits(df_train, polyfit_1, polyfit_4, polyfit_15, justdata = TRUE)
+# gg + labs(title = "The data")
+
+gg <- eval_fits(df_train, polyfit_1, polyfit_4, polyfit_15)
+gg + labs(title = "Training")
+```
+
+We can use the same fitted models on data that was not used for model fitting - the *validation data*. This is what's done below. Again, the same true underlying relationship is used, but we sample a new set of data points $x$ and add a new sample of errors on top of the true relationship.
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1)
+
+# create testing data
+df_test <- tibble( x = runif(n_samples, min = 0, max = 1)) |>
+  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
+  arrange(x)
+
+gg <- eval_fits(df_test, polyfit_1, polyfit_4, polyfit_15)
+gg + labs(title = "Validation")
+```
+
+You see that, using the validation set, we find that "poly4" actually performs the best - it has a much lower RMSE that "poly15". Apparently, "poly15" was overfitted. Apparently, it indeed used its flexibility to fit not only the shape of the true underlying relationship, but also the observation errors on top of it. This has obviously the implication that, when this model is used to make predictions for data that was not used for training (calibration), it will yield misguided predictions that are affected by the errors in the training set. In the above pictures we can also conclude that "poly1" was underfitted.
+
+It gets even worse when applying the fitted polynomial models to data that extends beyond the range in $x$ that was used for model training. Here, we're extending just 20% to the right.
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1)
+
+# create testing data
+df_test <- tibble( x = runif(n_samples, min = 0, max = 1.2)) |>
+  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
+  arrange(x)
+
+gg <- eval_fits(df_test, polyfit_1, polyfit_4, polyfit_15)
+gg + labs(title = "Validation (with extrapolation)")
+
+# ggsave("fig/overfitting_demo_polynomial.pdf", width = 6, height = 4)
+```
+
+You see that the RMSE for "poly15" literally explodes. The model is hopelessly overfitted and completely useless for prediction, although it looked like it fit the data best when we considered only the training results. This is a fundamental challenge in ML - finding the model with the best *generalisability*. That is, a model that not only fits the training data well, but also performs well on unseen data.
+
+The phenomenon of fitting and overfitting as a function of the *model complexity* is also referred to as the *bias-variance trade-off*. The bias describes how well a model matches the training set (average error). A model with low bias will match the data set closely and vice versa. The variance describes how much a model changes when you train it using different portions of your data set. "poly15" has a high variance, but much of its variance is the result of misled training on observation errors. On the other extreme, "poly1" has a high bias. It's not affected by the noise in observations, but its predictions are also far off the observations. In ML, we are challenged to balance this trade-off.
+
+This chapter introduces the methods to achieve the best model *generalisability* and find the sweet spot between high bias and high variance. The steps to get there include the *preprocessing* of data, *splitting* the data into training and testing sets, and *model training* that "steers" the model towards what is considered a good model fit in terms of its generalisability to data that was not used during training. In this chapter, you learn how all these steps can be implemented in R. Depending on your application or research question, it may also be of interest to evaluate the relationships embodied in $f(x)$ or to quantify the *importance* of different predictors in our model. This is referred to as *model interpretation* and is introduced in Chapter \@ref(interpretable_ml).
+
+Of course, a plethora of algorithms exist that do the job of $y = f(x)$. Each of them has its own strengths and limitations. It is beyond the scope of this course to introduce a larger number of ML algorithms. Subsequent Chapters will focus primarily on the Random Forest algorithm and Neural Networks (NN). For illustration purposes in this chapter, we will use and introduce the K-nearest-Neighbors (KNN) algorithm and compare its performance to a multivariate linear regression for illustration purposes.
+
+### Data and the modelling challenge
+
+We're returning to the ecosystem flux data set that we've used Chapters \@ref(data_wrangling) and \@ref(data_vis). Here, we're using data from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects of seasonally varying foliage cover for which the data does not contain information. For this, we would have to, for example, combine the flux and meteorological data with remotely sensed surface greenness data.
+
+The data set `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` contains a time series of the ecosystem gross primary production (GPP) and a range of meteorological variables, measured in parallel. In this chapter, we formulate a model for predicting GPP from a set of *covariates* (other variables that vary in parallel, here the meteorological variables). This is to say that `GPP_NT_VUT_REF` is the *target* variable, and other variables that are available in our dataset are the *predictors.*
+
+Let's read the data, select suitable variables, and interpret missing value codes, and select only good-quality data (where at least 80% of the underlying half-hourly data was good quality measured data, and not gap-filled).
+
+```{r warning=FALSE, message=FALSE}
+ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+  
+  # select only the variables we are interested in
+  select(TIMESTAMP,
+         GPP_NT_VUT_REF,    # the target
+         NEE_VUT_REF_QC,    # quality control info
+         ends_with("_F"),   # includes all all meteorological covariates
+         -contains("JSB")   # weird useless variable
+         ) |>
+
+  # convert to a nice date object
+  mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
+
+  # set all -9999 to NA
+  na_if(-9999) |>
+  
+  # retain only data based on >=80% good-quality measurements
+  # overwrite bad data with NA (not dropping rows)
+  mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) |> 
+
+  # drop QC variables (no longer needed)
+  select(-ends_with("_QC"))
+```
+
+Note that these steps above are considered data *wrangling* and are *not* part of the modelling process.
+
+
+### K-nearest Neighbours
+
+Before we start with the model training workflow, let's introduce the K-nearest neighbour (KNN) algorithm which is used here for demonstration purposes. It perfectly serves the purpose of demonstrating the bias-variance trade-off (see below). As the name suggests, KNN uses the $k$ observations that are "nearest" to the new record for which we want to make a prediction. It then calculates their average (in regression) or most frequent value (in classification) and uses this for the prediction of the target value. "Nearest" is determined by some distance metric evaluated based on the values of the predictors. In our example (`GPP_NT_VUT_REF ~ .`), KNN would determine the $k$ days where conditions, given by our set of predictors, were most similar (nearest) to the day for which we seek a prediction. Then, it calculates the prediction as the average (mean) GPP value of these days. Determining "nearest" neighbors is commonly based on either the *Euclidean* or *Manhattan* distances between two data points $x_a$ and $x_b$, considering all $p$ predictors $j$.
+
+Euclidean distance: 
+$$
+\sqrt{ \sum_{j=1}^p (x_{a,j} - x_{b,j})^2  } \\
+$$ 
+
+Manhattan distance: 
+$$
+\sum_{j=1}^p | x_{a,j} - x_{b,j} |
+$$
+In two-dimensional space, the Euclidean distance measures the length of a straight line between two points (remember Pythagoras!). The Manhattan distance is called this way because it measures the distance you would have to walk to get from point $a$ to point $b$ in Manhattan, New York, where you cannot cut corners but have to follow a rectangular grid of streets. $|x|$ is the absolute value of $x$ ( $|-x| = x$).
+
+KNN is a simple algorithm that uses knowledge of the "local" data structure for prediction. A drawback is that the model training has to be done for each prediction step and the computation time of the training increases with $x \times p$. KNNs are used, for example, to impute values (fill missing values) and have the advantage that predicted values are always within the range of observed values of the target variable.
+
+
+### Model formulation
+
+The aim of supervised ML is to find a model $\hat{y} = f(x)$ so that $\hat{y}$ agrees well with observations $y$. We typically start with a research question where $y$ is given - naturally - by the problem we are addressing and we have a data set at hand where one or multiple predictors (or "features") $x$ are recorded along with $y$. From our data, we have information about how GPP (ecosystem-level photosynthesis) depends on set of abiotic factors, mostly meteorological measurements.
+
+#### Formula notation
+
+In R, it is common to use the *formula* notation to specify the target and predictor variables. You have encountered formulas before, e.g., for a linear regression using the `lm()` function. To specify a linear regression model for `GPP_NT_VUT_REF` with three predictors `SW_F_IN`, `VPD_F`, and `TA_F`, we write:
+
+```{r eval=F}
+lm(GPP_NT_VUT_REF ~ SW_F_IN + VPD_F + TA_F, data = ddf)
+```
+
+#### The generic `train()`
+
+The way we formulate a model can be understood as being independent of the algorithm, or *engine*, that takes care of fitting $f(x)$. The R package [*caret*](https://topepo.github.io/caret/) provides a unified interface for using different ML algorithms implemented in separate packages. In other words, it acts as a *wrapper* for multiple different model fitting, or ML algorithms. This has the advantage that it unifies the interface - the way arguments are provided and outputs are returned. *caret* also provides implementations for a set of commonly used tools for data processing, model training, and evaluation. We'll use *caret* here for model training with the function `train()`. Note however, that using a specific algorithm, which is implemented in a specific package outside *caret*, also requires that the respective package be installed and loaded. Using *caret* for specifying the same linear regression model as above, the base-R `lm()` function, can be done with caret in a generalized form as:
+
+```{r}
+train(
+  form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
+  data = ddf |> drop_na(), 
+  trControl = trainControl(method = "none"),
+  method = "lm"
+)
+```
+
+Note the argument specified as `trControl = trainControl(method = "none")`. This suppresses the default approach to model fitting in *caret* - to *resample* using *bootstrapping.* More on that below. Note also that we dropped all rows that contained at least one missing value - necessary to apply the least squares method for the linear regression model fitting. It's advisable to apply this data removal step only at the very last point of the data processing and modelling workflow. Alternative algorithms may be able to deal with missing values and we want to avoid losing information.
+
+Of course, it is an overkill compared to write this as in the chunk above compared to just writing `lm(...)`. But the advantage of the unified interface is that we can simply replace the `method` argument to use a different ML algorithm. For example, to use KNN, we just can write:
+
+```{r}
+train(
+  form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
+  data = ddf |> drop_na(), 
+  trControl = trainControl(method = "none"),
+  method = "knn"
+)
+```
+
+### Data splitting
+
+The introductory example demonstrated the importance of validating the fitted model with data that was *not* used for training. Thus, we can test the model's *generalisability* to new ("unseen") data. The essential step that enables us to assess the model's *generalization error* is to hold out part of the data from training, and set it aside (leaving it absolutely untouched) for *testing*.
+
+There is no fixed rule for how much data are to be used for training and testing, respectively. We have to balance the trade-off between:
+
+- Spending too much data for training will leave us with too little data for testing and the test results may not be robust. In this case, the sample size for getting robust validation statistics is not sufficiently large and we don't know for sure whether we are safe from an over-fit model.
+- Spending too much data for validation will leave us with too little data for training. In this case, the ML algorithm may not be successful at finding real relationships due to insufficient amounts of training data.
+
+Typical splits are between 60-80% for training. However, in cases where the number of data points is very large, the gains from having more training data are marginal, but come at the cost of adding to the already high computational burden of model training.
+
+In environmental sciences, the number of predictors is often smaller than the sample size ($p < n$), because its typically easier to collect repeated observations of a particular variable than to expand the set of variables being observed. Nevertheless, in cases where the number $p$ gets large, it is important, and for some algorithms mandatory, to maintain $p < n$ for model training.
+
+An important aspect to consider when splitting the data is to make sure that all "states" of the system for which we have data are well represented in training and testing sets. A particularly challenging case is posed when it is of particular interest that the algorithm learns relationships $f(x)$ under rare conditions $x$, for example meteorological extreme events. If not addressed with particular measures, model training tends to achieve good model performance for the most common conditions. A simple way to put more emphasis for model training on extreme conditions is to compensate by sampling overly proportional from such cases for the training data set.
+
+Several alternative functions for the data splitting step are available from different packages in R. We will use the the *rsample* package as it allows to additionally make sure that data from the full range of a given variable's values (`VPD_F` in the example below) are well covered in both training and testing sets.
+
+```{r warning=FALSE, message=FALSE}
+set.seed(123)  # for reproducibility
+split <- initial_split(ddf, prop = 0.7, strata = "VPD_F")
+ddf_train <- training(split)
+ddf_test <- testing(split)
+```
+
+Plot the distribution of values in the training and testing sets.
+
+```{r warning=FALSE, message=FALSE}
+ddf_train |> 
+  mutate(split = "train") |> 
+  bind_rows(ddf_test |> 
+    mutate(split = "test")) |> 
+  pivot_longer(cols = 2:9, names_to = "variable", values_to = "value") |> 
+  ggplot(aes(x = value, y = ..density.., color = split)) +
+  geom_density() +
+  facet_wrap(~variable, scales = "free")
+```
+
+### Pre-processing {#preprocessing}
+
+Data pre-processing is aimed at preparing the data for use in a specific model fitting procedure and at improving the effectiveness of model training.The splitting of the data into a training and test set makes sure that no information from the test set is used during or before model training. It is important to make sure that absolutely no information from the test set finds its way into the training set (*data leakage*).
+
+In a general sense, pre-processing involve data transformations where the transformation functions use parameters that are determined on the data itself. Consider, for example, the *normalization.* That is, the linear transformation of a vector of values $x_i$ to have zero mean (data is *centered*, $\mu = 0$) and a standard deviation of 1 (data is *scaled* to $\sigma = 1$). In order to avoid data leakage, the mean and standard deviation have to be determined on the training set only. Then, the normalization of the training and the test sets both use set of ($\mu, \sigma$) determined on the training set.
+
+Often, multiple splits of the data are considered during model training. Hence, an even larger number of data transformation parameters have to be determined and transformations applied to the multiple splits of the data. *caret* deals with this for you and the transformations do not have to be "manually" applied before applying the `train()` function call. Instead, the data pre-processing is considered an integral step of model training and instructions are specified as part of the `train()` function call and along with the un-transformed data.
+
+The [*recipes*](https://recipes.tidymodels.org/) package provides yet another, and particularly powerful way to specify the *formula* and pre-processing steps in one go. It is compatible with caret's `train()` function. For the same formula as above, and an example where the data `ddf_train` is to be normalized centered and scaled, we can specify the "recipe" using the pipe operator as:
+
+```{r}
+pp <- recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train) |> 
+  step_center(all_numeric(), -all_outcomes()) |>
+  step_scale(all_numeric(), -all_outcomes())
+```
+
+The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "*recipes* speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `ddf_train`, but rather the information that allows us to apply the same pre-processing also to other data sets.
+
+The object `pp` can then be supplied to `train()` as its first argument:
+
+```{r, eval=FALSE}
+train(
+  pp, 
+  data = ddf_train, 
+  method = "knn",
+  trControl = trainControl(method = "none")
+)
+```
+The example above showed data normalization as a data pre-processing step. Data pre-processing can be done for different aims, as described in sub-sections below.
+
+#### Transforming the distribution
+
+
+Skewed data, outliers, and values covering multiple orders of magnitude can create difficulties for certain ML algorithms, e.g., or K-nearest neighbours, or neural networks. Other algorithms, like tree-based methods (e.g., Random Forest), are more robust against such issues.
+
+#### Dealing with missingness and bad data
+
+Several ML algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* (Kuhn & Johnson, 2003) and its information can be used for predictions. For categorical data, we may replace such data with `"none"` (instead of `NA`), while randomly missing data may be dropped altogether. Some ML algorithms (mainly tree-based methods, e.g., random forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
+
+Visualising missing data is essential for making decisions about dropping rows with missing data versus removing predictors from the model (which would imply too much data removal). The cells with missing data in a data frame can be eaily visualised e.g. with `vis_miss()` from the *visdat* package.
+
+```{r warning=FALSE, message=FALSE}
+library(visdat)
+vis_miss(
+  ddf,
+  cluster = FALSE, 
+  warn_large_data = FALSE
+  )
+```
+
+The question about what is "bad data" and whether or when it should be removed is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during its process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions.
+
+#### Standardization
+
+Several algorithms explicitly require data to be standardized. That is, values of all predictors vary within a comparable range. The necessity of this step becomes obvious when considering neural networks, the activation functions of each node have to deal with standardized inputs. In other words, inputs have to vary over the same range, expecting a mean of zero and standard deviation of one.)
+
+To get a quick overview of the distribution of all variables (columns) in our data frame, we can use the *skimr* package.
+
+```{r}
+library(skimr)
+knitr::kable(skim(ddf))
+```
+
+We see for example, that typical values of `LW_IN_F` are by a factor 100 larger than values of `VPD_F`. KNN uses the distance from neighbouring points for predictions. Obviously, in this case here, any distance would be dominated by `LW_IN_F` and distances in the "direction" of `VPD_F`, even when relatively large, would not be influential, neither for a Euclidean nor a Manhattan distance (see \@ref(introduction)). In neural networks, activation functions take values in a given range (0-1). Thus, for both algorithms, data has to be standardized prior to model training.
+
+Standardization is done, for example, by dividing each variable, that is all values in one column, by the standard deviation of that variable, and then subtracting its mean. This way, the resulting standardized values are centered around 0, and scaled such that a value of 1 means that the data point is one standard deviation above the mean of the respective variable (column). When applied to all predictors individually, the absolute values of their variations can be directly compared and only then it can be meaningfully used for determining the distance.
+
+Standardization can be done not only by centering and scaling (as described above), but also by *scaling to within range*, where values are scaled such that the minimum value within each variable (column) is 0 and the maximum is 1.
+
+In order to avoid *data leakage*, centering and scaling has to be done separately for each split into training and validation data (more on that later). In other words, don't center and scale the entire data frame with the mean and standard deviation derived from the entire data frame, but instead center and scale with mean and standard deviation derived from the training portion of the data, and apply that also to the validation portion, when evaluating.
+
+The *caret* package takes care of this. The R package [**caret**](https://topepo.github.io/caret/) provides a unified interface for using different ML algorithms implemented in separate packages. The preprocessing steps applied with each resampling fold can be specified using the function `preProcess()`. More on resampling in Chapter \@ref(training).
+
+```{r warning=FALSE, message=FALSE}
+library(caret)
+pp <- preProcess(ddf_train, method = c("center", "scale"))
+```
+
+As seen above for the feature engineering example, this does not return a standardized version of the data frame `ddf`. Rather, it returns the information that allows us to apply the same standardization also to other data sets. In other words, we use the distribution of values in the data set to which we applied the function to determine the centering and scaling (here: mean and standard deviation).
+
+#### More pre-processing
+
+Depending on the algorithm and the data, additional pre-processing steps may be required. You can find more information about this in the great and freely available online tutorial [Hands-On Machine Learning in R](https://bradleyboehmke.github.io/HOML/engineering.html#target-engineering).
+
+One such additional pre-processing step is *imputation*, where missing values are imputed (gap-filled), for example by the mean of each variable respectively. Also imputation is prone to cause data leakage and must therefore be implemented as part of the resampling and training workflow. The **recipes** package offers a great way to deal with imputation (and also all other pre-processing steps). [Here](https://bradleyboehmke.github.io/HOML/engineering.html#impute) is a link to learn more about it.
+
+
+### Model training {#training}
+
+Model training in supervised ML is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm takes care of progressively reducing the loss during model training. Let's say the ML model contains two parameters and predictions can be considered a function of the two ($\hat{Y}(w_1, w_2)$). $Y$ is actually constant. Thus, the loss function is effectively a function $L(w_1, w_2)$. Therefore, we can consider the model training as a search of the parameter space of the machine learning model $(w_1, w_2)$ to find the minimum of the loss. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.
+
+```{r, echo = FALSE, fig.cap = "Visualization of a loss function as a plane spanned by the two parameters $w_1$ and $w_2$."}
+knitr::include_graphics("./figures/loss_plane.png")
+```
+
+Model training is implemented in R for different algorithms in different packages. Some algorithms are even implemented by multiple packages (e.g., `nnet` and `neuralnet` for artificial neural networks). As described in Chapter \@ref(preprocessing), the **caret** package provides "wrappers" that handle a large selection of different ML model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The **caret** function `train()` is the centre piece. Its argument `metric` specifies the loss function and defaults to the RMSE for regression models and accuracy for classification (see sub-section on metrics below).
+
+#### Hyperparameter tuning
+
+Practically all ML algorithms have some "knobs" to turn in order to achieve efficient model training and predictive performance. Such "knobs" are the *hyperparameters*. What these knobs are, depends on the ML algorithm.
+
+For KNN, this is `k` - the number of neighbours to consider for determining distances. There is always an optimum $k$. Obviously, if $k = n$, we consider all observations as neighbours and each prediction is simply the mean of all observed target values $Y$, irrespective of the predictor values. This cannot be optimal and such a model is likely underfit. On the other extreme, with $k = 1$, the model will be strongly affected by the noise in the single nearest neighbour and its generalisability will suffer. This should be reflected in a poor performance on the validation data.
+
+For random forests from the **ranger** package, hyperparameters are:
+
+-   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors.
+-   `min.node.size`: the number of data points at the "bottom" of each decision tree
+-   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision
+
+Hyperparameters usually have to be "tuned". The optimal setting depends on the data and can therefore not be known *a priori*.
+
+In **caret**, hyperparameter tuning is implemented as part of the `train()` function. Values of hyperparameters to consider are to be specified by the argument `tuneGrid`, which takes a data frame with column(s) named according to the name(s) of the hyperparameter(s) and rows for each combination of hyperparameters to consider.
+
+```{r eval=F}
+## do not run
+train(
+  form = GPP_NT_VUT_REF ~ SW_F_IN + VPD_F + TA_F, 
+  data = ddf, 
+  method = "ranger",
+  tuneGrid = expand.grid( .mtry = floor(6 / 3),
+                          .min.node.size = c(3, 5, 9,15, 30),
+                          .splitrule = c("variance", "maxstat")),
+  ...
+)
+```
+
+Here, `expand.grid()` is used to provide a data frame with all combinations of values provided by individual vectors.
+
+#### Resampling
+
+The goal of model training is to achieve the best possible model generalisability. That is, the best possible model performance when predicting to data that was not used for training - the test data. Resampling mimicks the comparison of predictions to the test data. Instead of using all training data, the training data is *resampled* into a number further splits into pairs of training and *validation* data. Model training is then guided by minimising the average loss determined on each resample of the validation data. Having multiple resamples (multiple *folds* of training-validation splits) avoids the loss minimization from being misguided by random peculiarities in the training and/or validation data.
+
+A common resampling method is *k-fold cross validation*, where the training data is split into *k* equally sized subsets (*folds*). Then, there will be *k* iterations, where each fold is used for validation once (while the remaining folds are used for training). An extreme case is *leave-one-out cross validation*, where *k* corresponds to the number of data points.
+
+```{r, echo = FALSE}
+## figure from https://bradleyboehmke.github.io/HOML/process.html
+knitr::include_graphics("figures/cv.png")
+```
+
+To do a k-fold cross validation during model training in R, we don't have to implement the loops around folds ourselves. The resampling procedure can be specified in the **caret** function `train()` with the argument `trControl`. The object that this argument takes is the output of a function call to `trainControl()`. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:
+
+```{r eval=F}
+## do not run
+train(
+  pp, 
+  data = ddf_train, 
+  method = "ranger",
+  tuneGrid = expand.grid( .mtry = floor(6 / 3),
+                          .min.node.size = c(3, 5, 9,15, 30),
+                          .splitrule = c("variance", "maxstat")),
+  trControl = trainControl(method = "cv", number = 10),
+  ...
+)
+```
+
+In certain cases, data points stem from different "groups", and generalisability across groups is critical. In such cases, data from a given group must not be used both in the training and validation sets. Instead, splits should be made along group delineations. The *caret* function `groupKFold()` offers the solution for this case.
 
 ## Exercises
 
