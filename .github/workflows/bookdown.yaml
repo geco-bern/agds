@@ -13,7 +13,7 @@ name: bookdown
 jobs:
   bookdown:
     # run on mac - generally faster
-    runs-on: ubuntu-20.04
+    runs-on: macos-latest
     timeout-minutes: 60
     # Only restrict concurrency for non-PR jobs
     concurrency:
