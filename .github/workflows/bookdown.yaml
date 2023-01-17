@@ -13,7 +13,7 @@ name: bookdown
 jobs:
   bookdown:
     # run on mac - generally faster
-    runs-on: macOS-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 60
     # Only restrict concurrency for non-PR jobs
     concurrency:
@@ -29,6 +29,7 @@ jobs:
       
       - name: Install dependencies
         run: |
+          options(repos = c(REPO_NAME = "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"))
           install.packages("bookdown", dependencies = TRUE)
           install.packages("renv")
           renv::restore()
