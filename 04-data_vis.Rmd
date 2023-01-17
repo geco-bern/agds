@@ -9,7 +9,7 @@ TBC
 ## Required packages
 
 ```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "cowplot", "lubridate", "scico")
+use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "cowplot", "lubridate", "scico", "hexbin")
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
@@ -163,7 +163,7 @@ Note that the red line plotted by `geom_density()` on top of the density histogr
 
 To visualize distributions of a single continuous variable within categories, perhaps the most common visualization type is the *box plot*. As described in Chapter \@ref(data_wrangling), it shows the median (bold line in the center), the upper and lower quartiles, corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot. The lines extending from the box edges visualize the range of $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Any point outside this range is plotted by a point.
 
-The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, \$Q_1 , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution and does not reflect information about the data volume. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to each box. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The form of their edge is given by the density distribution of the points they represent.
+The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, $Q_1$ , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution and does not reflect information about the data volume. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to each box. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The form of their edge is given by the density distribution of the points they represent.
 
 ```{r}
 # Box plot

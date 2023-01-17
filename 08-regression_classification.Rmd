@@ -23,49 +23,6 @@ After completing this tutorial, you will be able to:
 
 ## Tutorial
 
-### Types of models
-
-Models try to explain relationships between variables through a mathematical formulation, particularly to predict a given target variable using other variables. Generally, models are represented as follows:
-$$Y = f(X, \beta, \epsilon)$$
-where 
--   $Y$ is the target variable, 
--   $f$ is a function (or the model), 
--   $X$ are the explanatory variables,
--   $\beta$ are the model parameters
--   and $\epsilon$ are the error terms. 
-
-For example, we can try to explain 
-
-Depending on the structure of these components, we get to different modelling approaches.
-
-The first distinction comes from the type of target variable. Whenever $Y$ is a continuous variable, we are facing a *regression* problem. If $Y$ is categorical, we talk about *classification*.
-
-
-|                 | Regression        | Classification            |
-| --------------- | -------------     | -----------------         |
-| Target variable | Continuous        | Categorical               |
-| Common models   | Linear regression | Logistic regression, KNN  |
-| Metrics         | RMSE, $R^2$              | Accuracy, precision, AUC, F1  |
-
-
-### Linear Regression
-
-**Theory**
-
-Let's start with the simplest model: linear regression. We assume a linear relationship between $X$ and $Y$: $$
-Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \;\;\; i = 1, 2, ...n \;,
-$$ where $Y_i$ is the i-th observation of the target variable, and $X_i$ is the i-th value of the (single) predictor variable. The errors $\epsilon_i$ are assumed to be independent from each other (no autocorrelation), normally distributed, have mean of zero and a constant variance. $\beta_0$ and $\beta_1$ are constant coefficients (model parameters). Fitting a linear regression is finding the values for $\beta_0$ and $\beta_1$ so that the sum of the square errors is minimized, that is: $$
-\sum_i \epsilon_i^2 = \sum_i (Y_i - \beta_0 - \beta_1 X_i)^2 = \text{min}.
-$$
-
-Since the expected value of $\epsilon$ is zero (because it's normally distributed with mean zero), predictions of a linear regression model are obtained by $Y_\text{new} = \beta_0 + \beta_1 X_\text{new}$.
-
-It's not hard to imagine that the univariate linear regression can be generalized to a multivariate linear regression, where we assume that the target variable is a linear combination of $p$ predictor variables: $$
-Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \; ... \; + \beta_p X_p + \epsilon \;.
-$$ Note that here, $X$, $Y$, and $\epsilon$ are vectors of length corresponding to the number of observations in our data set ($n$ - as above). Analogously, calibrating the $p$ coefficients $\beta_1, \beta_2, ..., \beta_p$ is to minimize the sum of square errors $\sum_i \epsilon_i^2$. While the regression is a line in two-dimensional space for the univariate case, it is a plane in three-dimensional space for bi-variate regression, and so on.
-
-**Implementation**
-
 First, let's load some packages that we will use in this tutorial.
 
 ```{r message=F, warning=F}
@@ -79,23 +36,79 @@ library(caret)
 library(broom)
 ```
 
-To fit a univariate linear regression model in R, we can use the `lm()` function. Already in Chapter \@ref(ch-02), we made linear models by doing:
+### Types of models
+
+Models try to explain relationships between variables through a mathematical formulation, particularly to predict a given target variable using other variables. Generally, we say that the target variable $Y$ is a function (denoted $f$) of a set of explanatory variables $X_1, X_2, \dots, X_p$ and some model parameters $\beta$. Models can be represented as:
+$$Y \sim f(X_1, X_2, \dots, X_p, \beta)$$
+
+This is a very general notation and depending on the structure of these components, we get to different modelling approaches.
+
+The first distinction comes from the type of target variable. Whenever $Y$ is a continuous variable, we are facing a *regression* problem. If $Y$ is categorical, we talk about *classification*.
+
+|                 | Regression        | Classification               |
+|-----------------|-------------------|------------------------------|
+| Target variable | Continuous        | Categorical                  |
+| Common models   | Linear regression, polynomial regression, non-parametric regression | Logistic regression, KNN, SVM     |
+| Metrics         | RMSE, $R^2$, adjusted $R^2$       | Accuracy, precision, AUC, F1 |
+
+### Linear Regression
+
+**Theory**
+
+Let's start with the simplest model: linear regression. You probably have studied linear regression from a statistical perspective, here we will take a data-fitting approach.
+
+For example, we can try to explain the relationship between GPP and short wave radiation, like in the [visualisation tutorial](#data_vis). The figure below shows a cloud of data points, and a straight line predicting GPP based on observed shortwave radiation values.
+
+```{r}
+hhdf <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+set.seed(2023)
+gg1 <- hhdf |>
+  sample_n(1000) |>  # to reduce the dataset
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+  geom_point(size = 0.75) +
+  geom_smooth(method = "lm", color = "red") +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  theme_classic()
+
+segment_points <- data.frame(x0 = 332, y0 = 3.65, y_regr = 8.77)
+
+gg1 +
+  geom_segment(aes(x = x0, y = y0, xend = x0, yend = y_regr), 
+               data = segment_points,
+               color = "blue", lwd = 1.2, alpha = 0.8)
+```
+
+We want to find the best straight line that approximates a cloud of data points. For this, we assume a linear relationship between a single explanatory variable $X$ and our target $Y$: $$
+Y_i \sim \beta_0 + \beta_1 X_i, \;\;\; i = 1, 2, ...n \;,
+$$ where $Y_i$ is the i-th observation of the target variable, and $X_i$ is the i-th value of the (single) predictor variable. $n$ is the number of observations we have and $\beta_0$ and $\beta_1$ are constant coefficients (model parameters). We call $\beta_0$ the intercept and $\beta_1$ the slope of the regression line.
+
+Fitting a linear regression is finding the values for $\beta_0$ and $\beta_1$ such that, on average over all points, the distance between the line at $X_i$, that is $\beta_0 + \beta_1 X_i$ (in blue), and the observed value $Y_i$, is as small as possible. Mathematically, this is minimizing the sum of the square errors, that is: $$ \min_{\beta_0, \beta_1} \sum_i (Y_i - \beta_0 - \beta_1 X_i)^2 .$$
+
+This linear model can be used to make predictions on new data, which are obtained by $Y_\text{new} = \beta_0 + \beta_1 X_\text{new}$. When the new data comes from the same distribution as the data used to fit the regression line, this should be a good prediction.
+
+It's not hard to imagine that the univariate linear regression can be generalized to a multivariate linear regression, where we assume that the target variable is a linear combination of $p$ predictor variables:
+$$Y \sim \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \; ... \; + \beta_p X_p \;.$$
+Note that here, $X_1, \dots, X_p$ and $Y$ are vectors of length corresponding to the number of observations in our data set ($n$ - as above). Analogously, calibrating the $p+1$ coefficients $\beta_0, \beta_1, \beta_2, ..., \beta_p$ is to minimize the sum of square errors 
+$$\min_{\beta} \sum_i (Y_i - \beta_0 - \beta_1X_{1,i} - \beta_2 X_{2, i} - \;... - \beta_p X_{p, i})^2.$$ 
+While the regression is a line in two-dimensional space for the univariate case, it is a plane in three-dimensional space for bi-variate regression, and hyperplanes in higher dimensions.
+
+**Implementation**
+
+To fit a univariate linear regression model in R, we can use the `lm()` function. Already in Chapter [3](#data_wrangling), we made linear models by doing:
 
 ```{r message=F}
-ddf_ch_lae <- read_csv("./data/ddf_ch_lae.csv") # loads 'ddf_ch_lae'
-df <- ddf_ch_lae %>% 
-  dplyr::select(-NEE_VUT_REF_QC, -TIMESTAMP) %>%  # not numeric features
-  drop_na() 
+df <- hhdf %>%
+  dplyr::select(GPP_NT_VUT_REF, SW_IN_F, VPD_F, TA_F) %>%  # 
+  drop_na()
+
+linmod1 <- lm(GPP_NT_VUT_REF ~ SW_IN_F, data = df)
 ```
 
-```{r}
-linmod1 <- lm(GPP_NT_VUT_REF ~ PPFD_IN, data = df)
-```
-
-Here, `GPP_NT_VUT_REF` is $Y$, and `PPFD_IN` is $X$. We can include multiple predictors for a multivariate regression, for example as:
+Here, `GPP_NT_VUT_REF` is $Y$, and `SW_IN_F` is $X$. We can include multiple predictors for a multivariate regression, for example as:
 
 ```{r}
-linmod2 <- lm(GPP_NT_VUT_REF ~ PPFD_IN + VPD_F + TA_F, data = df)
+linmod2 <- lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = df)
 ```
 
 or all available features in our data set (all columns other than `GPP_NT_VUT_REF` in `df`) as:
@@ -112,7 +125,7 @@ ls(linmod1)
 
 Enter `?lm` in the console for a complete documentation of these components and other details of the linear model implementation.
 
-R offers a set of generic functions that work with this type of object. The following returns a human-readable report of the fit.
+R offers a set of generic functions that work with this type of object. The following returns a human-readable report of the fit. Here the *residuals* are the difference between the observed target values and the predicted values.
 
 ```{r}
 summary(linmod1)
@@ -124,34 +137,20 @@ We can also extract coefficients $\beta$ with
 coef(linmod1)
 ```
 
-Under the assumption of normally distributed errors $\epsilon$ with mean zero and constant variance $\sigma^2$, the magnitude of the variance can be estimated by
-
-$$ \widehat{\sigma}^2 = \frac{1}{n-p} \sum_{i=1}^n \epsilon_i^2 $$ 
-
-$\widehat{\sigma}^2$ is also referred to as the *mean square error* (MSE), and its root, $\widehat{\sigma}$ is the *root mean square error* (RMSE).
-
-The RMSE can be extracted from the linear regression model object by:
-
+and the residual sum of squares (which we wanted to minimize) with
 ```{r}
-sigma(linmod1)
+sum(residuals(linmod1)^2)
 ```
 
-The RMSE is also reported in the output of `summary()` as the `Residual standard error`. The MSE can be calculated accordingly as:
+Although `summary()` provides a nice, human-readable output, you may find it unpractical to work with. A set of relevant statistical quantities are returned in a tidy format using `tidy()` from the `broom` package:
 
 ```{r}
-sigma(linmod1)^2
-```
-
-Although `summary()` provides a nice, human-readable output, you may find it unpractical to work with. A set of relevant quantities are returned in a tidy format using `tidy()` from the broom package:
-
-```{r}
-library(broom)
 tidy(linmod1)
 ```
 
 **Model advantages and concerns**
 
-An advantage of linear regression is that the coefficients provide information that is straight-forward to interpret. We've seen above, that `GPP_NT_VUT_REF` increases by 0.014 for a unit increase in `PPFD_IN`. Of course, the units of the coefficients depend on the units of `GPP_NT_VUT_REF` and `PPFD_IN`. This has the advantage that the data does not need to be normalised. That is, a linear regression model with the same predictive skills can be found, irrespective of whether `GPP_NT_VUT_REF` is given in g Cm$^{-2}$s$^{-1}$ or in kg Cm$^{-2}$s$^{-1}$.
+An advantage of linear regression is that the coefficients provide information that is straight-forward to interpret. We've seen above, that `GPP_NT_VUT_REF` increases by 0.0247 for a unit increase in `SW_IN_F`. Of course, the units of the coefficients depend on the units of `GPP_NT_VUT_REF` and `SW_IN_F`. This has the advantage that the data does not need to be normalised. That is, a linear regression model with the same predictive skills can be found, irrespective of whether `GPP_NT_VUT_REF` is given in g Cm$^{-2}$s$^{-1}$ or in kg Cm$^{-2}$s$^{-1}$.
 
 Another advantage of linear regression is that it's much less prone to overfit than other algorithms. We've seen this in the overfitting example above. But this can also be a disadvantage. Indeed, we found that the linear model "poly1" is rather under-fitting. It's not able to capture non-linearities in the observed relationship and exhibits a poorer performance than "poly4" also on the validation data set.
 
@@ -161,12 +160,11 @@ When multiple predictors are linearly correlated, then linear regression cannot 
 
 An alternative strategy is to use *dimension reduction* methods. Principal Component regression reduces the data to capture only the complementary axes along which our data varies and therefore collapses covarying predictors into a single one that represents their common axis of variation. Partial Least Squares regression works similarly but modifies the principal components so that they are maximally correlated to the target variable. You can read more on their implementation in R [here](https://bradleyboehmke.github.io/HOML/linear-regression.html#PCR).
 
-
 ### Metrics
 
 ### Model comparison
 
-###
+### 
 
 ## Exercises
 
