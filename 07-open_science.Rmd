@@ -2,14 +2,6 @@
 
 **Chapter lead author: Koen Hufkens**
 
-Contents:
-
--   Lecture (Koen): Open science - history, motivation, reproducibility crisis, current initiatives, overview of practices
--   Environmental data repositories
--   Methods to create visualised reproducible workflow ???
--   RMarkdown files
--   Performance assessment: **CAT 3**, [link to Dietze exercise on pair coding](https://github.com/stineb/EF_Activities/blob/master/Exercise_04_PairCoding.Rmd)
-
 ## Introduction
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
@@ -38,7 +30,7 @@ Reproducible science relies on a number of key components. Data management and t
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
-An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/computationales/R_proj_template) to work from and adjust on the lab website.
+An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/computationales/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
 
 ``` bash
 data-raw/
@@ -114,7 +106,7 @@ renv::restore()
 
 Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the {renv} package which manages package version (environments) for you. When tasks are even more complex and include components outside of R you can use [**Docker**](https://www.docker.com/) to provide containerization of an operating system and the included ancillary application.
 
-The [{rocker} project](<https://rocker-project.org/>) provides access to some of these features within the context of reproducible R environments. Using these tools you can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components. The application of docker based installs is outside the scope of the current course, but feel free to explore these resources as they are widespread in data science.
+The [{rocker} project](https://rocker-project.org/) provides access to some of these features within the context of reproducible R environments. Using these tools you can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components. The application of docker based installs is outside the scope of the current course, but feel free to explore these resources as they are widespread in data science.
 
 ### Readable reporting using Rmarkdown
 
@@ -142,6 +134,11 @@ its area is `r pi * x^2`.
 ````
 
 The document can be rendered by calling `rmarkdown::render()` on the command line or hitting the "Knit" button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).
+
+``` r
+# render the document on the command line
+rmarkdown::render()
+```
 
 #### Referencing and finding files
 
@@ -184,7 +181,7 @@ data <- read.table(here::here('data/some_data.csv'))
 ```
 ````
 
-But why not use absolute paths to begin with? **Portability**! When I would run your \*.Rmd file with an absolute path on my computer it would not render as the file `some_data.csv` would then be located at: `/my_computer/project/data/some_data.csv`
+But why not use absolute paths to begin with? Portability! When I would run your \*.Rmd file with an absolute path on my computer it would not render as the file `some_data.csv` would then be located at: `/my_computer/project/data/some_data.csv`
 
 #### Limitations
 
@@ -204,7 +201,7 @@ Coding practices and documenting all moving parts in a coding workflow is only o
 
 For code online collaboration tools, such as [github](https://github.com), [gitlab](https://gitlab.com) or [codeberg](https://codeberg.org), provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly \~2GB). For small projects data can be included in the repository itself, for larger projects this won't be possible.
 
-To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](<https://zenodo.org/>). Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](<https://datadryad.org/stash>) and the [Center for Open Science](<https://osf.io/>).
+To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](https://zenodo.org/). Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](https://datadryad.org/stash) and the [Center for Open Science](https://osf.io/).
 
 ## Exercises
 
@@ -233,11 +230,9 @@ What are your steps to make this project more reproducible? Write down how and w
 
 #### A new project
 
-What are the basic steps to create a reproducible workflow from a file management perspective?
+What are the basic steps to create a reproducible workflow from a file management perspective? Create your own project using these principles and provide details the on steps involved and why they matter.
 
-Create your own project using these principles and provide details the on steps involved and why they matter.
-
-The project should a reproducible workflow:
+The project should be a reproducible workflow:
 
 -   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(data_variety)
 
@@ -251,11 +246,8 @@ The project should a reproducible workflow:
 
 -   Track the packages you use in the project you created using {renv}
 
--   Install an additional library and update the state of your project
+-   Install any additional library and update the state of your project
 
-```{=html}
-<!-- -->
-```
 -   create a simple {targets} project using the above workflow
 
     -   make changes to the API download routine
