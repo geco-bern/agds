@@ -14,7 +14,7 @@ Contents:
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
 
-Although this seems trivial this issue has vexed the scientific community. These days, many scientific publications are based on complex analysis with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
+Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
 
 This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the comodification of science.
 
@@ -202,7 +202,7 @@ Coding practices and documenting all moving parts in a coding workflow is only o
 
 For code online collaboration tools, such as github, gitlab or codeberg, provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly \~2GB). For small projects data can be included in the repository itself, for larger projects this won't be possible.
 
-To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](<https://zenodo.org/>). This effort by the European commission, but accessible to all, allows for the archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable unique digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](<https://datadryad.org/stash>) and the [Center for Open Science](<https://osf.io/>).
+To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](https://zenodo.org/). This effort by the European commission, but accessible to all, allows for the archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable unique digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](https://datadryad.org/stash) and the [Center for Open Science](https://osf.io/).
 
 ## Learning objectives
 

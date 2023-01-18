@@ -11,21 +11,21 @@ Contents:
 
 ## Introduction
 
-Code management is a key of managing any data science project, especially when collaborating. Proper code management limits mistakes such as code loss and increases efficiency by structuring (larger) projects.
+Code management is a key of managing any data science project, especially when collaborating. Proper code management limits mistakes such as code loss and increases efficiency by structuring projects.
 
-In this section we will discuss the management of code in both the location sense, where things are kept, and tracking temporal changes over time or version control.
+In this chapter, we will discuss the management of code in both the location sense, where things are kept, and tracking temporal changes over time using a version control system.
 
-Current version control of code is dominated by the software tool `git`. However, version control has a long history and can be found not only in code development practices.
+Current version control of code is dominated by the software tool *git*. However, version control has a long history and can be found not only in code development practices.
 
-For example, whenever you use track changes in a text document you apply a form of version control i.e., you track changes in your text over time and selectively accepted changes. In this respect git, as a tool for version control of code, does not differ much from track changes of a text document.
+For example, whenever you use track changes in a text document, you apply a form of version control. That is, you track changes in your text over time and selectively accepted changes. In this respect *git*, as a tool for version control of code, does not differ much from track changes of a text document.
 
-Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as github, gitlab and codeberg which make these collaborative decisions and operations even easier.
+*Git* allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as *github, gitlab, bitbucket*, or *codeberg*. They make these collaborative decisions and operations even easier.
 
-In this section you will learn how to use git and github to manage your project and collaborate on code.
+In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
 
 > NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers]().
 >
-> Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as gitlab and codeberg.
+> Although the tutorial below focuses on *github*, the jargon and operations are transferable to other platforms such as *gitlab* and *codeberg*.
 
 ## Tutorial
 
