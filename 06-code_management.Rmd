@@ -196,6 +196,12 @@ Create a github account (if you do not have one already).
 
 Create a new R project using the R project template.
 
+-   Make some changes to the README.md
+
+-   Put a small data set in the appropriate directory
+
+-   Make sure that both local and remote repositories (projects) are synced
+
 #### Github
 
 This is a team exercise: team up with someone else in the classroom.
