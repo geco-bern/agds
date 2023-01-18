@@ -137,11 +137,36 @@ Git pull compares your local git repository with the remote one and implements m
     Changing the contents of text file from new branch
     >>>>>>> new_branch_for_merge_conflict
 
-You will need to remove the \<\<\< === and \>\>\> brackets and resolve the conflict before committing the changes.
+You will need to remove the \<\<\<, === and \>\>\> brackets and resolve the conflict before committing the changes.
 
 #### git clone
 
+You can create a new copy of your project on github using the `git clone` command. For example, on the command line, you can use:
+
+``` bash
+# create a local copy of the remote github repository
+git clone https://github.com/khufkens/YOUR_PROJECT.git
+```
+
+to create a local copy of your remote repositories. You can then start working on this repository by using the modify -\> staged -\> commit -\> push workflow.
+
 #### git fork and pull request
+
+You can also create a copy of any public github project from within your github account by creating a fork. You can create a fork of a project by pressing the fork button top right on any public github project page. The number of forks of a project is displayed next to the button, in case of the {rpmodel} package there are 24 forks of this project.
+
+![](figures/git_fork.png)
+
+You can give the forked project a new name and description if so desired.
+
+![](figures/git_fork_settings.png)
+
+A fork allows you to experiment with the code stored in the original project without affecting it. However, the relation to the original project is maintained. If you want to contribute changes to the original project you can do so with a **pull request**.
+
+> NOTE: to make changes to a fork project you will first have to clone it to your local system! See workflow above.
+
+In a forked project, go to the "Pull requests" tab and press the green "New pull request" button. You will then have to provide description of the changes you made. This information will be forwarded to the original owner of the project, who can accept these changes and accept the pull request and "pull" in the changes.
+
+![](figures/git_pull_request.png)
 
 ### Location based code management - github templates
 
