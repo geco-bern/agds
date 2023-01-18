@@ -427,12 +427,12 @@ status <- httr::POST(
 While **not leaving your R session**, download and open the files at location the following locations:
 
 ``` r
-https://github.com/xxx/xxx/demo1.csv
-https://github.com/xxx/xxx/demo2.csv
-https://github.com/xxx/xxx/demo3.csv
+https://github.com/xxx/data/demo1.csv
+https://github.com/xxx/data/demo2.csv
+https://github.com/xxx/data/demo3.csv
 ```
 
-Once loaded into your R environment, combine and save all data as a **temporary** `CSV` file. Read in the temporary `CSV` file, and save it as a `JSON` file in your current working directory.
+Once loaded into your R environment, combine and save all data as a **temporary** `CSV` file. Read in the new temporary `CSV` file, and save it as a `JSON` file in your current working directory.
 
 ``` r
 # Your solution script
@@ -473,7 +473,7 @@ https://github.com/xxx/xxx/some_data.tiff
 
 ### Dedicated library
 
-1.  Use the {hwsdr} library (already installed for this course) to download the same data, how does this compare to the previous code written?
+1.  Use the {hwsdr} library (a dedicated package for the API) to download the same data. How does this compare to the previous code written?
 2.  List how many data products there are on the ORNL MODIS data repository.
 3.  Download the MODIS land cover map for the canton of Bern.
 
