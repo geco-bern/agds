@@ -13,8 +13,8 @@ name: bookdown
 jobs:
   bookdown:
     # run on mac - generally faster
-    runs-on: macOS-latest
-    timeout-minutes: 30
+    runs-on: macos-latest
+    timeout-minutes: 90
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
@@ -30,6 +30,8 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages("bookdown", dependencies = TRUE)
+          install.packages("renv")
+          renv::restore()
         shell: Rscript {0}
 
       - name: Cache bookdown results
