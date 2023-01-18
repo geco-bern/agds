@@ -19,7 +19,7 @@ Current version control of code is dominated by the software tool `git`. However
 
 ![Git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/file_cycle2.png)
 
-Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org ) which make these collaborative decisions and operations even easier.
+Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) which make these collaborative decisions and operations even easier.
 
 ![Remote git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/local_remote.png)
 
@@ -89,7 +89,18 @@ git commit -m "A message""
 
 ### Remote version control
 
-Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org ) come in. They provide a cloud based git repository which you can associate with your local project (see figure above).
+Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) come in. They provide a cloud based git repository which you can associate with your local project (see figure above).
+
+To create a remote project and successfully associate it with an R project we first have to specify some details, such as the username and email you used is singing up for [github](https://github.com). To not leave your R session you can use the {usethis} package for this.
+
+``` r
+# Configure your project
+library(usethis)
+usethis::use_git_config(user.name = "Jane Doe",
+               user.email = "jane@example.org")
+```
+
+For security reasons the use of your github password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed first generate a github PAT using [these instructions](<https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic>).
 
 To create a new project on github hit the "+" sign top left on the github main page (once logged in), and select the "new repository" from the dropdown menu.
 
@@ -103,21 +114,36 @@ Note the URL that is generated for your project, you will need it when creating 
 
 ![](figures/git_project_link.png)
 
-    library(usethis) 
-    use_git_config(user.name = "Jane Doe",
-                   user.email = "jane@example.org")
+Next we'll setup an R project which is associated with the repository. Use: File \> New Project \> Version Control \> Git.
 
-### git push
+![](figures/git_project_wizard.png)
 
-Once a remote git service has been configured you can push your local git repository to this remote repository, syncing both.
+In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". This will create a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
 
-### git clone
+#### git push
 
-### git pull
+Once a remote git service has been configured you can push your local git repository to this remote repository, syncing both. You can use both the push buttons in the RStudio panel for this. At the end of a day or a session it is always advised to push your changes to your remote repository to store the changes.
 
-### git merge
+![Remote git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png)
 
-### Location based code management - templates
+#### git pull and merge conflicts
+
+Git pull compares your local git repository with the remote one and implements more recent changes if there are any. Note, that if you make changes on both sides, i.e. your remote and local repository, at the same time you will generate a *merge conflict*. A merge conflict states that remote and local changes can't be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.
+
+    <<<<<<< HEAD
+    Adding some content to mess with it later
+    Append this text to initial commit
+    =======
+    Changing the contents of text file from new branch
+    >>>>>>> new_branch_for_merge_conflict
+
+You will need to remove the \<\<\< === and \>\>\> brackets and resolve the conflict before committing the changes.
+
+#### git clone
+
+#### git fork and pull request
+
+### Location based code management - github templates
 
 Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using a the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
 
@@ -136,8 +162,6 @@ Otherwise you can select the repository from the template dropdown menu, select 
 Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
 ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png)
-
-### 
 
 ## Exercises
 
