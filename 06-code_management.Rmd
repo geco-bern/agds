@@ -218,6 +218,8 @@ This is a team exercise: team up with someone else in the classroom.
 
 6.  Person 1 - integrate these changes in your project
 
+7.  Create a merge conflict and resolve the merge conflict
+
 To complete the exercise, reverse rolls between Person 1 and Person 2!
 
 ## Solutions
