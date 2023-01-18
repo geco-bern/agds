@@ -10,7 +10,7 @@ bibliography: [book.bib, packages.bib]
 description: |
   This course prepares you to benefit from the general data richness in environmental and geo-sciences.
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: stineb/agsd
 ---
 
 # About this book {.unnumbered}
