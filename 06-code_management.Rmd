@@ -21,7 +21,11 @@ For example, whenever you use track changes in a text document, you apply a form
 
 *Git* allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as *github, gitlab, bitbucket*, or *codeberg*. They make these collaborative decisions and operations even easier.
 
+<<<<<<< HEAD
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
+=======
+In this section you will learn how to use project templates, git and github to manage your project and collaborate on code.
+>>>>>>> b40f98bbb97dc16ca3de93b747d7847654444823
 
 > NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers]().
 >
@@ -29,17 +33,75 @@ In this chapter, you will learn how to use git and github to manage your project
 
 ## Tutorial
 
-### Version control
+### Version control & Git
 
-## 
+Git allows for the tracking of changes in code (or any file) within a git project. A git project is defined by the topmost directory in which a git project is created. For example the following project is not tracked for changes using git.
 
-### Location based code management
+``` bash
+project/
+├─ YOUR_PROJECT.Rproj
+```
 
-Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using a the same template will allow you to understand where all pieces of an an analysis are stored.
+You can start tracking a project by initiating a local git repository using the following code in R. We'll use the {usethis} package to make some of the setup a project easier.
+
+``` bash
+# initiate a github repository
+usethis::use_git()
+```
+
+This will create a github repository in your project. It will also create a `.gitignore` file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.
+
+### git add
+
+Before we can track anything we need to tell git which files to track. We therefore have to add them to an index of tracked files. You can either do this on the command line using:
+
+``` bash
+git add your_file.csv
+```
+
+Or using the RStudio git panel. In this panel you will see all un-tracked files or directories highlighted with a yellow question mark.
+
+![](./figures/git_unstaged_files.png)
+
+You select the file tick boxes to the left to stage all files for inclusion into the git repository. Once staged, the next step will be to finally commit these staged files to be included in git tracking.
+
+![](./figures/git_staged_files.png)
+
+### git commit
+
+To store any changes to the files which were staged we need to commit these changes. We therefore hit the commit button, this will pop up a new window.
+
+![](./figures/git_commit_message.png)
+
+Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right.
+
+![](./figures/git_commit_message.png)
+
+You need to provide this small message before pressing the commit button once more. This will let git track the changes to these files. A message will be shown if the commit is successful.
+
+![](./figures/git_commit_completed.png)
+
+With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. If you create a new file you will need to add it before you can commit it.
+
+### git push
+
+Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as github, gitlab and codeberg come in. They provide a cloud based git repository which you can link to your local one.
+
+Once a remote git service has been configured you can push your local git repository to this remote repository, syncing both.
+
+### git clone
+
+### git pull
+
+### git merge
+
+### Location based code management - templates
+
+Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using a the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
 
 In our [R project template](https://github.com/computationales/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
 
-You can use the template in combination with a github based version control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be made by the workflows described above (commits etc).
+You can use the template in combination with a github based version (\@ref(version-control)) control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be made by the workflows described above (commits etc).
 
 To use the template create a new repository on github, as you otherwise would using the big green button. If you are in the project on github you can hit the green button top right (Use this template).
 
@@ -49,9 +111,11 @@ Otherwise you can select the repository from the template dropdown menu, select 
 
 <!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png) -->
 
-Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities.
+Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
 <!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png) -->
+
+### 
 
 ## Exercises
 
