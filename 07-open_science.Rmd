@@ -6,7 +6,7 @@
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
 
-Although this seems trivial this issue has vexed the scientific community. These days, many scientific publications are based on complex analysis with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
+Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
 
 This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the comodification of science.
 
