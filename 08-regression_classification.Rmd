@@ -252,35 +252,6 @@ R^2 = 1 - \frac{\sum_i (Y_i - \hat{Y}_i)^2}{\sum_i (Y_i - \bar{Y})^2}
 $$
 In this case, the goal is to maximize the metric, thus trying the explain as much variation in $Y$ as possible. In contrast to the MSE and RMSE, $R^2$ measures goodness of fit and gives a quantity between 0 and 1 that takes into consideration how variable the target is. We can actually write $R^2 = 1 - \frac{MSE}{\hat{Var}(Y)}$. A perfect fit is quantified by $R^2 = 1$ and uninformative models have an $R^2$ approaching zero. For some applications where the data is very noisy, an $R^2$ of 0.6 may already be considered good. 
 
-You can see in the plot below that, although the two models have the same RMSE and a similar $R^2$, the left model has more room for improvement and right model is a much better approximation of the data (actually, we are plotting the true regression line). The tricky part is that the data is way more noisy.
-
-```{r}
-x <- rnorm(1000)
-y1 <- x + rnorm(n=1000, mean=0, sd=0.1)
-y2 <- x + rnorm(n=1000, mean=0, sd=0.5)
-y1_hat <- x
-y2_hat <- x
-
-df1 <- data.frame(x, y1, y1_hat)
-df2 <- data.frame(x, y2, y2_hat)
-
-plot1 <- ggplot(aes(x = x, y = y1), data=df1) +
-  geom_point(alpha = 0.4) +
-  geom_abline(intercept = 0, slope = 1, color='red') +
-  ylim(-5, 5) +
-  labs(title = paste("RMSE =", round(rmse_vec(y1, y1_hat), 3), 
-                     ",  R^2 = ", round(rsq_trad_vec(y1, y1_hat), 3)))
-
-plot2 <- ggplot(aes(x = x, y = y2), data=df2) +
-  geom_point(alpha = 0.4) +
-  geom_abline(intercept = 0, slope = 1, color='red') +
-  ylim(-5, 5) +
-  labs(title = paste("RMSE =", round(rmse_vec(y2, y2_hat), 3), 
-                     ",  R^2 = ", round(rsq_trad_vec(y2, y2_hat), 3)))
-
-plot_grid(plot1, plot2, ncol = 2)
-```
-
 - **Pearson's $r^2$**: The linear association between two variables (here $Y$ and $\hat{Y}$) is measured by the *Pearson's correlation coefficient* $r$. Its square is closely related to the coefficient of determination $R^2$.
 $$
 r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \hat{\bar{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2}\sqrt{ \sum_i(\hat{Y_i}-\hat{\bar{Y}})^2 } }
