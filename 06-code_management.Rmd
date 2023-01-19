@@ -2,38 +2,39 @@
 
 **Chapter lead author: Koen Hufkens**
 
-Contents:
-
--   git: repositories, stage, commit, push, fork, pull request, fetch upstream
--   Performance assessment: **CAT 2**
-
 ## Learning objectives
 
-## Introduction
+In this chapter you will learn how to manage your code with common version control tools, i.e. git.
+
+You will learn how to:
+
+-   create a git project (new or from a template)
+
+-   track changes in your code project
+
+-   collaborate with others
+
+-   ensure reproducibility of your project by openly sharing your work and progress.
+
+## Tutorial
 
 Code management is a key of managing any data science project, especially when collaborating. Proper code management limits mistakes such as code loss and increases efficiency by structuring projects.
 
 In this chapter, we will discuss the management of code in both the location sense, where things are kept, and tracking temporal changes over time using a version control system.
 
-Current version control of code is dominated by the software tool *git*. However, version control has a long history and can be found not only in code development practices.
+Current version control of code is dominated by the software tool `git`. However, version control has a long history and can be found not only in code development practices.For example, whenever you use track changes in a text document you apply a form of version control i.e., you track changes in your text over time and selectively accepted changes. In this respect git, as a tool for version control of code, does not differ much from track changes of a text document, but follows a manual modify --\> staged --\> commit workflow.
 
-For example, whenever you use track changes in a text document, you apply a form of version control. That is, you track changes in your text over time and selectively accepted changes. In this respect *git*, as a tool for version control of code, does not differ much from track changes of a text document.
+![Git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/file_cycle2.png)
 
-*Git* allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as *github, gitlab, bitbucket*, or *codeberg*. They make these collaborative decisions and operations even easier.
+Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) which make these collaborative decisions and operations even easier.
 
-<<<<<<< HEAD
+![Remote git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/local_remote.png)
+
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
-=======
-In this section you will learn how to use project templates, git and github to manage your project and collaborate on code.
->>>>>>> b40f98bbb97dc16ca3de93b747d7847654444823
 
-> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers]().
->
-> Although the tutorial below focuses on *github*, the jargon and operations are transferable to other platforms such as *gitlab* and *codeberg*.
+> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers](). Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
 
-## Tutorial
-
-### Version control & Git
+### Git and local version control
 
 Git allows for the tracking of changes in code (or any file) within a git project. A git project is defined by the topmost directory in which a git project is created. For example the following project is not tracked for changes using git.
 
@@ -51,7 +52,7 @@ usethis::use_git()
 
 This will create a github repository in your project. It will also create a `.gitignore` file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.
 
-### git add
+#### git add
 
 Before we can track anything we need to tell git which files to track. We therefore have to add them to an index of tracked files. You can either do this on the command line using:
 
@@ -67,7 +68,7 @@ You select the file tick boxes to the left to stage all files for inclusion into
 
 ![](./figures/git_staged_files.png)
 
-### git commit
+#### git commit
 
 To store any changes to the files which were staged we need to commit these changes. We therefore hit the commit button, this will pop up a new window.
 
@@ -81,41 +82,116 @@ You need to provide this small message before pressing the commit button once mo
 
 ![](./figures/git_commit_completed.png)
 
-With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. If you create a new file you will need to add it before you can commit it.
+With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked, this is a manual step. As with normal documents you are advised to save (commit) your changes to your project frequently. More so, if you create a new file you will need to add it before you can commit it.
 
-### git push
+You can commit changes of staged files using the command line as well using the following command.
 
-Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as github, gitlab and codeberg come in. They provide a cloud based git repository which you can link to your local one.
+``` bash
+git commit -m "A message""
+```
 
-Once a remote git service has been configured you can push your local git repository to this remote repository, syncing both.
+### Remote version control
 
-### git clone
+Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) come in. They provide a cloud based git repository which you can associate with your local project (see figure above).
 
-### git pull
+To create a remote project and successfully associate it with an R project we first have to specify some details, such as the username and email you used is singing up for [github](https://github.com). To not leave your R session you can use the {usethis} package for this.
 
-### git merge
+``` r
+# Configure your project
+library(usethis)
+usethis::use_git_config(user.name = "Jane Doe",
+               user.email = "jane@example.org")
+```
 
-### Location based code management - templates
+For security reasons the use of your github password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed first generate a github PAT using [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic).
+
+To create a new project on github hit the "+" sign top left on the github main page (once logged in), and select the "new repository" from the dropdown menu.
+
+![](figures/git_new_project.png)
+
+A new interface will open up in which you should not use any template, but specify your own project name and brief description. Make sure your project is public, and all other settings are kept as is before you hit the "Create repository" button.
+
+![](figures/git_new_project_settings.png)
+
+Note the URL that is generated for your project, you will need it when creating a new RStudio project.
+
+![](figures/git_project_link.png)
+
+Next we'll setup an R project which is associated with the repository. Use: File \> New Project \> Version Control \> Git.
+
+![](figures/git_project_wizard.png)
+
+In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". This will create a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
+
+#### git push
+
+Once a remote git service has been configured you can push your local git repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using `git push`. At the end of a day or a session it is always advised to push your changes to your remote repository to store any changes.
+
+![Remote git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png)
+
+> NOTE: Syncing between github and your local repository is a manual task. If not performed the repository will not be synced. To retain all your changes sync both repositories often!
+
+#### git pull and merge conflicts
+
+Git pull compares your local git repository with the remote one and implements more recent changes if there are any. Note, that if you make changes on both sides, i.e. your remote and local repository, at the same time you will generate a *merge conflict*. A merge conflict states that remote and local changes can't be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.
+
+    <<<<<<< HEAD
+    Adding some content to mess with it later
+    Append this text to initial commit
+    =======
+    Changing the contents of text file from new branch
+    >>>>>>> new_branch_for_merge_conflict
+
+You will need to remove the \<\<\<, === and \>\>\> brackets and retain the changes you want to resolve the conflict before committing the changes again. Content which is currently on file is separated by === to that which provides a conflict and to be merged.
+
+#### git clone
+
+You can create a new copy of your project on github using the `git clone` command. For example, on the command line, you can use:
+
+``` bash
+# create a local copy of the remote github repository
+git clone https://github.com/khufkens/YOUR_PROJECT.git
+```
+
+to create a local copy of your remote repositories. You can then start working on this repository by using the modify -\> staged -\> commit -\> push workflow.
+
+#### git fork and pull request
+
+You can also create a copy of any public github project from within your github account by creating a fork. You can create a fork of a project by pressing the fork button top right on any public github project page. The number of forks of a project is displayed next to the button, in case of the {rpmodel} package there are 24 forks of this project.
+
+![](figures/git_fork.png)
+
+You can give the forked project a new name and description if so desired.
+
+![](figures/git_fork_settings.png)
+
+A fork allows you to experiment with the code stored in the original project without affecting it. However, the relation to the original project is maintained. If you want to contribute changes to the original project you can do so with a **pull request**.
+
+> NOTE: to make changes to a fork project you will first have to clone it to your local system! See workflow above.
+
+In a forked project, go to the "Pull requests" tab and press the green "New pull request" button. You will then have to provide description of the changes you made. This information will be forwarded to the original owner of the project, who can accept these changes and accept the pull request and "pull" in the changes.
+
+![](figures/git_pull_request.png)
+
+### Location based code management - github templates
 
 Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using a the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
 
 In our [R project template](https://github.com/computationales/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
 
-You can use the template in combination with a github based version (\@ref(version-control)) control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be made by the workflows described above (commits etc).
+You can use the template in combination with a github based version (\@ref(version-control)) control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be tracked by the workflows described above.
 
 To use the template create a new repository on github, as you otherwise would using the big green button. If you are in the project on github you can hit the green button top right (Use this template).
 
-<!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png) -->
+![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png)
 
 Otherwise you can select the repository from the template dropdown menu, select `computationales/R-project-template`.
 
-<!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png) -->
+![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png)
 
 Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
-<!-- ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png) -->
-
-### 
+![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png)
 
 ## Exercises
 
@@ -124,6 +200,12 @@ Proceed as usual by naming your repository. However, be careful to select the co
 Create a github account (if you do not have one already).
 
 Create a new R project using the R project template.
+
+-   Make some changes to the README.md
+
+-   Put a small data set in the appropriate directory
+
+-   Make sure that both local and remote repositories (projects) are synced
 
 #### Github
 
@@ -140,6 +222,8 @@ This is a team exercise: team up with someone else in the classroom.
 5.  Person 2 - add a new file to your own project, and update the github project
 
 6.  Person 1 - integrate these changes in your project
+
+7.  Create a merge conflict and resolve the merge conflict
 
 To complete the exercise, reverse rolls between Person 1 and Person 2!
 
