@@ -2,13 +2,13 @@
 
 **Chapter lead author: Koen Hufkens**
 
-## Introduction
+## Learning objectives
 
 As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
 However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.
 
-In this section you will learn:
+In this chapter you will learn:
 
 -   how to recognize data/file formats
 
@@ -205,7 +205,7 @@ More so than human readable data, the file format (extension) determines how to 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
 | File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
-|-------------------------|----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|----------------------|
+|-------------|--------------|---------------------------------|-------------|
 | \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |

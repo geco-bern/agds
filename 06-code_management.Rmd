@@ -16,7 +16,7 @@ You will learn how to:
 
 -   ensure reproducibility of your project by openly sharing your work and progress.
 
-## Introduction
+## Tutorial
 
 Code management is a key of managing any data science project, especially when collaborating. Proper code management limits mistakes such as code loss and increases efficiency by structuring projects.
 
@@ -33,8 +33,6 @@ Git allows for the collaboration of multiple people on the same code, while bein
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
 
 > NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers](). Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
-
-## Tutorial
 
 ### Git and local version control
 

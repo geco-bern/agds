@@ -6,7 +6,7 @@
 
 In this chapter you will learn the reasons for practicing open science, and some of the basic methodological techniques that we can use to facilitate an open science workflow.
 
-You will learn how to:
+In this chapter you will learn how to:
 
 -   structure a project
 
@@ -18,7 +18,7 @@ You will learn how to:
 
 -   ensure data/project retention
 
-## Introduction
+## Tutorial
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
 
@@ -34,9 +34,7 @@ It is important to acknowledge that there is a spectrum of reproducible data and
 
 [![by The Turing Way](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg)](https://the-turing-way.netlify.app/welcome.html)
 
-For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this section.
-
-## Tutorial
+For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this chapter.
 
 The basics of open science coding and data practices rely on a number of simple concepts. The below sections describe a selection of the most important ones. Sticking to these principles and/or tools will increase the reproducibility of your work greatly.
 
