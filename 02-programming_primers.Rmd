@@ -6,26 +6,26 @@ TBC
 
 Contents:
 
-- Lecture (Beni): Models and data
-- Base R
-- variables, classes
-- data frames
-- loops
-- conditional statements
-- functions
-- input and output
-- intro to visualisation
-- Performance assessment: [link](https://stineb.netlify.app/files/ex1.pdf) to my exercise, [link to Dietze exercise](https://github.com/stineb/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)
+-   Lecture (Beni): Models and data
+-   Base R
+-   variables, classes
+-   data frames
+-   loops
+-   conditional statements
+-   functions
+-   input and output
+-   intro to visualisation
+-   Performance assessment: [link](https://stineb.netlify.app/files/ex1.pdf) to my exercise, [link to Dietze exercise](https://github.com/stineb/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)
 
 ## Learning objectives
 
 After you've gone over the lecture and solved the exercises, you should be able to:
 
-- Install and load libraries and packages
-- Read, inspect, visualise and write data frames
-- Use loops, conditional statements and functions in your code
-- Organize your R project for data analysis
-- Look for help
+-   Install and load libraries and packages
+-   Read, inspect, visualise and write data frames
+-   Use loops, conditional statements and functions in your code
+-   Organize your R project for data analysis
+-   Look for help
 
 ## Tutorial
 
@@ -34,22 +34,27 @@ After you've gone over the lecture and solved the exercises, you should be able 
 *Packages*, sometimes called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R, utils, stats...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
 
 For example, the `tidyverse` package is used for data wrangling and will be covered in this course. You can install a new package as follows:
+
 ```{r eval=FALSE}
 install.packages("tidyverse")
 ```
 
 Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.
+
 ```{r eval=FALSE}
 library(tidyverse)
 ```
+
 You can now use the functions and features provided by the `tidyverse` package in your R scripts.
 
 At any time, you can see a list of your installed packages on the source panel with the following command:
+
 ```{r eval=FALSE}
 library()
 ```
 
 And a list of the packages currently loaded:
+
 ```{r}
 search()
 ```
@@ -68,7 +73,7 @@ invisible(lapply(use_pkgs, require, character.only = TRUE))
 
 #### Other libraries and applications
 
-For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer. 
+For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
 
 For example, to work with *netcdf* files in R, you would need to install the `"ncdf4"` library and the `netCDF` command-line tools:
 
@@ -107,7 +112,7 @@ You can also write more than two conditions, covering several cases. Conditional
 #### Loops
 
 *Loops* are another essential feature of programming. `for` and `while` loops exist in probably all programming languages. We introduce them here because they are a simple and powerful tool for solving many common tasks.
-  
+
 `for` and `while` loops let us repeatedly execute the same set of commands, while changing an index or counter variable to take a sequence of different values. The following example calculates the sum of the first ten temperature values in `df_small` (from the previous chapter), by iteratively adding them together.
 
 ```{r, eval=FALSE}
@@ -118,7 +123,7 @@ for (i in 1:10){
 temp_sum
 ```
 
-Of course, this is equivalent to just using the `sum()` function. 
+Of course, this is equivalent to just using the `sum()` function.
 
 ```{r, eval=FALSE}
 sum(df_small$temp[1:10])
@@ -135,12 +140,13 @@ while (i <= 10){
 }
 temp_sum
 ```
- 
+
 #### Functions
 
 Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new *function* and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
 
 For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
+
 ```{r eval=FALSE}
 ## NOT ADVISABLE
 temp_soil <- (temp_soil - 32) * 5 / 9
@@ -150,12 +156,13 @@ temp_leaf <- (temp_leaf - 32) * 5 / 9
 
 Functions are a set of instructions encapsulated within curly brackets (`{}`) that generate a desired outcome. Functions contain four main elements:
 
--   They start with a _name_ to describe their purpose, 
--   then they need _arguments_, which are a list of the objects being input,
--   enclosed by curly brackets `function(x){ ... }` the code making up the _body_ of the function,
--   and lastly, within the body, a _return_ statement indicting the output of the function.
+-   They start with a *name* to describe their purpose,
+-   then they need *arguments*, which are a list of the objects being input,
+-   enclosed by curly brackets `function(x){ ... }` the code making up the *body* of the function,
+-   and lastly, within the body, a *return* statement indicting the output of the function.
 
 Below we define our own function `convert_fahrenheit_to_celsius()`:
+
 ```{r eval=FALSE}
 ## ADVISABLE
 convert_fahrenheit_to_celsius <- function(temp_f){
@@ -185,20 +192,19 @@ convert_fahrenheit_to_celsius <- function(temp_f){
 }
 ```
 
-Functions become increasingly important the more experienced one gets at coding. Using them minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only 'live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again. 
+Functions become increasingly important the more experienced one gets at coding. Using them minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only 'live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again.
 
 Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
 
 Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `.R/convert_fahrenheit_to_celsius.R` and load it later by running `source(".R/convert_fahrenheit_to_celsius")`.
 
-
 ### Working with data frames
 
-In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio. 
+In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio.
 
 We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
 
-The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`). 
+The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
 
 #### Reading data
 
@@ -211,18 +217,17 @@ print(df)
 
 The file is automatically machine-readable because we have:
 
-- Only one header row, containing the column (variable) names.
-- Variables organised by columns, and observations by rows.
-- Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (`<dbl>').
-- One value per cell.
-- No merged cells.
-In short, the data frame is tidy.
-To understand the sort of object we work with, i.e. the *class*, we can do:
+-   Only one header row, containing the column (variable) names.
+-   Variables organised by columns, and observations by rows.
+-   Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (\`<dbl>').
+-   One value per cell.
+-   No merged cells. In short, the data frame is tidy. To understand the sort of object we work with, i.e. the *class*, we can do:
+
 ```{r}
 class(df)
 ```
 
-Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features. 
+Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features.
 
 Other types of data inputs and how to read them will be covered in [Tutorial 5](#data_variety).
 
@@ -230,22 +235,22 @@ Other types of data inputs and how to read them will be covered in [Tutorial 5](
 
 There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
 
-- Size
-  - `dim()`  - Returns the dimensions of an object (here: number of rows and columns).
-  - `nrow()` - Returns the number of rows of an object.
-  - `ncol()` - Returns the number of columns of an object.
-- Content
-  - `head()` - Returns the first 6 rows.
-  - `tail()` - Returns the last 6 rows.
-  - `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
-- Names
-  - `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
-  - `rownames()` - Returns the row names.
-- Summary
-  - `class()` - Returns the classes of an object.
-  - `str()` - Returns the structure of an object and information about the class, length and content of each column.
-  - `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
-  
+-   Size
+    -   `dim()` - Returns the dimensions of an object (here: number of rows and columns).
+    -   `nrow()` - Returns the number of rows of an object.
+    -   `ncol()` - Returns the number of columns of an object.
+-   Content
+    -   `head()` - Returns the first 6 rows.
+    -   `tail()` - Returns the last 6 rows.
+    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
+-   Names
+    -   `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
+    -   `rownames()` - Returns the row names.
+-   Summary
+    -   `class()` - Returns the classes of an object.
+    -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
+    -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
+
 For example, the data frame `df` has 4018 rows and 334 columns:
 
 ```{r}
@@ -254,41 +259,45 @@ dim(df)
 
 It is important to know the meaning of the column names and content. A description of standardized FLUXNET data variables is available [here](https://fluxnet.org/data/aboutdata/data-variables/). A selection of available variables that we will use in subsequent chapters are:
 
-- `GPP` (gC m$^{−2}$ s$^{-1}$): Gross primary production
-- `WS` (m s$^{-1}$): Horizontal wind speed
-- `USTAR` (m s$^{-1}$): Friction velocity
-- `TA` ($^{o}$ C): Air temperature
-- `RH` (%): Relative humidity (range 0–100%)
-- `PA` (kPa): Atmospheric pressure
-- `G` (W m$^{−2}$): Ground heat flux, not mandatory, but needed for the energy balance closure calculations
-- `NETRAD` (W m$^{−2}$): Net radiation, not mandatory, but needed for the energy balance closure calculations
-- `SW_IN` (W m$^{−2}$): Incoming shortwave radiation
-- `SW_IN_POT` (W m$^−2$): Potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
-- `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): Incoming photosynthetic photon flux density
-- `P` (mm): Precipitation total of each 30 or 60 minute period
-- `LW_IN` (W m$^{−2}$): Incoming (down-welling) long-wave radiation
-- `SWC` (%): Soil water content (volumetric), range 0–100%
-- `TS` ($^{o}$ C): Soil temperature
-- `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon dioxide (CO$_2$) mole fraction in moist air
+-   `GPP` (gC m$^{−2}$ s$^{-1}$): Gross primary production
+-   `WS` (m s$^{-1}$): Horizontal wind speed
+-   `USTAR` (m s$^{-1}$): Friction velocity
+-   `TA` ($^{o}$ C): Air temperature
+-   `RH` (%): Relative humidity (range 0--100%)
+-   `PA` (kPa): Atmospheric pressure
+-   `G` (W m$^{−2}$): Ground heat flux, not mandatory, but needed for the energy balance closure calculations
+-   `NETRAD` (W m$^{−2}$): Net radiation, not mandatory, but needed for the energy balance closure calculations
+-   `SW_IN` (W m$^{−2}$): Incoming shortwave radiation
+-   `SW_IN_POT` (W m$^−2$): Potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
+-   `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): Incoming photosynthetic photon flux density
+-   `P` (mm): Precipitation total of each 30 or 60 minute period
+-   `LW_IN` (W m$^{−2}$): Incoming (down-welling) long-wave radiation
+-   `SWC` (%): Soil water content (volumetric), range 0--100%
+-   `TS` ($^{o}$ C): Soil temperature
+-   `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon dioxide (CO$_2$) mole fraction in moist air
 
 #### Selecting data and entering the tidyverse
 
 `df` is a data frame. This is similar to a matrix and has two dimensions (rows and columns). If we want to extract specific data from it, we specify the indices, i.e. the "coordinates", of the data. For two-dimensional objects (data frames, matrices), the first index refers to rows and the second to columns. For example, to refer to the element on the third row in the first column, we write:
+
 ```{r}
 df[3,1]
 ```
 
 Reducing a data frame (tibble) to only the first columns can be done by:
+
 ```{r}
 df[, 1]
 ```
 
 The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g. `[1:3,]`, indicates we want to select the rows numbers starting at the first and ending with the second number. So here `[1:3,]` will give us rows one, two and three.
+
 ```{r}
 df[1:3, 3] # reduces the data frame (tibble) to its first three rows and the 3rd column
 ```
 
-To reduce the data frame (tibble) to several columns, the function `c()` is used. This outputs the data frame (tibble) reduced to the selected row or column numbers inside `c()`. 
+To reduce the data frame (tibble) to several columns, the function `c()` is used. This outputs the data frame (tibble) reduced to the selected row or column numbers inside `c()`.
+
 ```{r}
 df[, c(1,4,7)]
 ```
@@ -323,7 +332,7 @@ df_small <- df %>%
 ```
 
 Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
- 
+
 #### Renaming
 
 TIMESTAMP_START, TA_F and PPFD_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligible.
@@ -351,8 +360,7 @@ Visualising data is an integral part of any data science workflow. In this secti
 plot(1:1440, df_small$temp[1:1440], type = "l") 
 ```
 
-Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram. 
-A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a 'bin'. Below you will see the temperature on the x-axis split into these 'bins' ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.
+Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram. A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a 'bin'. Below you will see the temperature on the x-axis split into these 'bins' ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.
 
 ```{r}
 hist(df_small$temp, xlab = "Temperature (°C)")
@@ -376,6 +384,7 @@ The material covered in this course will give you a solid basis for your future 
 ```{r eval =F}
 ?boxplot
 ```
+
 Running the above code will open the information on making boxplots in R.
 
 If you do know how a function works but need to be reminded of the arguments it takes, simply type:
@@ -390,7 +399,7 @@ args(boxplot)
 ??jpeg
 ```
 
-Note that it only looks through your _installed_ packages.
+Note that it only looks through your *installed* packages.
 
 #### Online
 
@@ -402,9 +411,9 @@ If you do not understand the error message, start by searching the web. Be aware
 
 #### Asking for help
 
-If you cannot find a solution online, start by asking your friends and colleagues. Someone with more experience than you might be able and willing to help you. When asking for help it is important to think about how you state the problem. The key to receiving help is to make it as easy as possible to understand the issue your facing. Try to reduce what does not work to a simple example. Reproduce a problem with a simple data frame instead of one with thousands of rows. Generalize it in a way that people who do not do research in your field can understand the problem. If you are asking a question online in a forum include the output of `sessionInfo()` (it provides information about the R version, packages your using,...) and other information that can be helpful to understand the problem. stackoverflow.com has its own guidelines on how to ask a good question, which you should follow. If your question is well crafted and has not been answered before you can sometimes get an answer within 5 minutes. [https://stackoverflow.com/help/how-to-ask](https://stackoverflow.com/help/how-to-ask)
+If you cannot find a solution online, start by asking your friends and colleagues. Someone with more experience than you might be able and willing to help you. When asking for help it is important to think about how you state the problem. The key to receiving help is to make it as easy as possible to understand the issue your facing. Try to reduce what does not work to a simple example. Reproduce a problem with a simple data frame instead of one with thousands of rows. Generalize it in a way that people who do not do research in your field can understand the problem. If you are asking a question online in a forum include the output of `sessionInfo()` (it provides information about the R version, packages your using,...) and other information that can be helpful to understand the problem. stackoverflow.com has its own guidelines on how to ask a good question, which you should follow. If your question is well crafted and has not been answered before you can sometimes get an answer within 5 minutes. <https://stackoverflow.com/help/how-to-ask>
 
-Finally, many packages have a mailing list or allow you to open a query on the code repository, where you can ask specific questions. The same is true for R itself. The R-Help mailing list [https://stat.ethz.ch/mailman/listinfo/r-help](https://stat.ethz.ch/mailman/listinfo/r-help) is read by many people. However, the tone of such mailing lists can be pretty dry and unwelcoming to new users. Be sure to use the right terminology or else you might get an answer pointing out your misuse of language instead of your problem. Also, be sure your question is valid. Or else you won't get an answer.
+Finally, many packages have a mailing list or allow you to open a query on the code repository, where you can ask specific questions. The same is true for R itself. The R-Help mailing list <https://stat.ethz.ch/mailman/listinfo/r-help> is read by many people. However, the tone of such mailing lists can be pretty dry and unwelcoming to new users. Be sure to use the right terminology or else you might get an answer pointing out your misuse of language instead of your problem. Also, be sure your question is valid. Or else you won't get an answer.
 
 ## Exercises
 

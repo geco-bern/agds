@@ -117,10 +117,10 @@ gg2 <- ddf |>
   scale_y_continuous(limits = c(0, 8.75), expand = c(0, 0)) +
   coord_flip()
   
-plot_grid(gg1, gg2)
+cowplot::plot_grid(gg1, gg2)
 ```
 
-Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `plot_grid()` from the *cowplot* library.
+Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the *cowplot* library.
 
 Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the *dplyr* function `summarise()`. This equivalency is demonstrated below.
 
@@ -141,7 +141,7 @@ gg2 <- hhdf |>
   geom_bar(stat = "count") +
   theme_classic()
 
-plot_grid(gg1, gg2)
+cowplot::plot_grid(gg1, gg2)
 ```
 
 #### Distribution of one variable
@@ -200,7 +200,7 @@ gg3 <- hhdf |>
   labs(y = "VPD (hPa)") +
   theme_classic()
 
-plot_grid(gg1, gg2, gg3, ncol = 3)
+cowplot::plot_grid(gg1, gg2, gg3, ncol = 3)
 ```
 
 #### Regression of two continuous variables
@@ -248,7 +248,7 @@ gg4 <- hhdf |>
   theme_classic() +
   scale_color_viridis_c()
 
-plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
+cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 ```
 
 Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c).
@@ -295,7 +295,7 @@ ddf |>
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
        y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
   theme_classic() +
-  scale_color_scico_d(palette = "romaO")
+  scico::scale_color_scico_d(palette = "romaO")
 ```
 
 Note three aspecte here. First, the color-mapping is specified within `aes()` in the `ggplot()` function call and then adopted for all subsequent additions of geoms. Hence, also the `geom_smooth()` thus takes the color information, and not by a "hard-coded" specification of `color =` inside the `geom_smooth()` call as done in Fig. XXX.
@@ -394,7 +394,7 @@ gg4 <- hhdf |>
   geom_line() +
   coord_polar()
 
-plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
+cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 ```
 
 #### Density along two continuous variables
@@ -464,7 +464,7 @@ df_volcano <- tibble(
 
 ggplot(df_volcano, aes(x = x, y = y, fill = height)) + 
   geom_raster() + 
-  scale_fill_scico(palette = 'bukavu', midpoint = 0) + 
+  scico::scale_fill_scico(palette = 'bukavu', midpoint = 0) + 
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 ```
