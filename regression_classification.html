@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Regression and classification | Applied Geodata Science</title>
+  <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Regression and classification | Applied Geodata Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="github-repo" content="stineb/agsd" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Regression and classification | Applied Geodata Science" />
+  
+  <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  
+
+<meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
+
+
+<meta name="date" content="2023-01-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="open_science.html"/>
+<link rel="next" href="supervised_ml.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Geodata Science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About this book</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#target-readers-of-this-book"><i class="fa fa-check"></i><b>0.1</b> Target readers of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="0.2" data-path="introduction.html"><a href="introduction.html#what-is-applied-geodata-science"><i class="fa fa-check"></i><b>0.2</b> What is Applied Geodata Science?</a></li>
+<li class="chapter" data-level="0.3" data-path="introduction.html"><a href="introduction.html#data-science-workflow"><i class="fa fa-check"></i><b>0.3</b> The (data) science workflow</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction.html"><a href="introduction.html#data-rich-era"><i class="fa fa-check"></i><b>0.4</b> Why now?</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="getting_started.html"><a href="getting_started.html#learning-objectives"><i class="fa fa-check"></i><b>1.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="getting_started.html"><a href="getting_started.html#tutorial"><i class="fa fa-check"></i><b>1.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="getting_started.html"><a href="getting_started.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
+<li class="chapter" data-level="1.2.2" data-path="getting_started.html"><a href="getting_started.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
+<li class="chapter" data-level="1.2.3" data-path="getting_started.html"><a href="getting_started.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.4" data-path="getting_started.html"><a href="getting_started.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="getting_started.html"><a href="getting_started.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+<li class="chapter" data-level="1.4" data-path="getting_started.html"><a href="getting_started.html#solutions"><i class="fa fa-check"></i><b>1.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="programming_primers.html"><a href="programming_primers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="programming_primers.html"><a href="programming_primers.html#learning-objectives-1"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="programming_primers.html"><a href="programming_primers.html#tutorial-1"><i class="fa fa-check"></i><b>2.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="programming_primers.html"><a href="programming_primers.html#libraries"><i class="fa fa-check"></i><b>2.2.1</b> Libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="programming_primers.html"><a href="programming_primers.html#programming-basics"><i class="fa fa-check"></i><b>2.2.2</b> Programming basics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="programming_primers.html"><a href="programming_primers.html#working-with-data-frames"><i class="fa fa-check"></i><b>2.2.3</b> Working with data frames</a></li>
+<li class="chapter" data-level="2.2.4" data-path="programming_primers.html"><a href="programming_primers.html#where-to-find-help"><i class="fa fa-check"></i><b>2.2.4</b> Where to find help</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="programming_primers.html"><a href="programming_primers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+<li class="chapter" data-level="2.4" data-path="programming_primers.html"><a href="programming_primers.html#solutions-1"><i class="fa fa-check"></i><b>2.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data_wrangling.html"><a href="data_wrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data_wrangling.html"><a href="data_wrangling.html#learning-objectives-2"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="data_wrangling.html"><a href="data_wrangling.html#tutorial-2"><i class="fa fa-check"></i><b>3.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data_wrangling.html"><a href="data_wrangling.html#example-data"><i class="fa fa-check"></i><b>3.2.1</b> Example data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data_wrangling.html"><a href="data_wrangling.html#required-libraries"><i class="fa fa-check"></i><b>3.2.2</b> Required libraries</a></li>
+<li class="chapter" data-level="3.2.3" data-path="data_wrangling.html"><a href="data_wrangling.html#tidyverse"><i class="fa fa-check"></i><b>3.2.3</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.2.4" data-path="data_wrangling.html"><a href="data_wrangling.html#tabular-data"><i class="fa fa-check"></i><b>3.2.4</b> Tabular data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="data_wrangling.html"><a href="data_wrangling.html#variable-selection"><i class="fa fa-check"></i><b>3.2.5</b> Variable selection</a></li>
+<li class="chapter" data-level="3.2.6" data-path="data_wrangling.html"><a href="data_wrangling.html#time-objects"><i class="fa fa-check"></i><b>3.2.6</b> Time objects</a></li>
+<li class="chapter" data-level="3.2.7" data-path="data_wrangling.html"><a href="data_wrangling.html#variable-re--definition"><i class="fa fa-check"></i><b>3.2.7</b> Variable (re-) definition</a></li>
+<li class="chapter" data-level="3.2.8" data-path="data_wrangling.html"><a href="data_wrangling.html#axes-of-variation"><i class="fa fa-check"></i><b>3.2.8</b> Axes of variation</a></li>
+<li class="chapter" data-level="3.2.9" data-path="data_wrangling.html"><a href="data_wrangling.html#tidy-data"><i class="fa fa-check"></i><b>3.2.9</b> Tidy data</a></li>
+<li class="chapter" data-level="3.2.10" data-path="data_wrangling.html"><a href="data_wrangling.html#aggregating-data"><i class="fa fa-check"></i><b>3.2.10</b> Aggregating data</a></li>
+<li class="chapter" data-level="3.2.11" data-path="data_wrangling.html"><a href="data_wrangling.html#data-cleaning"><i class="fa fa-check"></i><b>3.2.11</b> Data cleaning</a></li>
+<li class="chapter" data-level="3.2.12" data-path="data_wrangling.html"><a href="data_wrangling.html#combining-relational-data"><i class="fa fa-check"></i><b>3.2.12</b> Combining relational data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data_wrangling.html"><a href="data_wrangling.html#extra-material"><i class="fa fa-check"></i><b>3.3</b> Extra material</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="data_wrangling.html"><a href="data_wrangling.html#functional-programming-i"><i class="fa fa-check"></i><b>3.3.1</b> Functional programming I</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data_wrangling.html"><a href="data_wrangling.html#strings"><i class="fa fa-check"></i><b>3.3.2</b> Strings</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data_wrangling.html"><a href="data_wrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data_wrangling.html"><a href="data_wrangling.html#exercises-2"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+<li class="chapter" data-level="3.5" data-path="data_wrangling.html"><a href="data_wrangling.html#solutions-2"><i class="fa fa-check"></i><b>3.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data_vis.html"><a href="data_vis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data_vis.html"><a href="data_vis.html#learning-objectives-3"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="data_vis.html"><a href="data_vis.html#required-packages"><i class="fa fa-check"></i><b>4.2</b> Required packages</a></li>
+<li class="chapter" data-level="4.3" data-path="data_vis.html"><a href="data_vis.html#tutorial-3"><i class="fa fa-check"></i><b>4.3</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data_vis.html"><a href="data_vis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.3.1</b> The grammar of graphics</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data_vis.html"><a href="data_vis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.3.2</b> Every data has its representation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data_vis.html"><a href="data_vis.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+<li class="chapter" data-level="4.5" data-path="data_vis.html"><a href="data_vis.html#solutions-3"><i class="fa fa-check"></i><b>4.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="data_variety.html"><a href="data_variety.html"><i class="fa fa-check"></i><b>5</b> Data variety</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="data_variety.html"><a href="data_variety.html#learning-objectives-4"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="data_variety.html"><a href="data_variety.html#tutorial-4"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="data_variety.html"><a href="data_variety.html#files-and-file-formats"><i class="fa fa-check"></i><b>5.3</b> Files and file formats</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="data_variety.html"><a href="data_variety.html#file-extensions"><i class="fa fa-check"></i><b>5.3.1</b> File extensions</a></li>
+<li class="chapter" data-level="5.3.2" data-path="data_variety.html"><a href="data_variety.html#file-formats"><i class="fa fa-check"></i><b>5.3.2</b> File formats</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="data_variety.html"><a href="data_variety.html#meta-data"><i class="fa fa-check"></i><b>5.4</b> Meta-data</a></li>
+<li class="chapter" data-level="5.5" data-path="data_variety.html"><a href="data_variety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.5</b> Spatial data representation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="data_variety.html"><a href="data_variety.html#raster-data-model"><i class="fa fa-check"></i><b>5.5.1</b> Raster data model</a></li>
+<li class="chapter" data-level="5.5.2" data-path="data_variety.html"><a href="data_variety.html#vector-data-model"><i class="fa fa-check"></i><b>5.5.2</b> Vector data model</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="data_variety.html"><a href="data_variety.html#data-sources"><i class="fa fa-check"></i><b>5.6</b> Data sources</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="data_variety.html"><a href="data_variety.html#direct-downloads"><i class="fa fa-check"></i><b>5.6.1</b> Direct downloads</a></li>
+<li class="chapter" data-level="5.6.2" data-path="data_variety.html"><a href="data_variety.html#apis"><i class="fa fa-check"></i><b>5.6.2</b> APIs</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="data_variety.html"><a href="data_variety.html#exercises-4"><i class="fa fa-check"></i><b>5.7</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="data_variety.html"><a href="data_variety.html#files-and-file-formats-1"><i class="fa fa-check"></i><b>5.7.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.7.2" data-path="data_variety.html"><a href="data_variety.html#api-use"><i class="fa fa-check"></i><b>5.7.2</b> API use</a></li>
+<li class="chapter" data-level="5.7.3" data-path="data_variety.html"><a href="data_variety.html#get-1"><i class="fa fa-check"></i><b>5.7.3</b> GET</a></li>
+<li class="chapter" data-level="5.7.4" data-path="data_variety.html"><a href="data_variety.html#dedicated-library"><i class="fa fa-check"></i><b>5.7.4</b> Dedicated library</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="data_variety.html"><a href="data_variety.html#solutions-4"><i class="fa fa-check"></i><b>5.8</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="code_mgmt.html"><a href="code_mgmt.html"><i class="fa fa-check"></i><b>6</b> Code management</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="code_mgmt.html"><a href="code_mgmt.html#learning-objectives-5"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="code_mgmt.html"><a href="code_mgmt.html#tutorial-5"><i class="fa fa-check"></i><b>6.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="code_mgmt.html"><a href="code_mgmt.html#git-and-local-version-control"><i class="fa fa-check"></i><b>6.2.1</b> Git and local version control</a></li>
+<li class="chapter" data-level="6.2.2" data-path="code_mgmt.html"><a href="code_mgmt.html#remote-version-control"><i class="fa fa-check"></i><b>6.2.2</b> Remote version control</a></li>
+<li class="chapter" data-level="6.2.3" data-path="code_mgmt.html"><a href="code_mgmt.html#location-based-code-management---github-templates"><i class="fa fa-check"></i><b>6.2.3</b> Location based code management - github templates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="code_mgmt.html"><a href="code_mgmt.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+<li class="chapter" data-level="6.4" data-path="code_mgmt.html"><a href="code_mgmt.html#solutions-5"><i class="fa fa-check"></i><b>6.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="open_science.html"><a href="open_science.html"><i class="fa fa-check"></i><b>7</b> Open science practices</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="open_science.html"><a href="open_science.html#learning-objectives-6"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="open_science.html"><a href="open_science.html#tutorial-6"><i class="fa fa-check"></i><b>7.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="open_science.html"><a href="open_science.html#project-structure"><i class="fa fa-check"></i><b>7.2.1</b> Project structure</a></li>
+<li class="chapter" data-level="7.2.2" data-path="open_science.html"><a href="open_science.html#managing-workflows"><i class="fa fa-check"></i><b>7.2.2</b> Managing workflows</a></li>
+<li class="chapter" data-level="7.2.3" data-path="open_science.html"><a href="open_science.html#capturing-your-session-state"><i class="fa fa-check"></i><b>7.2.3</b> Capturing your session state</a></li>
+<li class="chapter" data-level="7.2.4" data-path="open_science.html"><a href="open_science.html#capturing-a-system-state"><i class="fa fa-check"></i><b>7.2.4</b> Capturing a system state</a></li>
+<li class="chapter" data-level="7.2.5" data-path="open_science.html"><a href="open_science.html#readable-reporting-using-rmarkdown"><i class="fa fa-check"></i><b>7.2.5</b> Readable reporting using Rmarkdown</a></li>
+<li class="chapter" data-level="7.2.6" data-path="open_science.html"><a href="open_science.html#data-retention"><i class="fa fa-check"></i><b>7.2.6</b> Data retention</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="open_science.html"><a href="open_science.html#exercises-6"><i class="fa fa-check"></i><b>7.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="open_science.html"><a href="open_science.html#data-and-code-management"><i class="fa fa-check"></i><b>7.3.1</b> Data and code management</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="open_science.html"><a href="open_science.html#references"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regression_classification.html"><a href="regression_classification.html"><i class="fa fa-check"></i><b>8</b> Regression and classification</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="regression_classification.html"><a href="regression_classification.html#learning-objectives-7"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="regression_classification.html"><a href="regression_classification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a></li>
+<li class="chapter" data-level="8.3" data-path="regression_classification.html"><a href="regression_classification.html#exercises-7"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
+<li class="chapter" data-level="8.4" data-path="regression_classification.html"><a href="regression_classification.html#solutions-6"><i class="fa fa-check"></i><b>8.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="supervised_ml.html"><a href="supervised_ml.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="supervised_ml.html"><a href="supervised_ml.html#learning-objectives-8"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="supervised_ml.html"><a href="supervised_ml.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="supervised_ml.html"><a href="supervised_ml.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="9.2.2" data-path="supervised_ml.html"><a href="supervised_ml.html#overfitting"><i class="fa fa-check"></i><b>9.2.2</b> Overfitting</a></li>
+<li class="chapter" data-level="9.2.3" data-path="supervised_ml.html"><a href="supervised_ml.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.3</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="9.2.4" data-path="supervised_ml.html"><a href="supervised_ml.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.4</b> K-nearest neighbours</a></li>
+<li class="chapter" data-level="9.2.5" data-path="supervised_ml.html"><a href="supervised_ml.html#model-formulation"><i class="fa fa-check"></i><b>9.2.5</b> Model formulation</a></li>
+<li class="chapter" data-level="9.2.6" data-path="supervised_ml.html"><a href="supervised_ml.html#data-splitting"><i class="fa fa-check"></i><b>9.2.6</b> Data splitting</a></li>
+<li class="chapter" data-level="9.2.7" data-path="supervised_ml.html"><a href="supervised_ml.html#preprocessing"><i class="fa fa-check"></i><b>9.2.7</b> Pre-processing</a></li>
+<li class="chapter" data-level="9.2.8" data-path="supervised_ml.html"><a href="supervised_ml.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.8</b> Putting it all together (half-way)</a></li>
+<li class="chapter" data-level="9.2.9" data-path="supervised_ml.html"><a href="supervised_ml.html#training"><i class="fa fa-check"></i><b>9.2.9</b> Model training</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="supervised_ml.html"><a href="supervised_ml.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="supervised_ml.html"><a href="supervised_ml.html#solutions-7"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="random_forest.html"><a href="random_forest.html"><i class="fa fa-check"></i><b>10</b> Random forest</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="random_forest.html"><a href="random_forest.html#learning-objectives-9"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="10.2" data-path="random_forest.html"><a href="random_forest.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a></li>
+<li class="chapter" data-level="10.3" data-path="random_forest.html"><a href="random_forest.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+<li class="chapter" data-level="10.4" data-path="random_forest.html"><a href="random_forest.html#solutions-8"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="neural_nets.html"><a href="neural_nets.html"><i class="fa fa-check"></i><b>11</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="neural_nets.html"><a href="neural_nets.html#learning-objectives-10"><i class="fa fa-check"></i><b>11.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="11.2" data-path="neural_nets.html"><a href="neural_nets.html#tutorial-10"><i class="fa fa-check"></i><b>11.2</b> Tutorial</a></li>
+<li class="chapter" data-level="11.3" data-path="neural_nets.html"><a href="neural_nets.html#exercises-10"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+<li class="chapter" data-level="11.4" data-path="neural_nets.html"><a href="neural_nets.html#solutions-9"><i class="fa fa-check"></i><b>11.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="interpretable_ml.html"><a href="interpretable_ml.html"><i class="fa fa-check"></i><b>12</b> Interpretable machine learning</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="interpretable_ml.html"><a href="interpretable_ml.html#learning-objectives-11"><i class="fa fa-check"></i><b>12.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="12.2" data-path="interpretable_ml.html"><a href="interpretable_ml.html#tutorial-11"><i class="fa fa-check"></i><b>12.2</b> Tutorial</a></li>
+<li class="chapter" data-level="12.3" data-path="interpretable_ml.html"><a href="interpretable_ml.html#exercises-11"><i class="fa fa-check"></i><b>12.3</b> Exercises</a></li>
+<li class="chapter" data-level="12.4" data-path="interpretable_ml.html"><a href="interpretable_ml.html#solutions-10"><i class="fa fa-check"></i><b>12.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applied Geodata Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="regression_classification" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Regression and classification<a href="regression_classification.html#regression_classification" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Chapter lead author: Pepa Aran</strong></p>
+<p>Contents:</p>
+<ul>
+<li>Difference between regression and classification</li>
+<li><a href="https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/06_supervised_ml_1.Rmd#L84">Linear regression</a></li>
+<li>Logistic regression</li>
+<li><a href="https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/07_supervised_ml_2.Rmd#L236">Regression metrics</a></li>
+<li><a href="https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/07_supervised_ml_2.Rmd#L345">Classification metrics</a>, <a href="https://bookdown.org/max/FES/measuring-performance.html#class-metrics">another link</a></li>
+<li>Comparing models (AIC, …)</li>
+<li>Detecting outliers: identification via distributions [hist(), boxplot(), qqnorm()], multivariate (Cook’s Distance to get influential values)</li>
+<li>Feature selection, <a href="https://github.com/stineb/esds_book-gitlab/blob/master/08_variable_selection.Rmd">stepwise regression</a>, multi-colinearity (<a href="http://www.sthda.com/english/articles/39-regression-model-diagnostics/160-multicollinearity-essentials-and-vif-in-r/">vif</a>)</li>
+<li>Performance assessment: Exercise for stepwise regression <a href="https://stineb.github.io/esds_book/ch-08.html">link</a>, <a href="https://github.com/stineb/esds_book-gitlab/blob/master/08_variable_selection.Rmd">link</a></li>
+</ul>
+<div id="learning-objectives-7" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Learning objectives<a href="regression_classification.html#learning-objectives-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="tutorial-7" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Tutorial<a href="regression_classification.html#tutorial-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="exercises-7" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Exercises<a href="regression_classification.html#exercises-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="solutions-6" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Solutions<a href="regression_classification.html#solutions-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="open_science.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="supervised_ml.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/08-regression_classification.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

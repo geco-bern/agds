@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Data variety | Applied Geodata Science</title>
+  <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Data variety | Applied Geodata Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="github-repo" content="stineb/agsd" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Data variety | Applied Geodata Science" />
+  
+  <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  
+
+<meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
+
+
+<meta name="date" content="2023-01-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data_vis.html"/>
+<link rel="next" href="code_mgmt.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Geodata Science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About this book</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#target-readers-of-this-book"><i class="fa fa-check"></i><b>0.1</b> Target readers of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="0.2" data-path="introduction.html"><a href="introduction.html#what-is-applied-geodata-science"><i class="fa fa-check"></i><b>0.2</b> What is Applied Geodata Science?</a></li>
+<li class="chapter" data-level="0.3" data-path="introduction.html"><a href="introduction.html#data-science-workflow"><i class="fa fa-check"></i><b>0.3</b> The (data) science workflow</a></li>
+<li class="chapter" data-level="0.4" data-path="introduction.html"><a href="introduction.html#data-rich-era"><i class="fa fa-check"></i><b>0.4</b> Why now?</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="getting_started.html"><a href="getting_started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="getting_started.html"><a href="getting_started.html#learning-objectives"><i class="fa fa-check"></i><b>1.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="getting_started.html"><a href="getting_started.html#tutorial"><i class="fa fa-check"></i><b>1.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="getting_started.html"><a href="getting_started.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
+<li class="chapter" data-level="1.2.2" data-path="getting_started.html"><a href="getting_started.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
+<li class="chapter" data-level="1.2.3" data-path="getting_started.html"><a href="getting_started.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.4" data-path="getting_started.html"><a href="getting_started.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="getting_started.html"><a href="getting_started.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+<li class="chapter" data-level="1.4" data-path="getting_started.html"><a href="getting_started.html#solutions"><i class="fa fa-check"></i><b>1.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="programming_primers.html"><a href="programming_primers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="programming_primers.html"><a href="programming_primers.html#learning-objectives-1"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="programming_primers.html"><a href="programming_primers.html#tutorial-1"><i class="fa fa-check"></i><b>2.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="programming_primers.html"><a href="programming_primers.html#libraries"><i class="fa fa-check"></i><b>2.2.1</b> Libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="programming_primers.html"><a href="programming_primers.html#programming-basics"><i class="fa fa-check"></i><b>2.2.2</b> Programming basics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="programming_primers.html"><a href="programming_primers.html#working-with-data-frames"><i class="fa fa-check"></i><b>2.2.3</b> Working with data frames</a></li>
+<li class="chapter" data-level="2.2.4" data-path="programming_primers.html"><a href="programming_primers.html#where-to-find-help"><i class="fa fa-check"></i><b>2.2.4</b> Where to find help</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="programming_primers.html"><a href="programming_primers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+<li class="chapter" data-level="2.4" data-path="programming_primers.html"><a href="programming_primers.html#solutions-1"><i class="fa fa-check"></i><b>2.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data_wrangling.html"><a href="data_wrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data_wrangling.html"><a href="data_wrangling.html#learning-objectives-2"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="data_wrangling.html"><a href="data_wrangling.html#tutorial-2"><i class="fa fa-check"></i><b>3.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data_wrangling.html"><a href="data_wrangling.html#example-data"><i class="fa fa-check"></i><b>3.2.1</b> Example data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data_wrangling.html"><a href="data_wrangling.html#required-libraries"><i class="fa fa-check"></i><b>3.2.2</b> Required libraries</a></li>
+<li class="chapter" data-level="3.2.3" data-path="data_wrangling.html"><a href="data_wrangling.html#tidyverse"><i class="fa fa-check"></i><b>3.2.3</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.2.4" data-path="data_wrangling.html"><a href="data_wrangling.html#tabular-data"><i class="fa fa-check"></i><b>3.2.4</b> Tabular data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="data_wrangling.html"><a href="data_wrangling.html#variable-selection"><i class="fa fa-check"></i><b>3.2.5</b> Variable selection</a></li>
+<li class="chapter" data-level="3.2.6" data-path="data_wrangling.html"><a href="data_wrangling.html#time-objects"><i class="fa fa-check"></i><b>3.2.6</b> Time objects</a></li>
+<li class="chapter" data-level="3.2.7" data-path="data_wrangling.html"><a href="data_wrangling.html#variable-re--definition"><i class="fa fa-check"></i><b>3.2.7</b> Variable (re-) definition</a></li>
+<li class="chapter" data-level="3.2.8" data-path="data_wrangling.html"><a href="data_wrangling.html#axes-of-variation"><i class="fa fa-check"></i><b>3.2.8</b> Axes of variation</a></li>
+<li class="chapter" data-level="3.2.9" data-path="data_wrangling.html"><a href="data_wrangling.html#tidy-data"><i class="fa fa-check"></i><b>3.2.9</b> Tidy data</a></li>
+<li class="chapter" data-level="3.2.10" data-path="data_wrangling.html"><a href="data_wrangling.html#aggregating-data"><i class="fa fa-check"></i><b>3.2.10</b> Aggregating data</a></li>
+<li class="chapter" data-level="3.2.11" data-path="data_wrangling.html"><a href="data_wrangling.html#data-cleaning"><i class="fa fa-check"></i><b>3.2.11</b> Data cleaning</a></li>
+<li class="chapter" data-level="3.2.12" data-path="data_wrangling.html"><a href="data_wrangling.html#combining-relational-data"><i class="fa fa-check"></i><b>3.2.12</b> Combining relational data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data_wrangling.html"><a href="data_wrangling.html#extra-material"><i class="fa fa-check"></i><b>3.3</b> Extra material</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="data_wrangling.html"><a href="data_wrangling.html#functional-programming-i"><i class="fa fa-check"></i><b>3.3.1</b> Functional programming I</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data_wrangling.html"><a href="data_wrangling.html#strings"><i class="fa fa-check"></i><b>3.3.2</b> Strings</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data_wrangling.html"><a href="data_wrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data_wrangling.html"><a href="data_wrangling.html#exercises-2"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+<li class="chapter" data-level="3.5" data-path="data_wrangling.html"><a href="data_wrangling.html#solutions-2"><i class="fa fa-check"></i><b>3.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data_vis.html"><a href="data_vis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data_vis.html"><a href="data_vis.html#learning-objectives-3"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="data_vis.html"><a href="data_vis.html#required-packages"><i class="fa fa-check"></i><b>4.2</b> Required packages</a></li>
+<li class="chapter" data-level="4.3" data-path="data_vis.html"><a href="data_vis.html#tutorial-3"><i class="fa fa-check"></i><b>4.3</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data_vis.html"><a href="data_vis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.3.1</b> The grammar of graphics</a></li>
+<li class="chapter" data-level="4.3.2" data-path="data_vis.html"><a href="data_vis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.3.2</b> Every data has its representation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data_vis.html"><a href="data_vis.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+<li class="chapter" data-level="4.5" data-path="data_vis.html"><a href="data_vis.html#solutions-3"><i class="fa fa-check"></i><b>4.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="data_variety.html"><a href="data_variety.html"><i class="fa fa-check"></i><b>5</b> Data variety</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="data_variety.html"><a href="data_variety.html#learning-objectives-4"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="data_variety.html"><a href="data_variety.html#tutorial-4"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="data_variety.html"><a href="data_variety.html#files-and-file-formats"><i class="fa fa-check"></i><b>5.3</b> Files and file formats</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="data_variety.html"><a href="data_variety.html#file-extensions"><i class="fa fa-check"></i><b>5.3.1</b> File extensions</a></li>
+<li class="chapter" data-level="5.3.2" data-path="data_variety.html"><a href="data_variety.html#file-formats"><i class="fa fa-check"></i><b>5.3.2</b> File formats</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="data_variety.html"><a href="data_variety.html#meta-data"><i class="fa fa-check"></i><b>5.4</b> Meta-data</a></li>
+<li class="chapter" data-level="5.5" data-path="data_variety.html"><a href="data_variety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.5</b> Spatial data representation</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="data_variety.html"><a href="data_variety.html#raster-data-model"><i class="fa fa-check"></i><b>5.5.1</b> Raster data model</a></li>
+<li class="chapter" data-level="5.5.2" data-path="data_variety.html"><a href="data_variety.html#vector-data-model"><i class="fa fa-check"></i><b>5.5.2</b> Vector data model</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="data_variety.html"><a href="data_variety.html#data-sources"><i class="fa fa-check"></i><b>5.6</b> Data sources</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="data_variety.html"><a href="data_variety.html#direct-downloads"><i class="fa fa-check"></i><b>5.6.1</b> Direct downloads</a></li>
+<li class="chapter" data-level="5.6.2" data-path="data_variety.html"><a href="data_variety.html#apis"><i class="fa fa-check"></i><b>5.6.2</b> APIs</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="data_variety.html"><a href="data_variety.html#exercises-4"><i class="fa fa-check"></i><b>5.7</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="data_variety.html"><a href="data_variety.html#files-and-file-formats-1"><i class="fa fa-check"></i><b>5.7.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.7.2" data-path="data_variety.html"><a href="data_variety.html#api-use"><i class="fa fa-check"></i><b>5.7.2</b> API use</a></li>
+<li class="chapter" data-level="5.7.3" data-path="data_variety.html"><a href="data_variety.html#get-1"><i class="fa fa-check"></i><b>5.7.3</b> GET</a></li>
+<li class="chapter" data-level="5.7.4" data-path="data_variety.html"><a href="data_variety.html#dedicated-library"><i class="fa fa-check"></i><b>5.7.4</b> Dedicated library</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="data_variety.html"><a href="data_variety.html#solutions-4"><i class="fa fa-check"></i><b>5.8</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="code_mgmt.html"><a href="code_mgmt.html"><i class="fa fa-check"></i><b>6</b> Code management</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="code_mgmt.html"><a href="code_mgmt.html#learning-objectives-5"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="code_mgmt.html"><a href="code_mgmt.html#tutorial-5"><i class="fa fa-check"></i><b>6.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="code_mgmt.html"><a href="code_mgmt.html#git-and-local-version-control"><i class="fa fa-check"></i><b>6.2.1</b> Git and local version control</a></li>
+<li class="chapter" data-level="6.2.2" data-path="code_mgmt.html"><a href="code_mgmt.html#remote-version-control"><i class="fa fa-check"></i><b>6.2.2</b> Remote version control</a></li>
+<li class="chapter" data-level="6.2.3" data-path="code_mgmt.html"><a href="code_mgmt.html#location-based-code-management---github-templates"><i class="fa fa-check"></i><b>6.2.3</b> Location based code management - github templates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="code_mgmt.html"><a href="code_mgmt.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+<li class="chapter" data-level="6.4" data-path="code_mgmt.html"><a href="code_mgmt.html#solutions-5"><i class="fa fa-check"></i><b>6.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="open_science.html"><a href="open_science.html"><i class="fa fa-check"></i><b>7</b> Open science practices</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="open_science.html"><a href="open_science.html#learning-objectives-6"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="open_science.html"><a href="open_science.html#tutorial-6"><i class="fa fa-check"></i><b>7.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="open_science.html"><a href="open_science.html#project-structure"><i class="fa fa-check"></i><b>7.2.1</b> Project structure</a></li>
+<li class="chapter" data-level="7.2.2" data-path="open_science.html"><a href="open_science.html#managing-workflows"><i class="fa fa-check"></i><b>7.2.2</b> Managing workflows</a></li>
+<li class="chapter" data-level="7.2.3" data-path="open_science.html"><a href="open_science.html#capturing-your-session-state"><i class="fa fa-check"></i><b>7.2.3</b> Capturing your session state</a></li>
+<li class="chapter" data-level="7.2.4" data-path="open_science.html"><a href="open_science.html#capturing-a-system-state"><i class="fa fa-check"></i><b>7.2.4</b> Capturing a system state</a></li>
+<li class="chapter" data-level="7.2.5" data-path="open_science.html"><a href="open_science.html#readable-reporting-using-rmarkdown"><i class="fa fa-check"></i><b>7.2.5</b> Readable reporting using Rmarkdown</a></li>
+<li class="chapter" data-level="7.2.6" data-path="open_science.html"><a href="open_science.html#data-retention"><i class="fa fa-check"></i><b>7.2.6</b> Data retention</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="open_science.html"><a href="open_science.html#exercises-6"><i class="fa fa-check"></i><b>7.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="open_science.html"><a href="open_science.html#data-and-code-management"><i class="fa fa-check"></i><b>7.3.1</b> Data and code management</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="open_science.html"><a href="open_science.html#references"><i class="fa fa-check"></i><b>7.4</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regression_classification.html"><a href="regression_classification.html"><i class="fa fa-check"></i><b>8</b> Regression and classification</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="regression_classification.html"><a href="regression_classification.html#learning-objectives-7"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="regression_classification.html"><a href="regression_classification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a></li>
+<li class="chapter" data-level="8.3" data-path="regression_classification.html"><a href="regression_classification.html#exercises-7"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
+<li class="chapter" data-level="8.4" data-path="regression_classification.html"><a href="regression_classification.html#solutions-6"><i class="fa fa-check"></i><b>8.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="supervised_ml.html"><a href="supervised_ml.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="supervised_ml.html"><a href="supervised_ml.html#learning-objectives-8"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="supervised_ml.html"><a href="supervised_ml.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="supervised_ml.html"><a href="supervised_ml.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="9.2.2" data-path="supervised_ml.html"><a href="supervised_ml.html#overfitting"><i class="fa fa-check"></i><b>9.2.2</b> Overfitting</a></li>
+<li class="chapter" data-level="9.2.3" data-path="supervised_ml.html"><a href="supervised_ml.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.3</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="9.2.4" data-path="supervised_ml.html"><a href="supervised_ml.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.4</b> K-nearest neighbours</a></li>
+<li class="chapter" data-level="9.2.5" data-path="supervised_ml.html"><a href="supervised_ml.html#model-formulation"><i class="fa fa-check"></i><b>9.2.5</b> Model formulation</a></li>
+<li class="chapter" data-level="9.2.6" data-path="supervised_ml.html"><a href="supervised_ml.html#data-splitting"><i class="fa fa-check"></i><b>9.2.6</b> Data splitting</a></li>
+<li class="chapter" data-level="9.2.7" data-path="supervised_ml.html"><a href="supervised_ml.html#preprocessing"><i class="fa fa-check"></i><b>9.2.7</b> Pre-processing</a></li>
+<li class="chapter" data-level="9.2.8" data-path="supervised_ml.html"><a href="supervised_ml.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.8</b> Putting it all together (half-way)</a></li>
+<li class="chapter" data-level="9.2.9" data-path="supervised_ml.html"><a href="supervised_ml.html#training"><i class="fa fa-check"></i><b>9.2.9</b> Model training</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="supervised_ml.html"><a href="supervised_ml.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="supervised_ml.html"><a href="supervised_ml.html#solutions-7"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="random_forest.html"><a href="random_forest.html"><i class="fa fa-check"></i><b>10</b> Random forest</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="random_forest.html"><a href="random_forest.html#learning-objectives-9"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="10.2" data-path="random_forest.html"><a href="random_forest.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a></li>
+<li class="chapter" data-level="10.3" data-path="random_forest.html"><a href="random_forest.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+<li class="chapter" data-level="10.4" data-path="random_forest.html"><a href="random_forest.html#solutions-8"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="neural_nets.html"><a href="neural_nets.html"><i class="fa fa-check"></i><b>11</b> Neural networks</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="neural_nets.html"><a href="neural_nets.html#learning-objectives-10"><i class="fa fa-check"></i><b>11.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="11.2" data-path="neural_nets.html"><a href="neural_nets.html#tutorial-10"><i class="fa fa-check"></i><b>11.2</b> Tutorial</a></li>
+<li class="chapter" data-level="11.3" data-path="neural_nets.html"><a href="neural_nets.html#exercises-10"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+<li class="chapter" data-level="11.4" data-path="neural_nets.html"><a href="neural_nets.html#solutions-9"><i class="fa fa-check"></i><b>11.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="interpretable_ml.html"><a href="interpretable_ml.html"><i class="fa fa-check"></i><b>12</b> Interpretable machine learning</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="interpretable_ml.html"><a href="interpretable_ml.html#learning-objectives-11"><i class="fa fa-check"></i><b>12.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="12.2" data-path="interpretable_ml.html"><a href="interpretable_ml.html#tutorial-11"><i class="fa fa-check"></i><b>12.2</b> Tutorial</a></li>
+<li class="chapter" data-level="12.3" data-path="interpretable_ml.html"><a href="interpretable_ml.html#exercises-11"><i class="fa fa-check"></i><b>12.3</b> Exercises</a></li>
+<li class="chapter" data-level="12.4" data-path="interpretable_ml.html"><a href="interpretable_ml.html#solutions-10"><i class="fa fa-check"></i><b>12.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applied Geodata Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data_variety" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Data variety<a href="data_variety.html#data_variety" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Chapter lead author: Koen Hufkens</strong></p>
+<div id="learning-objectives-4" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Learning objectives<a href="data_variety.html#learning-objectives-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As a scientist you will encounter variety of <a href="%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))">data</a> (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and <a href="https://en.wikipedia.org/wiki/Database">databases</a> are not covered although some files (formats) might have a mixed use.</p>
+<p>However, more and more data moves toward a cloud server based model where data is queried from an online database using an <a href="https://en.wikipedia.org/wiki/API">Application Programming Interface (API)</a>. Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.</p>
+<p>In this chapter you will learn:</p>
+<ul>
+<li><p>how to recognize data/file formats</p></li>
+<li><p>understand data/file format limitations</p>
+<ul>
+<li><p>manipulation wise</p></li>
+<li><p>content wise</p></li>
+</ul></li>
+<li><p>how to read and or write data in a particular file format</p></li>
+<li><p>how to query an API</p>
+<ul>
+<li>and store it locally</li>
+</ul></li>
+</ul>
+</div>
+<div id="tutorial-4" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Tutorial<a href="data_variety.html#tutorial-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="files-and-file-formats" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Files and file formats<a href="data_variety.html#files-and-file-formats" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="file-extensions" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> File extensions<a href="data_variety.html#file-extensions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In order to manipulate data and make some distinctions on what a data file might contain they carry a particular <a href="https://en.wikipedia.org/wiki/Filename_extension">file format extension</a>. This file extensions denotes the intended content and use of a particular file.</p>
+<p>For example a file ending in <code>.txt</code> suggests that it contains text. A file extension allows you, or a computer, to assess the content of a file without opening the file.</p>
+<p>File extensions are therefore an important tool in assessing what data you are dealing with, and what tools you will need to manipulated (read / write) the data.</p>
+<blockquote>
+<p>NOTE: It is important to note that file extensions can be changed. In some cases the file extension does not represent the content and or use case of the data contained within the file.</p>
+</blockquote>
+<blockquote>
+<p>TIP: If a file doesn’t read it is always wise to check the first couple of lines to verify if the data has a structure which corresponds to the file extension.</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb256-1"><a href="data_variety.html#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On a linux/macos system you can use the below command</span></span>
+<span id="cb256-2"><a href="data_variety.html#cb256-2" aria-hidden="true" tabindex="-1"></a><span class="co"># to show the first couple of lines of a file</span></span>
+<span id="cb256-3"><a href="data_variety.html#cb256-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> your_file</span>
+<span id="cb256-4"><a href="data_variety.html#cb256-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb256-5"><a href="data_variety.html#cb256-5" aria-hidden="true" tabindex="-1"></a><span class="co"># alternatively you can show the last few lines</span></span>
+<span id="cb256-6"><a href="data_variety.html#cb256-6" aria-hidden="true" tabindex="-1"></a><span class="co"># of a file using</span></span>
+<span id="cb256-7"><a href="data_variety.html#cb256-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> your_file</span></code></pre></div>
+</blockquote>
+<div id="human-readable-data" class="section level4 hasAnchor" number="5.3.1.1">
+<h4><span class="header-section-number">5.3.1.1</span> Human readable data<a href="data_variety.html#human-readable-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>One of the most important distinctions in data formats falls along the line of it being human readable or not. Human readable data is, as the term specifies, made up of normal text characters. Human readable text has the advantage that it is easily read, and or edited using conventional text processors. This convenience comes at the cost of the files not being compressed in any way, and file sizes can become unsustainable. However, for many applications where file sizes are limited (&lt;50MB), human readable formats are the preferred option. Most human readable data falls in two broad categories, tabulated data and structured data.</p>
+<div id="tabulated-data" class="section level5 hasAnchor" number="5.3.1.1.1">
+<h5><span class="header-section-number">5.3.1.1.1</span> Tabulated data<a href="data_variety.html#tabulated-data" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Often, human readable formats provide data in tabulated form using a consistent delimiter. This delimiter is a character separating columns of a table.</p>
+<pre><code>column_one, column_two, column_three
+1, 2, 3
+1, 2, 3
+1, 2, 3</code></pre>
+<p>Common delimiters in this context are the comma (<code>,</code>), as shown in the above example. A file with this particular format often carries the <a href="https://en.wikipedia.org/wiki/Comma-separated_values">comma-separated values file extension (*.csv)</a>. Other delimiters are the <a href="https://en.wikipedia.org/wiki/Tab_key#Tab_characters">tabulation (tab) character</a>. Files with tab delimited values have the* format.</p>
+<blockquote>
+<p>TIP: File extensions aren’t always a true indication of the delimiter used. For example, <code>.txt</code> files often contain comma or tab separated data. If reading a file using a particular delimiter fails it is best to check the first few lines of a file.</p>
+</blockquote>
+</div>
+<div id="structured-data" class="section level5 hasAnchor" number="5.3.1.1.2">
+<h5><span class="header-section-number">5.3.1.1.2</span> Structured data<a href="data_variety.html#structured-data" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Tabulated delimited data is row and column oriented and therefore doesn’t allow complex structured content, e.g. tables within tables. This issue is sidestepped by for example the <a href="https://www.json.org/json-en.html">JSON format</a>. The JSON format in particular uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below you see an example of details describing a person, with entries being fo varying length and data content.</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb258-1"><a href="data_variety.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb258-2"><a href="data_variety.html#cb258-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstName&quot;</span><span class="fu">:</span> <span class="st">&quot;John&quot;</span><span class="fu">,</span></span>
+<span id="cb258-3"><a href="data_variety.html#cb258-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;lastName&quot;</span><span class="fu">:</span> <span class="st">&quot;Smith&quot;</span><span class="fu">,</span></span>
+<span id="cb258-4"><a href="data_variety.html#cb258-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;isAlive&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb258-5"><a href="data_variety.html#cb258-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="dv">27</span><span class="fu">,</span></span>
+<span id="cb258-6"><a href="data_variety.html#cb258-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb258-7"><a href="data_variety.html#cb258-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;streetAddress&quot;</span><span class="fu">:</span> <span class="st">&quot;21 2nd Street&quot;</span><span class="fu">,</span></span>
+<span id="cb258-8"><a href="data_variety.html#cb258-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;city&quot;</span><span class="fu">:</span> <span class="st">&quot;New York&quot;</span><span class="fu">,</span></span>
+<span id="cb258-9"><a href="data_variety.html#cb258-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;state&quot;</span><span class="fu">:</span> <span class="st">&quot;NY&quot;</span><span class="fu">,</span></span>
+<span id="cb258-10"><a href="data_variety.html#cb258-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postalCode&quot;</span><span class="fu">:</span> <span class="st">&quot;10021-3100&quot;</span></span>
+<span id="cb258-11"><a href="data_variety.html#cb258-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb258-12"><a href="data_variety.html#cb258-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;phoneNumbers&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb258-13"><a href="data_variety.html#cb258-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb258-14"><a href="data_variety.html#cb258-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;home&quot;</span><span class="fu">,</span></span>
+<span id="cb258-15"><a href="data_variety.html#cb258-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="st">&quot;212 555-1234&quot;</span></span>
+<span id="cb258-16"><a href="data_variety.html#cb258-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb258-17"><a href="data_variety.html#cb258-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb258-18"><a href="data_variety.html#cb258-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;office&quot;</span><span class="fu">,</span></span>
+<span id="cb258-19"><a href="data_variety.html#cb258-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="st">&quot;646 555-4567&quot;</span></span>
+<span id="cb258-20"><a href="data_variety.html#cb258-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb258-21"><a href="data_variety.html#cb258-21" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb258-22"><a href="data_variety.html#cb258-22" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;children&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb258-23"><a href="data_variety.html#cb258-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Catherine&quot;</span><span class="ot">,</span></span>
+<span id="cb258-24"><a href="data_variety.html#cb258-24" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Thomas&quot;</span><span class="ot">,</span></span>
+<span id="cb258-25"><a href="data_variety.html#cb258-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trevor&quot;</span></span>
+<span id="cb258-26"><a href="data_variety.html#cb258-26" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb258-27"><a href="data_variety.html#cb258-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;spouse&quot;</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb258-28"><a href="data_variety.html#cb258-28" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<blockquote>
+<p>NOTE: despite being human readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.</p>
+</blockquote>
+<p>Other human readable structured data formats include the eXtensible Markup Language (XML), which is commonly used in web infrastructure. XML is used for storing, transmitting, and reconstructing arbitrary data but uses (text) markup instead of attribute-value pairs.</p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode xml"><code class="sourceCode xml"><span id="cb259-1"><a href="data_variety.html#cb259-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">note</span>&gt;</span>
+<span id="cb259-2"><a href="data_variety.html#cb259-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">to</span>&gt;Tove&lt;/<span class="kw">to</span>&gt;</span>
+<span id="cb259-3"><a href="data_variety.html#cb259-3" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">from</span>&gt;Jani&lt;/<span class="kw">from</span>&gt;</span>
+<span id="cb259-4"><a href="data_variety.html#cb259-4" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">heading</span>&gt;Reminder&lt;/<span class="kw">heading</span>&gt;</span>
+<span id="cb259-5"><a href="data_variety.html#cb259-5" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">body</span>&gt;Don&#39;t forget me this weekend!&lt;/<span class="kw">body</span>&gt;</span>
+<span id="cb259-6"><a href="data_variety.html#cb259-6" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">note</span>&gt;</span></code></pre></div>
+</div>
+</div>
+<div id="writing-and-reading-human-readable-files-in-r" class="section level4 hasAnchor" number="5.3.1.2">
+<h4><span class="header-section-number">5.3.1.2</span> Writing and reading human readable files in R<a href="data_variety.html#writing-and-reading-human-readable-files-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>There are number of ways to read human readable formats into an R work environment. Here the basic approaches are listed, in particular reading <code>CSV</code> and <code>JSON</code> data.</p>
+<p>Large volumes of data are still available as <code>CSV</code> files or similar. Understanding how to read in such data into a programming environment is key. In this context the <code>read.table()</code> function is a general purpose tool to read in text data. Depending on the format, additional meta-data or comments, certain parameters need to be specified.</p>
+<p>It’s counterpart is a function to write human readable data to file called, you guessed it, <code>write.table()</code>. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space ” “, not a comma.</p>
+<p>Below you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.</p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="data_variety.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame with demo data</span></span>
+<span id="cb260-2"><a href="data_variety.html#cb260-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb260-3"><a href="data_variety.html#cb260-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_1 =</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>),</span>
+<span id="cb260-4"><a href="data_variety.html#cb260-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_2 =</span> <span class="fu">c</span>(<span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>),</span>
+<span id="cb260-5"><a href="data_variety.html#cb260-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_3 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
+<span id="cb260-6"><a href="data_variety.html#cb260-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb260-7"><a href="data_variety.html#cb260-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb260-8"><a href="data_variety.html#cb260-8" aria-hidden="true" tabindex="-1"></a><span class="co"># write table as CSV to disk</span></span>
+<span id="cb260-9"><a href="data_variety.html#cb260-9" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(</span>
+<span id="cb260-10"><a href="data_variety.html#cb260-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df,</span>
+<span id="cb260-11"><a href="data_variety.html#cb260-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_file.csv&quot;</span>),</span>
+<span id="cb260-12"><a href="data_variety.html#cb260-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>,</span>
+<span id="cb260-13"><a href="data_variety.html#cb260-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb260-14"><a href="data_variety.html#cb260-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb260-15"><a href="data_variety.html#cb260-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb260-16"><a href="data_variety.html#cb260-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Read a CSV file</span></span>
+<span id="cb260-17"><a href="data_variety.html#cb260-17" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb260-18"><a href="data_variety.html#cb260-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_file.csv&quot;</span>),</span>
+<span id="cb260-19"><a href="data_variety.html#cb260-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb260-20"><a href="data_variety.html#cb260-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb260-21"><a href="data_variety.html#cb260-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb260-22"><a href="data_variety.html#cb260-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb260-23"><a href="data_variety.html#cb260-23" aria-hidden="true" tabindex="-1"></a><span class="co"># help files of both functions can be accessed by</span></span>
+<span id="cb260-24"><a href="data_variety.html#cb260-24" aria-hidden="true" tabindex="-1"></a><span class="co"># typing ?write.table or ?read.table in the R console</span></span></code></pre></div>
+<p>In this example a data frame is generated with three columns. This file is then written to a temporary file in the temporary file directory <code>tempdir()</code>. Here, <code>tempdir()</code> returns the location of the temporary R directory, which you can use to store intermediate files.</p>
+<p>We use the <code>file.path()</code> function to combine the path (<code>tempdir()</code>) with the filename (<code>your_file.csv</code>). Using <code>file.path()</code> is good practice as directory structures are denoted differently between operating systems e.g., using a backslash (<code>\</code>) no Windows vs. a slash (<code>/</code>) on Unix based systems (Linux/macOS). The <code>file.path()</code> function ensures that the correct directory separator is used.</p>
+<p>Note that in this command we have to manually set the separator (<code>sep = ","</code>) and if a header is there (<code>header = TRUE</code>). Depending on the content of a file you will have to alter these parameters. Additional parameters of the <code>read.table()</code> function allow you to specify comment characters, skip empty lines, etc.</p>
+<p>Similar to this simple <code>CSV</code> file we can generate and read <code>JSON</code> files. For this we do need an additional library, as default R install does not provide this capability. However, the rest of the example follows the above workflow.</p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="data_variety.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we&#39;ll re-use the data frame as generated for the CSV</span></span>
+<span id="cb261-2"><a href="data_variety.html#cb261-2" aria-hidden="true" tabindex="-1"></a><span class="co"># example, so walk through the above example if you</span></span>
+<span id="cb261-3"><a href="data_variety.html#cb261-3" aria-hidden="true" tabindex="-1"></a><span class="co"># skipped ahead</span></span>
+<span id="cb261-4"><a href="data_variety.html#cb261-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-5"><a href="data_variety.html#cb261-5" aria-hidden="true" tabindex="-1"></a><span class="co"># install the required package</span></span>
+<span id="cb261-6"><a href="data_variety.html#cb261-6" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;jsonlite&quot;</span>)</span>
+<span id="cb261-7"><a href="data_variety.html#cb261-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-8"><a href="data_variety.html#cb261-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
+<span id="cb261-9"><a href="data_variety.html#cb261-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;jsonlite&quot;</span>)</span>
+<span id="cb261-10"><a href="data_variety.html#cb261-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-11"><a href="data_variety.html#cb261-11" aria-hidden="true" tabindex="-1"></a><span class="co"># write the file to a temporary location</span></span>
+<span id="cb261-12"><a href="data_variety.html#cb261-12" aria-hidden="true" tabindex="-1"></a>jsonlite<span class="sc">::</span><span class="fu">write_json</span>(</span>
+<span id="cb261-13"><a href="data_variety.html#cb261-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df,</span>
+<span id="cb261-14"><a href="data_variety.html#cb261-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_json_file.json&quot;</span>)</span>
+<span id="cb261-15"><a href="data_variety.html#cb261-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb261-16"><a href="data_variety.html#cb261-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-17"><a href="data_variety.html#cb261-17" aria-hidden="true" tabindex="-1"></a><span class="co"># read the freshly generated json file</span></span>
+<span id="cb261-18"><a href="data_variety.html#cb261-18" aria-hidden="true" tabindex="-1"></a>df_json <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(</span>
+<span id="cb261-19"><a href="data_variety.html#cb261-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_json_file.json&quot;</span>),</span>
+<span id="cb261-20"><a href="data_variety.html#cb261-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">simplifyVector =</span> <span class="cn">TRUE</span></span>
+<span id="cb261-21"><a href="data_variety.html#cb261-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb261-22"><a href="data_variety.html#cb261-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-23"><a href="data_variety.html#cb261-23" aria-hidden="true" tabindex="-1"></a><span class="co"># check if the two data sets</span></span>
+<span id="cb261-24"><a href="data_variety.html#cb261-24" aria-hidden="true" tabindex="-1"></a><span class="co"># are identical (they should be)</span></span>
+<span id="cb261-25"><a href="data_variety.html#cb261-25" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(df, df_json)</span></code></pre></div>
+<p>Note that the reading and writing <code>JSON</code> data is easier, as the structure of the data (e.g., field separators) are more strictly defined. While reading the data we use the <code>simplifyVector</code> argument to return a data frame rather than a nested list. This works as our data has a tabulated structure, this might not always be the case. Finally we compare the original data with the data read in using <code>identical()</code>.</p>
+<blockquote>
+<p>TIP: In calling the external library we use the <code>::</code> notation. Although by loading the library with <code>library()</code> makes all <code>jsonlite</code> functions available, the explicit referencing of the origin of the function makes debugging often easier.</p>
+</blockquote>
+</div>
+<div id="binary-data" class="section level4 hasAnchor" number="5.3.1.3">
+<h4><span class="header-section-number">5.3.1.3</span> Binary data<a href="data_variety.html#binary-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>All digital data which is not represented as text characters can be considered binary data. Binary data can vary in its content from an executable, which runs a program, to the digital representation of an image (jpeg images). However, in all cases the data is represented as bytes (made of eight bits) and not text characters.</p>
+<p>One of the advantages of binary data is that it is an efficient representation of data, saving space. This comes at the cost of requiring a dedicated software, other than a text editor, to manipulate the data. For example, digital images in a binary format require image manipulation software.</p>
+<p>More so than human readable data, the file format (extension) determines how to treat the data. Knowing common data formats and their use cases is therefore key.</p>
+</div>
+</div>
+<div id="file-formats" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> File formats<a href="data_variety.html#file-formats" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.</p>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="19%" />
+<col width="45%" />
+<col width="17%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>File format (extension)</th>
+<th>Format description</th>
+<th>Use case</th>
+<th>R Library</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>*.csv</td>
+<td>comma separated tabulated data</td>
+<td>General purpose flat files with row and column oriented data</td>
+<td>base R</td>
+</tr>
+<tr class="even">
+<td>*.txt</td>
+<td>tabulated data with various delimiters</td>
+<td>General purpose flat files with row and column oriented data</td>
+<td>base R</td>
+</tr>
+<tr class="odd">
+<td>*.json</td>
+<td>structured human readable data</td>
+<td>General purpose data format. Often used in web application. Has geospatial extensions (geojson).</td>
+<td>jsonlite</td>
+</tr>
+<tr class="even">
+<td>*.nc</td>
+<td><a href="https://en.wikipedia.org/wiki/NetCDF">NetCDF data</a> array data</td>
+<td>Array-oriented data (matrices with &gt; 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data.</td>
+<td>ncdf4, terra, raster</td>
+</tr>
+<tr class="odd">
+<td>*.hdf</td>
+<td>HDF array data</td>
+<td>Array-oriented data (matrices with &gt; 2 dimensions). Commonly used to store climate data or model outputs.</td>
+<td>hdf</td>
+</tr>
+<tr class="even">
+<td>*.tiff, *.geotiff</td>
+<td>Geotiff multi-dimensional raster data (see below)</td>
+<td>Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.</td>
+<td>terra, raster</td>
+</tr>
+<tr class="odd">
+<td>*.shp</td>
+<td>Shapefile of vector data (see below)</td>
+<td>Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.</td>
+<td>sp, sf</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="meta-data" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Meta-data<a href="data_variety.html#meta-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Meta-data, or data which is associated with the main data file is key to understanding the content and context of a data file (or the data set to which the file belongs). In some cases you will find this data only as a general description referencing the file(s) itself. In other cases, meta-data is included in the file itself.</p>
+<p>For example, many tabular CSV data files contain a header specifying the content of each column, and at times a couple of lines of data specifying the content of the file itself - or context within which the data should be considered.</p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb262-1"><a href="data_variety.html#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is meta-data associated with the tabulated CSV file</span></span>
+<span id="cb262-2"><a href="data_variety.html#cb262-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for which the data is listed below.</span></span>
+<span id="cb262-3"><a href="data_variety.html#cb262-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb262-4"><a href="data_variety.html#cb262-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In addition to some meta-data, the first row of the data</span></span>
+<span id="cb262-5"><a href="data_variety.html#cb262-5" aria-hidden="true" tabindex="-1"></a><span class="co"># contains the column header data</span></span>
+<span id="cb262-6"><a href="data_variety.html#cb262-6" aria-hidden="true" tabindex="-1"></a><span class="ex">column_one,</span> column_two, column_three</span>
+<span id="cb262-7"><a href="data_variety.html#cb262-7" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span>
+<span id="cb262-8"><a href="data_variety.html#cb262-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span>
+<span id="cb262-9"><a href="data_variety.html#cb262-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span></code></pre></div>
+<p>In the case of binary files it will not be possible to read the meta-data as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file.</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb263-1"><a href="data_variety.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list geospatial data for a geotiff file</span></span>
+<span id="cb263-2"><a href="data_variety.html#cb263-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gdalinfo</span> your_geotiff.tiff</span></code></pre></div>
+<blockquote>
+<p>TIP: Always keep track of your meta-data by including it, if possible, in the file itself. If this is not possible, meta data is often provided in a file called <code>README</code>. Meta-data is key in making science reproducible and guaranteeing consistency between projects. Key meta-data to retain are:</p>
+<ul>
+<li><p>the source of your data (URL, manuscript, DOI)</p></li>
+<li><p>the date when the data was downloaded</p></li>
+<li><p>manipulations on the data before using the data in a final workflow</p></li>
+</ul>
+</blockquote>
+</div>
+<div id="spatial-data-representation" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Spatial data representation<a href="data_variety.html#spatial-data-representation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Environmental data often has an explicit spatial and temporal component. For example, climate data is often represented as 2D maps which vary over time. This spatial data requires an additional level of understanding of commonly used data formats and structures.</p>
+<p>In general, we can distinguish two important data models when dealing with spatial data, the <a href="https://wiki.gis.com/wiki/index.php/Raster_data_model">raster</a> and <a href="https://wiki.gis.com/wiki/index.php/Vector_data_model">vector data model</a>. Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided here.</p>
+<div id="raster-data-model" class="section level3 hasAnchor" number="5.5.1">
+<h3><span class="header-section-number">5.5.1</span> Raster data model<a href="data_variety.html#raster-data-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The basic raster model represents geographic (2D) continuous data as a two-dimensional array, where each position has a geographic (x, y) coordinate, a cell size (or resolution) and a given extent. Using this definition any image adheres to the raster model. However, in most geographic applications, coordinates are referenced and correspond to a geographic position, e.g., a particular latitude longitude. Often, the model is expanded with a time dimension, stacking various two-dimensional arrays into a three-dimensional array.</p>
+<p>The raster data model is common for all data sources which use either imaging sensors, such as satellites or unmanned aerial vehicles (UAVs), or model based output which operates on a fixed grid, such as climate and weather models.</p>
+<p>Additional meta-data stores both the geographic reference system, the time components as well as other data which might be helpful to end users. Within the environmental sciences, NetCDF and GeoTiff are common raster data file formats.</p>
+</div>
+<div id="vector-data-model" class="section level3 hasAnchor" number="5.5.2">
+<h3><span class="header-section-number">5.5.2</span> Vector data model<a href="data_variety.html#vector-data-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The vector data model, in contrast to the raster data model, describes (unbound) features using a geometry (location, shape) using coordinates and linked feature attributes. Geometries can be points, lines, polygons, or even volumes.</p>
+<p>Vector data does not have a defined resolution, making them scale independent. This makes the vector data model ideal for discrete features such as roads or building outlines. Conversely, vector data is poorly suited for continuous data.</p>
+<p>Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data.</p>
+</div>
+</div>
+<div id="data-sources" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Data sources<a href="data_variety.html#data-sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time, gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser or use the internal <code>download.file()</code> function to grab data.</p>
+<p>But, many of the data described in previous sections are today warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels. These services allow you to access the underlying (original) data using an API, hence programmatically using code. Mastering the use of these services has become key in gathering research data.</p>
+<div id="direct-downloads" class="section level3 hasAnchor" number="5.6.1">
+<h3><span class="header-section-number">5.6.1</span> Direct downloads<a href="data_variety.html#direct-downloads" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Before diving into a description of APIs we remind you that some file reading functions in R are web aware, and can not only read local files but also remote ones (i.e., URLs). Getting ahead of ourselves a bit (see tutorials below), the example code shows you how to read the content of a URL directly into your R environment.</p>
+<p>Although using this functionality isn’t equivalent to using an API, the concept is the same. I.e., you load a remote data source.</p>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="data_variety.html#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define a URL with data of interest</span></span>
+<span id="cb264-2"><a href="data_variety.html#cb264-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in this case annual mean CO2 levels at Mauna Loa</span></span>
+<span id="cb264-3"><a href="data_variety.html#cb264-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv&quot;</span></span>
+<span id="cb264-4"><a href="data_variety.html#cb264-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb264-5"><a href="data_variety.html#cb264-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data directly from URL</span></span>
+<span id="cb264-6"><a href="data_variety.html#cb264-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb264-7"><a href="data_variety.html#cb264-7" aria-hidden="true" tabindex="-1"></a>  url,</span>
+<span id="cb264-8"><a href="data_variety.html#cb264-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb264-9"><a href="data_variety.html#cb264-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb264-10"><a href="data_variety.html#cb264-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="apis" class="section level3 hasAnchor" number="5.6.2">
+<h3><span class="header-section-number">5.6.2</span> APIs<a href="data_variety.html#apis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Web based Application Programming Interfaces (APIs) offer a way to specify the scope of the returned data, and ultimately, the processing which goes on behind the scene in response to a (data) query. APIs are a way to, in a limited way, control a remote server to execute a certain (data) action. In most (RESTful) APIs, such query takes the form of an HTTP URL via an URL-encoded scheme using an API endpoint (or base URL).</p>
+<p>To reduce some of the complexity of APIs, it is common that a wrapper is written around an API in the language of choice (e.g., R, python). These dedicated API libraries make it easier to access data and limit coding overhead, as more concisely written.</p>
+<div id="dedicated-api-libraries" class="section level4 hasAnchor" number="5.6.2.1">
+<h4><span class="header-section-number">5.6.2.1</span> Dedicated API libraries<a href="data_variety.html#dedicated-api-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As an example of a dedicated library we use the <a href="https://github.com/bluegreen-labs/MODISTools">{MODISTools} R package</a> which queries remote sensing data generated by the MODIS mission from the Oak Ridge National Laboratories data archive.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="data_variety.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install the MODISTools package</span></span>
+<span id="cb265-2"><a href="data_variety.html#cb265-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;MODISTools&quot;</span>)</span>
+<span id="cb265-3"><a href="data_variety.html#cb265-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-4"><a href="data_variety.html#cb265-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
+<span id="cb265-5"><a href="data_variety.html#cb265-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;MODISTools&quot;</span>)</span>
+<span id="cb265-6"><a href="data_variety.html#cb265-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-7"><a href="data_variety.html#cb265-7" aria-hidden="true" tabindex="-1"></a><span class="co"># list all available products</span></span>
+<span id="cb265-8"><a href="data_variety.html#cb265-8" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_products</span>()</span>
+<span id="cb265-9"><a href="data_variety.html#cb265-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-10"><a href="data_variety.html#cb265-10" aria-hidden="true" tabindex="-1"></a><span class="co"># print the first few lines</span></span>
+<span id="cb265-11"><a href="data_variety.html#cb265-11" aria-hidden="true" tabindex="-1"></a><span class="co"># of available products</span></span>
+<span id="cb265-12"><a href="data_variety.html#cb265-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(products))</span>
+<span id="cb265-13"><a href="data_variety.html#cb265-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-14"><a href="data_variety.html#cb265-14" aria-hidden="true" tabindex="-1"></a><span class="co"># download a demo dataset</span></span>
+<span id="cb265-15"><a href="data_variety.html#cb265-15" aria-hidden="true" tabindex="-1"></a><span class="co"># download data</span></span>
+<span id="cb265-16"><a href="data_variety.html#cb265-16" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_subset</span>(</span>
+<span id="cb265-17"><a href="data_variety.html#cb265-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">product =</span> <span class="st">&quot;MOD11A2&quot;</span>,</span>
+<span id="cb265-18"><a href="data_variety.html#cb265-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="dv">40</span>,</span>
+<span id="cb265-19"><a href="data_variety.html#cb265-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="sc">-</span><span class="dv">110</span>,</span>
+<span id="cb265-20"><a href="data_variety.html#cb265-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">band =</span> <span class="st">&quot;LST_Day_1km&quot;</span>,</span>
+<span id="cb265-21"><a href="data_variety.html#cb265-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,</span>
+<span id="cb265-22"><a href="data_variety.html#cb265-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">end =</span> <span class="st">&quot;2004-02-01&quot;</span>,</span>
+<span id="cb265-23"><a href="data_variety.html#cb265-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">km_lr =</span> <span class="dv">1</span>,</span>
+<span id="cb265-24"><a href="data_variety.html#cb265-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">km_ab =</span> <span class="dv">1</span>,</span>
+<span id="cb265-25"><a href="data_variety.html#cb265-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">internal =</span> <span class="cn">TRUE</span></span>
+<span id="cb265-26"><a href="data_variety.html#cb265-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb265-27"><a href="data_variety.html#cb265-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-28"><a href="data_variety.html#cb265-28" aria-hidden="true" tabindex="-1"></a><span class="co"># print the dowloaded data</span></span>
+<span id="cb265-29"><a href="data_variety.html#cb265-29" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(subset))</span></code></pre></div>
+<p>A detailed description of all functions of the MODISTools R package is beyond the scope of this course. However, the listed command show you what a dedicated API package does. It is a shortcut to functional elements of an API. For example <code>mt_products()</code> allows you to quickly list all products without any knowledge of an API URL. Although more complex, as requiring parameters, the <code>mt_subset()</code> routine allows you to query remote sensing data for a single location (specified with a latitude <code>lat</code> and longitude <code>lon</code>), and a given date range (e.g. start, end parameters), a physical extent (in km left-right and above-below).</p>
+</div>
+<div id="get" class="section level4 hasAnchor" number="5.6.2.2">
+<h4><span class="header-section-number">5.6.2.2</span> GET<a href="data_variety.html#get" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Depending on your data source, you will either need to rely on a dedicated R package to query the API or study the API documentation. A dedicated package to query an API is for example the {ecmwfr} package to download ECMWF climate data from the Copernicus data services.</p>
+<p>The general scheme for using an API follows the use of the <code>GET()</code> command of the {httr} R library. You define a query using API parameters, as a named list, and then use a <code>GET()</code> statement to download the data from the endpoint (<code>url</code>).</p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="data_variety.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formulate a named list query to pass to httr</span></span>
+<span id="cb266-2"><a href="data_variety.html#cb266-2" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb266-3"><a href="data_variety.html#cb266-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;argument&quot;</span> <span class="ot">=</span> <span class="st">&quot;2&quot;</span>,</span>
+<span id="cb266-4"><a href="data_variety.html#cb266-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;another_argument&quot;</span> <span class="ot">=</span> <span class="st">&quot;3&quot;</span></span>
+<span id="cb266-5"><a href="data_variety.html#cb266-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb266-6"><a href="data_variety.html#cb266-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-7"><a href="data_variety.html#cb266-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create url string (varies per product / param)</span></span>
+<span id="cb266-8"><a href="data_variety.html#cb266-8" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://your.service.endpoint.com&quot;</span></span>
+<span id="cb266-9"><a href="data_variety.html#cb266-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb266-10"><a href="data_variety.html#cb266-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download data using the</span></span>
+<span id="cb266-11"><a href="data_variety.html#cb266-11" aria-hidden="true" tabindex="-1"></a><span class="co"># API endpoint and query data</span></span>
+<span id="cb266-12"><a href="data_variety.html#cb266-12" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
+<span id="cb266-13"><a href="data_variety.html#cb266-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
+<span id="cb266-14"><a href="data_variety.html#cb266-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> query,</span>
+<span id="cb266-15"><a href="data_variety.html#cb266-15" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">write_disk</span>(</span>
+<span id="cb266-16"><a href="data_variety.html#cb266-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="st">&quot;/where/to/store/data/filename.ext&quot;</span>,</span>
+<span id="cb266-17"><a href="data_variety.html#cb266-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">overwrite =</span> <span class="cn">TRUE</span></span>
+<span id="cb266-18"><a href="data_variety.html#cb266-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb266-19"><a href="data_variety.html#cb266-19" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Below, we provide an example of using the <code>GET</code> command to download data from the <a href="https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1247">Regridded Harmonized World Soil Database (v1.2)</a> as hosted on the Oak Ridge National Laboratory computer infrastructure. In this case we download a subset of a global map of topsoil sand content (<code>T_SAND</code>).</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="data_variety.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set API URL endpoint</span></span>
+<span id="cb267-2"><a href="data_variety.html#cb267-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for the total sand content</span></span>
+<span id="cb267-3"><a href="data_variety.html#cb267-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SAND.nc4&quot;</span></span>
+<span id="cb267-4"><a href="data_variety.html#cb267-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-5"><a href="data_variety.html#cb267-5" aria-hidden="true" tabindex="-1"></a><span class="co"># formulate query to pass to httr</span></span>
+<span id="cb267-6"><a href="data_variety.html#cb267-6" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb267-7"><a href="data_variety.html#cb267-7" aria-hidden="true" tabindex="-1"></a>   <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="st">&quot;T_SAND&quot;</span>,</span>
+<span id="cb267-8"><a href="data_variety.html#cb267-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;south&quot;</span> <span class="ot">=</span> <span class="dv">32</span>,</span>
+<span id="cb267-9"><a href="data_variety.html#cb267-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;west&quot;</span> <span class="ot">=</span> <span class="sc">-</span><span class="dv">81</span>,</span>
+<span id="cb267-10"><a href="data_variety.html#cb267-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;east&quot;</span> <span class="ot">=</span> <span class="sc">-</span><span class="dv">80</span>,</span>
+<span id="cb267-11"><a href="data_variety.html#cb267-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;north&quot;</span> <span class="ot">=</span> <span class="dv">34</span>,</span>
+<span id="cb267-12"><a href="data_variety.html#cb267-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;disableProjSubset&quot;</span> <span class="ot">=</span> <span class="st">&quot;on&quot;</span>,</span>
+<span id="cb267-13"><a href="data_variety.html#cb267-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;horizStride&quot;</span><span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb267-14"><a href="data_variety.html#cb267-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;accept&quot;</span><span class="ot">=</span><span class="st">&quot;netcdf4&quot;</span></span>
+<span id="cb267-15"><a href="data_variety.html#cb267-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb267-16"><a href="data_variety.html#cb267-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-17"><a href="data_variety.html#cb267-17" aria-hidden="true" tabindex="-1"></a><span class="co"># download data using the</span></span>
+<span id="cb267-18"><a href="data_variety.html#cb267-18" aria-hidden="true" tabindex="-1"></a><span class="co"># API endpoint and query data</span></span>
+<span id="cb267-19"><a href="data_variety.html#cb267-19" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
+<span id="cb267-20"><a href="data_variety.html#cb267-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
+<span id="cb267-21"><a href="data_variety.html#cb267-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> query,</span>
+<span id="cb267-22"><a href="data_variety.html#cb267-22" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">write_disk</span>(</span>
+<span id="cb267-23"><a href="data_variety.html#cb267-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>),</span>
+<span id="cb267-24"><a href="data_variety.html#cb267-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">overwrite =</span> <span class="cn">TRUE</span></span>
+<span id="cb267-25"><a href="data_variety.html#cb267-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb267-26"><a href="data_variety.html#cb267-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb267-27"><a href="data_variety.html#cb267-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb267-28"><a href="data_variety.html#cb267-28" aria-hidden="true" tabindex="-1"></a><span class="co"># to visualize the data</span></span>
+<span id="cb267-29"><a href="data_variety.html#cb267-29" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to load the {terra}</span></span>
+<span id="cb267-30"><a href="data_variety.html#cb267-30" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
+<span id="cb267-31"><a href="data_variety.html#cb267-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;terra&quot;</span>)</span></code></pre></div>
+<pre><code>## terra 1.6.47</code></pre>
+<pre><code>## 
+## Attaching package: &#39;terra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     extract</code></pre>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="data_variety.html#cb271-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: [rast] unknown extent</code></pre>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="data_variety.html#cb273-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-144-1.png" width="672" /></p>
+<div id="authentication" class="section level5 hasAnchor" number="5.6.2.2.1">
+<h5><span class="header-section-number">5.6.2.2.1</span> Authentication<a href="data_variety.html#authentication" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Depending on the API, authentication using a user name and a key or password is required. Then, the template should be slightly altered to accommodate for these requirements. Note that instead of the <code>GET()</code> command we use <code>POST()</code> as we need to post some authentication data before we can get the data in return.</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="data_variety.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="co"># an authenticated API query</span></span>
+<span id="cb274-2"><a href="data_variety.html#cb274-2" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">POST</span>(</span>
+<span id="cb274-3"><a href="data_variety.html#cb274-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
+<span id="cb274-4"><a href="data_variety.html#cb274-4" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">authenticate</span>(user, key),</span>
+<span id="cb274-5"><a href="data_variety.html#cb274-5" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">add_headers</span>(<span class="st">&quot;Accept&quot;</span> <span class="ot">=</span> <span class="st">&quot;application/json&quot;</span>,</span>
+<span id="cb274-6"><a href="data_variety.html#cb274-6" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Content-Type&quot;</span> <span class="ot">=</span> <span class="st">&quot;application/json&quot;</span>),</span>
+<span id="cb274-7"><a href="data_variety.html#cb274-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">body =</span> query,</span>
+<span id="cb274-8"><a href="data_variety.html#cb274-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">encode =</span> <span class="st">&quot;json&quot;</span></span>
+<span id="cb274-9"><a href="data_variety.html#cb274-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div id="exercises-4" class="section level2 hasAnchor" number="5.7">
+<h2><span class="header-section-number">5.7</span> Exercises<a href="data_variety.html#exercises-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="files-and-file-formats-1" class="section level3 hasAnchor" number="5.7.1">
+<h3><span class="header-section-number">5.7.1</span> Files and file formats<a href="data_variety.html#files-and-file-formats-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While <strong>not leaving your R session</strong>, download and open the files at location the following locations:</p>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="data_variety.html#cb275-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>xxx<span class="sc">/</span>data<span class="sc">/</span>demo1.csv</span>
+<span id="cb275-2"><a href="data_variety.html#cb275-2" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>xxx<span class="sc">/</span>data<span class="sc">/</span>demo2.csv</span>
+<span id="cb275-3"><a href="data_variety.html#cb275-3" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>xxx<span class="sc">/</span>data<span class="sc">/</span>demo3.csv</span></code></pre></div>
+<p>Once loaded into your R environment, combine and save all data as a <strong>temporary</strong> <code>CSV</code> file. Read in the new temporary <code>CSV</code> file, and save it as a <code>JSON</code> file in your current working directory.</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="data_variety.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your solution script</span></span></code></pre></div>
+<p>Download and open the following file:</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="data_variety.html#cb277-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>xxx<span class="sc">/</span>xxx<span class="sc">/</span>some_data.nc</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>What does this file contain?</li>
+<li>Write this file to disk (use the R documentation).</li>
+</ol>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="data_variety.html#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your solution script</span></span></code></pre></div>
+<p>Download and open the following file:</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="data_variety.html#cb279-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>xxx<span class="sc">/</span>xxx<span class="sc">/</span>some_data.tiff</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>What does this file contain?</li>
+<li>Does this data seem familiar, and how can you tell? What are your conclusions?</li>
+</ol>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="data_variety.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your solution script</span></span></code></pre></div>
+</div>
+<div id="api-use" class="section level3 hasAnchor" number="5.7.2">
+<h3><span class="header-section-number">5.7.2</span> API use<a href="data_variety.html#api-use" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="get-1" class="section level3 hasAnchor" number="5.7.3">
+<h3><span class="header-section-number">5.7.3</span> GET<a href="data_variety.html#get-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li>Download the HWSD total sand content data for the extent of Switzerland following the tutorial example. Visualize the data as a simple map.</li>
+<li>Download the HWSD topsoil silt content for the extent of Switzerland.</li>
+</ol>
+</div>
+<div id="dedicated-library" class="section level3 hasAnchor" number="5.7.4">
+<h3><span class="header-section-number">5.7.4</span> Dedicated library<a href="data_variety.html#dedicated-library" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li>Use the {hwsdr} library (a dedicated package for the API) to download the same data. How does this compare to the previous code written?</li>
+<li>List how many data products there are on the ORNL MODIS data repository.</li>
+<li>Download the MODIS land cover map for the canton of Bern.</li>
+</ol>
+</div>
+</div>
+<div id="solutions-4" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Solutions<a href="data_variety.html#solutions-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data_vis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="code_mgmt.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-data_variety.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
