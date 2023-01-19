@@ -14,11 +14,13 @@
 
 ## Learning objectives
 
-In this workshop, we use ecosystem flux data and parallel measurements of meteorological variables to model ecosystem gross primary production (the ecosystem-level CO2 uptake by photosynthesis). These data and prediction task is used to introduce fundamental methods of machine learning (data preprocessing, data splitting, model formulation, and model training) and their implementations in R. After this course, you will ...
+In this Chapter, we use ecosystem flux data and parallel measurements of meteorological variables to model ecosystem gross primary production (the ecosystem-level CO2 uptake by photosynthesis). These data and prediction task is used to introduce fundamental methods of machine learning (data preprocessing, data splitting, model formulation, and model training) and their implementations in R. After this course, you will ...
 
-- Understand how overfitting models can happen and how it can be avoided.
-- Implement a typical workflow using a machine learning model for a supervised regression problem.
-- Evaluate the power of the model.
+-   Understand how overfitting models can happen and how it can be avoided.
+-   Implement a typical workflow using a machine learning model for a supervised regression problem.
+-   Evaluate the power of the model.
+
+Contents of this Chapter are inspired by the excellent book [Hands-On Machine Learning in R by Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/).
 
 ## Tutorial
 
@@ -39,11 +41,9 @@ Machine learning (ML) may appear magical. The ability of ML algorithms to detect
 
 In general, the aim of supervised ML is to find a model $\hat{y} = f(x)$ that is *trained* (calibrated) using observed relationships between a set of *features* (also known as *predictors*, or *labels*, or *independent variables*) $x$ and the *target* variable $y$. Note, that $y$ is observed. The hat on $\hat{y}$ denotes an estimate. Some algorithms can even handle predictions of multiple target variables simultaneously (e.g., neural networks). ML algorithms consist of (more or less) flexible mathematical models with a certain structure and set of parameters. At the simple extreme end of the model spectrum is the bivariate linear regression. You may not want to call this a ML algorithm because there is no iterative learning involved. Nevertheless, also bivariate linear regression provides a prediction $\hat{y} = f(x)$, just like other (proper) ML algorithms do. The functional form of a linear regression is not particularly flexible (just a straight line for the best fit between predictors and targets) and it has only two parameters (slope and intercept). At the other extreme end are, for example, deep neural networks. They are extremely flexible, can learn highly non-linear relationships and deal with interactions between a large number of predictors. They also contain very large numbers of parameters, typically on the order of $10^4 - 10^5$ . You can imagine that this allows these types of algorithms to very effectively learn from the data, but also bears the risk of *overfitting*.
 
-What is overfitting? The following example illustrates it. Let's assume that there is some true underlying relationship between a single predictor $x$ and the target variable $y$. We don't know this relationship (in the code below, this is `true_fun()`) and the observations contain a (normally distributed) error (`y = true_fun(x) + 0.1 * rnorm(n_samples)`). Based on our training data (`df_train`), we fit three polynomial models of degree 1, 4, and 15 to the observations. A polynomial of degree $N$ is given by: 
-$$
+What is overfitting? The following example illustrates it. Let's assume that there is some true underlying relationship between a single predictor $x$ and the target variable $y$. We don't know this relationship (in the code below, this is `true_fun()`) and the observations contain a (normally distributed) error (`y = true_fun(x) + 0.1 * rnorm(n_samples)`). Based on our training data (`df_train`), we fit three polynomial models of degree 1, 4, and 15 to the observations. A polynomial of degree $N$ is given by: $$
 y = \sum_{n=0}^N a_n x^n
-$$ 
-$a_n$ are the coefficients, i.e., model parameters. The goal of the training is to find the coefficients $a_n$ so that the predicted $\hat{y}$ fits observed $y$ best. From the above definition, the polynomial of degree 15 has 16 parameters, while the polynomial of degree 1 has two parameters (and corresponds to a simple bivariate linear regression). You can imagine that the polynomial of degree 15 is much more flexible and should thus yield the closest fit to the training data. This is indeed the case.
+$$ $a_n$ are the coefficients, i.e., model parameters. The goal of the training is to find the coefficients $a_n$ so that the predicted $\hat{y}$ fits observed $y$ best. From the above definition, the polynomial of degree 15 has 16 parameters, while the polynomial of degree 1 has two parameters (and corresponds to a simple bivariate linear regression). You can imagine that the polynomial of degree 15 is much more flexible and should thus yield the closest fit to the training data. This is indeed the case.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 true_fun <- function(x){
@@ -68,49 +68,49 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
 
   # training results
   df <- df %>%
-    rename(y_true = y) %>%
-    add_predictions(polyfit_1, var = "poly1") %>%
-    add_predictions(polyfit_4, var = "poly4") %>%
-    add_predictions(polyfit_15, var = "poly15")
+    dplyr::rename(y_true = y) %>%
+    modelr::add_predictions(polyfit_1, var = "poly1") %>%
+    modelr::add_predictions(polyfit_4, var = "poly4") %>%
+    modelr::add_predictions(polyfit_15, var = "poly15")
 
   ## at equally spaced x
   df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) %>%
-    add_predictions(polyfit_1, var = "poly1") %>%
-    add_predictions(polyfit_4, var = "poly4") %>%
-    add_predictions(polyfit_15, var = "poly15") %>%
-    pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") %>%
-    mutate(fit = fct_relevel(fit, "poly1", "poly4", "poly15"))
+    modelr::add_predictions(polyfit_1, var = "poly1") %>%
+    modelr::add_predictions(polyfit_4, var = "poly4") %>%
+    modelr::add_predictions(polyfit_15, var = "poly15") %>%
+    tidyr::pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") %>%
+    dplyr::mutate(fit = forcats::fct_relevel(fit, "poly1", "poly4", "poly15"))
 
   ## get a table (data frame) for the RMSE
   df_metrics_train <- tibble(
     fittype = "poly1",
-    rmse = metrics(df,
-                   truth = y_true,
-                   estimate = poly1
-                   ) %>%
-      filter(.metric == "rmse") %>%
-      pull(.estimate)) %>%
+    rmse = yardstick::metrics(df,
+                              truth = y_true,
+                              estimate = poly1
+                              ) %>%
+      dplyr::filter(.metric == "rmse") %>%
+      dplyr::pull(.estimate)) %>%
     bind_rows(
       .,
       tibble(
        fittype = "poly4",
-        rmse = metrics(df,
-                   truth = y_true,
-                   estimate = poly4
-                   ) %>%
-         filter(.metric == "rmse") %>%
-         pull(.estimate))
+        rmse = yardstick::metrics(df,
+                                  truth = y_true,
+                                  estimate = poly4
+                                  ) %>%
+         dplyr::filter(.metric == "rmse") %>%
+         dplyr::pull(.estimate))
     ) %>%
     bind_rows(
       .,
       tibble(
        fittype = "poly15",
-        rmse = metrics(df,
-                   truth = y_true,
-                   estimate = poly15
-                   ) %>%
-         filter(.metric == "rmse") %>%
-         pull(.estimate))
+        rmse = yardstick::metrics(df,
+                                  truth = y_true,
+                                  estimate = poly15
+                                  ) %>%
+         dplyr::filter(.metric == "rmse") %>%
+         dplyr::pull(.estimate))
     )
 
   # plot training results
@@ -127,7 +127,9 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
       stat_function(fun = true_fun, linetype = "dotted") +
       ylim(-1.5, 1) +
       labs(
-        subtitle = paste("RMSE: poly1 =", format(df_metrics_train$rmse[1], digits = 2), ", poly4 =", format(df_metrics_train$rmse[2], digits = 2), ", poly15 =", format(df_metrics_train$rmse[3], digits = 2)),
+        subtitle = paste("RMSE: poly1 =", format(df_metrics_train$rmse[1], digits = 2), 
+                         ", poly4 =", format(df_metrics_train$rmse[2], digits = 2), 
+                         ", poly15 =", format(df_metrics_train$rmse[3], digits = 2)),
         y = "y")
     
   }
@@ -149,8 +151,8 @@ set.seed(1)
 
 # create testing data
 df_test <- tibble( x = runif(n_samples, min = 0, max = 1)) |>
-  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
-  arrange(x)
+  dplyr::mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
+  dplyr::arrange(x)
 
 gg <- eval_fits(df_test, polyfit_1, polyfit_4, polyfit_15)
 gg + labs(title = "Validation")
@@ -165,8 +167,8 @@ set.seed(1)
 
 # create testing data
 df_test <- tibble( x = runif(n_samples, min = 0, max = 1.2)) |>
-  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
-  arrange(x)
+  dplyr::mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
+  dplyr::arrange(x)
 
 gg <- eval_fits(df_test, polyfit_1, polyfit_4, polyfit_15)
 gg + labs(title = "Validation (with extrapolation)")
@@ -184,7 +186,7 @@ Of course, a plethora of algorithms exist that do the job of $y = f(x)$. Each of
 
 ### Data and the modelling challenge
 
-We're returning to the ecosystem flux data set that we've used Chapters \@ref(data_wrangling) and \@ref(data_vis). Here, we're using data from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects of seasonally varying foliage cover for which the data does not contain information. For this, we would have to, for example, combine the flux and meteorological data with remotely sensed surface greenness data.
+We're returning to ecosystem flux data that we've used Chapters \@ref(data_wrangling) and \@ref(data_vis). Here, we're using daily data from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects of seasonally varying foliage cover for which the data does not contain information. To address such additional effects, we would have to, for example, combine the flux and meteorological data with remotely sensed surface greenness data.
 
 The data set `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` contains a time series of the ecosystem gross primary production (GPP) and a range of meteorological variables, measured in parallel. In this chapter, we formulate a model for predicting GPP from a set of *covariates* (other variables that vary in parallel, here the meteorological variables). This is to say that `GPP_NT_VUT_REF` is the *target* variable, and other variables that are available in our dataset are the *predictors.*
 
@@ -194,47 +196,52 @@ Let's read the data, select suitable variables, and interpret missing value code
 ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
-  select(TIMESTAMP,
-         GPP_NT_VUT_REF,    # the target
-         NEE_VUT_REF_QC,    # quality control info
-         ends_with("_F"),   # includes all all meteorological covariates
-         -contains("JSB")   # weird useless variable
-         ) |>
+  dplyr::select(TIMESTAMP,
+                GPP_NT_VUT_REF,    # the target
+                ends_with("_QC"),  # quality control info
+                ends_with("_F"),   # includes all all meteorological covariates
+                -contains("JSB")   # weird useless variable
+                ) |>
 
   # convert to a nice date object
-  mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
+  dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
 
   # set all -9999 to NA
-  na_if(-9999) |>
+  dplyr::na_if(-9999) |>
   
   # retain only data based on >=80% good-quality measurements
   # overwrite bad data with NA (not dropping rows)
-  mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) |> 
+  dplyr::mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF),
+                TA_F           = ifelse(TA_F_QC        < 0.8, NA, TA_F),
+                SW_IN_F        = ifelse(SW_IN_F_QC     < 0.8, NA, SW_IN_F),
+                LW_IN_F        = ifelse(LW_IN_F_QC     < 0.8, NA, LW_IN_F),
+                VPD_F          = ifelse(VPD_F_QC       < 0.8, NA, VPD_F),
+                PA_F           = ifelse(PA_F_QC        < 0.8, NA, PA_F),
+                P_F            = ifelse(P_F_QC         < 0.8, NA, P_F),
+                WS_F           = ifelse(WS_F_QC        < 0.8, NA, WS_F)) |> 
 
   # drop QC variables (no longer needed)
-  select(-ends_with("_QC"))
+  dplyr::select(-ends_with("_QC"))
 ```
 
-Note that these steps above are considered data *wrangling* and are *not* part of the modelling process.
+The steps above are considered data *wrangling* and are *not* part of the modelling process. After completing this tutorial, you will understand this distinction. (-\> exercise explain the distinction)
 
+### K-nearest neighbours
 
-### K-nearest Neighbours
-
-Before we start with the model training workflow, let's introduce the K-nearest neighbour (KNN) algorithm which is used here for demonstration purposes. It perfectly serves the purpose of demonstrating the bias-variance trade-off (see below). As the name suggests, KNN uses the $k$ observations that are "nearest" to the new record for which we want to make a prediction. It then calculates their average (in regression) or most frequent value (in classification) and uses this for the prediction of the target value. "Nearest" is determined by some distance metric evaluated based on the values of the predictors. In our example (`GPP_NT_VUT_REF ~ .`), KNN would determine the $k$ days where conditions, given by our set of predictors, were most similar (nearest) to the day for which we seek a prediction. Then, it calculates the prediction as the average (mean) GPP value of these days. Determining "nearest" neighbors is commonly based on either the *Euclidean* or *Manhattan* distances between two data points $x_a$ and $x_b$, considering all $p$ predictors $j$.
+Before we start with the model training workflow, let's introduce the K-nearest neighbour (KNN) algorithm which is used here for demonstration purposes. It serves the purpose of demonstrating the bias-variance trade-off (see below). As the name suggests, KNN uses the $k$ observations that are "nearest" to the new record for which we want to make a prediction. It then calculates their average (for regression) or most frequent value (for classification) and uses it as the prediction of the target value. "Nearest" is determined by some distance metric evaluated based on the values of the predictors. In our example (`GPP_NT_VUT_REF ~ .`), KNN would determine the $k$ days where conditions, given by our set of predictors, were most similar (nearest) to the day for which we seek a prediction. Then, it calculates the prediction as the average (mean) GPP value of these days. Determining "nearest" neighbors is commonly based on either the *Euclidean* or *Manhattan* distances between two data points $x_a$ and $x_b$, considering all $P$ predictors $j$.
 
 Euclidean distance: 
 $$
-\sqrt{ \sum_{j=1}^p (x_{a,j} - x_{b,j})^2  } \\
-$$ 
+\sqrt{ \sum_{j=1}^P (x_{a,j} - x_{b,j})^2  } \\
+$$
 
 Manhattan distance: 
 $$
-\sum_{j=1}^p | x_{a,j} - x_{b,j} |
+\sum_{j=1}^P | x_{a,j} - x_{b,j} |
 $$
 In two-dimensional space, the Euclidean distance measures the length of a straight line between two points (remember Pythagoras!). The Manhattan distance is called this way because it measures the distance you would have to walk to get from point $a$ to point $b$ in Manhattan, New York, where you cannot cut corners but have to follow a rectangular grid of streets. $|x|$ is the absolute value of $x$ ( $|-x| = x$).
 
 KNN is a simple algorithm that uses knowledge of the "local" data structure for prediction. A drawback is that the model training has to be done for each prediction step and the computation time of the training increases with $x \times p$. KNNs are used, for example, to impute values (fill missing values) and have the advantage that predicted values are always within the range of observed values of the target variable.
-
 
 ### Model formulation
 
@@ -242,7 +249,7 @@ The aim of supervised ML is to find a model $\hat{y} = f(x)$ so that $\hat{y}$ a
 
 #### Formula notation
 
-In R, it is common to use the *formula* notation to specify the target and predictor variables. You have encountered formulas before, e.g., for a linear regression using the `lm()` function. To specify a linear regression model for `GPP_NT_VUT_REF` with three predictors `SW_F_IN`, `VPD_F`, and `TA_F`, we write:
+In R, it is common to use the *formula* notation to specify the target and predictor variables. You have encountered formulas before, e.g., for a linear regression using the `lm()` function. To specify a linear regression model for `GPP_NT_VUT_REF` with three predictors `SW_F_IN`, `VPD_F`, and `TA_F`, to be fitted to data `ddf`, we write:
 
 ```{r eval=F}
 lm(GPP_NT_VUT_REF ~ SW_F_IN + VPD_F + TA_F, data = ddf)
@@ -253,59 +260,59 @@ lm(GPP_NT_VUT_REF ~ SW_F_IN + VPD_F + TA_F, data = ddf)
 The way we formulate a model can be understood as being independent of the algorithm, or *engine*, that takes care of fitting $f(x)$. The R package [*caret*](https://topepo.github.io/caret/) provides a unified interface for using different ML algorithms implemented in separate packages. In other words, it acts as a *wrapper* for multiple different model fitting, or ML algorithms. This has the advantage that it unifies the interface - the way arguments are provided and outputs are returned. *caret* also provides implementations for a set of commonly used tools for data processing, model training, and evaluation. We'll use *caret* here for model training with the function `train()`. Note however, that using a specific algorithm, which is implemented in a specific package outside *caret*, also requires that the respective package be installed and loaded. Using *caret* for specifying the same linear regression model as above, the base-R `lm()` function, can be done with caret in a generalized form as:
 
 ```{r}
-train(
+caret::train(
   form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
-  data = ddf |> drop_na(), 
-  trControl = trainControl(method = "none"),
+  data = ddf |> drop_na(),  # drop missing values
+  trControl = caret::trainControl(method = "none"),  # no resampling
   method = "lm"
 )
 ```
 
-Note the argument specified as `trControl = trainControl(method = "none")`. This suppresses the default approach to model fitting in *caret* - to *resample* using *bootstrapping.* More on that below. Note also that we dropped all rows that contained at least one missing value - necessary to apply the least squares method for the linear regression model fitting. It's advisable to apply this data removal step only at the very last point of the data processing and modelling workflow. Alternative algorithms may be able to deal with missing values and we want to avoid losing information.
+Note the argument specified as `trControl = trainControl(method = "none")`. This suppresses the default approach to model fitting in *caret* - to *resample* using *bootstrapping.* More on that below. Note also that we dropped all rows that contained at least one missing value - necessary to apply the least squares method for the linear regression model fitting. It's advisable to apply this data removal step only at the very last point of the data processing and modelling workflow. Alternative algorithms may be able to deal with missing values and we want to avoid losing information along the workflow.
 
-Of course, it is an overkill compared to write this as in the chunk above compared to just writing `lm(...)`. But the advantage of the unified interface is that we can simply replace the `method` argument to use a different ML algorithm. For example, to use KNN, we just can write:
+Of course, it is an overkill compared to write this as in the chunk above compared to just writing `lm(...)`. But the advantage of the unified interface is that we can simply replace the `method` argument to use a different model fitting algorithm. For example, to use KNN, we just can write:
 
 ```{r}
-train(
+caret::train(
   form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
   data = ddf |> drop_na(), 
-  trControl = trainControl(method = "none"),
+  trControl = caret::trainControl(method = "none"),
   method = "knn"
 )
 ```
 
 ### Data splitting
 
-The introductory example demonstrated the importance of validating the fitted model with data that was *not* used for training. Thus, we can test the model's *generalisability* to new ("unseen") data. The essential step that enables us to assess the model's *generalization error* is to hold out part of the data from training, and set it aside (leaving it absolutely untouched) for *testing*.
+The introductory example demonstrated the importance of validating the fitted model with data that was *not* used for training. Thus, we can test the model's *generalisability* to new ("unseen") data. The essential step that enables us to assess the model's *generalization error* is to hold out part of the data from training and set it aside (leaving it absolutely untouched!) for *testing*.
 
-There is no fixed rule for how much data are to be used for training and testing, respectively. We have to balance the trade-off between:
+There is no fixed rule for how much data are to be used for training and testing, respectively. We have to balance a trade-off:
 
-- Spending too much data for training will leave us with too little data for testing and the test results may not be robust. In this case, the sample size for getting robust validation statistics is not sufficiently large and we don't know for sure whether we are safe from an over-fit model.
-- Spending too much data for validation will leave us with too little data for training. In this case, the ML algorithm may not be successful at finding real relationships due to insufficient amounts of training data.
+-   Spending too much data for training will leave us with too little data for testing and the test results may not be robust. In this case, the sample size for getting robust validation statistics is not sufficiently large and we don't know for sure whether we are safe from an over-fit model.
+-   Spending too much data for validation will leave us with too little data for training. In this case, the ML algorithm may not be successful at finding real relationships due to insufficient amounts of training data.
 
 Typical splits are between 60-80% for training. However, in cases where the number of data points is very large, the gains from having more training data are marginal, but come at the cost of adding to the already high computational burden of model training.
 
-In environmental sciences, the number of predictors is often smaller than the sample size ($p < n$), because its typically easier to collect repeated observations of a particular variable than to expand the set of variables being observed. Nevertheless, in cases where the number $p$ gets large, it is important, and for some algorithms mandatory, to maintain $p < n$ for model training.
+In environmental sciences, the number of predictors is often smaller than the sample size ($p < n$), because it is typically easier to collect repeated observations of a particular variable than to expand the set of variables being observed. Nevertheless, in cases where the number $p$ gets large, it is important, and for some algorithms mandatory, to maintain $p < n$ for model training.
 
 An important aspect to consider when splitting the data is to make sure that all "states" of the system for which we have data are well represented in training and testing sets. A particularly challenging case is posed when it is of particular interest that the algorithm learns relationships $f(x)$ under rare conditions $x$, for example meteorological extreme events. If not addressed with particular measures, model training tends to achieve good model performance for the most common conditions. A simple way to put more emphasis for model training on extreme conditions is to compensate by sampling overly proportional from such cases for the training data set.
 
-Several alternative functions for the data splitting step are available from different packages in R. We will use the the *rsample* package as it allows to additionally make sure that data from the full range of a given variable's values (`VPD_F` in the example below) are well covered in both training and testing sets.
+Several alternative functions for the data splitting step are available from different packages in R. We use the the *rsample* package here as it allows to additionally make sure that data from the full range of a given variable's values (`VPD_F` in the example below) are well covered in both training and testing sets.
 
 ```{r warning=FALSE, message=FALSE}
 set.seed(123)  # for reproducibility
-split <- initial_split(ddf, prop = 0.7, strata = "VPD_F")
-ddf_train <- training(split)
-ddf_test <- testing(split)
+split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
+ddf_train <- rsample::training(split)
+ddf_test <- rsample::testing(split)
 ```
 
 Plot the distribution of values in the training and testing sets.
 
 ```{r warning=FALSE, message=FALSE}
 ddf_train |> 
-  mutate(split = "train") |> 
-  bind_rows(ddf_test |> 
-    mutate(split = "test")) |> 
-  pivot_longer(cols = 2:9, names_to = "variable", values_to = "value") |> 
+  dplyr::mutate(split = "train") |> 
+  dplyr::bind_rows(ddf_test |> 
+    dplyr::mutate(split = "test")) |> 
+  tidyr::pivot_longer(cols = 2:9, names_to = "variable", values_to = "value") |> 
   ggplot(aes(x = value, y = ..density.., color = split)) +
   geom_density() +
   facet_wrap(~variable, scales = "free")
@@ -313,94 +320,358 @@ ddf_train |>
 
 ### Pre-processing {#preprocessing}
 
-Data pre-processing is aimed at preparing the data for use in a specific model fitting procedure and at improving the effectiveness of model training.The splitting of the data into a training and test set makes sure that no information from the test set is used during or before model training. It is important to make sure that absolutely no information from the test set finds its way into the training set (*data leakage*).
+Data pre-processing is aimed at preparing the data for use in a specific model fitting procedure and at improving the effectiveness of model training. The splitting of the data into a training and test set makes sure that no information from the test set is used during or before model training. It is important that absolutely no information from the test set finds its way into the training set (*data leakage*).
 
-In a general sense, pre-processing involve data transformations where the transformation functions use parameters that are determined on the data itself. Consider, for example, the *normalization.* That is, the linear transformation of a vector of values $x_i$ to have zero mean (data is *centered*, $\mu = 0$) and a standard deviation of 1 (data is *scaled* to $\sigma = 1$). In order to avoid data leakage, the mean and standard deviation have to be determined on the training set only. Then, the normalization of the training and the test sets both use set of ($\mu, \sigma$) determined on the training set.
+In a general sense, pre-processing involve data transformations where the transformation functions use parameters that are determined on the data itself. Consider, for example, the *standardization*. That is, the linear transformation of a vector of values to have zero mean (data is *centered*, $\mu = 0$) and a standard deviation of 1 (data is *scaled* to $\sigma = 1$). In order to avoid data leakage, the mean and standard deviation have to be determined on the training set only. Then, the normalization of the training and the test sets both use set of ($\mu, \sigma$) determined on the training set. Data leakage would occur if the ($\mu, \sigma$) would be determined on data containing values from the test set.
 
-Often, multiple splits of the data are considered during model training. Hence, an even larger number of data transformation parameters have to be determined and transformations applied to the multiple splits of the data. *caret* deals with this for you and the transformations do not have to be "manually" applied before applying the `train()` function call. Instead, the data pre-processing is considered an integral step of model training and instructions are specified as part of the `train()` function call and along with the un-transformed data.
+Often, multiple splits of the data are considered during model training. Hence, an even larger number of data transformation parameters ($\mu, \sigma$ in the example of normalization) have to be determined and transformations applied to the multiple splits of the data. *caret* deals with this for you and the transformations do not have to be "manually" applied before applying the `train()` function call. Instead, the data pre-processing is considered an integral step of model training and instructions are specified as part of the `train()` function call and along with the un-transformed data.
 
-The [*recipes*](https://recipes.tidymodels.org/) package provides yet another, and particularly powerful way to specify the *formula* and pre-processing steps in one go. It is compatible with caret's `train()` function. For the same formula as above, and an example where the data `ddf_train` is to be normalized centered and scaled, we can specify the "recipe" using the pipe operator as:
+The [*recipes*](https://recipes.tidymodels.org/) package provides an even more powerful way for specifying the *formula* and pre-processing steps in one go. It is compatible with the `train()` function of {caret}. For the same formula as above, and an example where the data `ddf_train` is to be normalized (centered and scaled), we can specify a "recipe" using the pipe operator as:
 
 ```{r}
-pp <- recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train) |> 
-  step_center(all_numeric(), -all_outcomes()) |>
-  step_scale(all_numeric(), -all_outcomes())
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train) |> 
+  recipes::step_center(all_numeric(), -all_outcomes()) |>
+  recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
-The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "*recipes* speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `ddf_train`, but rather the information that allows us to apply the same pre-processing also to other data sets.
+The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "{recipes} speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `ddf_train`, but rather the information that allows us to apply a specific set of pre-processing steps also to any data set.
 
 The object `pp` can then be supplied to `train()` as its first argument:
 
 ```{r, eval=FALSE}
-train(
+caret::train(
   pp, 
   data = ddf_train, 
   method = "knn",
-  trControl = trainControl(method = "none")
+  trControl = caret::trainControl(method = "none")
 )
 ```
-The example above showed data normalization as a data pre-processing step. Data pre-processing can be done for different aims, as described in sub-sections below.
 
-#### Transforming the distribution
+The example above showed data standardization as a data pre-processing step. Data pre-processing may be done with different aims, as described in sub-sections below.
 
+#### Standardization
 
-Skewed data, outliers, and values covering multiple orders of magnitude can create difficulties for certain ML algorithms, e.g., or K-nearest neighbours, or neural networks. Other algorithms, like tree-based methods (e.g., Random Forest), are more robust against such issues.
+Several algorithms explicitly require data to be standardized so that values of all predictors vary within a comparable range. The necessity of this step becomes obvious when considering KNN, where the magnitude of the distance is strongly influenced by the order of magnitude of the predictor values. To get a quick overview of the distribution of all variables (columns) in our data frame, we can use the {skimr} package.
 
-#### Dealing with missingness and bad data
+```{r}
+skimr::skim(ddf)
+```
 
-Several ML algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* (Kuhn & Johnson, 2003) and its information can be used for predictions. For categorical data, we may replace such data with `"none"` (instead of `NA`), while randomly missing data may be dropped altogether. Some ML algorithms (mainly tree-based methods, e.g., random forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
+We see for example, that typical values of `LW_IN_F` are by a factor 100 larger than values of `VPD_F`. A distance calculated based on these raw values would therefore be strongly dominated by the difference in `LW_IN_F` values, and differences in `VPD_F` would hardly affect the distance. Therefore, the data must be *standardized* before using it with the KNN algorithm (and other algorithms, including Neural Networks). Standardization is done to each variable separately, by centering and scaling each to have $\mu = 0$ and $\sigma = 1$. 
 
-Visualising missing data is essential for making decisions about dropping rows with missing data versus removing predictors from the model (which would imply too much data removal). The cells with missing data in a data frame can be eaily visualised e.g. with `vis_miss()` from the *visdat* package.
+The steps for centering and scaling using the recipes package are described above.
 
-```{r warning=FALSE, message=FALSE}
-library(visdat)
-vis_miss(
+Standardization can be done not only by centering and scaling (as described above), but also by *scaling to within range*, where values are scaled such that the minimum value within each variable (column) is 0 and the maximum is 1.
+
+As seen above for the feature engineering example, the object `pp` does not contain a standardized version of the data frame `ddf_train`, but rather the information that allows us to apply the same standardization also to other data. In other words, `recipe(..., data = ddf_train) |> step_center(...) |> step_scale(...)` doesn't actually transform `ddf_train`. There are two more steps involved to get there. This might seem bothersome at first but their separation is critical in the context of model training and data leakage, and translates the conception of the pre-processing as a "recipe" into the way we write the code. 
+
+To actually transform the data, we first have to "prepare" the recipe:
+
+```{r}
+pp_prep <- recipes::prep(pp, training = ddf_train) 
+```
+
+Finally we can actually transform the data. That is, "bake" the prepared recipe.
+
+```{r}
+ddf_baked <- recipes::bake(pp_prep, new_data = ddf_train)
+```
+
+The effect is of standardization is illustrated by comparing original and transformed variables:
+
+```{r}
+gg1 <- ddf_train |> 
+  dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
+  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
+  ggplot(aes(val, ..density..)) +
+  geom_density() +
+  facet_wrap(~var)
+
+gg2 <- ddf_baked |> 
+  dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
+  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
+  ggplot(aes(val, ..density..)) +
+  geom_density() +
+  facet_wrap(~var)
+
+cowplot::plot_grid(gg1, gg2, nrow = 2)
+```
+
+#### Handling missing data
+
+Several machine learning algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. This can lead to severe data loss. In cases where missing values appear predominantly in only a few variables, it may be advantageous to drop the affected variable from the data for modelling. In other cases, it may be advantageous to fill missing values (data *imputation*, see next section). Although such imputed data is "fake", it may be preferred to impute values than to drop entire rows and thus get the benefit of being able to use the information contained in available (real) values of affected rows. Whether or not imputation is preferred should be determined based on the model skill for an an out-of-sample test (more on that later).
+
+Visualizing missing data is the essential first step in making decisions about dropping rows with missing data versus removing predictors from the model (which would imply too much data removal).
+
+```{r}
+visdat::vis_miss(
   ddf,
   cluster = FALSE, 
   warn_large_data = FALSE
   )
 ```
 
-The question about what is "bad data" and whether or when it should be removed is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during its process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions.
+Here, the variable `LW_IN_F` (longwave radiation) if affected by a lot of missing data. Note that we applied a data cleaning step along with the data read-in at the very top of this Chapter. There, we applied a filtering criterion where values are only retained if at least 80% of the underlying half-hourly data is actual measured (and not gap-filled) data. Whether to drop the variable for further modelling should be informed also by our understanding of the data and the processes relevant for the modelling task. Here, the modelling target is GPP and the carbon cycle specialists among the readers may know that longwave radiation is not a known important control on GPP (ecosystem photosynthesis). Therefore, we may consider dropping this variable from the dataset for our modelling task. The remaining variables are affected by less frequent missingness with which we will deal otherwise.
 
-#### Standardization
+#### Imputation
 
-Several algorithms explicitly require data to be standardized. That is, values of all predictors vary within a comparable range. The necessity of this step becomes obvious when considering neural networks, the activation functions of each node have to deal with standardized inputs. In other words, inputs have to vary over the same range, expecting a mean of zero and standard deviation of one.)
-
-To get a quick overview of the distribution of all variables (columns) in our data frame, we can use the *skimr* package.
+Imputation refers to the replacement of missing values with with a "best guess" value ([Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/)). Different approaches exist for determining that best guess. The most basic approach is to impute missing values with the mean or median of the available values of the same variable, which can be implemented using `step_impute_*()` from the {recipes} package. For example, to impute the median for all predictors separately:
 
 ```{r}
-library(skimr)
-knitr::kable(skim(ddf))
+pp |> 
+  step_impute_median(all_predictors())
 ```
 
-We see for example, that typical values of `LW_IN_F` are by a factor 100 larger than values of `VPD_F`. KNN uses the distance from neighbouring points for predictions. Obviously, in this case here, any distance would be dominated by `LW_IN_F` and distances in the "direction" of `VPD_F`, even when relatively large, would not be influential, neither for a Euclidean nor a Manhattan distance (see \@ref(introduction)). In neural networks, activation functions take values in a given range (0-1). Thus, for both algorithms, data has to be standardized prior to model training.
+Imputing by the mean or median is "uninformative". We may use information about the co-variation of multiple variables for imputing missing values. For example, for imputing missing VPD values, we may consider the fact that VPD tends to be high when air temperature is high. Therefore, missing VPD values can be modeled as a function of other co-variates (predictors). Several approaches to modelling missing values are available through the recipes package (see [here](https://recipes.tidymodels.org/reference/index.html#step-functions-imputation)). For example, we can use KNN with five neighbors as:
 
-Standardization is done, for example, by dividing each variable, that is all values in one column, by the standard deviation of that variable, and then subtracting its mean. This way, the resulting standardized values are centered around 0, and scaled such that a value of 1 means that the data point is one standard deviation above the mean of the respective variable (column). When applied to all predictors individually, the absolute values of their variations can be directly compared and only then it can be meaningfully used for determining the distance.
-
-Standardization can be done not only by centering and scaling (as described above), but also by *scaling to within range*, where values are scaled such that the minimum value within each variable (column) is 0 and the maximum is 1.
-
-In order to avoid *data leakage*, centering and scaling has to be done separately for each split into training and validation data (more on that later). In other words, don't center and scale the entire data frame with the mean and standard deviation derived from the entire data frame, but instead center and scale with mean and standard deviation derived from the training portion of the data, and apply that also to the validation portion, when evaluating.
-
-The *caret* package takes care of this. The R package [**caret**](https://topepo.github.io/caret/) provides a unified interface for using different ML algorithms implemented in separate packages. The preprocessing steps applied with each resampling fold can be specified using the function `preProcess()`. More on resampling in Chapter \@ref(training).
-
-```{r warning=FALSE, message=FALSE}
-library(caret)
-pp <- preProcess(ddf_train, method = c("center", "scale"))
+```{r}
+pp |> 
+  step_impute_knn(all_predictors(), neighbors = 5)
 ```
 
-As seen above for the feature engineering example, this does not return a standardized version of the data frame `ddf`. Rather, it returns the information that allows us to apply the same standardization also to other data sets. In other words, we use the distribution of values in the data set to which we applied the function to determine the centering and scaling (here: mean and standard deviation).
+#### One-hot encoding
 
-#### More pre-processing
+For ML algorithms that require that all predictors be numerical (e.g., neural networks, or KNN), categorical predictors have to be pre-processed and converted into new numerical predictors. The most common such transformation is *one-hot encoding*, where a categorical predictor variable that has $N$ levels is replaced by $N$ new variables that contain either zeros or ones depending whether the value of the categorical feature corresponds to the respective column. Because this creates perfect collinearity between these new column, we can also drop one of them. This is referred to as *dummy encoding*.
 
-Depending on the algorithm and the data, additional pre-processing steps may be required. You can find more information about this in the great and freely available online tutorial [Hands-On Machine Learning in R](https://bradleyboehmke.github.io/HOML/engineering.html#target-engineering).
+```{r}
+# original data frame
+df <- tibble(id = 1:4, color = c("red", "red", "green", "blue"))
+df
 
-One such additional pre-processing step is *imputation*, where missing values are imputed (gap-filled), for example by the mean of each variable respectively. Also imputation is prone to cause data leakage and must therefore be implemented as part of the resampling and training workflow. The **recipes** package offers a great way to deal with imputation (and also all other pre-processing steps). [Here](https://bradleyboehmke.github.io/HOML/engineering.html#impute) is a link to learn more about it.
+# after one-hot encoding
+dmy <- dummyVars("~ .", data = df, sep = "_")
+data.frame(predict(dmy, newdata = df))
+```
+Note that in a case where color is strictly one of `c("red", "red", "green", "blue")` (and not, for example, `"yellow"`), then one of the columns added by `dummyVars()` is obsolete (if it's neither `"red"`, nor `"green"`, it must be `"blue"`) - columns are collinear. This can be avoided by `setting fullRank = FALSE`.
+
+Using the recipes package, one-hot encoding is implemented by: 
+
+```{r}
+recipe(GPP_NT_VUT_REF ~ ., data = ddf) |> 
+  step_dummy(all_nominal(), one_hot = TRUE)
+```
+
+
+#### Zero-variance predictors
+
+Sometimes, the data generation process yields variables that have the same value in each observation. And sometimes this is due to failure of the measurement device or some other bug in the data collection pipeline. Either way, this may cause some algorithms to crash or become unstable. Such "zero-variance" predictors are usually removed altogether. The same applies also to variables with "near-zero variance". That is, variables where only a few unique values occur with a high frequency in the entire data set. The danger is that, when data is split into training and testing sets, the variable may effectively become a "zero-variance" variable within the training subset.
+
+We can test for zero-variance or near-zero variance predictors by quantifying the following metrics:
+
+- Frequency ratio: Ratio of the frequency of the most common predictor over the second most common predictor. This should be near 1 for well-behaved predictors and get very large for problematic ones.
+- Percent unique values: The number of unique values divided by the total number of rows in the data set (times 100). For problematic variables, this ratio gets small (approaches 1/100).
+
+The function `nearZeroVar` of the {caret} package flags suspicious variables (`zeroVar = TRUE` or `nzv = TRUE`). In our data set, we don't find any:
+
+```{r}
+caret::nearZeroVar(ddf, saveMetrics = TRUE)
+```
+
+Using the recipes package, we can add a step that removes zero-variance predictors by:
+
+```{r}
+pp |> 
+  step_zv(all_predictors())
+```
+
+
+#### Target engineering
+
+Target engineering refers to pre-processing of the target variable. Its application can enable improved predictions, particularly for models that make assumptions about prediction errors (e.g., normally distributed errors in linear regression) or when the target variable follows a "special" distribution (e.g., heavily skewed distribution, or where the target variable is a fraction that is naturally bounded by 0 and 1). A simple log-transformation of the target variable can often resolve issues with skewed distributions. An implication of a log-transformation is that errors in predicting values in the upper end of the observed range are "discounted" in their weight compared to errors in the lower range.
+
+In our data set, the variable `WS_F` (wind speed) is skewed. The target variable that we have considered so far (`GPP_NT_VUT_REF`) is not skewed. In a case where we would consider `WS_F` to be our target variable, we would thus consider applying a log-transformation.
+
+```{r message=F, warning=F}
+gg1 <- ddf |> 
+  ggplot(aes(x = WS_F, y = ..density..)) +
+  geom_histogram() +
+  labs(title = "Original")
+
+gg2 <- ddf |> 
+  ggplot(aes(x = log(WS_F), y = ..density..)) +
+  geom_histogram() +
+  labs(title = "Log-transformed")
+
+cowplot::plot_grid(gg1, gg2)
+```
+
+Log transformation as part of the pre-processing is specified using the `step_log()` function, here applied to the model target variable (`all_outcomes()`).
+
+```{r eval=FALSE}
+recipes::recipe(WS_F ~ ., data = ddf) |>   # it's of course non-sense to model wind speed like this
+  recipes::step_log(all_outcomes())
+```
+
+A log-transformation doesn't necessarily result in a perfect normal distribution of transformed values. The *Box-Cox* can get us closer. It can be considered a generalization of the log-transformation. Values are transformed according to the following function:
+$$
+y(\lambda) = \begin{cases}
+\frac{Y^\lambda-1}{\lambda}, &\; y \neq 0\\
+\log(Y),                     &\; y = 0
+\end{cases}
+$$
+$\lambda$ is treated as a parameter that is fitted such that the resulting distribution of values $y$ approaches the normal distribution. To specify a Box-Cox-transformation as part of the pre-processing, we can use `step_BoxCox()` from the {recipes} package.
+
+```{r}
+pp <- recipe(WS_F ~ ., data = ddf_train) |>
+  step_BoxCox(all_outcomes())
+```
+
+How do transformed values look like? 
+
+```{r}
+prep_pp <- prep(pp, training = ddf_train |> drop_na())
+ddf_baked <- bake(prep_pp, new_data = ddf_test |> drop_na())
+ddf_baked |>
+  ggplot(aes(x = WS_F, y = ..density..)) +
+  geom_histogram() +
+  labs(title = "Box-Cox-transformed")
+```
+
+Note that the Box-Cox-transformation can only be applied to values that are strictly positive. In our example, wind speed (`WS_F`) is. If this is not satisfied, a Yeo-Johnson transformation can be applied.
+
+```{r}
+recipe(WS_F ~ ., data = ddf) |>
+  step_YeoJohnson(all_outcomes())
+```
+
+
+### Putting it all together (half-way)
+
+Let's recap. We have a dataset `ddf` and we want to predict ecosystem GPP (`GPP_NT_VUT_REF`) from a set of predictors - environmental covariates that were measured in parallel to GPP. Let's compare the performance of a multivariate linear regression and KNN model in terms of its generalisation to data that was not used for model fitting. The following pieces are implemented:
+
+- Missing data: We've seen that the predictor `LW_IN_F` has lots of missing values and - given *a priori* knowledge is not critical for predicting GPP and we'll drop it.
+- Data cleaning: Data (`ddf`) was cleaned based on quality control information upon reading the data at the beginning of this Chapter. Before modelling, we're checking the distribution of the target value here again to make sure it is "well-behaved".
+- Imputation: We drop rows with missing data for model training, instead of imputing them.
+- Some of the predictors are distintively not normally distributed. Let's Box-Cox transform all predictors as a pre-processing step.
+- We have to standardize the data in order to use it for KNN.
+- We have no variable, where zero-variance was detected and we have no categorical variables that have to be transformed by one-hot encoding to be used in KNN. We use a data split, whithholding 30% for testing.
+- Take $k=10$ for the KNN model. Other choices are possible and will affect the prediction error on the training and the testing data in different manners. We'll learn more about the optimal choice of $k$ (*hyperparameter tuning*) in the next chapter. 
+- Fit models to minimize the root mean square error (RMSE) between predictions and observations. More on the choice of the `metric` argument in `train()` (*loss function*) in the next chapter.
+- For the KNN model, use $k=5$.
+
+These steps are implemented by the code below.
+
+```{r}
+# Data cleaning: looks ok, no obviously bad data
+# no long tail, therefore no further target engineering
+ddf |> 
+  ggplot(aes(x = GPP_NT_VUT_REF, y = ..count..)) + 
+  geom_histogram()
+
+# Data splitting
+set.seed(1982)  # for reproducibility
+split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
+ddf_train <- rsample::training(split)
+ddf_test <- rsample::testing(split)
+
+# Model and pre-processing formulation, use all variables but LW_IN_F
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F + PA_F + P_F + WS_F, 
+                      data = ddf_train |> drop_na()) |> 
+  recipes::step_BoxCox(all_predictors()) |> 
+  recipes::step_center(all_numeric(), -all_outcomes()) |>
+  recipes::step_scale(all_numeric(), -all_outcomes())
+
+# Fit linear regression model
+mod_lm <- caret::train(
+  pp, 
+  data = ddf_train |> drop_na(), 
+  method = "lm",
+  trControl = caret::trainControl(method = "none"),
+  metric = "RMSE"
+)
+
+# Fit KNN model
+mod_knn <- caret::train(
+  pp, 
+  data = ddf_train |> drop_na(), 
+  method = "knn",
+  trControl = caret::trainControl(method = "none"),
+  tuneGrid = data.frame(k = 5),
+  metric = "RMSE"
+)
+```
+
+We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training data and add the predicted values to the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into the function `eval_model()`, which we will re-use for each fitted model object. 
+
+```{r}
+## make model evaluation into a function to reuse code
+eval_model <- function(mod, df_train, df_test){
+  
+  ## add predictions to the data frames
+  df_train <- df_train %>% 
+    drop_na() %>% 
+    mutate(fitted =  predict(mod, newdata = .))
+  
+  df_test <- df_test %>% 
+    drop_na() %>% 
+    mutate(fitted =  predict(mod, newdata = .))
+  
+  ## get metrics tables
+  metrics_train <- df_train %>% 
+    yardstick::metrics(GPP_NT_VUT_REF, fitted)
+  
+  metrics_test <- df_test %>% 
+    yardstick::metrics(GPP_NT_VUT_REF, fitted)
+  
+  ## extract values from metrics tables
+  rmse_train <- metrics_train %>% 
+    filter(.metric == "rmse") %>% 
+    pull(.estimate)
+  rsq_train <- metrics_train %>% 
+    filter(.metric == "rsq") %>% 
+    pull(.estimate)
+  
+  rmse_test <- metrics_test %>% 
+    filter(.metric == "rmse") %>% 
+    pull(.estimate)
+  rsq_test <- metrics_test %>% 
+    filter(.metric == "rsq") %>% 
+    pull(.estimate)
+  
+  ## visualise with a hexagon binning and a customised color scale,
+  ## adding information of metrics as sub-titles
+  gg1 <- df_train %>% 
+    ggplot(aes(GPP_NT_VUT_REF, fitted)) +
+    geom_point(alpha = 0.3) +
+    geom_smooth(method = "lm", se = FALSE, color = "red") +
+    geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+    labs(subtitle = bquote( italic(R)^2 == .(format(rsq_train, digits = 2)) ~~
+                            RMSE == .(format(rmse_train, digits = 3))),
+         title = "Training set") +
+    theme_classic()
+  
+  gg2 <- df_test %>% 
+    ggplot(aes(GPP_NT_VUT_REF, fitted)) +
+    geom_point(alpha = 0.3) +
+    geom_smooth(method = "lm", se = FALSE, color = "red") +
+    geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+    labs(subtitle = bquote( italic(R)^2 == .(format(rsq_test, digits = 2)) ~~
+                            RMSE == .(format(rmse_test, digits = 3))),
+         title = "Test set") +
+    theme_classic()
+  
+  out <- cowplot::plot_grid(gg1, gg2)
+  
+  return(out)
+}
+
+# linear regression model
+eval_model(mod = mod_lm, df_train = ddf_train, df_test = ddf_test)
+
+# KNN
+eval_model(mod = mod_knn, df_train = ddf_train, df_test = ddf_test)
+```
+
+It is advisable to keep workflow notebooks (this RMarkdown file) light and legible. Therefore, code chunks should not be excessively long and functions should be kept in a `./R/*.R` file, which can be loaded. This also facilitates debugging code inside the function. Here, the function `eval_model()` is part of the book's git repository, stored in the sub-directory `./R/`, and used also in later chapters.
+
+
+
+
 
 
 ### Model training {#training}
 
-Model training in supervised ML is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm takes care of progressively reducing the loss during model training. Let's say the ML model contains two parameters and predictions can be considered a function of the two ($\hat{Y}(w_1, w_2)$). $Y$ is actually constant. Thus, the loss function is effectively a function $L(w_1, w_2)$. Therefore, we can consider the model training as a search of the parameter space of the machine learning model $(w_1, w_2)$ to find the minimum of the loss. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.
+Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{y}$ and $y$. The *loss* function quantifies this mismatch ($L(\hat{y}, y)$), and the algorithm takes care of progressively reducing the loss during model training. Let's say the machine learning model contains two parameters and predictions can be considered a function of the two ($\hat{y}(w_1, w_2)$). $y$ is actually constant. Thus, the loss function is effectively a function $L(w_1, w_2)$. Therefore, we can consider the model training as a search of the parameter space of the machine learning model $(w_1, w_2)$ to find the minimum of the loss. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.
 
 ```{r, echo = FALSE, fig.cap = "Visualization of a loss function as a plane spanned by the two parameters $w_1$ and $w_2$."}
 knitr::include_graphics("./figures/loss_plane.png")
