@@ -2,6 +2,22 @@
 
 **Chapter lead author: Koen Hufkens**
 
+## Learning objectives
+
+In this chapter you will learn the reasons for practicing open science, and some of the basic methodological techniques that we can use to facilitate an open science workflow.
+
+You will learn how to:
+
+-   structure a project
+
+-   manage a project workflow
+
+-   capture a session or machine state
+
+-   use dynamic reporting
+
+-   ensure data/project retention
+
 ## Introduction
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
