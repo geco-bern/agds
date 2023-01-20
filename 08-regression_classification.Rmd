@@ -252,12 +252,6 @@ R^2 = 1 - \frac{\sum_i (Y_i - \hat{Y}_i)^2}{\sum_i (Y_i - \bar{Y})^2}
 $$
 In this case, the goal is to maximize the metric, thus trying the explain as much variation in $Y$ as possible. In contrast to the MSE and RMSE, $R^2$ measures goodness of fit and gives a quantity between 0 and 1 that takes into consideration how variable the target is. We can actually write $R^2 = 1 - \frac{MSE}{\hat{Var}(Y)}$. A perfect fit is quantified by $R^2 = 1$ and uninformative models have an $R^2$ approaching zero. For some applications where the data is very noisy, an $R^2$ of 0.6 may already be considered good. 
 
-- **Pearson's $r^2$**: The linear correlation between two variables (here $Y$ and $\hat{Y}$) is measured by the *Pearson's correlation coefficient* $r$. Its square is closely related to the coefficient of determination $R^2$.
-$$
-r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \hat{\bar{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2}\sqrt{ \sum_i(\hat{Y_i}-\bar{\hat{Y}})^2 } }
-$$
-The distinction between uppercase and lowercase nomenclature is often not consistent in the literature. The uppercase $R^2$ is commonly used as coefficient of determination, in the context of comparing observed and predicted values. When the *correlation* between two different variables in a sample is quantified, the lowercase $r^2$ is commonly used. 
-
 Metrics for correlation like the ones above should not be used as a loss function because they do not penalize biased models. All of them keep improving as we include more variables, where they are actually informative or not.
 
 The $R^2$ always increases when predictors are added to a model. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of parameters. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We will introduce cross-validation in [Chapter 9](#supervised_ml), which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available:
@@ -294,12 +288,9 @@ Let's calculate the metrics introduced above for a few of the fitted regression 
 compute_regr_metrics <- function(linmod){
   c(mse = mean(linmod$residuals^2),
     rmse = sqrt(mean(linmod$residuals^2)),
-    R2 = 1 - sum(linmod$residuals^2)/
-      sum((linmod$model$GPP_NT_VUT_REF- mean(linmod$model$GPP_NT_VUT_REF))^2),
-    R2_adj = summary(linmod)$adj.r.squared,
-    # r2 = summary(linmod)$r.squared
-    cor(linmod$fitted, linmod$model$GPP_NT_VUT_REF)^2 # alternative for r2
-  ) # r^2 and R^2 are the same!!
+    R2 = summary(linmod)$r.squared,
+    R2_adj = summary(linmod)$adj.r.squared
+  )
 }
 
 metrics <- sapply(list(linmod1, linmod2, linmod_cat), compute_regr_metrics)
