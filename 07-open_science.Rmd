@@ -2,7 +2,23 @@
 
 **Chapter lead author: Koen Hufkens**
 
-## Introduction
+## Learning objectives
+
+In this chapter you will learn the reasons for practicing open science, and some of the basic methodological techniques that we can use to facilitate an open science workflow.
+
+In this chapter you will learn how to:
+
+-   structure a project
+
+-   manage a project workflow
+
+-   capture a session or machine state
+
+-   use dynamic reporting
+
+-   ensure data/project retention
+
+## Tutorial
 
 The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
 
@@ -16,11 +32,9 @@ Open and reproducible science is in part a counter movement to make scientific r
 
 It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on the practical aspects for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
 
-<!-- ![](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg) -->
+[![by The Turing Way](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg)](https://the-turing-way.netlify.app/welcome.html)
 
-For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this section.
-
-## Tutorial
+For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this chapter.
 
 The basics of open science coding and data practices rely on a number of simple concepts. The below sections describe a selection of the most important ones. Sticking to these principles and/or tools will increase the reproducibility of your work greatly.
 
@@ -61,7 +75,7 @@ analysis/
 
 To sidestep some of the manual management in R you can use dedicated pipeline tool like the **{targets} package** in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.
 
-<!-- ![](https://books.ropensci.org/targets/man/figures/tar_watch.png) -->
+![by rOpenSci {targets}](https://books.ropensci.org/targets/man/figures/tar_watch.png)
 
 Due to the added complexity of the targets package we won't include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples.
 
