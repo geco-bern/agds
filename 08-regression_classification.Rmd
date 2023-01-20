@@ -101,7 +101,7 @@ $\min_{\beta} \sum_i (Y_i - \hat{Y}_i)^2$.
 
 While the regression is a line in two-dimensional space for the univariate case, it is a plane in three-dimensional space for bi-variate regression, and hyperplanes in higher dimensions.
 
-**Implementation**
+**Implementation in R**
 
 To fit a univariate linear regression model in R, we can use the `lm()` function. Already in Chapter [3](#data_wrangling), we made linear models by doing:
 
@@ -179,8 +179,8 @@ In the [regression within categories](#vis_regr_cat) section of [Chapter 5](#dat
 # create month category
 df_cat <- hhdf |>
   mutate(MONTH = lubridate::month(TIMESTAMP_START)) |>
-  dplyr::select(MONTH, GPP_NT_VUT_REF, SW_IN_F) |>
-  drop_na()
+  drop_na() |>
+  dplyr::select(MONTH, GPP_NT_VUT_REF, SW_IN_F)
 ```
 
 So far, we have only used continuous variables as explanatory variables in a linear regression. It is also possible to use categorical variables. To do this in R, such variables cannot be of class `numeric`, otherwise the `lm()` function treats them as continuous variables. For example, although the variable `NIGHT` is categorical with values `0` and `1`, the model `linmod3` treats it as a number. We must make sure that categorical variables have class `character` or, even better, `factor`.
@@ -211,7 +211,7 @@ df_cat |>
   mutate(MONTH_NAME = month(as.integer(MONTH), label = TRUE)) |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
-  geom_smooth(formula = y ~ x + 0, method = "loess", color = "red", se = FALSE) +
+  geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
   labs(x = "SW", y = "GPP") +
   facet_wrap(~MONTH_NAME)
 ```
@@ -246,45 +246,21 @@ $$
 $$ 
 Like the MSE, the RMSE also measures accuracy (the magnitude of the errors) and is minimized during model training. By taking the square root of mean square errors, the RMSE is in the same units as the data $Y$ and is less sensitive to outliers as the MSE.
 
-- **$R^2$**, also called the *coefficient of determination*, describes the proportion of variation in $Y$ that is captured by modelled values $\hat{Y}$. Note that the denominator in the formula below is the variance of $Y$, which is actually the MSE of a model that just predicts the average of $Y$ (using no explanatory variable $X$). So $R^2$ is basically measuring how much better than just taking the mean of $Y$ our model is. It is traditionally defined as:
+- **$R^2$**: The *coefficient of determination*  measures how close the fitted values are to the true target, and describes the proportion of variation in $Y$ that is captured by modeled values $\hat{Y}$. Note that the denominator in the formula below is the variance of $Y$, which is actually the MSE of a model that just predicts the average of $Y$ (using no explanatory variable $X$). So $R^2$ is basically measuring how much better than just taking the mean of $Y$ our model is. It is traditionally defined as:
 $$
 R^2 = 1 - \frac{\sum_i (Y_i - \hat{Y}_i)^2}{\sum_i (Y_i - \bar{Y})^2}
 $$
 In this case, the goal is to maximize the metric, thus trying the explain as much variation in $Y$ as possible. In contrast to the MSE and RMSE, $R^2$ measures goodness of fit and gives a quantity between 0 and 1 that takes into consideration how variable the target is. We can actually write $R^2 = 1 - \frac{MSE}{\hat{Var}(Y)}$. A perfect fit is quantified by $R^2 = 1$ and uninformative models have an $R^2$ approaching zero. For some applications where the data is very noisy, an $R^2$ of 0.6 may already be considered good. 
 
-- **Pearson's $r^2$**: The linear association between two variables (here $Y$ and $\hat{Y}$) is measured by the *Pearson's correlation coefficient* $r$. Its square is closely related to the coefficient of determination $R^2$.
+- **Pearson's $r^2$**: The linear correlation between two variables (here $Y$ and $\hat{Y}$) is measured by the *Pearson's correlation coefficient* $r$. Its square is closely related to the coefficient of determination $R^2$.
 $$
-r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \hat{\bar{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2}\sqrt{ \sum_i(\hat{Y_i}-\hat{\bar{Y}})^2 } }
+r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \hat{\bar{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2}\sqrt{ \sum_i(\hat{Y_i}-\bar{\hat{Y}})^2 } }
 $$
-
 The distinction between uppercase and lowercase nomenclature is often not consistent in the literature. The uppercase $R^2$ is commonly used as coefficient of determination, in the context of comparing observed and predicted values. When the *correlation* between two different variables in a sample is quantified, the lowercase $r^2$ is commonly used. 
 
-Metrics for correlation should not be used as a loss function because they do not penalize biased models. This is illustrated also in the plots above.
+Metrics for correlation like the ones above should not be used as a loss function because they do not penalize biased models. All of them keep improving as we include more variables, where they are actually informative or not.
 
-The square of the Pearson's correlation coefficient, as defined above, is implemented by the {yardstick} function `rsq()`, and corresponds also to the value reported for `Multiple R-squared` by `summary()` on a linear model object, or simply to `cor(...)^2`. The {yardstick} library implements the definition of the coefficient of determination with its function `rsq_trad()`.
-
-```{r}
-## generate random data 
-df_demo <- tibble(x = rnorm(100)) %>% 
-  mutate(y_obs = x + rnorm(100),
-         y_pred = x)
-## the equation given above for the coefficient of determination corresponds to 'rsq_trad()'
-1 - sum((df_demo$y_pred - df_demo$y_obs)^2) / sum((df_demo$y_obs - mean(df_demo$y_obs))^2)
-yardstick::rsq_trad(df_demo, y_obs, y_pred) %>% pull(.estimate)
-```
-
-The square of the Pearson's correlation coefficient, as defined above, is implemented by the {yardstick} function `rsq()`, and corresponds also to the value reported for `Multiple R-squared` by `summary()` on a linear model object, or simply to `cor(...)^2`.
-
-```{r}
-## the equation given above for the squared Pearson's correlation coefficient corresponds to 'rsq()', 'cor()^2', and `summary()$r.squared
-(sum((df_demo$y_pred - mean(df_demo$y_pred))*(df_demo$y_obs - mean(df_demo$y_obs))))^2/
-  (sum((df_demo$y_obs - mean(df_demo$y_obs))^2)*sum((df_demo$y_pred - mean(df_demo$y_pred))^2))
-yardstick::rsq(df_demo, y_obs, y_pred) %>% pull(.estimate)
-summary(lm(y_obs ~ y_pred, data = df_demo))$r.squared
-cor(df_demo$y_obs, df_demo$y_pred)^2
-```
-
-The $R^2$ always increases when predictors are added to a model, even if predictors are not informative. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of predictors. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We have encountered cross-validation which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available.
+The $R^2$ always increases when predictors are added to a model. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of parameters. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We will introduce cross-validation in [Chapter 9](#supervised_ml), which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available:
 
 - **Adjusted $R^2$**: The adjusted $R^2$ discounts values by the number of predictors. It is defined as
 $$
@@ -309,6 +285,51 @@ $$
 \text{BIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + (p+2)  \log(n)
 $$
 Also in this case our goal is to minimize the BIC. This metric has the feature that if there is a true underlying model, the BIC will select that model given enough data. The BIC tends to select a model with fewer predictors than AIC.
+
+**Implementation in R**
+
+Let's calculate the metrics introduced above for a few of the fitted regression models. Some of these metrics, like $R^2$ and the adjusted $R^2$ are given by the `summary()` function. Alternatively, the {yardstick} package provides implementations for a few of these metrics, which we compute below:
+
+```{r}
+compute_regr_metrics <- function(linmod){
+  c(mse = mean(linmod$residuals^2),
+    rmse = sqrt(mean(linmod$residuals^2)),
+    R2 = 1 - sum(linmod$residuals^2)/
+      sum((linmod$model$GPP_NT_VUT_REF- mean(linmod$model$GPP_NT_VUT_REF))^2),
+    R2_adj = summary(linmod)$adj.r.squared,
+    # r2 = summary(linmod)$r.squared
+    cor(linmod$fitted, linmod$model$GPP_NT_VUT_REF)^2 # alternative for r2
+  ) # r^2 and R^2 are the same!!
+}
+
+metrics <- sapply(list(linmod1, linmod2, linmod_cat), compute_regr_metrics)
+colnames(metrics) <- c("linear model", "linear model 2", "linear + categories")
+metrics
+```
+
+The square of the Pearson's correlation coefficient, as defined above, is implemented by the {yardstick} function `rsq()`, and corresponds also to the value reported for `Multiple R-squared` by `summary()` on a linear model object, or simply to `cor(...)^2`. The {yardstick} library implements the definition of the coefficient of determination with its function `rsq_trad()`.
+
+```{r}
+## generate random data 
+df_demo <- tibble(x = rnorm(100)) %>% 
+  mutate(y_obs = x + rnorm(100),
+         y_pred = x)
+## the equation given above for the coefficient of determination corresponds to 'rsq_trad()'
+1 - sum((df_demo$y_pred - df_demo$y_obs)^2) / sum((df_demo$y_obs - mean(df_demo$y_obs))^2)
+yardstick::rsq_trad(df_demo, y_obs, y_pred) %>% pull(.estimate)
+```
+
+The square of the Pearson's correlation coefficient, as defined above, is implemented by the {yardstick} function `rsq()`, and corresponds also to the value reported for `Multiple R-squared` by `summary()` on a linear model object, or simply to `cor(...)^2`.
+
+```{r}
+## the equation given above for the squared Pearson's correlation coefficient corresponds to 'rsq()', 'cor()^2', and `summary()$r.squared
+(sum((df_demo$y_pred - mean(df_demo$y_pred))*(df_demo$y_obs - mean(df_demo$y_obs))))^2/
+  (sum((df_demo$y_obs - mean(df_demo$y_obs))^2)*sum((df_demo$y_pred - mean(df_demo$y_pred))^2))
+yardstick::rsq(df_demo, y_obs, y_pred) %>% pull(.estimate)
+summary(lm(y_obs ~ y_pred, data = df_demo))$r.squared
+cor(df_demo$y_obs, df_demo$y_pred)^2
+```
+
 
 ### Classification
 
