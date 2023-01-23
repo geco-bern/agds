@@ -49,11 +49,11 @@ The first distinction comes from the type of target variable. Whenever $Y$ is a 
 |-----------------|-------------------|------------------------------|
 | Target variable | Continuous        | Categorical                  |
 | Common models   | Linear regression, polynomial regression, kNN, tree-based regression | Logistic regression, kNN, SVM, tree classifiers |
-| Metrics         | RMSE, $R^2$, adjusted $R^2$, AIC       | Accuracy, precision, AUC, F1 |
+| Metrics         | RMSE, $R^2$, adjusted $R^2$, AIC, BIC | Accuracy, precision, AUC, F1 |
 
 ### Regression
 
-In this section, we will introduce some regression models, their advantages and disadvantages, and metrics to measure their performance.
+In this section, we will introduce the most basic regression model: linear regression. Throughout this section, we will use the , their advantages and disadvantages, and metrics to measure their performance. CORRECT INTRO
 
 #### Linear regression
 
@@ -298,39 +298,164 @@ colnames(metrics) <- c("linear model", "linear model 2", "linear + categories")
 metrics
 ```
 
-The square of the Pearson's correlation coefficient, as defined above, is implemented by the {yardstick} function `rsq()`, and corresponds also to the value reported for `Multiple R-squared` by `summary()` on a linear model object, or simply to `cor(...)^2`. The {yardstick} library implements the definition of the coefficient of determination with its function `rsq_trad()`.
-
-```{r}
-## generate random data 
-df_demo <- tibble(x = rnorm(100)) %>% 
-  mutate(y_obs = x + rnorm(100),
-         y_pred = x)
-## the equation given above for the coefficient of determination corresponds to 'rsq_trad()'
-1 - sum((df_demo$y_pred - df_demo$y_obs)^2) / sum((df_demo$y_obs - mean(df_demo$y_obs))^2)
-yardstick::rsq_trad(df_demo, y_obs, y_pred) %>% pull(.estimate)
-```
-
-The square of the Pearson's correlation coefficient, as defined above, is implemented by the {yardstick} function `rsq()`, and corresponds also to the value reported for `Multiple R-squared` by `summary()` on a linear model object, or simply to `cor(...)^2`.
-
-```{r}
-## the equation given above for the squared Pearson's correlation coefficient corresponds to 'rsq()', 'cor()^2', and `summary()$r.squared
-(sum((df_demo$y_pred - mean(df_demo$y_pred))*(df_demo$y_obs - mean(df_demo$y_obs))))^2/
-  (sum((df_demo$y_obs - mean(df_demo$y_obs))^2)*sum((df_demo$y_pred - mean(df_demo$y_pred))^2))
-yardstick::rsq(df_demo, y_obs, y_pred) %>% pull(.estimate)
-summary(lm(y_obs ~ y_pred, data = df_demo))$r.squared
-cor(df_demo$y_obs, df_demo$y_pred)^2
-```
-
-
 ### Classification
+
+We will introduce a classification problem with a binary target, although it's easy to generalize to categorical variables with more than two classes. As an example, we will try to classify whether it's day or night (`NIGHT`) based on shortwave and longwave radiation measurements (`SW_IN_F` and `LW_IN_F`). Let's look at the data first:
+
+```{r}
+set.seed(2023)
+gg2 <- hhdf |>
+  sample_n(1000) |>  # to reduce the dataset 
+  ggplot(aes(x = SW_IN_F, y = LW_IN_F, color = as.factor(NIGHT))) +
+  geom_point(size = 0.75) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("Longwave radiation (W m"^-2, ")"))) +
+  theme_classic()
+gg2
+```
+
+At first sight, it's easy to see that the short wave radiation is close to zero in the night, while longwave radiation doesn't seem to change strongly between daytime and nighttime. 
+
+```{r}
+hhdf |>
+  filter(NIGHT==0) |>
+  pull(SW_IN_F) |>
+  hist(breaks=30)
+```
+
 
 #### Logistic regression
 
-####
+**Theory**
 
-### Model comparison
+A classification problem is a bit more difficult to write mathematically than a regression problem. Before, the mathematical representation of `GPP_NT_VUT_REF ~ SW_IN_F` was `GPP_NT_VUT_REF`$\;=\; \beta_0 + \beta_1$`SW_IN_F`. With the classification model `NIGHT ~ SW_IN_F`, we cannot just write `NIGHT`$\;=\; \beta_0 + \beta_1$`SW_IN_F` because `NIGHT` is not a number. Hence, the categorical variable must be encoded, in this case `0` means "day" and `1` means "night". We already loaded the data into R with this encoding.
 
-### 
+The next issue is that a linear model makes continuous predictions in the entire real numbers space $(-\inf, \inf)$, but we want the predictions to be in $\{0, 1\}$. We can transform these values to be in $[0,1]$ with a *link* function. For a binary response, it's common to use a *logit* link function:
+$$\text{logit}(z) = \frac{\exp(z)}{1+\exp(z)}$$
+```{r}
+curve(exp(x)/(1+exp(x)), -5, 5, ylab = "logit(x)")
+```
+
+Combining a linear model (with any type of predictors, like for regression) and a logit link function, we arrive to a **logistic regression** model:
+$$f(X, \beta) = \text{logit}(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p) = \frac{\exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}{1 + \exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}.$$
+This predicted value can be understood as the probability of belonging to class 1 (in our example, nighttime). A classification rule is defined such that an observation $X_{new}$ with a predicted probability of belonging to class 1 higher than a given *threshold* $\tau$ (i.e. $f(X_{new}, \beta) > \tau$) will be classified as 1; and if the predicted probability is smaller than the threshold, it will be classified as 0.
+
+A logistic regression model results in a linear classification rule. This means that the $p$-dimensional space will be divided in two by a hyperplane, and the points falling in each side of the hyperplane will be classified as 1 or 0. In the example above with shortwave and longwave radiation as predictors, the classification boundary would look something like this:
+
+Furthermore, to fit a logistic regression model means to calculate the maximum likelihood estimator with an iterative algorithm. 
+
+**Implementation in R**
+
+To fit a logistic regression in R we can use the `glm()` function, which fits a generalized linear model, indicating that our target variable is binary and the link function is a logit function. Let's see the model output:
+```{r}
+logmod <- glm(NIGHT ~ SW_IN_F + LW_IN_F,
+              family = binomial(link = logit),
+              data = hhdf)
+summary(logmod)
+```
+
+This model results in a linear classification boundary that splits the predictor variables space in two. You can see it plotted below:
+
+```{r}
+beta <- coef(logmod)
+
+gg3 <- gg2 +
+  geom_abline(slope = -beta[2]/beta[3], intercept = (0.5-beta[1])/beta[3])
+gg3
+
+```
+
+Most blue points fall to one side of the dashed classification line and most red points to the other side; this is what we wanted. The points that are in the wrong side of the line are misclassified by the logistic regression model, we're trying to minimize that.
+
+**Model advantages and concerns**
+
+One advantage of logistic regression is simplicity. It's part of the *generalized linear regression* family of models and the concept of a link function used to build such a model can also be used for various types of response variables (not only binary, but also count data...). You can find more details in this [Wikipedia article](https://en.wikipedia.org/wiki/Generalized_linear_model). 
+
+Furthermore, logistic regression allows for an interesting interpretation of its model parameters: *log-odds* and *log-odds ratios*. Logg-odds ratios represent how much likely it is to find one class versus the other (e.g. class 1 is twice as likely than class 0 whenever we have probabilities $66\%$ vs $33\%$). Increases in the values of the predictors affect the log-odds multiplicatively.
+
+It is easy to extend a logistic regression model to more than two classes by fitting models iteratively. For example, first you classify class 1 against classes 2 and 3; then another logistic regression classifies class 2 against 3. 
+
+Nevertheless, logistic regression relies on statistical assumptions to fit the parameters and interpret the fitted parameters. So whenever these assumptions are not met, one must be careful with the conclusions drawn. Other machine learning methods, that will be covered in Chapters [9](#supervised_ml) and [10](#random_forest), can also be used for classification tasks. These offer more flexibility than logistic regression (are not necessarily linear) and don't need to satisfy strict statistical assumptions.
+
+#### Metrics for classification
+
+Measuring the quality of a classification model is based on counting how many observations were correctly classified, rather than the distance between the values predicted by a regression and the true observed values. These can be represented in a *confusion matrix*:
+
+|  | $Y = 1$ | $Y = 0$ |
+|--|:-------:|:-------:|
+| $\hat{Y} = 1$ | True positives (TP) | False positives (FP) |
+| $\hat{Y} = 0$ | False negatives (FN) | True negatives (TN) |
+
+In a confusion matrix, correctly classified observations are on the diagonal and off-diagonal values correspond to different types of errors. Some of these error types are more relevant for certain applications.
+
+Imagine that you want to classify whether the water of a river is safe to drink based on measurements of certain particles or chemicals in the water (Y=1 means safe, Y=0 means unsafe). It's much worse to tag as "safe" a polluted river than to tag as "unsafe" a potable water source, one must be conservative. In this case, we would prioritize avoiding false positives and wouldn't care so much about false negatives.
+
+The following metrics are widely used and highlight different aspects of our modeling goals.
+
+- **Accuracy** is simply the proportion of outputs that were correctly classified:
+$$ \text{Accuracy}=\frac{\text{TP} + \text{TN}}{N},$$
+where $N$ is the number of observations. This is a very common metric for training ML models and treats both classes as equally important. It's naturally extended to multi-class classification and usually compared to the value $\frac{1}{C}$ where $C$ is the number of classes.
+
+Classification models are usually compared to randomness: how much better is our model compared to throwing a coin for classification? At random, we would assign each class $50\%$ of the time. So if we assume that both classes are as likely to appear, that is, they are *balanced*, the accuracy of a random guess would be around $0.5$. Hence, we want the accuracy to be "better than random". If there are $C$ different classes and the observations are balanced, we want the accuracy to be above $\frac{1}{C}\times 100 \%$. Keep in mind that for a dataset where $90\%$ of the observations are from class 1 and $10\%$ from class 0, always predicting 1 would lead to a $0.9$ accuracy. This value may sound good, but that model is rubbish because it doesn't use any information from predictors. Be careful when working with imbalanced classes and interpreting your results.
+
+- **Precision** measures how often our "positive" predictions are correct:
+$$\text{precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}.$$
+- The **true positive rate** (TPR), also called **Recall** or **sensitivity** measures the proportion of real "positives" ($Y = 1$) we are able to capture:
+$$ \text{TPR} = \frac{\text{TP}}{\text{TP}+\text{FN}}.$$
+
+- The **false positive rate** (FPR) is defined by 
+$$\text{FPR} = \frac{\text{FP}}{\text{FP}+\text{TN}}.$$
+and is related to another metric called **specificity** by $\text{FPR} = 1 - \text{specificity}$.
+
+
+- **ROC curve**: To evaluate the performance of a binary classification model, it's common to plot the *ROC curve*. The TPR is plotted against the FPR, for varying values of the threshold used in the classification rule. When we decrease the threshold, we get more positive values (more observations are classified as 1), increasing both the true positive and false positive rate. The following image describes clearly how to interpret a ROC curve plot:
+
+![ROC curves and how they compare, from [Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).](figures/Roc_curve.png)
+
+- **AUC**: The "area under the curve" is defined as the area left below the ROC curve. For a random classifier we would have AUC=0.5 and for the perfect classifier, AUC=1. It's good to try to increase the AUC and it's used often as a reporting metric. Nevertheless, a visual inspection of the ROC curve can say even more.
+
+- **F1**: The F1 score is a more sophisticated metric, defined as the harmonic mean of precision and sensitivity, or in terms of the confusion matrix values:
+$$F1= 2 \times \frac{\text{prec} \times \text{recall}}{\text{prec} + \text{recall}} = \frac{2 \text{TP}}{2 \text{TP} + \text{FP} + \text{FN}}.$$
+This metric provides good results for both balanced and imbalanced datasets and takes into account both the model's ability to capture positive cases (recall) and be correct with the cases it does capture (precision). It takes values between 0 and 1, with 1 being the best and values of 0.5 and below being bad.
+
+These metrics can be used to compare the quality of different classifiers but also to understand the behaviour of a single classifier from different perspectives.  
+
+This was an introduction of the most basic classification metrics. For a more information on the topic, check out [this book chapter](https://bookdown.org/max/FES/measuring-performance.html#class-metrics).
+
+**Implementation in R**
+
+Let's take a look at the previous metrics for the logistic regression model we fitted before. The `confusionMatrix()` function from the {caret} library provides most of the statistics introduced above.
+
+```{r}
+# Make classification predictions
+Y <- as.factor(logmod$data$NIGHT)
+Y_pred <- as.factor(round(logmod$fitted.values)) # Use 0.5 as threshold
+
+# Change class names
+levels(Y) <- levels(Y_pred) <- c("DAY", "NIGHT")
+
+# plot confusion matrix
+conf_matrix <- confusionMatrix(data = Y_pred, reference = Y)
+conf_matrix
+```
+Now we can visualize the confusion matrix as a mosaic plot. This is quite helpful when we work with many classes.
+
+```{r}
+mosaicplot(conf_matrix$table,
+           main = "Confusion matrix")
+```
+
+### Model evaluation
+
+- Explain how the metrics from above can be used to find the best model. Increase complexity slowly, etc.
+
+#### Model comparison
+
+#### Variable selection
+
+#### Outlier detection
+
+ identification via distributions [hist(), boxplot(), qqnorm()], multivariate (Cook's Distance to get influential values)
 
 ## Exercises
 
