@@ -359,9 +359,8 @@ This model results in a linear classification boundary that splits the predictor
 ```{r}
 beta <- coef(logmod)
 
-gg3 <- gg2 +
+gg2 +
   geom_abline(slope = -beta[2]/beta[3], intercept = (0.5-beta[1])/beta[3])
-gg3
 
 ```
 
@@ -480,26 +479,34 @@ When we work with high-dimensional data (that is, we have more variables than ob
 Detecting outliers is very important, because they can affect the fit of a model greatly. Take a look at the two linear regressions below and how one single weird observation can throw off the fit. Whenever an observation is very distant from the center of the predictor's distribution, it becomes very influential. If the observed response for that data point is in harmony with the rest of points, nothing happens, but if it's also off, the regression model will be affected greatly.
 
 ```{r}
-x <- rnorm(50)
-y <- 2 - 0.5 * x + rnorm(50, sd = 0.1)
+set.seed(2023)
+hhdf_small <- hhdf |>
+  sample_n(100) |> # reduce dataset
+  select(SW_IN_F, GPP_NT_VUT_REF)
 
-gg11 <- data.frame(x, y) |>
-  ggplot(aes(x = x, y = y)) +
+gg3 <- hhdf_small |>
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
-  geom_smooth(method = "lm", color = "red") +
-  xlim(-3, 4) +
-  ylim(0, 4) +
-  theme_classic()
+  geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  theme_classic() +
+  ylim(-20, 50) + 
+  xlim(0, 2000)
 
-gg12 <- data.frame(x = c(x, 3.9), y = c(y, 3.9)) |>
-    ggplot(aes(x = x, y = y)) +
+gg4 <- hhdf_small |>
+  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
-  geom_smooth(method = "lm", color = "red") +
-  xlim(-3, 4) +
-  ylim(0, 4) +
-  theme_classic()
-
-cowplot::plot_grid(gg11, gg12)
+  geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  theme_classic() +
+  geom_point(aes(x = 2000, y = -20), colour='blue') +
+  ylim(-20, 50) + 
+  xlim(0, 2000)
+  
+cowplot::plot_grid(gg3, gg4)
 ```
 
 The first step to identifying outliers is to look at your data, one variable at a time. Plot a histogram to see the rough distribution of a variable, this will help identify what kind of values to expect. In Chapters [3](#data_wrangling) and [4](#data_vis) it was introduced how to identify values that fell out of this distribution using histograms and boxplots. Checking in the histogram if the distribution has fat tails helps to discern whether the values that pop out of a boxplot should be considered outliers or not. A Q-Q Plot depicts the sample quantiles of a variable against the theoretical quantiles of a distribution of our choice, usually a normal distribution. 
