@@ -367,6 +367,8 @@ gg3
 
 Most blue points fall to one side of the dashed classification line and most red points to the other side; this is what we wanted. The points that are in the wrong side of the line are misclassified by the logistic regression model, we're trying to minimize that.
 
+Note that, just like for linear regression, a logistic regression model allows to use categorical explanatory variables and polynomial transformations of the predictors to achieve better-fitting classification models.
+
 **Model advantages and concerns**
 
 One advantage of logistic regression is simplicity. It's part of the *generalized linear regression* family of models and the concept of a link function used to build such a model can also be used for various types of response variables (not only binary, but also count data...). You can find more details in this [Wikipedia article](https://en.wikipedia.org/wiki/Generalized_linear_model). 
@@ -449,12 +451,65 @@ mosaicplot(conf_matrix$table,
 
 - Explain how the metrics from above can be used to find the best model. Increase complexity slowly, etc.
 
+Model evaluation 
+
+In this section, concepts will be explained using regression as an example, but are directly translated to classification problems.
+
 #### Model comparison
+
+Models should be compared with the regression (or classification) metrics that were presented in the previous sections of this chapter that account for model complexity (AIC, BIC, adjusted $R^2$). But it's also necessary to have an organized strategy for these comparisons. 
+
+First of all, be systematic with your model comparisons. Start from simple models and increase complexity slowly. Always compare a model you should have a plan of what you want to compare. It's very inefficient to fit a handful of regression models, calculate performance metrics 
+
+the result of the comparison should be actionable and hierarchical. 
+
+One must be careful not to keep training or improving models until they fit the data perfectly, but maintain the models' ability to generalize to newly available data. In the following Chapter [9](#suspervised_ml) the concept of overfitting will be introduced and it's central to data science. Think of model interpretation and generalization when comparing them, not only of performance. Simple models can be more valuable than very complex ones (e.g. by having few very good predictors rather than thousands of mediocre ones, from which we cannot learn the underlying relationships).
 
 #### Variable selection
 
+A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g. AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models.
+
+Instead, take a hierarchical greedy approach, starting with an empty model (just an intercept) and adding one variable at a time. At each step, you 
+
+
+
+When we work with high-dimensional data (that is, we have more variables than observations) there are better techniques to do variable selection than stepwise regression. Since the predictors space is so large, we could fit a line that passes through all the observations (a perfect fit), but does the model generalize? We don't know. For example, Lasso and Ridge regression incorporate variable selection in the fitting process (you can check [this post](https://www.r-bloggers.com/2020/06/understanding-lasso-and-ridge-regression/) if you're curious).
+
 #### Outlier detection
 
+Detecting outliers is very important, because they can affect the fit of a model greatly. Take a look at the two linear regressions below and how one single weird observation can throw off the fit. Whenever an observation is very distant from the center of the predictor's distribution, it becomes very influential. If the observed response for that data point is in harmony with the rest of points, nothing happens, but if it's also off, the regression model will be affected greatly.
+
+```{r}
+x <- rnorm(50)
+y <- 2 - 0.5 * x + rnorm(50, sd = 0.1)
+
+gg11 <- data.frame(x, y) |>
+  ggplot(aes(x = x, y = y)) +
+  geom_point(size = 0.75) +
+  geom_smooth(method = "lm", color = "red") +
+  xlim(-3, 4) +
+  ylim(0, 4) +
+  theme_classic()
+
+gg12 <- data.frame(x = c(x, 3.9), y = c(y, 3.9)) |>
+    ggplot(aes(x = x, y = y)) +
+  geom_point(size = 0.75) +
+  geom_smooth(method = "lm", color = "red") +
+  xlim(-3, 4) +
+  ylim(0, 4) +
+  theme_classic()
+
+cowplot::plot_grid(gg11, gg12)
+```
+
+The first step to identifying outliers is to look at your data, one variable at a time. Plot a histogram to see the rough distribution of a variable, this will help identify what kind of values to expect. In Chapters [3](#data_wrangling) and [4](#data_vis) it was introduced how to identify values that fell out of this distribution using histograms and boxplots. Checking in the histogram if the distribution has fat tails helps to discern whether the values that pop out of a boxplot should be considered outliers or not. A Q-Q Plot depicts the sample quantiles of a variable against the theoretical quantiles of a distribution of our choice, usually a normal distribution. 
+
+```{r}
+par(mfrow=c(1,3))
+
+```
+
+In addition, R provides some useful plots from the fitted regression objects. 
  identification via distributions [hist(), boxplot(), qqnorm()], multivariate (Cook's Distance to get influential values)
 
 ## Exercises
