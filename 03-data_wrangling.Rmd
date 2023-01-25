@@ -666,7 +666,7 @@ This code is a demonstration of the power of tidy and nested data frames and for
 Nesting is useful also for avoiding value duplication when joining relational data objects. Above, we nested time series data objects (where time steps and sites are both organised along rows) by sites and got a data frame where only sites are organised along rows, while time steps are nested inside the column `"data"`. This now fits the structure of a relational data object (`siteinfo_fluxnet2015`) containing site-specific meta information (also with only sites along rows).
 
 ```{r}
-load("data/siteinfo_fluxnet2015.rda")  # loads siteinfo_fluxnet2015
+base::load("data/siteinfo_fluxnet2015.rda")  # loads siteinfo_fluxnet2015
 ```
 
 Joining the nested data frame with site meta information results in a substantially smaller and much handier data frame compared to an alternative, where the site meta information is joined into the un-nested (daily) data frame, and therefore duplicated for each day within sites.
