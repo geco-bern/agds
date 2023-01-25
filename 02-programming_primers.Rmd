@@ -33,7 +33,7 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 *Packages*, sometimes called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R, utils, stats...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
 
-For example, the `tidyverse` package is used for data wrangling and will be covered in this course. You can install a new package as follows:
+For example, the {tidyverse} package is used for data wrangling and will be covered in this course. This is a special package which loads many other packages in the background (like {readr}, {ggplot2}, etc.). You can install a new package as follows:
 
 ```{r eval=FALSE}
 install.packages("tidyverse")
@@ -45,7 +45,7 @@ Then, you can load it with the following code. Note that now the name of the pac
 library(tidyverse)
 ```
 
-You can now use the functions and features provided by the `tidyverse` package in your R scripts.
+You can now use the functions and features provided by the {tidyverse} package in your R scripts.
 
 At any time, you can see a list of your installed packages on the source panel with the following command:
 
@@ -65,9 +65,10 @@ Finally, let's install all the missing packages and load all required packages f
 
 ```{r message=FALSE, warning=FALSE}
 use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
-              "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
+              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
               "MODISTools", "forcats", "yardstick", "recipes", "caret",
-              "broom", "skimr")
+              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
+              "renv", "rsample", "modelr")
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
@@ -210,10 +211,10 @@ The data is stored as a Comma Separated Values file (`.csv`). This is a plain-te
 
 #### Reading data
 
-To import the data into the R environment, we use the function `read_csv()` from the tidyverse package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+To import the data into the R environment, we use the function `read_csv()` from the {tidyverse} package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
 
 ```{r message=FALSE}
-df <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
+df <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
 print(df)
 ```
 
