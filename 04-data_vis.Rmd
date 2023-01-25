@@ -9,7 +9,8 @@ TBC
 ## Required packages
 
 ```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "cowplot", "lubridate", "scico", "hexbin")
+use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "cowplot", 
+              "lubridate", "scico", "hexbin")
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
