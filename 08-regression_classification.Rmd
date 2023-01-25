@@ -26,10 +26,8 @@ After completing this tutorial, you will be able to:
 
 ## Tutorial
 
-First, let's load some packages that we will use in this tutorial.
-
 ```{r message=F, warning=F}
-# library(tidyverse)
+# Load necessary packages
 library(tidyr)
 library(dplyr)
 library(readr)
@@ -41,7 +39,7 @@ library(broom)
 
 ### Types of models
 
-Models try to explain relationships between variables through a mathematical formulation, particularly to predict a given target variable using other variables. Generally, we say that the target variable $Y$ is a function (denoted $f$) of a set of explanatory variables $X_1, X_2, \dots, X_p$ and some model parameters $\beta$. Models can be represented as:
+Models try to explain relationships between variables through a mathematical formulation, particularly to predict a given target variable using other explanatory variables, also called predictors. Generally, we say that the target variable $Y$ is a function (denoted $f$) of a set of explanatory variables $X_1, X_2, \dots, X_p$ and some model parameters $\beta$. Models can be represented as:
 $$Y \sim f(X_1, X_2, \dots, X_p, \beta)$$
 
 This is a very general notation and depending on the structure of these components, we get to different modelling approaches.
@@ -49,10 +47,10 @@ This is a very general notation and depending on the structure of these componen
 The first distinction comes from the type of target variable. Whenever $Y$ is a continuous variable, we are facing a *regression* problem. If $Y$ is categorical, we talk about *classification*.
 
 |                 | Regression        | Classification               |
-|-----------------|-------------------|------------------------------|
-| Target variable | Continuous        | Categorical                  |
+|-----------------|-------------------|-------------------|
+| Target variable | Continuous | Categorical |
 | Common models   | Linear regression, polynomial regression, kNN, tree-based regression | Logistic regression, kNN, SVM, tree classifiers |
-| Metrics         | RMSE, $R^2$, adjusted $R^2$, AIC, BIC | Accuracy, precision, AUC, F1 |
+| Metrics | RMSE, $R^2$, adjusted $R^2$, AIC, BIC | Accuracy, precision, AUC, F1 |
 
 ### Regression
 
@@ -242,7 +240,7 @@ Visual inspection of the model fit is a good start, but can become uninformative
 $$
 \text{MSE} = \frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2
 $$
-It measures the magnitude of the errors, and is minimized to fit a linear regression or, as we will see in [Chapter 9](#supervised_ml), during model training when used as a loss function. Note that since it scales with the square of the errors, the MSE is particularly sensitive to large errors in single points (including outliers).
+It measures the magnitude of the errors, and is minimized to fit a linear regression or, as we will see in [Chapter 9](#supervised_ml_i), during model training when used as a loss function. Note that since it scales with the square of the errors, the MSE is particularly sensitive to large errors in single points (including outliers).
 
 - **RMSE**: The root mean squared error is, as its name suggests, the root of the MSE:
 $$
@@ -258,7 +256,7 @@ In this case, the goal is to maximize the metric, thus trying the explain as muc
 
 Metrics for correlation like the ones above should not be used as a loss function because they do not penalize biased models. All of them keep improving as we include more variables, where they are actually informative or not.
 
-The $R^2$ always increases when predictors are added to a model. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of parameters. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We will introduce cross-validation in [Chapter 9](#supervised_ml), which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available:
+The $R^2$ always increases when predictors are added to a model. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of parameters. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We will introduce cross-validation in [Chapter 9](#supervised_ml_i), which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available:
 
 - **Adjusted $R^2$**: The adjusted $R^2$ discounts values by the number of predictors. It is defined as
 $$
@@ -380,7 +378,7 @@ Furthermore, logistic regression allows for an interesting interpretation of its
 
 It is easy to extend a logistic regression model to more than two classes by fitting models iteratively. For example, first you classify class 1 against classes 2 and 3; then another logistic regression classifies class 2 against 3. 
 
-Nevertheless, logistic regression relies on statistical assumptions to fit the parameters and interpret the fitted parameters. So whenever these assumptions are not met, one must be careful with the conclusions drawn. Other machine learning methods, that will be covered in Chapters [9](#supervised_ml) and [10](#random_forest), can also be used for classification tasks. These offer more flexibility than logistic regression (are not necessarily linear) and don't need to satisfy strict statistical assumptions.
+Nevertheless, logistic regression relies on statistical assumptions to fit the parameters and interpret the fitted parameters. So whenever these assumptions are not met, one must be careful with the conclusions drawn. Other machine learning methods, that will be covered in Chapters [9](#supervised_ml_i) and [10](#supervised_ml_ii), can also be used for classification tasks. These offer more flexibility than logistic regression (are not necessarily linear) and don't need to satisfy strict statistical assumptions.
 
 #### Metrics for classification
 
@@ -491,7 +489,7 @@ When we work with high-dimensional data (that is, we have more variables than ob
 
 Detecting outliers is very important, because they can affect the fit of a model greatly. Take a look at the two linear regressions below and how one single weird observation can throw off the fit. Whenever an observation is very distant from the center of the predictor's distribution, it becomes very influential (it has a bit *leverage*). If the observed response for that data point is in harmony with the rest of points, nothing happens, but if it's also off, the regression model will be affected greatly.
 
-```{r}
+```{r warning=FALSE}
 set.seed(2023)
 hhdf_small <- hhdf |>
   sample_n(100) |> # reduce dataset
