@@ -22,19 +22,19 @@ After completing this tutorial, you will be able to:
 -   Choose and calculate relevant model performance metrics
 -   Evaluate and compare regression models
 -   Detect data outliers
--   Select predictive variables
+-   Select best predictive variables
 
 ## Tutorial
 
 First, let's load some packages that we will use in this tutorial.
 
 ```{r message=F, warning=F}
-library(tidyverse)
+# library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(readr)
+library(lubridate)
 library(ggplot2)
-library(modelr)
-library(forcats)
-library(yardstick)
-library(recipes)
 library(caret)
 library(broom)
 ```
@@ -56,7 +56,7 @@ The first distinction comes from the type of target variable. Whenever $Y$ is a 
 
 ### Regression
 
-In this section, we will introduce the most basic regression model: linear regression. Throughout this section, we will use the , their advantages and disadvantages, and metrics to measure their performance. CORRECT INTRO
+In this section, we will introduce the most basic regression model: linear regression. We'll explain how to fit the model with R, how to include categorical predictors and polynomial terms. Finally, several performance metrics for regression models are presented.
 
 #### Linear regression
 
@@ -68,7 +68,7 @@ For example, we can try to explain the relationship between GPP and short wave r
 
 ```{r}
 # read and format data from Ch 3
-hhdf <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 
 set.seed(2023)
 gg1 <- hhdf |>
@@ -112,7 +112,7 @@ To fit a univariate linear regression model in R, we can use the `lm()` function
 # numerical variables only, remove NA
 df <- hhdf %>%
   dplyr::select(-starts_with("TIMESTAMP")) %>%
-  drop_na()
+  tidyr::drop_na()
 
 # fit univariate linear regression
 linmod1 <- lm(GPP_NT_VUT_REF ~ SW_IN_F, data = df)
@@ -159,7 +159,7 @@ sum(residuals(linmod1)^2)
 Although `summary()` provides a nice, human-readable output, you may find it unpractical to work with. A set of relevant statistical quantities are returned in a tidy format using `tidy()` from the `broom` package:
 
 ```{r}
-tidy(linmod1)
+broom::tidy(linmod1)
 ```
 
 **Model advantages and concerns**
@@ -182,7 +182,7 @@ In the [regression within categories](#vis_regr_cat) section of [Chapter 5](#dat
 # create month category
 df_cat <- hhdf |>
   mutate(MONTH = lubridate::month(TIMESTAMP_START)) |>
-  drop_na() |>
+  tidyr::drop_na() |>
   dplyr::select(MONTH, GPP_NT_VUT_REF, SW_IN_F)
 ```
 
@@ -211,7 +211,7 @@ summary(linmod_inter)
 
 ```{r}
 df_cat |>
-  mutate(MONTH_NAME = month(as.integer(MONTH), label = TRUE)) |>
+  mutate(MONTH_NAME = lubridate::month(as.integer(MONTH), label = TRUE)) |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
   geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
@@ -318,7 +318,7 @@ gg2 <- hhdf |>
 gg2
 ```
 
-At first sight, it's easy to see that the short wave radiation is close to zero in the night, while longwave radiation doesn't seem to change strongly between daytime and nighttime. 
+At first sight, it's easy to see that the short wave radiation is close to zero in the night, while longwave radiation doesn't seem to differ strongly between daytime and nighttime. 
 
 ```{r}
 hhdf |>
@@ -326,7 +326,7 @@ hhdf |>
   pull(SW_IN_F) |>
   hist(breaks=30)
 ```
-
+Using this example, we'll cover logistic regression, its implementation in R and metrics for classification.
 
 #### Logistic regression
 
@@ -440,7 +440,7 @@ Y_pred <- as.factor(round(logmod$fitted.values)) # Use 0.5 as threshold
 levels(Y) <- levels(Y_pred) <- c("DAY", "NIGHT")
 
 # plot confusion matrix
-conf_matrix <- confusionMatrix(data = Y_pred, reference = Y)
+conf_matrix <- caret::confusionMatrix(data = Y_pred, reference = Y)
 conf_matrix
 ```
 Now we can visualize the confusion matrix as a mosaic plot. This is quite helpful when we work with many classes.
@@ -529,7 +529,7 @@ The first step to identifying outliers is to look at your data, one variable at 
 ```{r}
 gg5 <- hhdf_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = GPP_NT_VUT_REF, y = ..density..)) +
+  ggplot(aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = 'red')+
   labs(title = 'Histogram, density and boxplot', 
@@ -548,7 +548,7 @@ gg6 <- hhdf_small |>
 
 gg7 <- hhdf_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = SW_IN_F, y = ..density..)) +
+  ggplot(aes(x = SW_IN_F, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = 'red')+
   labs(title = 'Histogram, density and boxplot', 
