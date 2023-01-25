@@ -452,34 +452,27 @@ mosaicplot(conf_matrix$table,
 
 ### Model evaluation
 
-Model evaluation refers to several techniques that help you understand how the model performs, whether this behavior is what you expect and how you can improve it. You can use metrics and plots to get an overview of the pitfalls of your model. This section covers model comparison, variable selection and outlier detection, and more concepts related to model evaluation (overfitting, data pre-processing, cross-validation...) are explained in the remaining chapters.
-
-In this section, concepts will be explained using regression as an example, but are directly translated to classification problems.
+Model evaluation refers to several techniques that help you understand how the model performs, whether this behavior is what you expect and how you can improve it. You can use metrics and plots to get an overview of the weaknesses of your model. This section covers model comparison, variable selection and outlier detection, and more concepts related to model evaluation (overfitting, data pre-processing, cross-validation...) are explained in the remaining chapters. Concepts will be explained using regression as an example, but are directly translated to classification problems.
 
 #### Model comparison
 
-Models should be compared with the regression (or classification) metrics that were presented in the previous sections of this chapter that account for model complexity (AIC, BIC, adjusted $R^2$). But it's also necessary to have an organized strategy for these comparisons. 
+Be systematic with your model comparisons. Three key ideas in model selection are: 
 
-First of all, be systematic with your model comparisons. Start from simple models and increase complexity slowly. Always compare a model you should have a plan of what you want to compare. It's very inefficient to fit a handful of regression models, calculate performance metrics ---------------
+-   Comparisons should be hierarchical: compare a model to another that "contains it", i.e. compare `GPP_NT_VUT_REF ~ SW_IN_F` to `GPP_NT_VUT_REF ~ SW_IN_F + LW_IN_F`, not `GPP_NT_VUT_REF ~ SW_IN_F` to `GPP_NT_VUT_REF ~ NIGHT + TA_F`.
+-   Complexity must be increased slowly: add one variable at a time, not three variables all at once. This helps avoid collinearity in the predictors.
+-   Choose the most appropriate metric: if possible, a metric that accounts for model complexity and represents the goal of your analysis (e.g. recall for a classification where you don't want to miss any positives).
 
-the result of the comparison should be actionable and hierarchical. 
+If you're considering different model approaches for the same task, you should first fit the best possible model for each approach, and then compare those optimized models to each other. For example, fit the best linear regression with your available data, the best kNN non-parametric regression model and a random forest; then compare those three final models and choose the one that answers your research question the best.
 
-If you're considering different model approaches for the same task, you should first find the best possible model for each approach, and then compare those optimized models to each other. For example, fit the best linear regression with your available data, the best kNN non-parametric regression model and a random forest; then compare those three final models and choose the one that answers your research question the best (or several if they provide different insights).
-
-One must be careful not to keep training or improving models until they fit the data perfectly, but maintain the models' ability to generalize to newly available data. In the following Chapter [9](#suspervised_ml) the concept of overfitting will be introduced and it's central to data science. Think of model interpretation and generalization when comparing them, not only of performance. Simple models can be more valuable than very complex ones (e.g. by having few very good predictors rather than thousands of mediocre ones, from which we cannot learn the underlying relationships).
+One must be careful not to keep training or improving models until they fit the data perfectly, but maintain the models' ability to generalize to newly available data. Chapter [9](#suspervised_ml_i) introduces the concept of overfitting, which is central to data science. Think of model interpretation and generalization when comparing them, not only of performance. Simple models can be more valuable than very complex ones because they tell a better story about the data (e.g. by having few very good predictors rather than thousands of mediocre ones, from which we cannot learn the underlying relationships).
 
 #### Variable selection
 
-A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g. AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models. This can be very computationally expensive.
+Let's think of variable selection in the context of linear regression. A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g. AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models. This can be very computationally expensive.
 
 Instead, take a hierarchical greedy approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called **stepwise (forward) regression**. First, you fit all regression models with just one variable, and select the one leading to the greatest $R^2$ (best fitting model). Then, compute the AIC (or BIC). In the next step, you add a second variable, one at a time, fitting the regression model and calculating its $R^2$. Choose as second variable the one leading to the best $R^2$. Then, compute the AIC. If the AIC (which accounts for model fit and complexity) is worse, that is, bigger, stop and keep the univariate linear model. If the AIC is better, that is, smaller, add the second variable and repeat the previous steps to include a third variable. The method finsihes once you cannot reduce the AIC anymore, or when you run out of variables. In the end, you'll have more or less the best possible linear regression model. The function `step()` implements the stepwise algorithm in R. 
 
 This stepwise approach can be done backwards, starting with a full model (all available variables) and removing one at a time. Or even with a back-and-forth approach, where you look at both including a new or removing an existing variable at each step. Furthermore, this algorithm can be applied to fitting a polynomial regression. We want to increase the degree of the polynomials unit by unit. For a model with categorical variables, interaction terms should only be considered after having the involved variables as "intercept only".
-
-Two key ideas from stepwise regression can be generalized to model selection in general: 
-
--   Comparisons should be hierarchical: compare a model to another that "contains it", i.e. compare `GPP_NT_VUT_REF ~ SW_IN_F` to `GPP_NT_VUT_REF ~ SW_IN_F + LW_IN_F`, not `GPP_NT_VUT_REF ~ SW_IN_F` to `GPP_NT_VUT_REF ~ NIGHT + TA_F`.
--   Complexity must be increased slowly: add one variable at a time, not three variables all at once. This helps avoid collinearity in the predictors.
 
 **Multicollinearity** exists when there is a correlation between multiple explanatory variables in a multivariate regression model. This is problematic because it makes the estimated coefficients corresponding to the variables that are highly correlated very unstable. Since two highly correlated variables explain almost the same, it doesn't matter whether we include one or the other in the model (the performance metrics will be similar) or even if we include both of them. Hence, it becomes difficult to say which variables actually influence the target.
 
