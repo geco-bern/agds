@@ -384,7 +384,7 @@ For example, a script could look like this:
 #----Load packages, functions and data
 library(tidyverse)
 source("R/my_functions.R")
-my_df <- read_csv("data/my_df.csv")
+my_df <- readr::read_csv("data/my_df.csv")
 #---------------------------------------
 # Main part
 #---------------------------------------
