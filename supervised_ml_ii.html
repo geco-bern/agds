@@ -350,8 +350,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Chapter lead author: Benjamin Stocker</strong></p>
 <p>Contents:</p>
 <ul>
-<li>Lecture (Beni): Wisdom of the crowds, from decision trees to random forests</li>
-<li>Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance</li>
+<li><p>Training and loss function</p></li>
+<li><p>Hyperparameters</p></li>
+<li><p>Resampling</p></li>
+<li><p>Lecture (Beni): Wisdom of the crowds, from decision trees to random forests</p></li>
+<li><p>Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance</p></li>
 </ul>
 <div id="learning-objectives-9" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> Learning objectives<a href="supervised_ml_ii.html#learning-objectives-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -361,7 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="training" class="section level3 hasAnchor" number="10.2.1">
 <h3><span class="header-section-number">10.2.1</span> Model training<a href="supervised_ml_ii.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y\)</span>. The <em>loss</em> function quantifies this mismatch (<span class="math inline">\(L(\hat{y}, y)\)</span>), and the algorithm takes care of progressively reducing the loss during model training. Let’s say the machine learning model contains two parameters and predictions can be considered a function of the two (<span class="math inline">\(\hat{y}(w_1, w_2)\)</span>). <span class="math inline">\(y\)</span> is actually constant. Thus, the loss function is effectively a function <span class="math inline">\(L(w_1, w_2)\)</span>. Therefore, we can consider the model training as a search of the parameter space of the machine learning model <span class="math inline">\((w_1, w_2)\)</span> to find the minimum of the loss. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.</p>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-207"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-206"></span>
 <img src="figures/loss_plane.png" alt="Visualization of a loss function as a plane spanned by the two parameters $w_1$ and $w_2$."  />
 <p class="caption">
 Figure 10.1: Visualization of a loss function as a plane spanned by the two parameters <span class="math inline">\(w_1\)</span> and <span class="math inline">\(w_2\)</span>.
@@ -380,16 +383,16 @@ Figure 10.1: Visualization of a loss function as a plane spanned by the two para
 </ul>
 <p>Hyperparameters usually have to be “tuned”. The optimal setting depends on the data and can therefore not be known <em>a priori</em>.</p>
 <p>In <strong>caret</strong>, hyperparameter tuning is implemented as part of the <code>train()</code> function. Values of hyperparameters to consider are to be specified by the argument <code>tuneGrid</code>, which takes a data frame with column(s) named according to the name(s) of the hyperparameter(s) and rows for each combination of hyperparameters to consider.</p>
-<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="supervised_ml_ii.html#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="do">## do not run</span></span>
-<span id="cb403-2"><a href="supervised_ml_ii.html#cb403-2" aria-hidden="true" tabindex="-1"></a><span class="fu">train</span>(</span>
-<span id="cb403-3"><a href="supervised_ml_ii.html#cb403-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> GPP_NT_VUT_REF <span class="sc">~</span> SW_F_IN <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
-<span id="cb403-4"><a href="supervised_ml_ii.html#cb403-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf, </span>
-<span id="cb403-5"><a href="supervised_ml_ii.html#cb403-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb403-6"><a href="supervised_ml_ii.html#cb403-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
-<span id="cb403-7"><a href="supervised_ml_ii.html#cb403-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>,<span class="dv">15</span>, <span class="dv">30</span>),</span>
-<span id="cb403-8"><a href="supervised_ml_ii.html#cb403-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)),</span>
-<span id="cb403-9"><a href="supervised_ml_ii.html#cb403-9" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb403-10"><a href="supervised_ml_ii.html#cb403-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="supervised_ml_ii.html#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="do">## do not run</span></span>
+<span id="cb402-2"><a href="supervised_ml_ii.html#cb402-2" aria-hidden="true" tabindex="-1"></a><span class="fu">train</span>(</span>
+<span id="cb402-3"><a href="supervised_ml_ii.html#cb402-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> GPP_NT_VUT_REF <span class="sc">~</span> SW_F_IN <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
+<span id="cb402-4"><a href="supervised_ml_ii.html#cb402-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf, </span>
+<span id="cb402-5"><a href="supervised_ml_ii.html#cb402-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb402-6"><a href="supervised_ml_ii.html#cb402-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
+<span id="cb402-7"><a href="supervised_ml_ii.html#cb402-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>,<span class="dv">15</span>, <span class="dv">30</span>),</span>
+<span id="cb402-8"><a href="supervised_ml_ii.html#cb402-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)),</span>
+<span id="cb402-9"><a href="supervised_ml_ii.html#cb402-9" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb402-10"><a href="supervised_ml_ii.html#cb402-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>Here, <code>expand.grid()</code> is used to provide a data frame with all combinations of values provided by individual vectors.</p>
 </div>
 <div id="resampling" class="section level4 hasAnchor" number="10.2.1.2">
@@ -398,17 +401,17 @@ Figure 10.1: Visualization of a loss function as a plane spanned by the two para
 <p>A common resampling method is <em>k-fold cross validation</em>, where the training data is split into <em>k</em> equally sized subsets (<em>folds</em>). Then, there will be <em>k</em> iterations, where each fold is used for validation once (while the remaining folds are used for training). An extreme case is <em>leave-one-out cross validation</em>, where <em>k</em> corresponds to the number of data points.</p>
 <p><img src="figures/cv.png" /><!-- --></p>
 <p>To do a k-fold cross validation during model training in R, we don’t have to implement the loops around folds ourselves. The resampling procedure can be specified in the <strong>caret</strong> function <code>train()</code> with the argument <code>trControl</code>. The object that this argument takes is the output of a function call to <code>trainControl()</code>. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:</p>
-<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="supervised_ml_ii.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="do">## do not run</span></span>
-<span id="cb404-2"><a href="supervised_ml_ii.html#cb404-2" aria-hidden="true" tabindex="-1"></a><span class="fu">train</span>(</span>
-<span id="cb404-3"><a href="supervised_ml_ii.html#cb404-3" aria-hidden="true" tabindex="-1"></a>  pp, </span>
-<span id="cb404-4"><a href="supervised_ml_ii.html#cb404-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train, </span>
-<span id="cb404-5"><a href="supervised_ml_ii.html#cb404-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb404-6"><a href="supervised_ml_ii.html#cb404-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
-<span id="cb404-7"><a href="supervised_ml_ii.html#cb404-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>,<span class="dv">15</span>, <span class="dv">30</span>),</span>
-<span id="cb404-8"><a href="supervised_ml_ii.html#cb404-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)),</span>
-<span id="cb404-9"><a href="supervised_ml_ii.html#cb404-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
-<span id="cb404-10"><a href="supervised_ml_ii.html#cb404-10" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb404-11"><a href="supervised_ml_ii.html#cb404-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="supervised_ml_ii.html#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="do">## do not run</span></span>
+<span id="cb403-2"><a href="supervised_ml_ii.html#cb403-2" aria-hidden="true" tabindex="-1"></a><span class="fu">train</span>(</span>
+<span id="cb403-3"><a href="supervised_ml_ii.html#cb403-3" aria-hidden="true" tabindex="-1"></a>  pp, </span>
+<span id="cb403-4"><a href="supervised_ml_ii.html#cb403-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train, </span>
+<span id="cb403-5"><a href="supervised_ml_ii.html#cb403-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb403-6"><a href="supervised_ml_ii.html#cb403-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
+<span id="cb403-7"><a href="supervised_ml_ii.html#cb403-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>,<span class="dv">15</span>, <span class="dv">30</span>),</span>
+<span id="cb403-8"><a href="supervised_ml_ii.html#cb403-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)),</span>
+<span id="cb403-9"><a href="supervised_ml_ii.html#cb403-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
+<span id="cb403-10"><a href="supervised_ml_ii.html#cb403-10" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb403-11"><a href="supervised_ml_ii.html#cb403-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>In certain cases, data points stem from different “groups”, and generalisability across groups is critical. In such cases, data from a given group must not be used both in the training and validation sets. Instead, splits should be made along group delineations. The <em>caret</em> function <code>groupKFold()</code> offers the solution for this case.</p>
 </div>
 </div>

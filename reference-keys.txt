@@ -1,4 +1,4 @@
-fig:unnamed-chunk-207
+fig:unnamed-chunk-206
 target-readers-of-this-book
 what-is-applied-geodata-science
 data-science-workflow
