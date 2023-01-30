@@ -3,6 +3,10 @@ target-readers-of-this-book
 what-is-applied-geodata-science
 data-science-workflow
 data-rich-era
+reading-and-link-collection
+data-wrangling
+data-visualisation
+machine-learning
 getting_started
 learning-objectives
 tutorial
@@ -182,6 +186,7 @@ supervised_ml_i
 learning-objectives-8
 tutorial-8
 required-packages-1
+what-is-supervised-machine-learning
 overfitting
 data-and-the-modelling-challenge
 k-nearest-neighbours
