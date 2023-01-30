@@ -20,7 +20,7 @@ The example data used in this chapter are parallel time series of (gaseous) CO$_
 
 The data is provided at half-hourly resolution for the site [CH-Lae](https://www.swissfluxnet.ethz.ch/index.php/sites/ch-lae-laegeren/site-info-ch-lae/), located on the south slope of the Lägern mountain on the Swiss Plateau at 689 m a.s.l. in a mixed forest with a distinct seasonal course of active green leaves (a substantial portion of the trees are deciduous). The dataset is generated and formatted following standard protocols ([FLUXNET2015](https://fluxnet.org//data/fluxnet2015-dataset/)). For more information of the variables in the dataset, see the [FLUXNET2015 website](http://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) and [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3) for a comprehensive documentation of variable definitions and methods.
 
-For our demonstrations most relevant are the following variables:
+For our demonstrations, the following variables are the most relevant:
 
 -   `TIMESTAMP_START`: Hour and day of the start of the measurement period for which the respective row's data is representative. Provided in a format of "YYYYMMDDhhmm".
 -   `TIMESTAMP_END`: Hour and day of the end of the measurement period for which the respective row's data is representative. Provided in a format of "YYYYMMDDhhmm".
@@ -58,7 +58,7 @@ From this design principles, even the most convoluted code and implementation of
 
 ### Tabular data
 
-Tabular data is organised in rows and columns. Each column can regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter \@ref(data_variety), you will be introduced to other types of data. The most common format for tabular data is CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
+Tabular data is organised in rows and columns. Each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter \@ref(data_variety), you will be introduced to other types of data. The most common format for tabular data is CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
 
 Let's get started with working with our example data set and read it into R, as the variable `hhdf`.
 
@@ -71,7 +71,7 @@ Since the file is properly formatted, with variable names given in the first lin
 
 ### Variable selection
 
-For our further data exploration, we will reduce the data frame we are working with and select a reduces set of variables. Reducing the dataset can have the advantage of speeding up further processing steps, especially when the data is large. For the further steps in this chapter we will now subset our original data. We select the following variants of variables described above, plus some additional variables (further information in [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3)):
+For our further data exploration, we will reduce the data frame we are working with and select a reduced set of variables. Reducing the dataset can have the advantage of speeding up further processing steps, especially when the data is large. For the further steps in this chapter we will now subset our original data. We select the following variants of variables described above, plus some additional variables (further information in [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3)):
 
 -   All variables with names starting with `TIMESTAMP`)
 -   All meteorological variables derived following the "final gap-filled method", as indicated with names ending with `_F`.
@@ -307,7 +307,7 @@ Data cleaning is often a time-consuming task and decisions taken during data cle
 
 #### Cleaning formats
 
-As a general principle, we want to have data *machine readable*. Key for achieving machine-readability is that a cell should only contain one value of one type. Hence, for example, character strings should be kept in separate columns (as separate variables) from numeric data. Character strings can impose particular challenges for achieving machine-readability. Typically, they encode categorical or ordinal information, but are prone to spelling inconsistencies or errors that undermine the ordering or categorization. Here are typical examples for challenges working with character strings and lessons for avoiding problems:
+As a general principle, we want to have *machine readable* data. Key for achieving machine-readability is that a cell should only contain one value of one type. Hence, for example, character strings should be kept in separate columns (as separate variables) from numeric data. Character strings can impose particular challenges for achieving machine-readability. Typically, they encode categorical or ordinal information, but are prone to spelling inconsistencies or errors that undermine the ordering or categorization. Here are typical examples for challenges working with character strings and lessons for avoiding problems:
 
 -   Often, character strings encode the units of a measurement, and entries are `c("kg m-2", "kg/m2", "Kg / m2", "1000 g m-2")` . They are all equivalent, but "the machine" treats them as non-identical. To clean such data, one may compile a lookup-table to identify equivalent (but not identical) strings. Much better is to specify a consistent treatment of units before data collection.
 
@@ -379,7 +379,7 @@ hhdf <- hhdf |>
   na_if(-9999)
 ```
 
-This lets us visualise the data and its gaps with `vis_miss()` from the *visdat* package. Visualising missing data is can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
+This lets us visualise the data and its gaps with `vis_miss()` from the *visdat* package. Visualising missing data can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
 
 ```{r warning=FALSE, message=FALSE}
 vis_miss(
@@ -645,7 +645,7 @@ ddf_allsites |>
   mutate(linmod = map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
 ```
 
-This is approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column `"data"` has time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by `siteid`), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of `summarise()` (see above).
+This approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column `"data"` have time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by `siteid`), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of `summarise()` (see above).
 
 Combining the steps described above into a single workflow, we have:
 
@@ -661,12 +661,12 @@ ddf_allsites_nested <- ddf_allsites |>
 ddf_allsites_nested
 ```
 
-This code is a demonstration for the power of tidy and nested data frames and for the clarity of the *tidyverse* syntax.
+This code is a demonstration of the power of tidy and nested data frames and for the clarity of the *tidyverse* syntax.
 
 Nesting is useful also for avoiding value duplication when joining relational data objects. Above, we nested time series data objects (where time steps and sites are both organised along rows) by sites and got a data frame where only sites are organised along rows, while time steps are nested inside the column `"data"`. This now fits the structure of a relational data object (`siteinfo_fluxnet2015`) containing site-specific meta information (also with only sites along rows).
 
 ```{r}
-load("data/siteinfo_fluxnet2015.rda")  # loads siteinfo_fluxnet2015
+base::load("data/siteinfo_fluxnet2015.rda")  # loads siteinfo_fluxnet2015
 ```
 
 Joining the nested data frame with site meta information results in a substantially smaller and much handier data frame compared to an alternative, where the site meta information is joined into the un-nested (daily) data frame, and therefore duplicated for each day within sites.

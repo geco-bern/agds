@@ -231,7 +231,13 @@ mylist[["temperatures"]]
 mylist$temperatures
 ```
 
-And to get the first temperature value:
+Notice below how, if we index the list like we would index a vector, a list with just one element would be returned, rather than the element itself. `[` is used to select multiple elements and `[[` or `$` for selecting a single element. A thorough explanation of these differences is given [here](https://r4ds.hadley.nz/base-r#sec-subset-many) and [here](https://r4ds.hadley.nz/base-r#sec-subset-one).
+
+```{r}
+mylist[1]
+```
+
+To get the first temperature value, which is an element of the vector (at the same time an element of the list), we can run:
 
 ```{r}
 mylist[["temperatures"]][1]
@@ -378,7 +384,7 @@ For example, a script could look like this:
 #----Load packages, functions and data
 library(tidyverse)
 source("R/my_functions.R")
-my_df <- read_csv("data/my_df.csv")
+my_df <- readr::read_csv("data/my_df.csv")
 #---------------------------------------
 # Main part
 #---------------------------------------

@@ -4,7 +4,7 @@
 
 ## Learning objectives
 
-As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data formats. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
+As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
 However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.
 
@@ -121,7 +121,7 @@ There are number of ways to read human readable formats into an R work environme
 
 Large volumes of data are still available as `CSV` files or similar. Understanding how to read in such data into a programming environment is key. In this context the `read.table()` function is a general purpose tool to read in text data. Depending on the format, additional meta-data or comments, certain parameters need to be specified.
 
-It's counterpart is a function to write human readable data to file called, you guessed it, `write.table()`. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
+Its counterpart is a function to write human readable data to file called, you guessed it, `write.table()`. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
 
 Below you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.
 
