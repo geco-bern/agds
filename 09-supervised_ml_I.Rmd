@@ -4,9 +4,9 @@
 
 ## Learning objectives
 
-In this Chapter, we start modelling. Basic steps of the implementation of supervised machine learning are introduced. A focus is put on learning the concept of the bias-variance trade-off and overfitting.
+In this Chapter, we start modelling. Basic steps of the implementation of supervised machine learning are introduced, including data splitting, pre-processing, model formulation, and the implementation of these steps using the {caret} and {recipes} R packages. A focus is put on learning the concept of the bias-variance trade-off and overfitting.
 
-Contents of this Chapter are inspired by the excellent book [Hands-On Machine Learning in R by Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/).
+Contents of this Chapter are inspired and partly adopted by the excellent book [Hands-On Machine Learning in R by Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/).
 
 ## Tutorial
 
@@ -19,13 +19,34 @@ if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
 ```
 
+### What is supervised machine learning?
+
+Supervised machine learning is a type of machine learning where the model is trained using labeled data and the goal is to predict the output for new, unseen data. In general, based on a set of *predictors* $X$ (also known as *features*, or *labels*, or *independent variables*) and observed values of a target variable $Y$ that are recorded in parallel, we are finding a model $f(X) = \hat{Y}$ that yields a good match between $Y$ and $\hat{Y}$ and that can be used for reliably predicting $Y$ for a new ("unseen") data point $X_\text{new}$ which has not been used during model fitting/training. The hat on $\hat{Y}$ denotes an estimate. Some algorithms can even handle predictions of multiple target variables simultaneously (e.g., neural networks).
+
+Supervised machine learning has a few key ingredients:
+
+- Input data (predictors)
+- Target data recorded in parallel with predictors
+- A model that estimates $f(X) = \hat{Y}$, made of mathematical operations relating $X$ to $\hat{Y}$ and of model parameters (coefficients) that are calibrated to yield the best match of $Y$ and $\hat{Y}$
+- A metric measuring how good the match between $Y$ and $\hat{Y}$ is - the *loss* function
+- An algorithm that finds the best set of parameters - the *optimiser*.
+
+![Supervised machine learning ingredients, adopted from Chollet & Allaire (2018) Deep Learning with R](./figures/supervised_ml.png)
+The type of modelling task of supervised machine learning corresponds to fitting regression models in Chapter \@ref{#regression_classification}. In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Vice-versa, machine learning differs from many statistical modelling methods in that it makes no assumptions regarding underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)). 
+
+
+Supervised machine learning algorithms consist of (more or less) flexible mathematical models with a certain structure and set of parameters. At the simple extreme end of the model spectrum consider the linear regression. 
+
+Nevertheless, also linear regression provides a prediction $\hat{Y} = f(X)$, just like other (proper) machine learning algorithms do. The functional form of a linear regression is not particularly flexible (just a straight line for the best fit between predictors and targets) and it has only two parameters (slope and intercept). At the other extreme end are, for example, deep neural networks. They are extremely flexible, can learn highly non-linear relationships and deal with interactions between a large number of predictors. They also contain very large numbers of parameters ($10^4 - 10^7$). You can imagine that this allows these types of algorithms to very effectively learn from the data, but also bears the risk of *overfitting*.
+
+
 ### Overfitting {#overfitting}
 
 *This example is based on [this example from scikit-learn](https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.html).*
 
 Machine learning (ML) may appear magical. The ability of ML algorithms to detect patterns and make predictions is fascinating. However, several challenges have to be met in the process of formulating, training, and evaluating the models. In this and the next chapter (Chapter \@ref(supervised_ml_ii)), we will discuss some basics of supervised ML and how to achieve best predictive results.
 
-In general, the aim of supervised ML is to find a model $\hat{Y} = f(X)$ that is *trained* (calibrated) using observed relationships between a set of *features* (also known as *predictors*, or *labels*, or *independent variables*) $X$ and the *target* variable $Y$. Note, that $Y$ is observed. The hat on $\hat{Y}$ denotes an estimate. Some algorithms can even handle predictions of multiple target variables simultaneously (e.g., neural networks). ML algorithms consist of (more or less) flexible mathematical models with a certain structure and set of parameters. At the simple extreme end of the model spectrum is the bivariate linear regression. You may not want to call this a ML algorithm because there is no iterative learning involved. Nevertheless, also bivariate linear regression provides a prediction $\hat{Y} = f(X)$, just like other (proper) ML algorithms do. The functional form of a linear regression is not particularly flexible (just a straight line for the best fit between predictors and targets) and it has only two parameters (slope and intercept). At the other extreme end are, for example, deep neural networks. They are extremely flexible, can learn highly non-linear relationships and deal with interactions between a large number of predictors. They also contain very large numbers of parameters ($10^4 - 10^7$). You can imagine that this allows these types of algorithms to very effectively learn from the data, but also bears the risk of *overfitting*.
+
 
 What is overfitting? The following example illustrates it. Let's assume that there is some true underlying relationship between a single predictor $X$ and the target variable $Y$. We don't know this relationship (in the code below, this is `true_fun()`) and the observations contain a (normally distributed) error (`y = true_fun(x) + 0.1 * rnorm(n_samples)`). Based on our training data (`df_train`), we fit three polynomial models of degree 1, 4, and 15 to the observations. A polynomial of degree $N$ is given by: $$
 y = \sum_{n=0}^N a_n x^n
@@ -470,7 +491,7 @@ pp |>
 
 #### Target engineering
 
-Target engineering refers to pre-processing of the target variable. Its application can enable improved predictions, particularly for models that make assumptions about prediction errors (e.g., normally distributed errors in linear regression) or when the target variable follows a "special" distribution (e.g., heavily skewed distribution, or where the target variable is a fraction that is naturally bounded by 0 and 1). A simple log-transformation of the target variable can often resolve issues with skewed distributions. An implication of a log-transformation is that errors in predicting values in the upper end of the observed range are "discounted" in their weight compared to errors in the lower range.
+Target engineering refers to pre-processing of the target variable. Its application can enable improved predictions, particularly for models that make assumptions about prediction errors or when the target variable follows a "special" distribution (e.g., heavily skewed distribution, or where the target variable is a fraction that is naturally bounded by 0 and 1). A simple log-transformation of the target variable can often resolve issues with skewed distributions. An implication of a log-transformation is that errors in predicting values in the upper end of the observed range are "discounted" in their weight compared to errors in the lower range.
 
 In our data set, the variable `WS_F` (wind speed) is skewed. The target variable that we have considered so far (`GPP_NT_VUT_REF`) is not skewed. In a case where we would consider `WS_F` to be our target variable, we would thus consider applying a log-transformation.
 
@@ -537,7 +558,7 @@ Let's recap. We have a dataset `ddf` and we want to predict ecosystem GPP (`GPP_
 - Imputation: We drop rows with missing data for model training, instead of imputing them.
 - Some of the predictors are distintively not normally distributed. Let's Box-Cox transform all predictors as a pre-processing step.
 - We have to standardize the data in order to use it for KNN.
-- We have no variable, where zero-variance was detected and we have no categorical variables that have to be transformed by one-hot encoding to be used in KNN. We use a data split, whithholding 30% for testing.
+- We have no variable where zero-variance was detected and we have no categorical variables that have to be transformed by one-hot encoding to be used in KNN. We use a data split, whithholding 30% for testing.
 - Take $k=10$ for the KNN model. Other choices are possible and will affect the prediction error on the training and the testing data in different manners. We'll learn more about the optimal choice of $k$ (*hyperparameter tuning*) in the next chapter. 
 - Fit models to minimize the root mean square error (RMSE) between predictions and observations. More on the choice of the `metric` argument in `train()` (*loss function*) in the next chapter.
 - For the KNN model, use $k=5$.
@@ -584,13 +605,13 @@ mod_knn <- caret::train(
 )
 ```
 
-We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training data and add the predicted values to the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into the function `eval_model()`, which we will re-use for each fitted model object. 
+We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training data and add the predicted values to the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into one function - `eval_model()` - which we will re-use for each fitted model object. 
 
 ```{r}
-## make model evaluation into a function to reuse code
+# make model evaluation into a function to reuse code
 eval_model <- function(mod, df_train, df_test){
   
-  ## add predictions to the data frames
+  # add predictions to the data frames
   df_train <- df_train %>% 
     drop_na() %>% 
     mutate(fitted =  predict(mod, newdata = .))
@@ -599,14 +620,14 @@ eval_model <- function(mod, df_train, df_test){
     drop_na() %>% 
     mutate(fitted =  predict(mod, newdata = .))
   
-  ## get metrics tables
+  # get metrics tables
   metrics_train <- df_train %>% 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
   metrics_test <- df_test %>% 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
-  ## extract values from metrics tables
+  # extract values from metrics tables
   rmse_train <- metrics_train %>% 
     filter(.metric == "rmse") %>% 
     pull(.estimate)
@@ -621,8 +642,8 @@ eval_model <- function(mod, df_train, df_test){
     filter(.metric == "rsq") %>% 
     pull(.estimate)
   
-  ## visualise with a hexagon binning and a customised color scale,
-  ## adding information of metrics as sub-titles
+  # visualise with a hexagon binning and a customised color scale,
+  # adding information of metrics as sub-titles
   gg1 <- df_train %>% 
     ggplot(aes(GPP_NT_VUT_REF, fitted)) +
     geom_point(alpha = 0.3) +

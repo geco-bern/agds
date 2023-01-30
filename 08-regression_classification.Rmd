@@ -24,6 +24,8 @@ After completing this tutorial, you will be able to:
 -   Detect data outliers
 -   Select best predictive variables
 
+Contents of this Chapter are inspired and partly adopted by the excellent book [Hands-On Machine Learning in R by Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/).
+
 ## Tutorial
 
 ```{r message=F, warning=F}

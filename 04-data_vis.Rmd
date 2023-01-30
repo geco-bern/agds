@@ -474,7 +474,12 @@ In this example, we used the *multisequential* `"bukavu"` color scale from the *
 
 #### Geospatial data
 
-Raster data often reflects values in geographic space. Also points and polygons may be located in geographic space. This opens the door to geospatial data visualisation (a.k.a. creating maps) and will be dealt with in more detail in Chapter \@ref(data_variety).
+Raster data often reflects values in geographic space. Also points and polygons may be located in geographic space. This opens the door to geospatial data visualisation (a.k.a. creating maps) which does not form part of this course.
+
+Interested readers can find more content on geospatial data visualisation here:
+
+- Timo Grossenbacher's blog on geographic data journalism ([link](https://timogrossenbacher.ch/blog/))
+- Koen Hufken's blog containing various worked example XXX
 
 ## Exercises
 
