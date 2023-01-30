@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 10 Random forest | Applied Geodata Science</title>
+  <title>Chapter 10 Supervised machine learning II | Applied Geodata Science</title>
   <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
   <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 10 Random forest | Applied Geodata Science" />
+  <meta property="og:title" content="Chapter 10 Supervised machine learning II | Applied Geodata Science" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
   <meta name="github-repo" content="stineb/agsd" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 10 Random forest | Applied Geodata Science" />
+  <meta name="twitter:title" content="Chapter 10 Supervised machine learning II | Applied Geodata Science" />
   
   <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
   
@@ -23,14 +23,14 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="supervised_ml.html"/>
+<link rel="prev" href="supervised_ml_i.html"/>
 <link rel="next" href="neural_nets.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -273,34 +273,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="regression_classification.html"><a href="regression_classification.html"><i class="fa fa-check"></i><b>8</b> Regression and classification</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="regression_classification.html"><a href="regression_classification.html#learning-objectives-7"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="8.2" data-path="regression_classification.html"><a href="regression_classification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a></li>
+<li class="chapter" data-level="8.2" data-path="regression_classification.html"><a href="regression_classification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="regression_classification.html"><a href="regression_classification.html#types-of-models"><i class="fa fa-check"></i><b>8.2.1</b> Types of models</a></li>
+<li class="chapter" data-level="8.2.2" data-path="regression_classification.html"><a href="regression_classification.html#regression"><i class="fa fa-check"></i><b>8.2.2</b> Regression</a></li>
+<li class="chapter" data-level="8.2.3" data-path="regression_classification.html"><a href="regression_classification.html#classification"><i class="fa fa-check"></i><b>8.2.3</b> Classification</a></li>
+<li class="chapter" data-level="8.2.4" data-path="regression_classification.html"><a href="regression_classification.html#model-evaluation"><i class="fa fa-check"></i><b>8.2.4</b> Model evaluation</a></li>
+</ul></li>
 <li class="chapter" data-level="8.3" data-path="regression_classification.html"><a href="regression_classification.html#exercises-7"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
 <li class="chapter" data-level="8.4" data-path="regression_classification.html"><a href="regression_classification.html#solutions-6"><i class="fa fa-check"></i><b>8.4</b> Solutions</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="supervised_ml.html"><a href="supervised_ml.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning</a>
+<li class="chapter" data-level="9" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning I</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="supervised_ml.html"><a href="supervised_ml.html#learning-objectives-8"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="9.2" data-path="supervised_ml.html"><a href="supervised_ml.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
+<li class="chapter" data-level="9.1" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#learning-objectives-8"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
 <ul>
-<li class="chapter" data-level="9.2.1" data-path="supervised_ml.html"><a href="supervised_ml.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
-<li class="chapter" data-level="9.2.2" data-path="supervised_ml.html"><a href="supervised_ml.html#overfitting"><i class="fa fa-check"></i><b>9.2.2</b> Overfitting</a></li>
-<li class="chapter" data-level="9.2.3" data-path="supervised_ml.html"><a href="supervised_ml.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.3</b> Data and the modelling challenge</a></li>
-<li class="chapter" data-level="9.2.4" data-path="supervised_ml.html"><a href="supervised_ml.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.4</b> K-nearest neighbours</a></li>
-<li class="chapter" data-level="9.2.5" data-path="supervised_ml.html"><a href="supervised_ml.html#model-formulation"><i class="fa fa-check"></i><b>9.2.5</b> Model formulation</a></li>
-<li class="chapter" data-level="9.2.6" data-path="supervised_ml.html"><a href="supervised_ml.html#data-splitting"><i class="fa fa-check"></i><b>9.2.6</b> Data splitting</a></li>
-<li class="chapter" data-level="9.2.7" data-path="supervised_ml.html"><a href="supervised_ml.html#preprocessing"><i class="fa fa-check"></i><b>9.2.7</b> Pre-processing</a></li>
-<li class="chapter" data-level="9.2.8" data-path="supervised_ml.html"><a href="supervised_ml.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.8</b> Putting it all together (half-way)</a></li>
-<li class="chapter" data-level="9.2.9" data-path="supervised_ml.html"><a href="supervised_ml.html#training"><i class="fa fa-check"></i><b>9.2.9</b> Model training</a></li>
+<li class="chapter" data-level="9.2.1" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="9.2.2" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#overfitting"><i class="fa fa-check"></i><b>9.2.2</b> Overfitting</a></li>
+<li class="chapter" data-level="9.2.3" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.3</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="9.2.4" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.4</b> K-nearest neighbours</a></li>
+<li class="chapter" data-level="9.2.5" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#model-formulation"><i class="fa fa-check"></i><b>9.2.5</b> Model formulation</a></li>
+<li class="chapter" data-level="9.2.6" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#data-splitting"><i class="fa fa-check"></i><b>9.2.6</b> Data splitting</a></li>
+<li class="chapter" data-level="9.2.7" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#preprocessing"><i class="fa fa-check"></i><b>9.2.7</b> Pre-processing</a></li>
+<li class="chapter" data-level="9.2.8" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.8</b> Putting it all together (half-way)</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="supervised_ml.html"><a href="supervised_ml.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
-<li class="chapter" data-level="9.4" data-path="supervised_ml.html"><a href="supervised_ml.html#solutions-7"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
+<li class="chapter" data-level="9.3" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="supervised_ml_i.html"><a href="supervised_ml_i.html#solutions-7"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="random_forest.html"><a href="random_forest.html"><i class="fa fa-check"></i><b>10</b> Random forest</a>
+<li class="chapter" data-level="10" data-path="supervised_ml_ii.html"><a href="supervised_ml_ii.html"><i class="fa fa-check"></i><b>10</b> Supervised machine learning II</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="random_forest.html"><a href="random_forest.html#learning-objectives-9"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
-<li class="chapter" data-level="10.2" data-path="random_forest.html"><a href="random_forest.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a></li>
-<li class="chapter" data-level="10.3" data-path="random_forest.html"><a href="random_forest.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
-<li class="chapter" data-level="10.4" data-path="random_forest.html"><a href="random_forest.html#solutions-8"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
+<li class="chapter" data-level="10.1" data-path="supervised_ml_ii.html"><a href="supervised_ml_ii.html#learning-objectives-9"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="10.2" data-path="supervised_ml_ii.html"><a href="supervised_ml_ii.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="supervised_ml_ii.html"><a href="supervised_ml_ii.html#training"><i class="fa fa-check"></i><b>10.2.1</b> Model training</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="supervised_ml_ii.html"><a href="supervised_ml_ii.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+<li class="chapter" data-level="10.4" data-path="supervised_ml_ii.html"><a href="supervised_ml_ii.html#solutions-8"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="neural_nets.html"><a href="neural_nets.html"><i class="fa fa-check"></i><b>11</b> Neural networks</a>
 <ul>
@@ -337,8 +345,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="random_forest" class="section level1 hasAnchor" number="10">
-<h1><span class="header-section-number">Chapter 10</span> Random forest<a href="random_forest.html#random_forest" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="supervised_ml_ii" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Supervised machine learning II<a href="supervised_ml_ii.html#supervised_ml_ii" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>Chapter lead author: Benjamin Stocker</strong></p>
 <p>Contents:</p>
 <ul>
@@ -346,16 +354,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance</li>
 </ul>
 <div id="learning-objectives-9" class="section level2 hasAnchor" number="10.1">
-<h2><span class="header-section-number">10.1</span> Learning objectives<a href="random_forest.html#learning-objectives-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">10.1</span> Learning objectives<a href="supervised_ml_ii.html#learning-objectives-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
 <div id="tutorial-9" class="section level2 hasAnchor" number="10.2">
-<h2><span class="header-section-number">10.2</span> Tutorial<a href="random_forest.html#tutorial-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">10.2</span> Tutorial<a href="supervised_ml_ii.html#tutorial-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="training" class="section level3 hasAnchor" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Model training<a href="supervised_ml_ii.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y\)</span>. The <em>loss</em> function quantifies this mismatch (<span class="math inline">\(L(\hat{y}, y)\)</span>), and the algorithm takes care of progressively reducing the loss during model training. Let’s say the machine learning model contains two parameters and predictions can be considered a function of the two (<span class="math inline">\(\hat{y}(w_1, w_2)\)</span>). <span class="math inline">\(y\)</span> is actually constant. Thus, the loss function is effectively a function <span class="math inline">\(L(w_1, w_2)\)</span>. Therefore, we can consider the model training as a search of the parameter space of the machine learning model <span class="math inline">\((w_1, w_2)\)</span> to find the minimum of the loss. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-207"></span>
+<img src="figures/loss_plane.png" alt="Visualization of a loss function as a plane spanned by the two parameters $w_1$ and $w_2$."  />
+<p class="caption">
+Figure 10.1: Visualization of a loss function as a plane spanned by the two parameters <span class="math inline">\(w_1\)</span> and <span class="math inline">\(w_2\)</span>.
+</p>
+</div>
+<p>Model training is implemented in R for different algorithms in different packages. Some algorithms are even implemented by multiple packages (e.g., <code>nnet</code> and <code>neuralnet</code> for artificial neural networks). As described in Chapter <a href="supervised_ml_i.html#preprocessing">9.2.7</a>, the <strong>caret</strong> package provides “wrappers” that handle a large selection of different ML model implementations in different packages with a unified interface (see <a href="https://topepo.github.io/caret/available-models.html">here</a> for an overview of available models). The <strong>caret</strong> function <code>train()</code> is the centre piece. Its argument <code>metric</code> specifies the loss function and defaults to the RMSE for regression models and accuracy for classification (see sub-section on metrics below).</p>
+<div id="hyperparameter-tuning" class="section level4 hasAnchor" number="10.2.1.1">
+<h4><span class="header-section-number">10.2.1.1</span> Hyperparameter tuning<a href="supervised_ml_ii.html#hyperparameter-tuning" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Practically all ML algorithms have some “knobs” to turn in order to achieve efficient model training and predictive performance. Such “knobs” are the <em>hyperparameters</em>. What these knobs are, depends on the ML algorithm.</p>
+<p>For KNN, this is <code>k</code> - the number of neighbours to consider for determining distances. There is always an optimum <span class="math inline">\(k\)</span>. Obviously, if <span class="math inline">\(k = n\)</span>, we consider all observations as neighbours and each prediction is simply the mean of all observed target values <span class="math inline">\(Y\)</span>, irrespective of the predictor values. This cannot be optimal and such a model is likely underfit. On the other extreme, with <span class="math inline">\(k = 1\)</span>, the model will be strongly affected by the noise in the single nearest neighbour and its generalisability will suffer. This should be reflected in a poor performance on the validation data.</p>
+<p>For random forests from the <strong>ranger</strong> package, hyperparameters are:</p>
+<ul>
+<li><code>mtry</code>: the number of variables to consider to make decisions, often taken as <span class="math inline">\(p/3\)</span>, where <span class="math inline">\(p\)</span> is the number of predictors.</li>
+<li><code>min.node.size</code>: the number of data points at the “bottom” of each decision tree</li>
+<li><code>splitrule</code>: the function applied to data in each branch of a tree, used for determining the goodness of a decision</li>
+</ul>
+<p>Hyperparameters usually have to be “tuned”. The optimal setting depends on the data and can therefore not be known <em>a priori</em>.</p>
+<p>In <strong>caret</strong>, hyperparameter tuning is implemented as part of the <code>train()</code> function. Values of hyperparameters to consider are to be specified by the argument <code>tuneGrid</code>, which takes a data frame with column(s) named according to the name(s) of the hyperparameter(s) and rows for each combination of hyperparameters to consider.</p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="supervised_ml_ii.html#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="do">## do not run</span></span>
+<span id="cb403-2"><a href="supervised_ml_ii.html#cb403-2" aria-hidden="true" tabindex="-1"></a><span class="fu">train</span>(</span>
+<span id="cb403-3"><a href="supervised_ml_ii.html#cb403-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> GPP_NT_VUT_REF <span class="sc">~</span> SW_F_IN <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
+<span id="cb403-4"><a href="supervised_ml_ii.html#cb403-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf, </span>
+<span id="cb403-5"><a href="supervised_ml_ii.html#cb403-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb403-6"><a href="supervised_ml_ii.html#cb403-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
+<span id="cb403-7"><a href="supervised_ml_ii.html#cb403-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>,<span class="dv">15</span>, <span class="dv">30</span>),</span>
+<span id="cb403-8"><a href="supervised_ml_ii.html#cb403-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)),</span>
+<span id="cb403-9"><a href="supervised_ml_ii.html#cb403-9" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb403-10"><a href="supervised_ml_ii.html#cb403-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Here, <code>expand.grid()</code> is used to provide a data frame with all combinations of values provided by individual vectors.</p>
+</div>
+<div id="resampling" class="section level4 hasAnchor" number="10.2.1.2">
+<h4><span class="header-section-number">10.2.1.2</span> Resampling<a href="supervised_ml_ii.html#resampling" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The goal of model training is to achieve the best possible model generalisability. That is, the best possible model performance when predicting to data that was not used for training - the test data. Resampling mimicks the comparison of predictions to the test data. Instead of using all training data, the training data is <em>resampled</em> into a number further splits into pairs of training and <em>validation</em> data. Model training is then guided by minimising the average loss determined on each resample of the validation data. Having multiple resamples (multiple <em>folds</em> of training-validation splits) avoids the loss minimization from being misguided by random peculiarities in the training and/or validation data.</p>
+<p>A common resampling method is <em>k-fold cross validation</em>, where the training data is split into <em>k</em> equally sized subsets (<em>folds</em>). Then, there will be <em>k</em> iterations, where each fold is used for validation once (while the remaining folds are used for training). An extreme case is <em>leave-one-out cross validation</em>, where <em>k</em> corresponds to the number of data points.</p>
+<p><img src="figures/cv.png" /><!-- --></p>
+<p>To do a k-fold cross validation during model training in R, we don’t have to implement the loops around folds ourselves. The resampling procedure can be specified in the <strong>caret</strong> function <code>train()</code> with the argument <code>trControl</code>. The object that this argument takes is the output of a function call to <code>trainControl()</code>. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="supervised_ml_ii.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="do">## do not run</span></span>
+<span id="cb404-2"><a href="supervised_ml_ii.html#cb404-2" aria-hidden="true" tabindex="-1"></a><span class="fu">train</span>(</span>
+<span id="cb404-3"><a href="supervised_ml_ii.html#cb404-3" aria-hidden="true" tabindex="-1"></a>  pp, </span>
+<span id="cb404-4"><a href="supervised_ml_ii.html#cb404-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train, </span>
+<span id="cb404-5"><a href="supervised_ml_ii.html#cb404-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb404-6"><a href="supervised_ml_ii.html#cb404-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
+<span id="cb404-7"><a href="supervised_ml_ii.html#cb404-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>,<span class="dv">15</span>, <span class="dv">30</span>),</span>
+<span id="cb404-8"><a href="supervised_ml_ii.html#cb404-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)),</span>
+<span id="cb404-9"><a href="supervised_ml_ii.html#cb404-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
+<span id="cb404-10"><a href="supervised_ml_ii.html#cb404-10" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb404-11"><a href="supervised_ml_ii.html#cb404-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>In certain cases, data points stem from different “groups”, and generalisability across groups is critical. In such cases, data from a given group must not be used both in the training and validation sets. Instead, splits should be made along group delineations. The <em>caret</em> function <code>groupKFold()</code> offers the solution for this case.</p>
+</div>
+</div>
 </div>
 <div id="exercises-9" class="section level2 hasAnchor" number="10.3">
-<h2><span class="header-section-number">10.3</span> Exercises<a href="random_forest.html#exercises-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">10.3</span> Exercises<a href="supervised_ml_ii.html#exercises-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
 <div id="solutions-8" class="section level2 hasAnchor" number="10.4">
-<h2><span class="header-section-number">10.4</span> Solutions<a href="random_forest.html#solutions-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<h2><span class="header-section-number">10.4</span> Solutions<a href="supervised_ml_ii.html#solutions-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 
 </div>
 </div>
@@ -364,7 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="supervised_ml.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="supervised_ml_i.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="neural_nets.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
@@ -396,7 +458,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/10-supervised_ml_B.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/10-supervised_ml_II.Rmd",
 "text": "Edit"
 },
 "history": {
