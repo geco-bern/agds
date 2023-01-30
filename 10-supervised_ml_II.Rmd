@@ -4,6 +4,10 @@
 
 Contents:
 
+-   Training and loss function
+-   Hyperparameters
+-   Resampling
+
 - Lecture (Beni): Wisdom of the crowds, from decision trees to random forests
 - Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance
 
