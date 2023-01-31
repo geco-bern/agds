@@ -121,7 +121,7 @@ Next we'll setup an R project which is associated with the repository. Use: File
 
 ![](figures/git_project_wizard.png)
 
-In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". This will create a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
+In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". A window will pop up, asking for your github username and a password. This password is _not_ your github login password but the PAT described above. After entering your credential, RStudio creates a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
 
 #### git push
 
