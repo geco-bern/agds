@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-01-30" />
+<meta name="date" content="2023-01-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -432,7 +432,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="figures/git_project_link.png" /></p>
 <p>Next we’ll setup an R project which is associated with the repository. Use: File &gt; New Project &gt; Version Control &gt; Git.</p>
 <p><img src="figures/git_project_wizard.png" /></p>
-<p>In the “repository URL” paste the URL of your new GitHub repository, in the example above this would be <a href="https://github.com/khufkens/YOUR_PROJECT.git" class="uri">https://github.com/khufkens/YOUR_PROJECT.git</a>. select a location where to store the project, select the “Open in new session” option and click “Create Project”. This will create a *.Proj file as well as a .gitignore file (<a href="code_mgmt.html#git-add">6.2.1.1</a>). You can add both files as you would otherwise (see <a href="code_mgmt.html#git-add">6.2.1.1</a>), and these files are tracked locally.</p>
+<p>In the “repository URL” paste the URL of your new GitHub repository, in the example above this would be <a href="https://github.com/khufkens/YOUR_PROJECT.git" class="uri">https://github.com/khufkens/YOUR_PROJECT.git</a>. select a location where to store the project, select the “Open in new session” option and click “Create Project”. A window will pop up, asking for your github username and a password. This password is <em>not</em> your github login password but the PAT described above. After entering your credential, RStudio creates a *.Proj file as well as a .gitignore file (<a href="code_mgmt.html#git-add">6.2.1.1</a>). You can add both files as you would otherwise (see <a href="code_mgmt.html#git-add">6.2.1.1</a>), and these files are tracked locally.</p>
 <div id="git-push" class="section level4 hasAnchor" number="6.2.2.1">
 <h4><span class="header-section-number">6.2.2.1</span> git push<a href="code_mgmt.html#git-push" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Once a remote git service has been configured you can push your local git repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using <code>git push</code>. At the end of a day or a session it is always advised to push your changes to your remote repository to store any changes.</p>
