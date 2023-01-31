@@ -32,7 +32,7 @@ Git allows for the collaboration of multiple people on the same code, while bein
 
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
 
-> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers](). Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
+> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the Chapter Programming primers. Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
 
 ### Git and local version control
 

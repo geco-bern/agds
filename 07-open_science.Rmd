@@ -219,8 +219,6 @@ To ensure long term storage of code and data, outside of commercial for profit s
 
 ## Exercises
 
-### Data and code management
-
 #### External data
 
 You inherit a project folder which contains the following files.
@@ -250,9 +248,9 @@ The project should be a reproducible workflow:
 
 -   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(data_variety)
 
--   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(data_wrangling)
+-   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(data-wrangling)
 
--   create a plot of the land cover map (see \@ref(data_vis))
+-   create a plot of the land cover map \@ref(data-visualisation)
 
 -   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
 
@@ -267,7 +265,3 @@ The project should be a reproducible workflow:
     -   make changes to the API download routine
 
     -   rerun the targets project
-
-## References
-
--   complete references
