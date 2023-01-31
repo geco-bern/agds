@@ -24,9 +24,9 @@ The scientific method relies on repeated testing of hypothesis. When dealing wit
 
 Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
 
-This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the comodification of science.
+This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the commodification of science.
 
-Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitzation made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
+Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitization made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
 
 Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
 
