@@ -603,8 +603,7 @@ list_linmod |>
   map_dbl("r.squared")  # extracting from a named list
 ```
 
-`map_dbl()` is a variant of the `map()` function that returns not a list, but a vector of numeric values of class "double" (hence, the name `_dbl`). Note further, that providing a character (`"r.squared"`) as an argument instead of an (unquoted) function name, `map()` extracts the correspondingly named list element, instead of applying a function to a list element.
->>>>>>> 50023d470dc8d16c4edaa349a21a5619f3048008
+`map_dbl()` is a variant of the `map()` function that returns not a list, but a vector of numeric values of class "double" (hence, the name `_dbl`). Note further, that providing a character (`"r.squared"`) as an argument instead of an (unquoted) function name, `map()` extracts the correspondingly named list element, instead of applying a function to a list element. \>\>\>\>\>\>\> 50023d470dc8d16c4edaa349a21a5619f3048008
 
 When writing code for an analysis, it's useful, if not essential, to understand the objects we're working with, understand its type and shape, and make sense of the results of simple `print <object>` statements. Data frames are particularly handy as they provide an organisation of data that is particularly intuitive (variables along columns, observations along rows, values in cells). Here, we're dealing with a list of linear model objects. Can such a list fit into the paradigm of *tidy* data frames?
 
