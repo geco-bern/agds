@@ -411,9 +411,9 @@ Combining a linear model (with any type of predictors, like for regression) and 
 $$f(X, \beta) = \text{logit}(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p) = \frac{\exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}{1 + \exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}.$$
 This predicted value can be understood as the probability of belonging to class 1 (in our example, nighttime). A classification rule is defined such that an observation $X_{new}$ with a predicted probability of belonging to class 1 higher than a given *threshold* $\tau$ (i.e. $f(X_{new}, \beta) > \tau$) will be classified as 1; and if the predicted probability is smaller than the threshold, it will be classified as 0.
 
-A logistic regression model results in a linear classification rule. This means that the $p$-dimensional space will be divided in two by a hyperplane, and the points falling in each side of the hyperplane will be classified as 1 or 0. In the example above with shortwave and longwave radiation as predictors, the classification boundary would look something like this:
+A logistic regression model results in a linear classification rule. This means that the $p$-dimensional space will be divided in two by a hyperplane, and the points falling in each side of the hyperplane will be classified as 1 or 0. In the example above with shortwave and longwave radiation as predictors, the classification boundary would look like the black line in the plot below.
 
-Furthermore, to fit a logistic regression model means to calculate the maximum likelihood estimator with an iterative algorithm. 
+Furthermore, to fit a logistic regression model means to calculate the maximum likelihood estimator of $\beta$ with an iterative algorithm. 
 
 **Implementation in R**
 
@@ -425,14 +425,13 @@ logmod <- glm(NIGHT ~ SW_IN_F + LW_IN_F,
 summary(logmod)
 ```
 
-This model results in a linear classification boundary that splits the predictor variables space in two. You can see it plotted below:
+This fitted model results in a linear classification boundary that splits the predictor variables space in two. Where that line falls depends on the choice of threshold $\tau=0.5$. You can see it plotted below:
 
 ```{r}
 beta <- coef(logmod)
-
+# reuse previous plot with classification line
 gg2 +
   geom_abline(slope = -beta[2]/beta[3], intercept = (0.5-beta[1])/beta[3])
-
 ```
 
 Most blue points fall to one side of the dashed classification line and most red points to the other side; this is what we wanted. The points that are in the wrong side of the line are misclassified by the logistic regression model, we're trying to minimize that.
