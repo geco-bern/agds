@@ -6,7 +6,7 @@
 
 As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
-However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered you will learn basic API usage, to query data which is not represented as a file.
+However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered, you will learn basic API usage to query data which is not represented as a file.
 
 In this chapter you will learn:
 
@@ -30,7 +30,7 @@ In this chapter you will learn:
 
 ### File extensions
 
-In order to manipulate data and make some distinctions on what a data file might contain they carry a particular [file format extension](https://en.wikipedia.org/wiki/Filename_extension). This file extensions denotes the intended content and use of a particular file.
+In order to manipulate data and make some distinctions on what a data file might contain, files carry a particular [file format extension](https://en.wikipedia.org/wiki/Filename_extension). These file extensions denote the intended content and use of a particular file.
 
 For example a file ending in `.txt` suggests that it contains text. A file extension allows you, or a computer, to assess the content of a file without opening the file.
 
@@ -41,8 +41,8 @@ File extensions are therefore an important tool in assessing what data you are d
 > TIP: If a file doesn't read it is always wise to check the first couple of lines to verify if the data has a structure which corresponds to the file extension.
 >
 > ``` bash
-> # On a linux/macos system you can use the below command
-> # to show the first couple of lines of a file
+> # On a linux/macos system you can use the terminal command (using 
+> # the language bash) to show the first couple lines of a file
 > head your_file
 >
 > # alternatively you can show the last few lines
@@ -63,7 +63,7 @@ Often, human readable formats provide data in tabulated form using a consistent 
     1, 2, 3
     1, 2, 3
 
-Common delimiters in this context are the comma (`,`), as shown in the above example. A file with this particular format often carries the [comma-separated values file extension (\*.csv)](https://en.wikipedia.org/wiki/Comma-separated_values). Other delimiters are the [tabulation (tab) character](https://en.wikipedia.org/wiki/Tab_key#Tab_characters). Files with tab delimited values have the\* format.
+Common delimiters in this context are the comma (`,`), as shown in the above example. A file with this particular format often carries the [comma-separated values file extension (\*.csv)](https://en.wikipedia.org/wiki/Comma-separated_values). Other delimiters are the [tabulation (tab) character](https://en.wikipedia.org/wiki/Tab_key#Tab_characters). Files with tab delimited values have the \*.tsv format.
 
 > TIP: File extensions aren't always a true indication of the delimiter used. For example, `.txt` files often contain comma or tab separated data. If reading a file using a particular delimiter fails it is best to check the first few lines of a file.
 
@@ -117,11 +117,11 @@ Other human readable structured data formats include the eXtensible Markup Langu
 
 #### Writing and reading human readable files in R
 
-There are number of ways to read human readable formats into an R work environment. Here the basic approaches are listed, in particular reading `CSV` and `JSON` data.
+There are a number of ways to read human readable formats into an R work environment. Here the basic approaches are listed, in particular reading `CSV` and `JSON` data.
 
 Large volumes of data are still available as `CSV` files or similar. Understanding how to read in such data into a programming environment is key. In this context the `read.table()` function is a general purpose tool to read in text data. Depending on the format, additional meta-data or comments, certain parameters need to be specified.
 
-Its counterpart is a function to write human readable data to file called, you guessed it, `write.table()`. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
+Its counterpart is a function to write human readable data to file, called - you guessed it - `write.table()`. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
 
 Below you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.
 
@@ -154,7 +154,7 @@ df <- read.table(
 
 In this example a data frame is generated with three columns. This file is then written to a temporary file in the temporary file directory `tempdir()`. Here, `tempdir()` returns the location of the temporary R directory, which you can use to store intermediate files.
 
-We use the `file.path()` function to combine the path (`tempdir()`) with the filename (`your_file.csv`). Using `file.path()` is good practice as directory structures are denoted differently between operating systems e.g., using a backslash (`\`) no Windows vs. a slash (`/`) on Unix based systems (Linux/macOS). The `file.path()` function ensures that the correct directory separator is used.
+We use the `file.path()` function to combine the path (`tempdir()`) with the filename (`your_file.csv`). Using `file.path()` is good practice as directory structures are denoted differently between operating systems e.g., using a backslash (`\`) on Windows vs. a slash (`/`) on Unix based systems (Linux/macOS). The `file.path()` function ensures that the correct directory separator is used.
 
 Note that in this command we have to manually set the separator (`sep = ","`) and if a header is there (`header = TRUE`). Depending on the content of a file you will have to alter these parameters. Additional parameters of the `read.table()` function allow you to specify comment characters, skip empty lines, etc.
 
@@ -205,7 +205,7 @@ More so than human readable data, the file format (extension) determines how to 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
 | File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
-|-------------|--------------|---------------------------------|-------------|
+|----------------|----------------|-------------------------|----------------|
 | \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
@@ -232,7 +232,7 @@ column_one, column_two, column_three
 1, 2, 3
 ```
 
-In the case of binary files it will not be possible to read the meta-data as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file.
+In the case of binary files it will not be possible to read the meta-data as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file using the bash.
 
 ``` bash
 # list geospatial data for a geotiff file
@@ -271,7 +271,7 @@ Conversions between the vector and raster model are possible, but limitations ap
 
 ## Data sources
 
-The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time, gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser or use the internal `download.file()` function to grab data.
+The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time, gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser or use the internal `download.file()` R function to grab data.
 
 But, many of the data described in previous sections are today warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels. These services allow you to access the underlying (original) data using an API, hence programmatically using code. Mastering the use of these services has become key in gathering research data.
 
