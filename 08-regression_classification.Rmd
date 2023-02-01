@@ -70,9 +70,9 @@ hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEA
 
 set.seed(2023)
 gg1 <- hhdf |>
-  sample_n(1000) |>  # to reduce the dataset
+  sample_n(2000) |>  # to reduce the dataset
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
-  geom_point(size = 0.75) +
+  geom_point(size = 0.75, alpha=0.4) +
   geom_smooth(method = "lm", color = "red") +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
        y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
@@ -199,23 +199,23 @@ summary(linmod_cat)
 ```
 In the fit summary, you can observe that, there are `MONTH2` to `MONTH12` parameters. `MONTH` is a factor which can take 12 different values: `1` to `12`. `lm()` uses one of the factor level as the reference, in this case `1`, and fits an intercept for the other categories. The result is a set of parallel regression lines, one for each different month.
 
+```{r}
+df_cat |>
+  mutate(MONTH_NAME = lubridate::month(as.integer(MONTH), label = TRUE)) |>
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
+  labs(x = "SW", y = "GPP") +
+  facet_wrap(~MONTH_NAME) +
+  theme_classic()
+```
+
 In the grid image, we can observe that GPP does not increase with SW at the same rate every month. For example, the increase in GPP is less steep in February than in September. To model this, we should consider a variable slope parameter for each month or category. In R, this is implemented by including an *interaction* term `MONTH:SW_IN_F` in the regression formula, like this:
 
 ```{r}
 linmod_inter <- lm(GPP_NT_VUT_REF ~ MONTH + SW_IN_F + MONTH:SW_IN_F, data = df_cat)
 # equivalently: lm(GPP_NT_VUT_REF ~ MONTH * SW_IN_F, data = df_cat)
 summary(linmod_inter)
-```
-
-```{r}
-df_cat |>
-  mutate(MONTH_NAME = lubridate::month(as.integer(MONTH), label = TRUE)) |>
-  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
-  geom_point(alpha = 0.4) +
-  geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
-  labs(x = "SW", y = "GPP") +
-  facet_wrap(~MONTH_NAME) +
-  theme_classic()
 ```
 
 #### Polynomial regression
@@ -228,6 +228,23 @@ quadmod <- lm(GPP_NT_VUT_REF ~ poly(SW_IN_F, 2),
               data = df_cat |>
                 filter(MONTH == 8))
 summary(quadmod)
+```
+
+In the following plot, you can see how the model fit for GPP in August improves as we consider higher degree polynomials:
+```{r}
+df_cat |>
+  filter(MONTH == 8) |>
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(formula = y ~ x, method = "lm", aes(color = "lm"), se = FALSE) +
+  geom_smooth(formula = y ~ poly(x, 2), method = "lm", 
+              aes(color = "poly2"), se = FALSE) +
+  geom_smooth(formula = y ~ poly(x, 3), method = "lm", 
+              aes(color = "poly3"), se = FALSE) +
+  geom_smooth(formula = y ~ poly(x, 4), method = "lm", 
+              aes(color = "poly4"), se = FALSE) +
+  labs(x = "SW", y = "GPP", color = "Regression") +
+  theme_classic()
 ```
 
 #### Metrics for regression
@@ -254,6 +271,48 @@ R^2 = 1 - \frac{\sum_i (Y_i - \hat{Y}_i)^2}{\sum_i (Y_i - \bar{Y})^2}
 $$
 In this case, the goal is to maximize the metric, thus trying the explain as much variation in $Y$ as possible. In contrast to the MSE and RMSE, $R^2$ measures goodness of fit and gives a quantity between 0 and 1 that takes into consideration how variable the target is. We can actually write $R^2 = 1 - \frac{MSE}{\hat{Var}(Y)}$. A perfect fit is quantified by $R^2 = 1$ and uninformative models have an $R^2$ approaching zero. For some applications where the data is very noisy, an $R^2$ of 0.6 may already be considered good. 
 
+- **Pearson's $r^2$**: The linear correlation between two variables (here $Y$ and $Z$) is measured by the *Pearson's correlation coefficient* $r$ and defined by
+$$r_{YZ} = \frac{\sum_i (Y_i - \bar{Y}) (Z_i - \bar{Z}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2}\sqrt{ \sum_i(Z_i-\bar{Z})^2 } }.$$
+The coefficient of determination and Pearson's correlation are closely related. The square of the Pearson's correlation between the observed $Y$ and fitted values $\hat{Y}$ coincides with the coefficient of determination for a linear regression (see proof [here](https://statproofbook.github.io/P/slr-rsq)). It holds that $R^2 = r_{Y \hat{Y}}^2$.
+
+The distinction between uppercase and lowercase nomenclature is often not consistent in the literature. The uppercase $R^2$ is commonly used as coefficient of determination, in the context of comparing observed and predicted values. When the *correlation* between two different variables in a sample is quantified, the lowercase $r^2$ is commonly used. 
+
+The following scatterplots show different synthetic data points and regression lines. For each one, the Pearson correlation between target and predictor is calculated, together with the $R^2$ and RMSE for the corresponding regressions.
+
+```{r}
+x <- rnorm(100)
+# Function that creates scatterplots with regression metrics
+plot_regression <- function(d, title){
+  d |>
+    ggplot(aes(x = x, y = y)) +
+    geom_point(size = 0.75, alpha = 0.8) +
+    labs(title = title,
+         subtitle = (paste("r^2 =", round(cor(d$x, d$y), 3),
+                           ", R^2 =", round(summary(
+                             lm(y~x, data = d)
+                             )$r.squared, 3)))) +
+    geom_smooth(formula = y ~ x, method = "lm", color = "red", se = FALSE) +
+    lims(x = c(-4, 4), y = c(-4, 4)) +
+    theme_classic()
+}
+
+p1 <- plot_regression(data.frame(x = x,
+                                 y = rnorm(100)),
+                      "Uncorrelated")
+
+p2 <- plot_regression(data.frame(x = x,
+                                 y = 0.5 * x),
+                      "Perfectly linearly correlated")
+
+p3 <- plot_regression(data.frame(x = x,
+                                 y = 0.5*x + rnorm(100)),
+                      "Low correlation")
+p4 <- plot_regression(data.frame(x = x,
+                                 y = 0.5*x + rnorm(100, sd = 0.2)),
+                      "Higher correlation")
+cowplot::plot_grid(p1, p2, p3, p4)
+```
+
 Metrics for correlation like the ones above should not be used as a loss function because they do not penalize biased models. All of them keep improving as we include more variables, where they are actually informative or not.
 
 The $R^2$ always increases when predictors are added to a model. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of parameters. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We will introduce cross-validation in [Chapter 9](#supervised_ml_i), which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available:
@@ -262,9 +321,9 @@ The $R^2$ always increases when predictors are added to a model. This is particu
 $$
 {R}^2_{adj} = 1 - (1-R^2) \; \frac{n-1}{n-p-1} \;,
 $$
-where $n$ (as before) is the number of observations, $p$ the number of predictors and $R^2$ the usual coefficient of determination. Same as for $R^2$, the goal is to maximize $R^2_{adj}$. For a fitted model in R `modl`, its value is returned by `summary(modl)$adj.r.squared`.
+where $n$ (as before) is the number of observations, $p$ the number of parameters and $R^2$ the usual coefficient of determination. Same as for $R^2$, the goal is to maximize $R^2_{adj}$. For a fitted model in R `modl`, its value is returned by `summary(modl)$adj.r.squared`.
 
-- **AIC**: the Akaike’s Information Criterion is defined as
+- **AIC**: the Akaike’s Information Criterion is defined in terms of log-likelihood (covered in Quantitative Methoden) but for linear regression it can be written as:
 $$
 \text{AIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + 2(p+2)
 $$
@@ -288,15 +347,25 @@ Let's calculate the metrics introduced above for a few of the fitted regression 
 
 ```{r}
 compute_regr_metrics <- function(linmod){
-  c(mse = mean(linmod$residuals^2),
+  p <- length(linmod$coefficients)
+  sse <- sum(linmod$residuals^2)
+  n <- length(linmod$residuals)
+    
+  round(
+    c(mse = mean(linmod$residuals^2),
     rmse = sqrt(mean(linmod$residuals^2)),
     R2 = summary(linmod)$r.squared,
-    R2_adj = summary(linmod)$adj.r.squared
-  )
+    R2_adj = summary(linmod)$adj.r.squared,
+    r2 = cor(linmod$fitted, linmod$model$GPP_NT_VUT_REF)^2,
+    AIC = extractAIC(linmod)[2],
+    AIC_adj = extractAIC(linmod)[2] + 2*(p+2)*(p+3)/(n-p-3),
+    BIC = BIC(linmod) # this implementation is based on log-likelihood
+  ), 3)
 }
 
-metrics <- sapply(list(linmod1, linmod2, linmod_cat), compute_regr_metrics)
-colnames(metrics) <- c("linear model", "linear model 2", "linear + categories")
+metrics <- sapply(list(linmod1, linmod2, linmod_cat, quadmod), compute_regr_metrics)
+colnames(metrics) <- c("Linear model", "Linear model 2", "Linear + categories",
+                       "Quadratic model")
 metrics
 ```
 
