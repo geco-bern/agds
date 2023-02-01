@@ -18,7 +18,7 @@ In contrast, *pre-processing* refers to the additional steps that are either req
 
 The example data used in this chapter are parallel time series of (gaseous) CO$_2$ and water vapor exchange fluxes between the vegetation and the atmosphere, along with various meteorological variables measured in parallel. Quasi-continuous measurements of temporally changing gas exchange fluxes are measured with the eddy covariance technique which relies on the parallel quantification of vertical wind speeds and gas concentrations.
 
-The data is provided at half-hourly resolution for the site [CH-Lae](https://www.swissfluxnet.ethz.ch/index.php/sites/ch-lae-laegeren/site-info-ch-lae/), located on the south slope of the Lägern mountain on the Swiss Plateau at 689 m a.s.l. in a mixed forest with a distinct seasonal course of active green leaves (a substantial portion of the trees are deciduous). The dataset is generated and formatted following standard protocols ([FLUXNET2015](https://fluxnet.org//data/fluxnet2015-dataset/)). For more information of the variables in the dataset, see the [FLUXNET2015 website](http://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) and [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3) for a comprehensive documentation of variable definitions and methods.
+The data is provided at half-hourly resolution for the site [CH-Lae](https://www.swissfluxnet.ethz.ch/index.php/sites/ch-lae-laegeren/site-info-ch-lae/), located on the south slope of the Lägern mountain on the Swiss Plateau at 689 m a.s.l. in a mixed forest with a distinct seasonal course of active green leaves (a substantial portion of the trees in the measured forest are deciduous). The dataset is generated and formatted following standard protocols ([FLUXNET2015](https://fluxnet.org//data/fluxnet2015-dataset/)). For more information of the variables in the dataset, see the [FLUXNET2015 website](http://fluxnet.fluxdata.org/data/fluxnet2015-dataset/) and [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3) for a comprehensive documentation of variable definitions and methods.
 
 For our demonstrations, the following variables are the most relevant:
 
@@ -60,7 +60,7 @@ From this design principles, even the most convoluted code and implementation of
 
 Tabular data is organised in rows and columns. Each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter \@ref(data_variety), you will be introduced to other types of data. The most common format for tabular data is CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
 
-Let's get started with working with our example data set and read it into R, as the variable `hhdf`.
+Let's get started with working with our example data set and read it into R, as the variable `hhdf`. Note that the naming of variables can be important for keeping code legible. For example, it may indicate the type of the object it holds (`df` for data frame) and that the data is half-hourly (`hh`).
 
 ```{r}
 hhdf <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
@@ -95,7 +95,7 @@ hhdf <- select(
   )
 ```
 
-This reduces our dataset from 235 available variables to 59 variables. Our data set now only contains the columns we will need in our further analysis. As you can see, `select()` is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with `starts_with()`, `ends_with`, `contains()`, `matches()`, etc. Using these functions within `select()` can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (`-`) is added in front of a column name or one of the mentioned functions within `select()`, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the `select()` function call. You can find the complete reference for selecting variables [here](https://dplyr.tidyverse.org/reference/select.html).
+This reduces our dataset from 235 available variables to 59 variables. As you can see, `select()` is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with `starts_with()`, `ends_with`, `contains()`, `matches()`, etc. Using these functions within `select()` can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (`-`) is added in front of a column name or one of the mentioned functions within `select()`, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the `select()` function call. You can find the complete reference for selecting variables [here](https://dplyr.tidyverse.org/reference/select.html).
 
 ### Time objects
 
@@ -165,7 +165,6 @@ We will encounter more ways to use mutate later in this tutorial. A complete ref
 Tabular data is two-dimensional (rows $\times$ columns), but not all two-dimensional data is tabular. For example, raster data is a two-dimensional array of data (a matrix) representing variables on an evenly spaced grid, for example pixels in remotely sensed imagery. For example the `volcano` data (provided as an example dataset in R) is a 2-dimensional array, each column contains the same variable, and no variable names are provided.
 
 ```{r}
-dim(volcano)
 volcano[1:5, 1:5]
 ```
 
@@ -200,7 +199,7 @@ Note that we used `mutate()` here to create a new variable (column) in the data 
 
 ### Tidy data
 
-Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in tabular form and merged cells as we will see in the Exercises. A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.
+Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in some remotely tabular form and merged cells as we will see in the Exercises. A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.
 
 ```{r echo=FALSE}
 ## this is hidden - used to create the objects printed in next chunk
@@ -209,7 +208,7 @@ df1 <- tibble(co2_concentration = as.vector(co2),
        year_dec = time(co2)
        ) |> 
   mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-  mutate(year = year_dec - month_dec) |> 
+  mutate(year = as.integer(year_dec - month_dec)) |> 
   mutate(month = as.integer(month_dec * 12)) |> 
   mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
   mutate(month = month(date, label = TRUE)) |> 
@@ -240,13 +239,13 @@ There are advantages for interoperability and ease of use when data frames come 
 
 The concept of tidy data can even be taken further by understanding a "value" as any object type, e.g. a list or a data frame. This leads to a list or data frame "nested" within a data frame. You will learn more about this below.
 
-The contents of this tutorial are inspired by the (freely available online) book [\*R for Data Science\* by Grolemund & Wickham](%5Bhttps://r4ds.had.co.nz/).](<https://r4ds.had.co.nz/>).)
+The concept of tidy data can even be taken further by understanding a "value" as any object type, e.g. a list or a data frame. This leads to a list or data frame "nested" within a data frame. You will learn more about this below.
 
 ### Aggregating data
 
 Aggregating data refers to collapsing a larger set of values into a smaller set of values that are derived from the larger set. For example, we can aggregate over all $N$ rows in a data frame ($N\times M$), calculating the sum for each of the $M$ columns. This returns a data frame ($1 \times M$) with the same number of columns as the initial data frame, but only one row. Often, aggregations are done not across all rows but for rows within $G$ groups of rows. This yields a data frame ($G \times M$) with the number of rows corresponding to the number of groups.
 
-Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the *dplyr* functions `group_by()` and `summarise()`. This aggregation workflow is implemented by the following code:
+Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the *dplyr* functions `group_by()` and `summarise()`. The entire aggregation workflow is implemented by the following code:
 
 ```{r}
 ddf <- hhdf |>  
@@ -605,6 +604,7 @@ list_linmod |>
 ```
 
 `map_dbl()` is a variant of the `map()` function that returns not a list, but a vector of numeric values of class "double" (hence, the name `_dbl`). Note further, that providing a character (`"r.squared"`) as an argument instead of an (unquoted) function name, `map()` extracts the correspondingly named list element, instead of applying a function to a list element.
+>>>>>>> 50023d470dc8d16c4edaa349a21a5619f3048008
 
 When writing code for an analysis, it's useful, if not essential, to understand the objects we're working with, understand its type and shape, and make sense of the results of simple `print <object>` statements. Data frames are particularly handy as they provide an organisation of data that is particularly intuitive (variables along columns, observations along rows, values in cells). Here, we're dealing with a list of linear model objects. Can such a list fit into the paradigm of *tidy* data frames?
 
