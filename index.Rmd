@@ -64,6 +64,14 @@ Three general developments set the stage for this course. First, Geography and E
 
 ### Machine learning
 
+**Foundations**
+
 -   Leo Breiman. "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
 
     -   A paper describing the paradigm shift in statistical modelling - from traditional approaches to machine learning. Written in accessible language by the inventor of the Random Forest algorithm.
+
+**Implementations**
+
+-   Chollet & Allaire "Deep learning with R"
+
+-   HOML
