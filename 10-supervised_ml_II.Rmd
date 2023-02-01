@@ -1,0 +1,225 @@
+# Supervised machine learning II {#supervised_ml_ii}
+
+**Chapter lead author: Benjamin Stocker**
+
+Contents:
+
+-   Training and loss function
+
+-   Hyperparameters
+
+-   Resampling
+
+-   Lecture (Beni): Wisdom of the crowds, from decision trees to random forests
+
+-   Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance
+
+## Learning objectives
+
+In the Chapter \@ref(supervised_ml_i), you learned how the data are pre-processed, the model fitted, and how the model's generasbility to unseen data is tested. In the exercises of Chapter \@ref(supervised_ml_i), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model's performance on the training and the test sets. A "good" model generalises well. That is, it performs well on unseen data.
+
+In this chapter, you will learn more about the process of model training, the concept of the *loss*, and how we can chose the right level of model complexity for optimal model generalisability as part of the model training step. This completes your set of skills for your first implementations a supervised machine learning workflow.
+
+## Tutorial
+
+### Required packages
+
+```{r message=FALSE, warning=FALSE}
+use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "caret", "yardstick", "lubridate", "rsample", "recipes", "modelr", "forcats")
+new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
+if (length(new_pkgs) > 0) install.packages(new_pkgs)
+invisible(lapply(use_pkgs, require, character.only = TRUE))
+```
+
+### Data and the modelling challenge
+
+We're using the same data and address the same modelling challenge as in Chapter \@ref(supervised_ml_i). Let's load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter \@ref(supervised_ml_i).
+
+```{r warning=FALSE, message=FALSE}
+ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+  
+  # select only the variables we are interested in
+  dplyr::select(TIMESTAMP,
+                GPP_NT_VUT_REF,    # the target
+                ends_with("_QC"),  # quality control info
+                ends_with("_F"),   # includes all all meteorological covariates
+                -contains("JSB")   # weird useless variable
+                ) |>
+
+  # convert to a nice date object
+  dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
+
+  # set all -9999 to NA
+  dplyr::na_if(-9999) |>
+  
+  # retain only data based on >=80% good-quality measurements
+  # overwrite bad data with NA (not dropping rows)
+  dplyr::mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF),
+                TA_F           = ifelse(TA_F_QC        < 0.8, NA, TA_F),
+                SW_IN_F        = ifelse(SW_IN_F_QC     < 0.8, NA, SW_IN_F),
+                LW_IN_F        = ifelse(LW_IN_F_QC     < 0.8, NA, LW_IN_F),
+                VPD_F          = ifelse(VPD_F_QC       < 0.8, NA, VPD_F),
+                PA_F           = ifelse(PA_F_QC        < 0.8, NA, PA_F),
+                P_F            = ifelse(P_F_QC         < 0.8, NA, P_F),
+                WS_F           = ifelse(WS_F_QC        < 0.8, NA, WS_F)) |> 
+
+  # drop QC variables (no longer needed)
+  dplyr::select(-ends_with("_QC"))
+
+# Data splitting
+set.seed(123)  # for reproducibility
+split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
+ddf_train <- rsample::training(split)
+ddf_test <- rsample::testing(split)
+
+# The same model formulation is in the previous chapter
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train) |> 
+  recipes::step_center(all_numeric(), -all_outcomes()) |>
+  recipes::step_scale(all_numeric(), -all_outcomes())
+```
+
+### Loss function {#training}
+
+Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm ("optimiser" in Fig. XXX of Chapter \@ref(supervised_ml_i)) takes care of progressively reducing the loss during model training.
+
+Let's say the machine learning model contains two parameters and predictions can be considered a function of the two ($\hat{Y}(w_1, w_2)$). $Y$ is actually constant. Thus, the loss function is effectively a function $L(w_1, w_2)$. Therefore, we can consider the model training as a search of the parameter space to find the minimum of the loss. The parameter space spanned by all possible combinations of $(w_1, w_2)$. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.
+
+![Visualization of a loss function](figures/loss_plane.png){width="10cm"}
+
+Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter \@ref(#supervised_ml_i), the {caret} package provides "wrappers" that handle a large selection of different machine learning model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The {caret} function `train()` is the center piece also in terms of specifying the loss function as the argument `metric`. It defaults to the RMSE for regression models and the accuracy for classification.
+
+### Hyperparameters
+
+Practically all machine learning algorithms have some "knobs" to turn for controlling a model's complexity and other features of the model training. The optimal choice of these "knobs" is to be found for efficient model performance. Such "knobs" are the *hyperparameters*. Each algorithm comes with its own, specific hyperparameters.
+
+For KNN, `k` is the (only) hyperparameter. It specifies the number of neighbours to consider for determining distances. There is always an optimum $k$. Obviously, if $k = n$, we consider all observations as neighbours and each prediction is simply the mean of all observed target values $Y$, irrespective of the predictor values. This cannot be optimal and such a model is likely underfit. On the other extreme, with $k = 1$, the model will be strongly affected by the noise in the single nearest neighbour and its generalisability will suffer. This should be reflected in a poor performance on the validation data.
+
+Hyperparameters usually have to be "tuned". The optimal setting depends on the data and can therefore not be known *a priori*.
+
+```{r}
+# load our custom evaluation function
+source("R/eval_model.R")
+
+# specify the set of K
+df_k <- data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)) |> 
+  mutate(idx = 1:n())
+
+# model training for the specified set of K
+list_mod_knn <- purrr::map(
+  df_k$k,
+  ~caret::train(pp, 
+                data = ddf_train |> drop_na(), 
+                method = "knn",
+                trControl = caret::trainControl(method = "none"),
+                tuneGrid = data.frame(k = .),   # '.' evaulates k
+                metric = "RMSE"))
+
+list_metrics <- purrr::map(
+  list_mod_knn,
+  ~eval_model(., 
+              ddf_train |> drop_na(), 
+              ddf_test, 
+              return_metrics = TRUE))
+
+# extract metrics on training data
+list_metrics_train <- purrr::map(
+  list_metrics,
+  "train") |> 
+  # add K to the data frame
+  bind_rows(.id = "idx") |> 
+  mutate(idx = as.numeric(idx)) |> 
+  left_join(df_k, by = "idx")
+
+# extract metrics on testing data
+list_metrics_test <- purrr::map(
+  list_metrics,
+  "test") |> 
+  # add K to the data frame
+  bind_rows(.id = "idx") |> 
+  mutate(idx = as.numeric(idx)) |> 
+  left_join(df_k, by = "idx")
+
+# prepare for visualisation
+df_mae <- list_metrics_train |> 
+  filter(.metric == "mae") |> 
+  mutate(set = "train") |> 
+  bind_rows(
+    list_metrics_test |> 
+      filter(.metric == "mae") |> 
+      mutate(set = "test")
+  )
+
+# visualise
+df_mae |> 
+  ggplot(aes(x = k, y = .estimate, color = set)) +
+  geom_point() +
+  geom_line()
+```
+
+The workflow implemented above should remind you of your solution to Exercise XXX in Chapter \@ref(supervised_ml_i). It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller $k$. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.
+
+Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?
+
+### Resampling
+
+The solution is to split the training data again - now into a training and a *validation* set. Using the validation set, we can "mimick" out-of-sample predictions during training by determining the loss on the validation set and use that for guiding the model training. However, depending on the volume of data we have access to, evaluation metrics determined on the validation set may not be robust. Results may vary depending on the split into training and validation data. This makes it challenging for reliably estimate out-of-sample performance.
+
+A solution for this problem is to *resample* the training into a number training-validation splits, yielding several pairs of training and *validation* data. Model training is then guided by minimising the average loss determined on the different resamples. Having multiple resamples (multiple *folds* of training-validation splits) avoids the loss minimization from being misguided by random peculiarities in the training and/or validation data.
+
+Whether or not a resampling is applied depends on the data volume and computational costs of the model training which increase linearly with the number of resamples. For models that take days-weeks to train, resampling is not a realistic option. However, for many machine learning applications in Geography and Environmental Sciences, models are much less costly and resampling is viable and desirable approach to model training. The most important methods of resampling are bootstrapping (not explained here, but see [Boehmke & Greenwell (2020)](https://bradleyboehmke.github.io/HOML/process.html)) and k-fold cross validation.
+
+In *k-fold cross validation*, the training data is split into *k* equally sized subsets (*folds*). (Don't confuse this k with the k in KNN.) Then, there will be *k* iterations, where each fold is used for validation once (while the remaining folds are used for training). An extreme case is *leave-one-out cross validation*, where *k* corresponds to the number of data points.
+
+![K-fold cross validation. From Boehmke & Greenwell (2020).](figures/cv.png)
+
+XXX Exercises: implement k-fold cross validation by hand XXX
+
+To do a k-fold cross validation during model training in R, we don't have to implement the loops around folds ourselves. The resampling procedure can be specified in the {caret} function `train()` with the argument `trControl`. The object that this argument takes is the output of a function call to `trainControl()`. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:
+
+```{r}
+set.seed(1982)
+mod_cv <- caret::train(pp, 
+                       data = ddf_train |> drop_na(), 
+                       method = "knn",
+                       trControl = caret::trainControl(method = "cv", number = 10),
+                       tuneGrid = data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100)),
+                       metric = "MAE")
+
+# generic plot of the caret model object
+ggplot(mod_cv)
+
+# generic print
+print(mod_cv)
+```
+
+From the output of `print(mod_cv)`, we get information about model performance for each hyperparameter choice. The values reported are means of respective metrics determined across the ten folds. Also the optimal choice of $k$ (25) is reported. Does this correspond to the $k$ with the best performance determined on the test set? If resampling was a good approach to estimating out-of-sample model performance, then it should!
+
+```{r}
+df_mae |>
+  filter(set == "test") |> 
+  filter(.estimate == min(.estimate))
+```
+
+The evaluation on the test set suggests that $k=30$ is optimal, while 10-fold cross-validation yielded an optimal $k = 25$. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is primarily a result of randomness in the data.
+
+Let's look at the results as we did in Chapter \@ref(supervised_ml_i). The model object `mod_cv` contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the `predict()` function (as used inside `eval_model()`), it automatically uses the model trained with the optimal $k$.
+
+```{r}
+eval_model(mod = mod_cv, df_train = ddf_train, df_test = ddf_test)
+```
+
+Remember that in Chapter \@ref(supervised_ml_ii), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set. XXX exercises: explain to your neighbour why XXX.
+
+In certain cases, data points stem from different "groups", and generalisability across groups is critical. In such cases, data from a given group must not be used both in the training and validation sets. Instead, splits should be made along group delineations. The *caret* function `groupKFold()` offers the solution for this case.
+
+## Exercises
+
+## Solutions
+
+XXXXXXXXX
+
+For random forests from the **ranger** package, hyperparameters are:
+
+-   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors.
+-   `min.node.size`: the number of data points at the "bottom" of each decision tree
+-   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision

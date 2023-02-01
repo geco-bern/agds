@@ -1,7 +1,9 @@
+# R project data
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+
+# rendered files
 _book
 _bookdown_files
-
