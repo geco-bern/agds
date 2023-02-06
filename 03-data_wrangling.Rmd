@@ -371,11 +371,15 @@ hhdf |>
   head()
 ```
 
-When reading the documentation of this specific dataset, we learn that `-9999` is the code for *missing data*. We can replace such values in any column with `NA` using the *dplyr* function `na_if()`.
+When reading the documentation of this specific dataset, we learn that `-9999` is the code for *missing data*. The *dplyr* functions help us to clarify these missing values by mutating across all numeric variables and overwrite entries with `NA` if they hold a `-9999`.
 
 ```{r}
 hhdf <- hhdf |>  
-  na_if(-9999)
+  mutate(across(where(is.numeric), ~na_if(., -9999)))
+
+hhdf |> 
+  select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
+  head()
 ```
 
 This lets us visualise the data and its gaps with `vis_miss()` from the *visdat* package. Visualising missing data can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
@@ -528,7 +532,7 @@ clean_data_dd <- function(df){
     mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
 
     # set all -9999 to NA
-    na_if(-9999)
+    mutate(across(where(is.numeric), ~na_if(., -9999)))
   
   return(df)
 }
