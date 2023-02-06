@@ -239,7 +239,7 @@ df_cat |>
   geom_smooth(formula = y ~ x, method = "lm", aes(color = "lm"), se = FALSE) +
   geom_smooth(formula = y ~ poly(x, 2), method = "lm", 
               aes(color = "poly2"), se = FALSE) +
-  geom_smooth(formula = y ~ poly(x, 3), method = "lm", 
+  geom_smooth(formula = y ~ poly(x, 3), method = "lm",
               aes(color = "poly3"), se = FALSE) +
   geom_smooth(formula = y ~ poly(x, 4), method = "lm", 
               aes(color = "poly4"), se = FALSE) +
@@ -313,7 +313,7 @@ p4 <- plot_regression(data.frame(x = x,
 cowplot::plot_grid(p1, p2, p3, p4)
 ```
 
-Metrics for correlation like the ones above should not be used as a loss function because they do not penalize biased models. All of them keep improving as we include more variables, where they are actually informative or not.
+Metrics for correlation like the ones above should not be used as a loss function because they do not penalize biased models. All of them keep improving as we include more variables, whether they are actually informative or not.
 
 The $R^2$ always increases when predictors are added to a model. This is particularly critical in the context of machine learning when we compare alternative models that differ by their number of parameters. In other words, the $R^2$ of a model with a large number of predictors tends to give an overconfident estimate of its predictive power. We will introduce cross-validation in [Chapter 9](#supervised_ml_i), which yields good predictive power. This is the "gold-standard". But when the number of data points is small, cross validation estimates may not be robust. Without resorting to cross validation, the effect of spuriously improving the evaluation metric by adding uninformative predictors can also be mitigated by penalizing the number of predictors $p$. Different metrics are available:
 
@@ -343,7 +343,7 @@ Also in this case our goal is to minimize the BIC. This metric has the feature t
 
 **Implementation in R**
 
-Let's calculate the metrics introduced above for a few of the fitted regression models. Some of these metrics, like $R^2$ and the adjusted $R^2$ are given by the `summary()` function. Alternatively, the {yardstick} package provides implementations for a few of these metrics, which we compute below:
+Let's calculate the metrics introduced above for a few of the fitted regression models. Some of these metrics, like $R^2$ and $R^2_{adj}$ are given by the `summary()` function. Alternatively, the {yardstick} package provides implementations for a few of these metrics, which we compute below:
 
 ```{r}
 compute_regr_metrics <- function(linmod){
@@ -371,7 +371,7 @@ metrics
 
 ### Classification
 
-We will introduce a classification problem with a binary target, although it's easy to generalize to categorical variables with more than two classes. As an example, we will try to classify whether it's day or night (`NIGHT`) based on shortwave and longwave radiation measurements (`SW_IN_F` and `LW_IN_F`). Let's look at the data first:
+We will introduce a classification problem with a binary target, since it's straightforward to generalize to categorical variables with more than two classes. As an example, we will try to classify whether it's day or night (`NIGHT`) based on shortwave and longwave radiation measurements (`SW_IN_F` and `LW_IN_F`). Let's look at the data first:
 
 ```{r}
 set.seed(2023)
@@ -401,7 +401,7 @@ Using this example, we'll cover logistic regression, its implementation in R and
 
 A classification problem is a bit more difficult to write mathematically than a regression problem. Before, the mathematical representation of `GPP_NT_VUT_REF ~ SW_IN_F` was `GPP_NT_VUT_REF`$\;=\; \beta_0 + \beta_1$`SW_IN_F`. With the classification model `NIGHT ~ SW_IN_F`, we cannot just write `NIGHT`$\;=\; \beta_0 + \beta_1$`SW_IN_F` because `NIGHT` is not a number. Hence, the categorical variable must be encoded, in this case `0` means "day" and `1` means "night". We already loaded the data into R with this encoding.
 
-The next issue is that a linear model makes continuous predictions in the entire real numbers space $(-\inf, \inf)$, but we want the predictions to be in $\{0, 1\}$. We can transform these values to be in $[0,1]$ with a *link* function. For a binary response, it's common to use a *logit* link function:
+The next issue is that a linear model makes continuous predictions in the entire real numbers space $(-\inf, \inf)$, but we want the predictions to be either 0 or 1. We can transform these values to be in the interval $[0,1]$ with a *link* function. For a binary response, it's common to use a *logit* link function:
 $$\text{logit}(z) = \frac{\exp(z)}{1+\exp(z)}$$
 ```{r}
 curve(exp(x)/(1+exp(x)), -5, 5, ylab = "logit(x)")
@@ -425,7 +425,7 @@ logmod <- glm(NIGHT ~ SW_IN_F + LW_IN_F,
 summary(logmod)
 ```
 
-This fitted model results in a linear classification boundary that splits the predictor variables space in two. Where that line falls depends on the choice of threshold $\tau=0.5$. You can see it plotted below:
+This fitted model results in a linear classification boundary that splits the predictor variables space in two. Where that line falls depends on the choice of threshold, in this case $\tau=0.5$. You can see it plotted below:
 
 ```{r}
 beta <- coef(logmod)
