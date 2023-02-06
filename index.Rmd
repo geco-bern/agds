@@ -46,6 +46,32 @@ As we work our way through repeated cycles of exploratory data analysis (Chapter
 
 Three general developments set the stage for this course. First, Geography and Environmental Sciences (as many other realms of today's world) have entered a **data-rich era** (Chapters \@ref(data_variety). xxx ref(data-rich-era)). Second, **machine learning** algorithms have revolutionized the way we can extract information from large volumes of data (Chapters \@ref(supervised_ml) - \@ref(interpretable_ml). Third, **Open Science** principles (Chapter \@ref(open_science)) - essential for inclusive research, boundless progress, and for diffusing science to society - are becoming a prerequisite for getting research funded and published (Chapter \@ref(open_science))). This course teaches you the skills to benefit from these developments.
 
--   What is data? How do we learn from data? What is a model?
+-   What is data? How do we learn from data? What is a model (mechanistic vs statistic/empirical)?
+    -   ML: Rules discovery in the data to be applied for new predictions. "Traditional": rules are encoded in a model (= hypothesis encoded in a model)
+
+    -   a computer learn rules (from data) - opposite of a human specifying the rules and a computer applying them.
+
+    -   Sympolic AI is based on rules. Works for computer playing chess, but not for fuzzy problems (image classification, speech recognition, language translation)
 -   
 -   Our practice at GECO
+-   Course scope, relation to other courses in Geography
+
+## Reading and link collection
+
+### Data wrangling
+
+### Data visualisation
+
+### Machine learning
+
+**Foundations**
+
+-   Leo Breiman. "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
+
+    -   A paper describing the paradigm shift in statistical modelling - from traditional approaches to machine learning. Written in accessible language by the inventor of the Random Forest algorithm.
+
+**Implementations**
+
+-   Chollet & Allaire "Deep learning with R"
+
+-   HOML
