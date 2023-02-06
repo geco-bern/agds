@@ -371,35 +371,24 @@ metrics
 
 ### Classification
 
-We will introduce a classification problem with a binary target, since it's straightforward to generalize to categorical variables with more than two classes. As an example, we will try to classify whether it's day or night (`NIGHT`) based on shortwave and longwave radiation measurements (`SW_IN_F` and `LW_IN_F`). Let's look at the data first:
+We will introduce a classification problem with a binary target, since it's straightforward to generalize to categorical variables with more than two classes. As an example, let's observe the `CO2` dataset from the [{datasets} package](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html), which contains data from an experiment on the cold tolerance of a grass species. We will try to classify the origin of each plant (categorical variable `Type` with values `Quebec` or `Mississippi`) depending on the carbon dioxide uptake rate (continuous variable `uptake` measured in $\mu$mol m$^{-2}$s$^{-1}$).
 
 ```{r}
-set.seed(2023)
-gg2 <- hhdf |>
-  sample_n(1000) |>  # to reduce the dataset 
-  ggplot(aes(x = SW_IN_F, y = LW_IN_F, color = as.factor(NIGHT))) +
-  geom_point(size = 0.75) +
-  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("Longwave radiation (W m"^-2, ")"))) +
-  theme_classic()
+gg2 <- datasets::CO2 |>
+  ggplot(aes(x = uptake, y = Type, color = Type)) +
+  geom_point(size = 0.75, alpha = 0.8) +
+  theme_classic() +
+  theme(legend.position = "none")
 gg2
 ```
 
-At first sight, it's easy to see that the short wave radiation is close to zero in the night, while longwave radiation doesn't seem to differ strongly between daytime and nighttime. 
-
-```{r}
-hhdf |>
-  filter(NIGHT==0) |>
-  pull(SW_IN_F) |>
-  hist(breaks=30)
-```
-Using this example, we'll cover logistic regression, its implementation in R and metrics for classification.
+At first sight, it's easy to see that the carbon uptake is lower for the Mississippi type. Note that other predictors can be included in the model, but we'll focus on a single predictor. Using this example, we'll cover logistic regression, its implementation in R and metrics for classification.
 
 #### Logistic regression
 
 **Theory**
 
-A classification problem is a bit more difficult to write mathematically than a regression problem. Before, the mathematical representation of `GPP_NT_VUT_REF ~ SW_IN_F` was `GPP_NT_VUT_REF`$\;=\; \beta_0 + \beta_1$`SW_IN_F`. With the classification model `NIGHT ~ SW_IN_F`, we cannot just write `NIGHT`$\;=\; \beta_0 + \beta_1$`SW_IN_F` because `NIGHT` is not a number. Hence, the categorical variable must be encoded, in this case `0` means "day" and `1` means "night". We already loaded the data into R with this encoding.
+A classification problem is a bit more difficult to write mathematically than a regression problem. Before, the mathematical representation of `GPP_NT_VUT_REF ~ SW_IN_F` was `GPP_NT_VUT_REF`$\;=\; \beta_0 + \beta_1$`SW_IN_F`. With the classification model `Type ~ uptake`, we cannot just write `Type`$\;=\; \beta_0 + \beta_1$`uptake` because `Type` is not a number. Hence, the categorical variable must be encoded, in this case 0 represents `Quebec` and 1 represents `Mississippi`. 
 
 The next issue is that a linear model makes continuous predictions in the entire real numbers space $(-\inf, \inf)$, but we want the predictions to be either 0 or 1. We can transform these values to be in the interval $[0,1]$ with a *link* function. For a binary response, it's common to use a *logit* link function:
 $$\text{logit}(z) = \frac{\exp(z)}{1+\exp(z)}$$
@@ -409,29 +398,43 @@ curve(exp(x)/(1+exp(x)), -5, 5, ylab = "logit(x)")
 
 Combining a linear model (with any type of predictors, like for regression) and a logit link function, we arrive to a **logistic regression** model:
 $$f(X, \beta) = \text{logit}(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p) = \frac{\exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}{1 + \exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}.$$
-This predicted value can be understood as the probability of belonging to class 1 (in our example, nighttime). A classification rule is defined such that an observation $X_{new}$ with a predicted probability of belonging to class 1 higher than a given *threshold* $\tau$ (i.e. $f(X_{new}, \beta) > \tau$) will be classified as 1; and if the predicted probability is smaller than the threshold, it will be classified as 0.
+This predicted value can be understood as the probability of belonging to class 1 (in our example, `Mississippi`). A classification rule is defined such that an observation $X_{new}$ with a predicted probability of belonging to class 1 higher than a given *threshold* $\tau$ (i.e. $f(X_{new}, \beta) > \tau$) will be classified as 1; and if the predicted probability is smaller than the threshold, it will be classified as 0.
 
-A logistic regression model results in a linear classification rule. This means that the $p$-dimensional space will be divided in two by a hyperplane, and the points falling in each side of the hyperplane will be classified as 1 or 0. In the example above with shortwave and longwave radiation as predictors, the classification boundary would look like the black line in the plot below.
+A logistic regression model results in a linear classification rule. This means that the $p$-dimensional space will be divided in two by a hyperplane, and the points falling in each side of the hyperplane will be classified as 1 or 0. In the example above with carbon uptake as predictor, the classification boundary would be a point dividing the real line. If we include a second predictor, we would obtain a line diviting the 2-dimensional plane in two.
 
 Furthermore, to fit a logistic regression model means to calculate the maximum likelihood estimator of $\beta$ with an iterative algorithm. 
 
 **Implementation in R**
 
+First, let's see how the target variable is encoded. R directly loads the dataframe with `Type` as a factor and `Quebec` as the reference level. R factors work such that each factor level (here `Quebec` and `Mississippi`) corresponds to an integer value (its position given by `levels()`, here `1` and `2` respectively). We can fit a logistic model in R with this encoding.
+```{r}
+str(datasets::CO2)
+levels(datasets::CO2$Type)
+```
+
 To fit a logistic regression in R we can use the `glm()` function, which fits a generalized linear model, indicating that our target variable is binary and the link function is a logit function. Let's see the model output:
 ```{r}
-logmod <- glm(NIGHT ~ SW_IN_F + LW_IN_F,
+logmod <- glm(Type ~ uptake,
               family = binomial(link = logit),
-              data = hhdf)
+              data = datasets::CO2)
 summary(logmod)
 ```
 
-This fitted model results in a linear classification boundary that splits the predictor variables space in two. Where that line falls depends on the choice of threshold, in this case $\tau=0.5$. You can see it plotted below:
+This fitted model results in a linear classification boundary (discontinued line) that splits the predictor variables space in two. Where that line falls depends on the choice of threshold, in this case $\tau=0.5$ (see where the grey logistic regression line meets the dashed threshold line). You can see it plotted below:
 
 ```{r}
 beta <- coef(logmod)
 # reuse previous plot with classification line
-gg2 +
-  geom_abline(slope = -beta[2]/beta[3], intercept = (0.5-beta[1])/beta[3])
+gg2.1 <- datasets::CO2 |>
+  ggplot(aes(x = uptake, y = as.numeric(Type)-1, color = Type)) +
+  geom_point(size = 0.75, alpha = 0.8) +
+  ylab("") +
+  theme_classic() +
+  stat_smooth(method = "glm", color = "grey", se = FALSE,
+              method.args = list(family=binomial)) +
+  geom_vline(xintercept = -beta[1]/beta[2], lty = 2)
+
+gg2.1
 ```
 
 Most blue points fall to one side of the dashed classification line and most red points to the other side; this is what we wanted. The points that are in the wrong side of the line are misclassified by the logistic regression model, we're trying to minimize that.
@@ -442,7 +445,11 @@ Note that, just like for linear regression, a logistic regression model allows t
 
 One advantage of logistic regression is simplicity. It's part of the *generalized linear regression* family of models and the concept of a link function used to build such a model can also be used for various types of response variables (not only binary, but also count data...). You can find more details in this [Wikipedia article](https://en.wikipedia.org/wiki/Generalized_linear_model). 
 
-Furthermore, logistic regression allows for an interesting interpretation of its model parameters: *log-odds* and *log-odds ratios*. Logg-odds ratios represent how much likely it is to find one class versus the other (e.g. class 1 is twice as likely than class 0 whenever we have probabilities $66\%$ vs $33\%$). Increases in the values of the predictors affect the log-odds multiplicatively.
+Furthermore, logistic regression allows for an interesting interpretation of its model parameters: *odds* and *log-odds*. Odds represent how much likely it is to find one class versus the other (e.g. class 1 is twice as likely as class 0 whenever we have probabilities $66\%$ vs $33\%$). The *odds* are defined as the probability of $Y$ belonging to class 1 divided by the probabiity of belonging to class 0, and relates to the model parameters as
+$$\frac{P(Y_i=1)}{P(Y_i=0)} = \exp(\beta_0+\beta_1 X_i).$$
+So the *log-odds* are
+$$\log\left(\frac{P(Y_i=1)}{P(Y_i=0)}\right) = \beta_0+\beta_1 X_i.$$
+Increases in the values of the predictors affect the odds multiplicatively and the log-odds linearly.
 
 It is easy to extend a logistic regression model to more than two classes by fitting models iteratively. For example, first you classify class 1 against classes 2 and 3; then another logistic regression classifies class 2 against 3. 
 
@@ -499,11 +506,11 @@ Let's take a look at the previous metrics for the logistic regression model we f
 
 ```{r}
 # Make classification predictions
-Y <- as.factor(logmod$data$NIGHT)
+Y <- logmod$data$Type
 Y_pred <- as.factor(round(logmod$fitted.values)) # Use 0.5 as threshold
 
 # Change class names
-levels(Y) <- levels(Y_pred) <- c("DAY", "NIGHT")
+levels(Y) <- levels(Y_pred) <- c("Quebec", "Mississippi")
 
 # plot confusion matrix
 conf_matrix <- caret::confusionMatrix(data = Y_pred, reference = Y)
@@ -550,6 +557,8 @@ This stepwise approach can be done backwards, starting with a full model (all av
 The **variance inflation factor (VIF)** is a score from economics that measures the amount of multicollinearity in regression, based on how the estimated variance of a coefficient is inflated due to its correlation with another predictor. It's calculated as
 $$\text{VIF}_i = \frac{1}{1 - R^2_i},$$
 where $R^2_i$ is the coefficient of determination for regressing the i$^{th}$ predictor on the remaining ones. A VIF$_i$ is computed for each predictor in the multivariate regression model we are evaluating, meaning: if $\text{VIF}_i = 1$ variables are not correlated; if $1 < \text{VIF}_i < 5$ there is moderate collinearity; and if $\text{VIF}_i \geq 5$ they are highly correlated. Because they can be almost fully explained by all the other predictors (high $R^2_i$), these variables are redundant in our final model.
+
+To remedy collinearity, you may choose to use only one or two of those correlated variables. Another option would be to use *Principal Component Analysis* (PCA), which you may read more about [here](https://www.r-bloggers.com/2021/05/principal-component-analysis-pca-in-r/). What PCA does is to map the space of predictors into another of smaller dimension, leading to a smaller set of predictor variables $\{Z_1, ... , Z_q\}$, each of them being a linear combination of all the initial available predictors, that is $Z_1 = \alpha^1_0 + \alpha^1_1 X_1 + ... + \alpha^1_p X_p$, etc. If you have collinearity, those highly correlated variables would be summarized into one single new variable, called *principal component*.
 
 When we work with high-dimensional data (that is, we have more variables than observations) there are better techniques to do variable selection than stepwise regression. Since the predictors space is so large, we could fit a line that passes through all the observations (a perfect fit), but does the model generalize? We don't know. For example, Lasso and Ridge regression incorporate variable selection in the fitting process (you can check [this post](https://www.r-bloggers.com/2020/06/understanding-lasso-and-ridge-regression/) if you're curious).
 
