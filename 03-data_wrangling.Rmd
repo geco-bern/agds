@@ -271,15 +271,15 @@ We can also apply multiple aggregation functions to different variables simultan
 Finally, we calculate the fraction of measured underlying half-hourly data from which the aggregation is calculated and we save the daily data frame as a CSV file for later use.
 
 ```{r}
-ddf <- hhdf %>% 
-    mutate(date = as_date(TIMESTAMP_START)) %>%   # converts time object to a date object
-    group_by(date) %>% 
+ddf <- hhdf |> 
+    mutate(date = as_date(TIMESTAMP_START)) |>   # converts time object to a date object
+    group_by(date) |> 
     summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE),
               n_datapoints = n(), # counts the number of observations per day
               n_measured = sum(NEE_VUT_REF_QC == 0), # counts the number of actually measured data (excluding gap-filled and poor quality data)
               SW_IN_F = mean(SW_IN_F, na.rm = TRUE),  # we will use this later
               .groups = 'drop' # to un-group the resulting data frame
-              ) %>% 
+              ) |> 
     mutate(f_measured = n_measured / n_datapoints) # calculate the fraction of measured values over total observations
 write_csv(ddf, file = "data/ddf.csv")
 ddf
@@ -381,8 +381,8 @@ hhdf <- hhdf |>
 This lets us visualise the data and its gaps with `vis_miss()` from the *visdat* package. Visualising missing data can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
 
 ```{r warning=FALSE, message=FALSE}
-vis_miss(
-  hhdf,
+visdat::vis_miss(
+  hhdf |> slice(1:10000),
   cluster = FALSE, 
   warn_large_data = FALSE
   )
@@ -550,8 +550,8 @@ ddf_allsites
 A visualisation of missing data indicates that soil water content data (`SWC_F_MDS_*`) are often missing.
 
 ```{r}
-vis_miss(
-  ddf_allsites,
+visdat::vis_miss(
+  ddf_allsites |> slice(1:10000),
   cluster = FALSE,
   warn_large_data = FALSE
   )
@@ -602,7 +602,6 @@ list_linmod |>
 ```
 
 `map_dbl()` is a variant of the `map()` function that returns not a list, but a vector of numeric values of class "double" (hence, the name `_dbl`). Note further, that providing a character (`"r.squared"`) as an argument instead of an (unquoted) function name, `map()` extracts the correspondingly named list element, instead of applying a function to a list element.
->>>>>>> 50023d470dc8d16c4edaa349a21a5619f3048008
 
 When writing code for an analysis, it's useful, if not essential, to understand the objects we're working with, understand its type and shape, and make sense of the results of simple `print <object>` statements. Data frames are particularly handy as they provide an organisation of data that is particularly intuitive (variables along columns, observations along rows, values in cells). Here, we're dealing with a list of linear model objects. Can such a list fit into the paradigm of *tidy* data frames?
 
