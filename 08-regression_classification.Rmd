@@ -572,7 +572,7 @@ When we work with high-dimensional data (that is, we have more variables than ob
 
 #### Outlier detection
 
-Detecting outliers is important, because they can affect the fit of a model and render the model fitting not robust. When the data is large, individual points have less influence on the model fitting. Outliers are therefore particularly problematic in the context of small data. 
+Detecting outliers is important, because they can affect the fit of a model and render the model fitting not robust. When the data is large, individual points have less influence on the model fitting. Therefore only outliers that are very far from normal values will affect the model fit (see below). Outliers are particularly problematic in the context of small data, because every value has a big influence on the fitted model.
 
 Take a look at the two linear regressions below and how one single weird observation can throw off the fit. Whenever an observation is very distant from the center of the predictor's distribution, it becomes very influential (it has a big *leverage*). If the observed response for that data point is in harmony with the rest of points, nothing happens, but if it's also off, the regression model will be affected greatly.
 
