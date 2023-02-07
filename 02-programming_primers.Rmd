@@ -505,7 +505,7 @@ for (i in 2:99) {       # for-loop iterating from 2 to 99
 # Get the increment that is needed for interpolation
 last_value  <- vec[last_non_na] # Last non-NA value
 first_value <- vec[first_non_na] # First non-NA value
-delta <- (last_value - first_value) / (first_na - last_na) # Change in y over change in x
+delta <- (last_value - first_value) / (last_non_na - first_non_na) # Change in y over change in x
 
 for (i in 2:length(vec)) { # If loop iterating from 2 to length of vec
   # If position is NA, replace it by previous value plus increment
@@ -528,7 +528,8 @@ vec[1:25] <- 6 # Fill up first 25 elements of 'vec' with value 6.
 vec[66:100] <- -20 # Fill up elements 66:100 with value -20.
 last_non_na <- 1
 is_defined <- TRUE
-while (defined){ # Search last element defined before gap and store its position
+
+while (is_defined){ # Search last element defined before gap and store its position
 	if (is.na(vec[last_non_na+1])){
 		is_defined <- FALSE
 	} else {
@@ -547,7 +548,7 @@ while (is.na(vec[first_non_na])) first_non_na <- first_non_na + 1
 # Get the increment that is needed for interpolation
 last_value  <- vec[last_non_na] # Last non-NA value
 first_value <- vec[first_non_na] # First non-NA value
-delta <- (last_value - first_value) / (first_na - last_na) # Change in y over change in x
+delta <- (last_value - first_value) / (last_non_na - first_non_na) # Change in y over change in x
 
 for (i in 2:length(vec)) { # If loop iterating from 2 to length of vec
   # If position is NA, replace it by previous value plus increment
