@@ -487,10 +487,109 @@ For example, keep source files where R functions are defined in `./R` (where . r
 
 A project directory should only contain code, data and outputs that belong to this one project. Stuff that may belong to multiple projects should be kept somewhere else. For example, keep original data (e.g., the raw data files that you created when collecting the data in the field, or data files you downloaded from the web) outside the project directory. Exceptions are small data files, which you can keep in `./data_raw`.
 
-It is advisable to create a separate data directory outsidethe project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
+It is advisable to create a separate data directory outside the project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
 
 You can find an [R project template](https://github.com/computationales/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
 
 ## Exercises
 
+Alright, let's get started with the first exercise! Go to RStudio, set up a new project and create a new `.R`-file. Here are few exercises to get you started - remind yourself often of the guidelines on proper coding to make your life easier!
+
+-   Perform a little magic trick: Start with any number between 1 and 20 and do the calculations below. Create three variables: The original value, the value that is overwritten in every calculation, and a final value. Calculations: Add 1, double the number, add 4, divide by 2, subtract the original number
+
+-   Play around with different values, what do you find?.
+
+-   Advanced: Can you turn the little magic trick into a function that checks if the original value is an integer ([hint](https://statisticsglobe.com/check-if-number-is-integer-in-r)) between 1 and 20 and prints the final value at the end?
+
+-   Clean up the code chunk below following the {tidyverse} style guide. Run the statements in your console - do they work? If not, why?
+
+```{r eval=FALSE}
+anothervariable = c(1)
+seq <- vector(1,2 3 ,4)
+is_true <- T
+list(a=1, b = This is some really bad code}
+var <- 7
+my_new_function(this_is_a_very_long_argument = "value 1", and_this_is_another_very_long_argument = "value 2", short_but_still_long_argument = NA )
+```
+
 ## Solutions
+
+### Magic Trick
+
+```{r}
+magic_trick <- function(original_value) {
+
+  # Check if the argument for original_value is a numeric value
+  if (!is.numeric(original_value)) stop("Error: Input is not a numeric value.")
+  
+  # Check if the argument for original_value is an integer
+  if (round(original_value) != original_value) stop("Error: Input is not an integer.")
+  
+  # Check if original value is between 1 and 20
+  if (original_value < 1 | original_value > 20) stop("Error: Input is outside of 1 and 20.")
+  
+  # Define temporary variable
+  tmp <- original_value + 1
+  tmp <- tmp * 2
+  tmp <- tmp + 4
+  tmp <- tmp / 2
+  final_value <- tmp - original_value
+  
+  cat("The original value was: ", original_value, "\n",
+      "The final value is: ", final_value, "\n")
+}
+```
+
+Let's try out some false input arguments to see, if our function correctly captures them and reports back what is wrong:
+
+```{r eval = FALSE}
+magic_trick("7")
+```
+```
+## Error in magic_trick("7") : Error: Input is not a numeric value.
+## 2. stop("Error: Input is not a numeric value.")
+## 1. magic_trick("7")
+```
+
+```{r eval = FALSE}
+magic_trick(7.5)
+```
+```
+## Error in magic_trick(7.5) : Error: Input is not an integer.
+## 2. stop("Error: Input is not an integer.")
+## 1. magic_trick("7")
+```
+
+```{r eval = FALSE}
+magic_trick(77)
+```
+```
+## Error in magic_trick(77) : Error: Input is outside of 1 and 20.
+## 2. stop("Error: Input is outside of 1 and 20.")
+## 1. magic_trick(77)
+```
+
+And now let us test, whether the magic trick works:
+
+```{r}
+magic_trick(1)
+magic_trick(7)
+magic_trick(11)
+magic_trick(20)
+
+```
+
+### Code Clean-up
+
+```{r eval=FALSE}
+variable <- 1
+vector   <- c(1, 2, 3, 4)
+is_true <- TRUE
+list(a = 1 , 
+     b = "This is some really bad code")
+my_new_function(
+  argument_1 = "value 1", 
+  argument_2 = "value 2", 
+  argument_3 = NA
+)
+```
