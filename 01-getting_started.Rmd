@@ -536,24 +536,47 @@ magic_trick <- function(original_value) {
   final_value <- tmp - original_value
   
   cat("The original value was: ", original_value, "\n",
-      "The final value is: ", final_value)
+      "The final value is: ", final_value, "\n")
 }
 ```
 
-```{r}
+Let's try out some false input arguments to see, if our function correctly captures them and reports back what is wrong:
+
+```{r eval = FALSE}
 magic_trick("7")
 ```
+```
+## Error in magic_trick("7") : Error: Input is not a numeric value.
+## 2. stop("Error: Input is not a numeric value.")
+## 1. magic_trick("7")
+```
 
-
-```{r}
+```{r eval = FALSE}
 magic_trick(7.5)
 ```
-```{r}
-magic_trick(77)
+```
+## Error in magic_trick(7.5) : Error: Input is not an integer.
+## 2. stop("Error: Input is not an integer.")
+## 1. magic_trick("7")
 ```
 
+```{r eval = FALSE}
+magic_trick(77)
+```
+```
+## Error in magic_trick(77) : Error: Input is outside of 1 and 20.
+## 2. stop("Error: Input is outside of 1 and 20.")
+## 1. magic_trick(77)
+```
+
+And now let us test, whether the magic trick works:
+
 ```{r}
+magic_trick(1)
 magic_trick(7)
+magic_trick(11)
+magic_trick(20)
+
 ```
 
 ### Code Clean-up
