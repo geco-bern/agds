@@ -512,10 +512,10 @@ var <- 7
 my_new_function(this_is_a_very_long_argument = "value 1", and_this_is_another_very_long_argument = "value 2", short_but_still_long_argument = NA )
 ```
 
-
 ## Solutions
 
 ### Magic Trick
+
 ```{r}
 magic_trick <- function(original_value) {
 
@@ -544,10 +544,10 @@ magic_trick <- function(original_value) {
 magic_trick("7")
 ```
 
-
 ```{r}
 magic_trick(7.5)
 ```
+
 ```{r}
 magic_trick(77)
 ```
@@ -557,6 +557,7 @@ magic_trick(7)
 ```
 
 ### Code Clean-up
+
 ```{r eval=FALSE}
 variable <- 1
 vector   <- c(1, 2, 3, 4)
@@ -569,4 +570,3 @@ my_new_function(
   argument_3 = NA
 )
 ```
-
