@@ -22,7 +22,7 @@ Visualizations often take the center stage of publications and are often the mai
 
 The quality of a data visualization can be measured by its effectiveness of conveying information about the data and thus of answering a question with the data and telling a story. Different aspects determine this effectiveness, including the appropriateness of visualization elements, the intuitiveness of how information can be decoded from the visualization by the reader, the visual clarity and legibility (taking into account the vision and potential vision deficiencies of the reader), the visual appeal, etc. This tutorial introduces data visualization under the premise that not all aspects of data visualization are a matter of taste. There are appropriate and less appropriate ways of encoding data in visual form.
 
-This tutorial is inspired by the comprehensive and online available textbook Fundamentals of [Data Visualization by Claus O. Wilke](https://clauswilke.com/dataviz/index.html). Another excellent resource is the [Chapter Data Visualisation in R for Data Science by Hadley Wickham](<https://r4ds.had.co.nz/data-visualisation.html>.
+This tutorial is inspired by the comprehensive and online available textbook Fundamentals of [Data Visualization by Claus O. Wilke](https://clauswilke.com/dataviz/index.html). Another excellent resource is the [Chapter Data Visualisation in R for Data Science by Hadley Wickham](https://r4ds.had.co.nz/data-visualisation.html)
 
 ### The grammar of graphics
 
@@ -43,7 +43,7 @@ From [(Wilke)](https://clauswilke.com/dataviz/):
 
 Applied to our example, the aesthetics are the x-axis and the y-axis of a cartesian coordinate system. `TIMESTAMP_START` is mapped onto the x-axis, `GPP_NT_VUT_REF` is mapped onto the y-axis, and their respective values specify the position of points in the cartesian coordinate system that are then connected with lines - making up the geometrical object that represents the data. Often, the aesthetic that is used to plot the target variable against corresponds to a known axis of variation in the data.
 
-The notion of mapping data onto aesthetics and using objects whose geometry is defined by the aesthetics gives rise to the *grammar of graphics* and to the *ggplot2* R package for data visualisation (which we will use throughout the remainder of this course). The equivalent *ggplot2* code that follows the philosophy of the grammar of graphics is:
+The notion of mapping data onto aesthetics and using objects whose geometry is defined by the aesthetics gives rise to the *grammar of graphics* and to the {ggplot2} R package for data visualisation (which we will use throughout the remainder of this course). The equivalent {ggplot2} code that follows the philosophy of the grammar of graphics is:
 
 ```{r}
 ggplot(data = hhdf, aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
@@ -52,11 +52,11 @@ ggplot(data = hhdf, aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
 
 The argument provided by the `aes()` statement specifies the aesthetics (`x`, and `y`) and which variables in `data` are mapped onto them. Once this is specified, we can use any suitable geometrical object that is defined by these aesthetics. Here, we used a line plot specified by `+ geom_line()`.
 
-The data visualisation above is a dense plot and we cannot distinguish patterns because variations in GPP happen at time scales that are too narrow for displaying three years of half-hourly data in one plot. GPP varies throughout a day just as much as it varies throughout a season. To see this, we can focus on a narrower time span (selecting rows by index using `slice()` in the code below). Visual clarity is also facilitated by an appropriate labeling (title and axes labels using `labs()`) and by a reduction of displayed elements to a minimum (therefore, the changing of the formatting theme by `theme_classic()`):
+The data visualisation above is a dense plot and we cannot distinguish patterns because variations in GPP happen at time scales that are too narrow for displaying three years of half-hourly data in one plot. GPP varies throughout a day just as much as it varies throughout a season. To see this, we can focus on a narrower time span (selecting rows by index using `dplyr::slice()` in the code below). Visual clarity is also facilitated by an appropriate labeling (title and axes labels using `labs()`) and by a reduction of displayed elements to a minimum (therefore, the changing of the formatting theme by `theme_classic()`):
 
 ```{r}
 hhdf |> 
-  slice(24000:25000) |>
+  dplyr::slice(24000:25000) |>
   ggplot(aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
   geom_line() +
   labs(title = "Gross primary productivity", 
@@ -66,45 +66,49 @@ hhdf |>
   theme_classic()
 ```
 
-Find a complete reference to *ggplot2* [here](https://ggplot2.tidyverse.org/) [@R-ggplot2]. The grammar of graphics has found its way also into Python and you can use ggplot using the plotnine Python package (see [here](https://realpython.com/ggplot-python/)).
+Find a complete reference to {ggplot2} [here](https://ggplot2.tidyverse.org/) [@R-ggplot2]. The grammar of graphics has found its way also into Python and you can use ggplot using the *plotnine* Python package (see [here](https://realpython.com/ggplot-python/)).
 
 ### Every data has its representation
 
-In the above example, we mapped two continuous variables (`TIMESTAMP_START` and `GPP_NT_VUT_REF`) onto the aesthetics `x`, and `y` to visualize time series data. A line plot is an appropriate choice for such data as points are ordered along the time axis and can be connected by a line. Different "geometries" are suitable for visualizing different aspects of the data, and different variable types are suited to mapping onto different aesthetics. Common, available aesthetics are shown in Fig. XXX and can be allocated to variable types:
+In the above example, we mapped two continuous variables (`TIMESTAMP_START` and `GPP_NT_VUT_REF`) onto the aesthetics `x`, and `y` to visualize time series data. A line plot is an appropriate choice for such data as points are ordered along the time axis and can be connected by a line. Different "geometries" are suitable for visualizing different aspects of the data, and different variable types are suited to mapping onto different aesthetics. Common, available aesthetics are shown in Fig. \@ref(fig:common-aesthetics) and can be allocated to variable types:
 
 -   Continuous variables: position, size, color (a color gradient), line width, etc.
 -   Categorical variables: shape, color (a discrete set of colors), line type, etc.
 
 <!-- https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png -->
 
-![](./figures/common-aesthetics-1.png)
+<!-- ![test](./figures/common-aesthetics-1.png){#fig:test} \@ref(fig:test -->
 
-Not only the different aesthetics, but also the each type of *geometry* (the layers of the visualization added to a plot by `+ geom_*()`) goes with certain types of variables and aspects of the data (but not with others). The sub-sections below provide a brief categorization of data visualization types. A more comprehensive overview is given by [GGPlot2 Essentials for Great Data Visualization in R by Alboukadel Kassambara](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization#geom_bar-bar-plot).
+```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types."}
+knitr::include_graphics("./figures/common-aesthetics-1.png")
+```
+
+Not only the different aesthetics, but also the type of *geometry* (the layers of the visualization added to a plot by `+ geom_*()`) goes with certain types of variables and aspects of the data (but not with others). The sub-sections below provide a brief categorization of data visualization types. A more comprehensive overview is given by [GGPlot2 Essentials for Great Data Visualization in R by Alboukadel Kassambara](http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization#geom_bar-bar-plot).
 
 #### One value per category
 
-Probably the simplest case of data vizualisation is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with *ggplot2*. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(data_wrangling).
+Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(data_wrangling).
 
 ```{r}
 ddf <- read_csv("data/ddf.csv")
 
 # Bar plot
 gg1 <- ddf |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  group_by(month) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF)) |> 
+  dplyr::mutate(month = month(date, label = TRUE)) |> 
+  dplyr::group_by(month) |> 
+  dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF)) |> 
   ggplot(aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_bar(stat = "identity") +
   theme_classic() +
   labs(title = "Bar plot",
        x = "Month", 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")))
+       y = expression(paste("Mean GPP (gC m"^-2, "s"^-1, ")")))
 
 # Custom plot
 gg2 <- ddf |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  group_by(month) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF)) |> 
+  dplyr::mutate(month = month(date, label = TRUE)) |> 
+  dplyr::group_by(month) |> 
+  dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF)) |> 
   ggplot(aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_segment(aes(x = month, xend = month, y = 0, yend = GPP_NT_VUT_REF), 
                size = 3, color = "grey40") +
@@ -114,32 +118,34 @@ gg2 <- ddf |>
   theme_classic() +
   labs(title = "Custom plot",
        x = "Month", 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("Mean GPP (gC m"^-2, "s"^-1, ")"))) +
   scale_y_continuous(limits = c(0, 8.75), expand = c(0, 0)) +
   coord_flip()
   
 cowplot::plot_grid(gg1, gg2)
 ```
 
-Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the *cowplot* library.
+Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the {cowplot} library.
 
-Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the *dplyr* function `summarise()`. This equivalency is demonstrated below.
+Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the function `dplyr::summarise()`. This equivalency is demonstrated below.
 
 ```{r}
 # separate aggregation
 gg1 <- hhdf |> 
-  filter(NEE_VUT_REF_QC == 0) |> 
-  group_by(NIGHT) |> 
-  summarise(count = n()) |> 
+  dplyr::filter(NEE_VUT_REF_QC == 0) |> 
+  dplyr::group_by(NIGHT) |> 
+  dplyr::summarise(count = n()) |> 
   ggplot(aes(x = NIGHT, y = count)) +
   geom_bar(stat = "identity") +
+  labs(subtitle = "Count via 'summarise' and 'stat = identiy'") +
   theme_classic()
 
 # implicit aggregation by 'stat'
 gg2 <- hhdf |> 
-  filter(NEE_VUT_REF_QC == 0) |> 
+  dplyr::filter(NEE_VUT_REF_QC == 0) |> 
   ggplot(aes(x = NIGHT)) +
   geom_bar(stat = "count") +
+  labs(subtitle = "Count directly via 'stat = count'") +
   theme_classic()
 
 cowplot::plot_grid(gg1, gg2)
@@ -149,7 +155,7 @@ cowplot::plot_grid(gg1, gg2)
 
 Examining the distribution of a variable is often the first step of exploratory data analysis. A *histogram* displays the distribution of numerical data by mapping the frequency (or count) of values within discrete bins (equally spaced ranges along the full range values of a given variable) onto the "height" of a bar, and the range of values within bins onto the position of the bar. In other words, it shows the count of how many points of a certain variable (below `GPP_NT_VUT_REF`) fall into a discrete set of bins. When normalizing (scaling) the "bars" of the histogram to unity, we get a *density histogram*. To specify the y-axis position of the upper end of the histogram bar as the density, use `y = ..density..` in the `aes()` call. To show counts, use `y = ..count..`.
 
-```{r}
+```{r warning=FALSE}
 hhdf |>
   ggplot(aes(x = GPP_NT_VUT_REF, y = ..density..)) +
   geom_histogram(fill = "grey70", color = "black") +
@@ -252,7 +258,7 @@ gg4 <- hhdf |>
 cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 ```
 
-Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c).
+Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). (d) is an example for using a continuous color scheme, as explained in the next section.
 
 #### Use of colors
 
@@ -270,9 +276,9 @@ Choices of colors and their combination is far from trivial. Colors in color sch
 -   Intuitively encoding the information in the data (for example, blue-red for cold-hot)
 -   Visually appealing
 
-In (d), we mapped temperature, a continuous variable, onto the color aesthetic of the points and chose the continuous [*viridis*](https://ggplot2.tidyverse.org/reference/scale_viridis.html) color scale by specifying `+ scale_color_viridis_c()`. The viridis scales have become popular for their respect of the points listed above.
+In (d), we mapped temperature, a continuous variable, onto the color aesthetic of the points and chose the continuous *viridis* color scale by specifying `+ scale_color_viridis_c()`. The viridis scales have become popular for their respect of the points listed above.
 
-For further reading, several excellent resources exist that theoretize and guide the use of color in data visualization. Excellent sources are:
+For further reading, several excellent resources exist that theorize and guide the use of color in data visualization. Excellent sources are:
 
 -   [Fabio Crameri's Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/), [Crameri (2018)](https://gmd.copernicus.org/articles/11/2541/2018/) and its R package *scico* (on CRAN).
 -   [Paul Tol's Notes](https://personal.sron.nl/~pault/), available for example in the *khroma* R package (on CRAN).
@@ -289,7 +295,7 @@ Hence, let's consider months as the categories to be used for separating the dat
 
 ```{r}
 ddf |>
-  mutate(month = month(date, label = TRUE)) |>
+  dplyr::mutate(month = month(date, label = TRUE)) |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = month)) +
   geom_point(alpha = 0.5) +
   geom_smooth(formula = y ~ x + 0, method = "lm", se = FALSE) +
@@ -299,11 +305,11 @@ ddf |>
   scico::scale_color_scico_d(palette = "romaO")
 ```
 
-Note three aspecte here. First, the color-mapping is specified within `aes()` in the `ggplot()` function call and then adopted for all subsequent additions of geoms. Hence, also the `geom_smooth()` thus takes the color information, and not by a "hard-coded" specification of `color =` inside the `geom_smooth()` call as done in Fig. XXX.
+Note three aspects here. First, the color-mapping is specified within `aes()` in the `ggplot()` function call and then adopted for all subsequent additions of geoms. Hence, also the `geom_smooth()` thus takes the color information, and not by a "hard-coded" specification of `color =` inside the `geom_smooth()` call as done in Fig. XXX.
 
 Second, we specified a formula for the linear regression "smooting curve" to force the lines through the origin (`y ~ x + 0`). This is motivated by our a priori understanding of the process generating the data: when solar radiation is zero, photosynthesis (and hence GPP) should be zero.
 
-Third, we chose a color palette that reflects the cyclic (or periodic) nature of the categories (months). January is closer to December than it is to April. Therefore, their respective colors should also be closer in *color space*. An appropriate palette for this is `"romaO"` from the *scico* package.
+Third, we chose a color palette that reflects the cyclic (or periodic) nature of the categories (months). January is closer to December than it is to April. Therefore, their respective colors should also be closer in the *color space*. An appropriate palette for this is `"romaO"` from the *scico* package.
 
 **Separation into sub-plots**
 
@@ -311,7 +317,7 @@ Yet another "mapping" is available with `facet_wrap()`. It separates the visuali
 
 ```{r}
 ddf |>
-  mutate(month = month(date, label = TRUE)) |>
+  dplyr::mutate(month = month(date, label = TRUE)) |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
   geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
@@ -352,9 +358,9 @@ We observe the presumably bad data appear in yellow, and are therefore indeed ch
 
 #### Periodic data
 
-The seasons are an important axis of variation in our data. Hence our data are periodic - with a periodicity of 365 days in the `ddf` dataset and with both 12 hours and 365 days in the `hhdf` dataset. A polar coordinate system, instead of a cartesian system, lends itself to displaying periodic data. A polar coordinate system reflects the fact that, for example, January 1st is closer to December 31st, although they are located on the extreme end of a linear spectrum of days in a year. In a polar coordinate system, the x-axis spans the angle (360$^\circ$, like the clock hands), while the y-axis spans the radius (distance from the center). This is specified by changing the coordinate system of the ggplot object by `+ coord_polar()`.
+The seasons are an important axis of variation in our data. Hence our data are periodic - with a periodicity of 365 days in the `ddf` dataset and with both 12 hours and 365 days in the `hhdf` dataset. A polar coordinate system, instead of a cartesian system, lends itself to displaying periodic data. A polar coordinate system reflects the fact that, for example, January 1st is closer to December 31st, although they are located on the extreme end of a linear spectrum of days in a year. In a polar coordinate system, the x-axis spans the angle (360$^\circ$, like a clock), while the y-axis spans the radius (distance from the center). This is specified by changing the coordinate system of the ggplot object by `+ coord_polar()`.
 
-Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b), and to get a mean diurnal (daily) cycle from June data in `hhdf` (c, d). To get the mean seasonal cycle, we first determine the day-of-year (counting from 1 for January first to 365 for December 31st) using the *lubridate* function `yday()`.
+Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b), and to get a mean diurnal (daily) cycle from June data in `hhdf` (c, d). To get the mean seasonal cycle, we first determine the day-of-year (counting from 1 for January first to 365 for December 31st) using the {lubridate} function `yday()`.
 
 ```{r}
 # seasonal cycle, cartesian
@@ -453,7 +459,7 @@ The base-R function `image()` can be used to visualize such spatial data as imag
 image(volcano)
 ```
 
-*ggplot2* forces us to the data frame paradigm and therefore doesn't lend itself naturally to raster data. We can, however, convert raster data into a data frame in a separate step.
+{ggplot2}forces us to the data frame paradigm and therefore doesn't lend itself naturally to raster data. We can, however, convert raster data into a data frame in a separate step.
 
 ```{r}
 # example from https://github.com/thomasp85/scico
@@ -478,8 +484,8 @@ Raster data often reflects values in geographic space. Also points and polygons 
 
 Interested readers can find more content on geospatial data visualisation here:
 
-- Timo Grossenbacher's blog on geographic data journalism ([link](https://timogrossenbacher.ch/blog/))
-- Koen Hufken's blog containing various worked example XXX
+-   Timo Grossenbacher's blog on geographic data journalism ([link](https://timogrossenbacher.ch/blog/))
+-   Koen Hufken's blog containing various worked example XXX
 
 ## Exercises
 
@@ -487,6 +493,6 @@ Interested readers can find more content on geospatial data visualisation here:
 
 -   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors.
 
--   \*\*\*Tell a story about the `airquality` data.
+-   \*\*\*Tell a story about the `airquality` data (data is directly available, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
 
 ## Solutions

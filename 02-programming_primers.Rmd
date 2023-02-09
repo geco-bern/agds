@@ -414,10 +414,173 @@ If you do not understand the error message, start by searching the web. Be aware
 
 #### Asking for help
 
-If you cannot find a solution online, start by asking your friends and colleagues. Someone with more experience than you might be able and willing to help you. When asking for help it is important to think about how you state the problem. The key to receiving help is to make it as easy as possible to understand the issue your facing. Try to reduce what does not work to a simple example. Reproduce a problem with a simple data frame instead of one with thousands of rows. Generalize it in a way that people who do not do research in your field can understand the problem. If you are asking a question online in a forum include the output of `sessionInfo()` (it provides information about the R version, packages your using,...) and other information that can be helpful to understand the problem. stackoverflow.com has its own guidelines on how to ask a good question, which you should follow. If your question is well crafted and has not been answered before you can sometimes get an answer within 5 minutes. <https://stackoverflow.com/help/how-to-ask>
+If you cannot find a solution online, start by asking your friends and colleagues. Someone with more experience than you might be able and willing to help you. When asking for help it is important to think about how you state the problem. The key to receiving help is to make it as easy as possible to understand the issue your facing. Try to reduce what does not work to a simple example. Reproduce a problem with a simple data frame instead of one with thousands of rows. Generalize it in a way that people who do not do research in your field can understand the problem. If you are asking a question online in a forum include the output of `sessionInfo()` (it provides information about the R version, packages your using,...) and other information that can be helpful to understand the problem. [Stackoverflow](https://www.stackoverflow.com) has its own [guidelines](https://stackoverflow.com/help/how-to-ask) on how to ask a good question, which you should follow. Here's a [great template](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) you should use for R-specific question. If your question is well crafted and has not been answered before you can sometimes get an answer within 5 minutes.
 
-Finally, many packages have a mailing list or allow you to open a query on the code repository, where you can ask specific questions. The same is true for R itself. The R-Help mailing list <https://stat.ethz.ch/mailman/listinfo/r-help> is read by many people. However, the tone of such mailing lists can be pretty dry and unwelcoming to new users. Be sure to use the right terminology or else you might get an answer pointing out your misuse of language instead of your problem. Also, be sure your question is valid. Or else you won't get an answer.
+Finally, many packages have a mailing list or allow you to open a query on the code repository, where you can ask specific questions. The same is true for R itself. The [R-Help mailing list](https://stat.ethz.ch/mailman/listinfo/r-help) is read by many people. However, the tone of such mailing lists can be pretty dry and unwelcoming to new users. Be sure to use the right terminology or else you might get an answer pointing out your misuse of language instead of your problem. Also, be sure your question is valid. Or else you won't get an answer.
 
 ## Exercises
 
+1.  Use a `for` loop to compute the sum of all natural numbers from 1 to 100. Print the result to the screen. Repeat this exercise but use a `while` loop.
+
+2.  Add up all numbers between 1 and 100 that are at the same time a multiple of 3 and a multiple of 7. Print the result to the screen in the form of: `The sum is of multiples of 3 and 7 within 1-100 is: {your result}`.
+
+3.  Define a vector $\vec{v}$ of length 100. Define the vector so that $v_i = 6$, for $i = 1 : 25$ and $v_i = -20$, for $i = 66 : 100$. Linearly interpolate the remaining elements that are not defined. Plot the values of $\vec{v}$.
+
+4.  A powerful capability of loops is that you can nest them! Let's try this out. Define a dataframe with the code `matrix(c(1,2,3,4,5,6), nrow = 2 ,ncol = 3)`, write an outer loop that iterates over the numbers of columns and an inner loop that iterates over the number of rows. Write the code so that the sum of each column is printed to the screen.
+
+## Exercise for The Report
+
+-   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
+
+-   Define a function to compute a 12-month running mean of the monthly CO2 time series. Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken (in this case 12). Plot the running mean overlain onto the monthly data. Use a different color for the running mean graph.
+
+### Hints
+
+-   Useful functions (find out more with `?function_name`: `print()`, `paste()`, `seq()`, `plot()`, `ncol()`, `nrow()`, `read.table()`, `hear()`
+
+-   Logical operators are covered in the previous tutorial.
+
+-   If you started an endlessly running loop, pres `Esc` on your keyboard or click the little red "stop" pictogram in the RStudio console. 
+
+-   To find out whether any number is another number's multiple, use conditional statements in combination with the modulo-operator `%%`. The modulo operator returns the remainder of a division, for example `8 %% 3 = 2`.
+
+-   For the linear interpolation, find and sequentially add the increment that you need to to add to each previous value to get from the first undefined position to the last defined position.
+
 ## Solutions
+
+```{r}
+# 1a. for-loop to compute sum from 1 - 100
+sum <- 0
+for (i in seq(100)) sum <- sum + i # for-loop iterating from 1 to 100
+print(sum)
+
+
+# 1b. while-loop to compute sum from 1 - 100
+loop_status <- TRUE
+counter <- 0
+sum <- 0
+while (loop_status) { # while-loop is repeated as long as loop_status is true
+  counter <- counter + 1
+  sum <- sum + counter
+  
+  if (counter == 100) loop_status <- FALSE
+}
+print(sum)
+```
+
+
+```{r}
+# 2. Add up all numbers that are multiples of 3 and 7
+sum <- 0
+for (i in seq(100)) {
+	if (i %% 3 == 0 && i %% 7 == 0 ) {
+		sum <- sum + i
+	}	
+}	
+print(paste0("The sum is of multiples of 3 and 7 within 1-100 is: ", sum))
+```
+
+
+```{r}
+# 3. Define and interpolate vector
+# Using a for-loop to identify first and last position of NA values
+vec <- array(NA,c(100)) # Initiate vector of length 100 with NAs
+vec[1:25] <- 6          # Fill up first 25 elements of 'vec' with value 6. 
+vec[66:100] <- -20      # Fill up elements 66:100 with value -20.
+for (i in 2:99) {       # for-loop iterating from 2 to 99
+  # NOTE: The reason we loop between 2 and 99 is because we need to compare
+  # neighboring positions to find the transition from entries with number to 
+  # entries with NA (i-1, i, i + 1). Positions 0 and 101 are not defined 
+  # in our vector and thus lead to an error when trying to access.
+  
+  # Find last defined value 
+  # Requires: Current position i is not NA but the next one is
+  if (!is.na(vec[i]) && is.na(vec[i+1])) last_non_na <- i
+
+  # Find first defined value
+  # Requires: Previous position is NA but not the current one
+  if (!is.na(vec[i]) && is.na(vec[i-1])) first_non_na <- i
+}
+
+# Get the increment that is needed for interpolation
+last_value  <- vec[last_non_na] # Last non-NA value
+first_value <- vec[first_non_na] # First non-NA value
+delta <- (last_value - first_value) / (last_non_na - first_non_na) # Change in y over change in x
+
+for (i in 2:length(vec)) { # If loop iterating from 2 to length of vec
+  # If position is NA, replace it by previous value plus increment
+  if (is.na(vec[i])) vec[i] <- vec[i-1] + delta
+}
+
+# Create plot
+# Intrinsic function 'plot' requires the following arguments:
+# 1st argument: vecor of x-values
+# 2nd argument: vecor of y-values (must be of same length as x-value vector)
+plot(seq(length(vec)), 
+     vec,
+     type = "l",
+     main = "Interpolated vector using for-loop")
+
+
+# Using a while-loop to identify first and last position of NA values
+vec <- array(NA,c(100)) # Initiate vector of length 100 with NAs
+vec[1:25] <- 6 # Fill up first 25 elements of 'vec' with value 6. 
+vec[66:100] <- -20 # Fill up elements 66:100 with value -20.
+last_non_na <- 1
+is_defined <- TRUE
+
+while (is_defined){ # Search last element defined before gap and store its position
+	if (is.na(vec[last_non_na+1])){
+		is_defined <- FALSE
+	} else {
+		last_non_na <- last_non_na+1	
+	}
+}
+
+# One may omit the boolean variable 'defined' and directly write:
+last_non_na <- 1
+while (!is.na(vec[last_non_na+1])) last_non_na <- last_non_na + 1
+
+# Search first element defined after gap and store its position
+first_non_na <- last_non_na + 1
+while (is.na(vec[first_non_na])) first_non_na <- first_non_na + 1	
+
+# Get the increment that is needed for interpolation
+last_value  <- vec[last_non_na] # Last non-NA value
+first_value <- vec[first_non_na] # First non-NA value
+delta <- (last_value - first_value) / (last_non_na - first_non_na) # Change in y over change in x
+
+for (i in 2:length(vec)) { # If loop iterating from 2 to length of vec
+  # If position is NA, replace it by previous value plus increment
+  if (is.na(vec[i])) vec[i] <- vec[i-1] + delta
+}
+
+# Create plot
+plot(seq(length(vec)), 
+     vec,
+     type = "l",
+     main = "Interpolated vector using while-loop")
+```
+
+```{r}
+## 4. Find the sum of the values per column
+values <- matrix(c(1,2,3,4,5,6), nrow = 2 ,ncol = 3)
+cat("Dataframe: \n \n")
+values
+
+# Initialize the sums of the columns to zero
+col_sum <- rep(0,ncol(values))
+cat("\n Initial vector col_sum: ", col_sum)
+
+# Iterate over the columns
+for (j in 1:ncol(values)){ 
+    #iterate over the rows for each column
+    for (i in 1:nrow(values)){
+        #calculate the sum of the jth column by adding the values of each row (of the jth column)
+        col_sum[j] <- col_sum[j] + values[i,j]
+    }
+}
+
+cat("\n Final vector col_sum: ", col_sum)
+```
+
