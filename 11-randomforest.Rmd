@@ -1,0 +1,222 @@
+# Random Forest {#random_forest}
+
+**Chapter lead author: Benjamin Stocker**
+
+Contents:
+
+
+-   measure feature importance based on the sum of the reduction in the loss function
+-   pdp
+
+
+-   Sampling less than 100% adds additional randomness in the procedure, which helps to further de-correlate the trees.
+-   permutation-based importance measure: model-agnostic, argument 'permutation'
+-   because mtry \< p, RF is faster than CART (and at the same time better)
+-   gradient boosting: fitting each tree in the sequence to the previous tree's residuals
+-   Unlike random forests, GBMs can have high variability in accuracy dependent on their hyperparameter settings
+
+## Learning objectives
+
+## Tutorial
+
+### Required packages
+
+```{r message=FALSE, warning=FALSE}
+use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "caret", "yardstick", "lubridate", "rsample", "recipes", "modelr", "forcats", "rpart", "rpart.plot")
+new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
+if (length(new_pkgs) > 0) install.packages(new_pkgs)
+invisible(lapply(use_pkgs, require, character.only = TRUE))
+```
+
+### Decision trees
+
+Just as a forest consists of trees, a *Random Forest* model consists of *decision trees.* Therefore, let's start with a decision tree, also known as CART (classification and regression tree). Consider a similar example as in Chapter \@ref(supervised_ml_i) where we fitted a function $Y = f(X)$ with polynomials. Instead, here we fit it with a decision tree. The tree grows by successively splitting (branching) the predictor range ($X$) into binary classes (two regions along $X$) and predicting a different and constant value $c$ for the target variable on either side of the split. The location of the split is chosen such that the overall error between the observed response ($Y_i$) and the predicted constant ($c_i$) is minimized. The error is determined based on whether we're dealing with a regression or a classification problem.
+
+-   For regression problems, the sum of square errors is minimized.
+
+$$
+    \text{SSE} = \sum_i{(\hat{Y_i}-Y_i)^2}
+$$
+
+-   For classification problems, the *cross-entropy* or the *Gini index* are typically maximized.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Code adopted from https://koalaverse.github.io/homlr/notebooks/09-decision-trees.nb.html 
+# create training data
+set.seed(1982)  # for reproducibility
+n_samples <- 500
+
+df_train <- tibble::tibble(
+  x = seq(from = 0, to = 2 * pi, length = n_samples),
+  y = sin(x) + rnorm(length(x), sd = 0.5),
+  truth = sin(x)
+)
+
+# a function to 
+plot_tree_fit <- function(df, depth){
+
+  # fit decision tree
+  mod <- rpart(y ~ x, 
+               data = df, 
+               control = list(cp = 0, 
+                              minbucket = 5, 
+                              maxdepth = depth
+                              )
+               )
+  
+  # training results
+  df <- df |> 
+    modelr::add_predictions(mod, var = "y_pred")
+  
+  ## at equally spaced x
+  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) |> 
+    modelr::add_predictions(mod, var = "y_pred")
+  
+  gg <- ggplot() +
+    geom_point(data = df, aes(x, y), color = "grey70") +
+    geom_line(data = df_fit, aes(x = x, y = y_pred), color = "red") + 
+    stat_function(fun = sin) +
+    theme_classic()
+  
+  out <- list(mod = mod, gg = gg)  
+
+  return(out)
+}
+
+out <- plot_tree_fit(df_train, 1)
+
+# visualise tree with built-in function
+rpart.plot::rpart.plot(out$mod)
+
+# visualise data and predictions
+out$gg +
+  labs(title = "Tree depth = 1")
+```
+
+As a tree grows, splits are recursively added. In our example, only one predictor variable is available. The splits are therefore performed always on the same variable, splitting up $X$ further.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+out <- plot_tree_fit(df_train, 3)
+
+# visualise tree with built-in function
+rpart.plot::rpart.plot(out$mod)
+
+# visualise data and predictions
+out$gg +
+  labs(title = "Tree depth = 3")
+```
+
+In the visualisation of the decision tree above, the uppermost decision is the *root node*. From there, two branches connect to *internal nodes*, and at the bottom of the tree are the *leaf nodes*. (The nature-aware reader may note that leaves are typically at the top, and roots at the bottom of a tree. Nevermind.)
+
+Typically, multiple predictor variables are available. For each split, the variable and the location of the split along that variable is determined to satisfy the respective criteria for regression and classification.
+
+Decision trees are high variance learners. That is, as the maximum tree depth is increased, the variance of predictions increases. In other words, the depth of a tree controls the model complexity and the bias-variance trade-off. With excessive depth, decision trees tend to overfit.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+out <- plot_tree_fit(df_train, 12)
+
+# visualise tree with built-in function
+rpart.plot::rpart.plot(out$mod)
+
+# visualise data and predictions
+out$gg +
+  labs(title = "Tree depth = 12")
+```
+
+An advantage of decision trees is that they require minimal pre-processing of the data and they are robust to outliers. This is thanks to their approach of converting continuous variables into binary classes for predictions. Hence, they can naturally handle a mix of continuous and categorical predictor variables. Furthermore, predictions are not sensitive to the distance of a predictor variable's value to a respective variable's split location. This makes decision trees robust to outliers. It also implies that predictions to unseen data points that lie outside the range of values in the training data (*extrapolation*) are conservative.
+
+The disadvantage is, as demonstrated above, the tendency towards high variance of predictions when models get complex (deep trees). And thus, decision trees tend to be outperformed by other algorithms.
+
+### Bagging
+
+The approach of *bagging* is to smooth out the high variance of decision tree predictions by averaging over multiple, slightly differet trees. Differences between the trees are introduced by bagging, that is, by training each individual tree only on a bootstrapped sample of the full training data. Here, a decision tree has the role of a *base learner* and bagging takes an ensemble approach. Final predictions are then taken as the average (for regression) or the most frequent class (for classification) across all trees' predictions.
+
+Bagging is particularly effective when the base learner tends to have a high variance. The variance of predictions is continuously reduced with an increasing number of decision trees, over which averages are taken, and no tendency to overfit results from increasing the number of trees. However, the computational cost linearly increases with the number of trees and the gain in model performance levels out. Bagging also limits the interpretability. We can no longer visualise the fitted model with an intuitive graphical decision tree as done above.
+
+XXX Exercise: implement bagging 12 decision trees, each with a maximum depth of 4, for the same data as used in the demonstration above.
+
+### From trees to a forest
+
+While bagging reduces the variance in predictions, limits to predictive performance remain. This is linked to the fact that, although a certain degree of randomness is introduced by sub-sampling the training data for each tree, individual trees often remain relatively similar. This is particularly expressed if variations in the target variable are controlled primarily by variations in a small number of predictor variables. In this case, decision trees tend to be built by splits on the same variable, irrespective of which bootstrapped sample the individual tree is trained with. 
+
+Random Forest solves this problem by introducing an additional source of randomness: Only a subset of the predictor variables are considered at each split. This strongly reduces the similarity of individual trees (and also reduces computational costs) and leads to improved predictive performance.
+
+The number of variables to consider at each split is a hyperparameter of the Random Forest algorithm, commonly named $m_\text{try}$. In the example below, we use the implementation in the {ranger} package (wrapped with {caret}), where the respective model fitting function has a hyperparameter `mtry`. Common default values are $m_\text{try} = P/3$ for regression and $m_\text{try} = \sqrt{P}$ for classification, where $P$ is the number of predictors. Model complexity is controlled by the depth of the trees. Depending on the implementation of the Random Forest algorithm, this is governed not by explicitly specifying the tree depth, but by setting the number of observations in the leaf node. In the {ranger} package, the respective hyperparamter is `min.node.size`. The number of trees is another hyperparameter and affects predictions similarly as described above for bagging.
+
+A great strength of Random Forest is, inherited by the characteristics of its underlying decision trees, its minimal requirement of data pre-processing, its capability of dealing with continuous and categorical variables, and its robustness to outliers. With the default choices of $m_\text{try}$, Random Forest provides very good out-of-the-box performance. However, the hyperparameters of Random Forest have interactive effects and should be searched systematically.
+
+```{r}
+source("R/eval_model.R")
+
+ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+  
+  # select only the variables we are interested in
+  dplyr::select(TIMESTAMP,
+                GPP_NT_VUT_REF,    # the target
+                ends_with("_QC"),  # quality control info
+                ends_with("_F"),   # includes all all meteorological covariates
+                -contains("JSB")   # weird useless variable
+                ) |>
+
+  # convert to a nice date object
+  dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
+
+  # set all -9999 to NA
+  dplyr::na_if(-9999) |>
+  
+  # retain only data based on >=80% good-quality measurements
+  # overwrite bad data with NA (not dropping rows)
+  dplyr::mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF),
+                TA_F           = ifelse(TA_F_QC        < 0.8, NA, TA_F),
+                SW_IN_F        = ifelse(SW_IN_F_QC     < 0.8, NA, SW_IN_F),
+                LW_IN_F        = ifelse(LW_IN_F_QC     < 0.8, NA, LW_IN_F),
+                VPD_F          = ifelse(VPD_F_QC       < 0.8, NA, VPD_F),
+                PA_F           = ifelse(PA_F_QC        < 0.8, NA, PA_F),
+                P_F            = ifelse(P_F_QC         < 0.8, NA, P_F),
+                WS_F           = ifelse(WS_F_QC        < 0.8, NA, WS_F)) |> 
+
+  # drop QC variables (no longer needed)
+  dplyr::select(-ends_with("_QC"))
+
+# Data splitting
+set.seed(123)  # for reproducibility
+split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
+ddf_train <- rsample::training(split)
+ddf_test <- rsample::testing(split)
+
+# The same model formulation is in the previous chapter
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
+                      data = ddf_train) |> 
+  recipes::step_center(all_numeric(), -all_outcomes()) |>
+  recipes::step_scale(all_numeric(), -all_outcomes())
+
+mod <- train(
+  pp, 
+  data = ddf_train %>% 
+    drop_na(), 
+  method = "ranger",
+  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  tuneGrid = expand.grid( .mtry = floor(6 / 3),
+                          .min.node.size = 5,
+                          .splitrule = "variance"),
+  metric = "RMSE",
+  replace = FALSE,
+  sample.fraction = 0.5,
+  num.trees = 2000,           # high number ok since no hperparam tuning
+  seed = 1982                # for reproducibility
+)
+
+# generic print
+print(mod)
+```
+
+```{r}
+eval_model(mod = mod, df_train = ddf_train, df_test = ddf_test)
+```
+XXX Exercise: fit a random forest model to the flux data used in previous chapters. Use a single set of hyperparameters. Same modelling task, different engine.
+
+
+## Exercises
+
+## Solutions
+
