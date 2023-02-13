@@ -303,8 +303,8 @@ hhdf |>
          hod  = lubridate::hour(date)) |> 
   dplyr::group_by(hod) |>
   nest() |>
-  mutate(QC_meas = purrr::map_dbl(data, ~. |> dplyr::filter(NEE_VUT_REF_QC == 0) |> nrow()) / nrows_hhdf,
-         QC_fill = purrr::map_dbl(data, ~. |> dplyr::filter(NEE_VUT_REF_QC != 0) |> nrow()) / nrows_hhdf) |>
+  mutate(QC_meas = purrr::map_dbl(data, ~. |> dplyr::filter(NEE_VUT_REF_QC == 0) |> nrow()),
+         QC_fill = purrr::map_dbl(data, ~. |> dplyr::filter(NEE_VUT_REF_QC != 0) |> nrow())) |>
   pivot_longer(cols = c("QC_meas", "QC_fill"),
                names_to = "qc_flag",
                values_to = "qc_value") |>
