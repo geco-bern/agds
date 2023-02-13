@@ -74,7 +74,7 @@ machine learning:
     that minimize the loss
 
 ![Supervised machine learning ingredients, adopted from Chollet &
-Allaire (2018) Deep Learning with R](./figures/supervised_ml.png)
+Allaire (2018) Deep Learning with R](./figures/supervised_ml.png){width="13cm"}
 
 The type of modelling approach of supervised machine learning is very
 similar to fitting regression models as we did in Chapter
@@ -125,7 +125,7 @@ linear regression). You can imagine that the polynomial of degree 15 is
 much more flexible and should thus yield the closest fit to the training
 data. This is indeed the case.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 true_fun <- function(x){
   cos(1.5 * pi * x)
 }
@@ -230,7 +230,7 @@ true underlying relationship is used, but we sample a new set of data
 points $X$ and add a new sample of errors on top of the true
 relationship.
 
-```{r  echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 set.seed(1)
 
 # create testing data
@@ -261,7 +261,7 @@ applying the fitted polynomial models to data that extends beyond the
 range in $X$ that was used for model training. Here, we're extending
 just 20% to the right.
 
-```{r  echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 set.seed(1)
 
 # create testing data
@@ -456,7 +456,7 @@ and loaded. Using *caret* for specifying the same linear regression
 model as above, the base-R `lm()` function, can be done with caret in a
 generalized form as:
 
-```{r}
+```{r class.source = 'fold-show'}
 caret::train(
   form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
   data = ddf |> drop_na(),  # drop missing values
@@ -482,7 +482,7 @@ unified interface is that we can simply replace the `method` argument to
 use a different model fitting algorithm. For example, to use KNN, we
 just can write:
 
-```{r}
+```{r class.source = 'fold-show'}
 caret::train(
   form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
   data = ddf |> drop_na(), 
@@ -600,7 +600,7 @@ steps in one go. It is compatible with the `train()` function of
 `ddf_train` is to be normalized (centered and scaled), we can specify a
 "recipe" using the pipe operator as:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
@@ -619,7 +619,7 @@ data set.
 
 The object `pp` can then be supplied to `train()` as its first argument:
 
-```{r, eval=FALSE}
+```{r warning=FALSE, message=FALSE, eval=FALSE}
 caret::train(
   pp, 
   data = ddf_train, 
@@ -641,7 +641,7 @@ of the distance is strongly influenced by the order of magnitude of the
 predictor values. To get a quick overview of the distribution of all
 variables (columns) in our data frame, we can use the {skimr} package.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 ddf |> 
   summarise(across(where(is.numeric), ~quantile(.x, probs = c(0, 0.25, 0.5, 0.75, 1), na.rm = TRUE))) |> 
   t() |> 
@@ -679,21 +679,27 @@ leakage, and translates the conception of the pre-processing as a
 
 To actually transform the data, we first have to "prepare" the recipe:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 pp_prep <- recipes::prep(pp, training = ddf_train) 
 ```
 
-Finally we can actually transform the data. That is, "bake" the prepared
+Finally we can actually transform the data. That is, "juice" the prepared
 recipe.
 
+```{r warning=FALSE, message=FALSE}
+ddf_juiced <- recipes::juice(pp_prep)
+```
+
+Note, if we are to apply the prepared recipe to new data, we'll have to `bake()` it.
 ```{r}
 ddf_baked <- recipes::bake(pp_prep, new_data = ddf_train)
+all_equal(ddf_juiced, ddf_baked)
 ```
 
 The effect is of standardization is illustrated by comparing original
 and transformed variables:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 gg1 <- ddf_train |> 
   dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
   tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
@@ -701,7 +707,7 @@ gg1 <- ddf_train |>
   geom_density() +
   facet_wrap(~var)
 
-gg2 <- ddf_baked |> 
+gg2 <- ddf_juiced |> 
   dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
   tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
   ggplot(aes(val, ..density..)) +
@@ -730,7 +736,7 @@ Visualizing missing data is the essential first step in making decisions
 about dropping rows with missing data versus removing predictors from
 the model (which would imply too much data removal).
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 visdat::vis_miss(
   ddf,
   cluster = FALSE, 
@@ -763,7 +769,7 @@ available values of the same variable, which can be implemented using
 `step_impute_*()` from the {recipes} package. For example, to impute the
 median for all predictors separately:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 pp |> 
   step_impute_median(all_predictors())
 ```
@@ -778,7 +784,7 @@ values are available through the recipes package (see
 [here](https://recipes.tidymodels.org/reference/index.html#step-functions-imputation)).
 For example, we can use KNN with five neighbors as:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 pp |> 
   step_impute_knn(all_predictors(), neighbors = 5)
 ```
@@ -795,7 +801,7 @@ categorical feature corresponds to the respective column. Because this
 creates perfect collinearity between these new column, we can also drop
 one of them. This is referred to as *dummy encoding*.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 # original data frame
 df <- tibble(id = 1:4, color = c("red", "red", "green", "blue"))
 df
@@ -813,7 +819,7 @@ collinear. This can be avoided by `setting fullRank = FALSE`.
 
 Using the recipes package, one-hot encoding is implemented by:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 recipe(GPP_NT_VUT_REF ~ ., data = ddf) |> 
   step_dummy(all_nominal(), one_hot = TRUE)
 ```
@@ -845,14 +851,14 @@ The function `nearZeroVar` of the {caret} package flags suspicious
 variables (`zeroVar = TRUE` or `nzv = TRUE`). In our data set, we don't
 find any:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 caret::nearZeroVar(ddf, saveMetrics = TRUE)
 ```
 
 Using the recipes package, we can add a step that removes zero-variance
 predictors by:
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 pp |> 
   step_zv(all_predictors())
 ```
@@ -875,7 +881,7 @@ variable that we have considered so far (`GPP_NT_VUT_REF`) is not
 skewed. In a case where we would consider `WS_F` to be our target
 variable, we would thus consider applying a log-transformation.
 
-```{r message=F, warning=F}
+```{r warning=FALSE, message=FALSE}
 gg1 <- ddf |> 
   ggplot(aes(x = WS_F, y = ..density..)) +
   geom_histogram() +
@@ -893,7 +899,7 @@ Log transformation as part of the pre-processing is specified using the
 `step_log()` function, here applied to the model target variable
 (`all_outcomes()`).
 
-```{r eval=FALSE}
+```{r warning=FALSE, message=FALSE}
 recipes::recipe(WS_F ~ ., data = ddf) |>   # it's of course non-sense to model wind speed like this
   recipes::step_log(all_outcomes())
 ```
@@ -911,14 +917,14 @@ resulting distribution of values $Y$ approaches the normal distribution.
 To specify a Box-Cox-transformation as part of the pre-processing, we
 can use `step_BoxCox()` from the {recipes} package.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 pp <- recipe(WS_F ~ ., data = ddf_train) |>
   step_BoxCox(all_outcomes())
 ```
 
 How do transformed values look like?
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 prep_pp <- prep(pp, training = ddf_train |> drop_na())
 ddf_baked <- bake(prep_pp, new_data = ddf_test |> drop_na())
 ddf_baked |>
@@ -931,7 +937,7 @@ Note that the Box-Cox-transformation can only be applied to values that
 are strictly positive. In our example, wind speed (`WS_F`) is. If this
 is not satisfied, a Yeo-Johnson transformation can be applied.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 recipe(WS_F ~ ., data = ddf) |>
   step_YeoJohnson(all_outcomes())
 ```
@@ -972,7 +978,7 @@ following pieces are implemented:
 
 These steps are implemented by the code below.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 # Data cleaning: looks ok, no obviously bad data
 # no long tail, therefore no further target engineering
 ddf |> 
@@ -1020,7 +1026,7 @@ prediction skill, and the visualisation of predicted versus observed
 values on the test and training sets, bundled into one function -
 `eval_model()` - which we will re-use for each fitted model object.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 # make model evaluation into a function to reuse code
 eval_model <- function(mod, df_train, df_test){
   

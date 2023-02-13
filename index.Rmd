@@ -13,13 +13,56 @@ link-citations: yes
 github-repo: stineb/agsd
 ---
 
-# About this book {.unnumbered}
+# Overview {.unnumbered}
+## About this book {.unnumbered}
 
-This book accompanies the course(s) *Applied Geodata Science*, taught at the Institute of Geography, University of Bern.
+This book serves as the basis for the courses in *Applied Geodata Science*, taught at the Institute of Geography, University of Bern. The starting point of this book were the tutorials edited by Benjamin Stocker, Loïc Pellissier, and Joshua Payne for the course *Environmental Systems Data Science* (D-USYS, ETH Zürich).
 
-## Target readers of this book
+The target of this book are people interested in applying data science methods for research. Methods, example data sets, and prediction challenges are chosen to make the book most relatable to scientists and students in Geography and Environmental Sciences. No prior knowledge of coding is required. Respective essentials are briefly introduced as primers. The focus of this book is not on the theoretical basis of the methods. Other "classical" statistics courses serve this purpose. Instead, this book introduces essential concepts, methods, and tools with an emphasis on covering a wide breadth. It is written in a hands-on approach to enable an intuitive understanding of concepts with only a minimal reliance on mathematical language. Worked examples are provided for typical steps of data science applications in Geography and Environmental Sciences. The aim of this book is to teach the diverse set of skills needed as a basis for data-intensive research (in academia and outside). 
 
-The target of this book are people interested in applying data science methods for research. Methods introduced, example data sets, and prediction challenges are chosen to make the book relate most to scientists in Geography and Environmental Sciences. No prior knowledge in working with code, or R in particular, are required. Brief introductions into the fundamentals are given in Chapters \@ref(getting_started) and \@ref(programming_primers).
+<br>
+
+Only images and other materials were used which were made available under a non-restrictive license (Creative Commons, etc). Original sources are attributed. Content without attribution is our own and shared under the license below. If there are any errors or any content you find concerning with regard to licensing, or that you find offensive, please [contact us](https://geco-group.org/contact/). Any feedback, positive or negative, is welcome!
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+
+## About this course {.unnumbered}
+
+This book contains the lecture notes and exercises for the following courses, offered for Geography and for Climate Sciences students at the University of Bern, Switzerland:
+
+**Applied Geodata Science I**
+
+This is a course for Bachelors students in their second or third year of studies in Geography.
+
+- Chapters \@ref(getting_started) to Chapter \@ref(random_forest)
+
+**Applied Geodata Science II**
+
+This is a course for Master students in Geography or Climate Sciences.
+
+- TBC
+
+### Course goal {.unnumbered}
+
+The overall goal of this set of courses is that students and other readers learn to **tell a story with (environmental and geo-) data**.
+
+### Learning Objectives {.unnumbered}
+
+The overall learning objectives are:
+
+- Design and communicate your research project as a reproducible workflow.
+    - Find, access, process, and visualise large environmental and geographic data.
+    - Write legible code and manage collaborative code and data-centered projects.
+    - Manage analysis code for long-term reproducibility.
+    
+- Identify, quantify, and interpret patterns in large environmental and geographic data.
+    - Devise suitable data visualisations.
+    - Determine suitable model formulations and implement effective model training.
+    - Describe the challenges of model fitting with large data.
+    
+- Implement and make use of Open Science practices and resources to support data science projects in Geography and Environmental Sciences.
+
 
 # Introduction {.unnumbered}
 
@@ -72,6 +115,8 @@ Three general developments set the stage for this course. First, Geography and E
 
 **Implementations**
 
+-   HOML
+
 -   Chollet & Allaire "Deep learning with R"
 
--   HOML
+-   

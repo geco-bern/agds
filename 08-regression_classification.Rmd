@@ -395,223 +395,289 @@ df_cat |>
 
 #### Metrics for regression
 
-We have explored several regression models to predict GPP based on SW.
-Now you may wonder how to choose one of them as your final analysis.
-Overall, we want to find the simplest model that best explains the data.
-We seek to find a balance between fitting the data well and generalizing
-to new data, which can be accomplished by reducing the complexity (for
-now, the number of parameters) of the model.
+Metrics measure the quality of fit between predicted and observed
+values, are essential to model training (where the metric defines the
+loss function, see Chapter \@ref(supervised_ml_ii)), and inform model
+evaluation. Different metrics measure different aspects of the
+model-data agreement. In other words, a single metric never captures all aspects and
+patterns of the model-data agreement. Therefore, a visual inspection of
+the model fit is always a good start of the model evaluation.
 
-Visual inspection of the model fit is a good start, but can become
-uninformative when the number of explanatory variables grows. So how can
-we measure model quality? In this section, we present some commonly used
-*metrics* to assess and compare regression models.
+To get an intuitive understanding of the different abilities of different metrics, compare
+the scatterplots below and how different aspects of the model-data
+agreement are measured by different metrics. Definitions of the metrics displayed and other metrics are given below.
 
--   **MSE**: The mean squared error is defined, as its name suggests,
-    as: $$
-    \text{MSE} = \frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2
-    $$ It measures the magnitude of the errors, and is minimized to fit
-    a linear regression or, as we will see in [Chapter
-    9](#supervised_ml_i), during model training when used as a loss
-    function. Note that since it scales with the square of the errors,
-    the MSE is particularly sensitive to large errors in single points
-    (including outliers).
+```{r correlation_plots, out.height='500%', warning=FALSE, message=FALSE, echo=FALSE}
+analyse_modobs <- function(df){
+  
+  # fit linear regression model to get slope
+  linmod <- lm(y ~ x, data = df)
+  
+  # construct metrics table using the 'yardstick' library
+  df_metrics <- df %>%
+    
+    # simply the squared correlation between truth and estimate (0,1)
+    yardstick::rsq(., y, x)  |> 
+    
+    # root mean square error
+    dplyr::bind_rows(yardstick::rmse(df, y, x)) |> 
+    
+    # slope of fitted vs observed
+    dplyr::bind_rows( 
+      tibble(.metric = "slope", 
+             .estimator = "standard", 
+             .estimate = coef(linmod)[2])) |> 
 
--   **RMSE**: The root mean squared error is, as its name suggests, the
-    root of the MSE: $$
-    \text{RMSE} = \sqrt{\text{MSE}} = \sqrt{\frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2}
-    $$ Like the MSE, the RMSE also measures accuracy (the magnitude of
-    the errors) and is minimized during model training. By taking the
-    square root of mean square errors, the RMSE is in the same units as
-    the data $Y$ and is less sensitive to outliers as the MSE.
+    # bias
+    dplyr::bind_rows( 
+      tibble( .metric = "bias", 
+              .estimator = "standard", 
+              .estimate = mean(df$y - df$x))) |> 
+    
+    # format to keep only 2 significant digits
+    dplyr::mutate(.estimate_form = format(.estimate, digits = 2))
+  
+  subtitle <- bquote( 
+    italic(R)^2 == .(df_metrics |> dplyr::filter(.metric == "rsq") |> pull(.estimate_form)) ~~
+    RMSE == .(df_metrics |> dplyr::filter(.metric == "rmse") |> pull(.estimate_form)) ~~
+    Bias == .(df_metrics |> dplyr::filter(.metric == "bias") |> pull(.estimate_form)) ~~
+    Slope == .(df_metrics|> dplyr::filter(.metric == "slope")|> pull(.estimate_form))
+    )
+  
+  # points
+  df |> 
+    ggplot(aes(x, y)) +
+    geom_point() +
+    geom_abline(intercept = 0, slope = 1, linetype = "dotted") +  # 1:1 line
+    theme_classic() +
+    labs(subtitle = subtitle) + 
+    geom_smooth(method = 'lm', color = "red", size = 0.5, se = FALSE)  # regression fit
+  
+}
 
--   $R^2$: The *coefficient of determination* measures how close the
-    fitted values are to the true target, and describes the proportion
-    of variation in $Y$ that is captured by modeled values $\hat{Y}$.
-    Note that the denominator in the formula below is the variance of
-    $Y$, which is actually the MSE of a model that just predicts the
-    average of $Y$ (using no explanatory variable $X$). So $R^2$ is
-    basically measuring how much better than just taking the mean of $Y$
-    our model is. It is traditionally defined as: $$
-    R^2 = 1 - \frac{\sum_i (Y_i - \hat{Y}_i)^2}{\sum_i (Y_i - \bar{Y})^2}
-    $$ In this case, the goal is to maximize the metric, thus trying the
-    explain as much variation in $Y$ as possible. In contrast to the MSE
-    and RMSE, $R^2$ measures goodness of fit and gives a quantity
-    between 0 and 1 that takes into consideration how variable the
-    target is. We can actually write
-    $R^2 = 1 - \frac{MSE}{\hat{Var}(Y)}$. A perfect fit is quantified by
-    $R^2 = 1$ and uninformative models have an $R^2$ approaching zero.
-    There is not generally valid threshold of $R^2$ for a model to be
-    considered "good". It depends on the application and the nature of
-    the data and the data-generating process.
+set.seed(1982)
 
-Metrics for correlation like the ones above should not be used as a loss
-function because they do not penalize biased models. Note also that the
-$R^2$ always increases when predictors are added to a model. This is
-critical in the context of machine learning when we compare alternative
-models that differ in their complexity, i.e., by their number of
-parameters. In other words, the $R^2$ of a model with a large number of
-predictors tends to give an overconfident estimate of its predictive
-power. We will introduce cross-validation in [Chapter
-9](#supervised_ml_i) which measures model performance on data that was
-not used for model fitting (training). Cross-validation is the
-"gold-standard" if the data is plentiful. But when the number of data
-points is small, cross validation estimates may not be robust. Without
+# uncorrelated
+gg1 <- tibble(x = rnorm(100),
+              y = rnorm(100)) |> 
+  analyse_modobs() +
+  labs(title = "Uncorrelated") +
+  ylim(-3,3) + xlim(-3, 3) +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+
+# perfectly correlated - zero error
+gg3 <- tibble(x = rnorm(100)) |> 
+  mutate(y = x) |> 
+  analyse_modobs() +
+  labs(title = bquote("Perfectly correlated, zero error:" ~ y == x)) +
+  ylim(-3,3) + xlim(-3, 3) +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+
+# perfectly correlated - scaling error
+gg4 <- tibble(x = rnorm(100)) |> 
+  mutate(y = 0.6 * x) |> 
+  analyse_modobs() +
+  labs(title = bquote("Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ x)) +
+  ylim(-3,3) + xlim(-3, 3) +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+
+# perfectly correlated - constant error
+gg5 <- tibble(x = rnorm(100)) |> 
+  mutate(y = x + 1) |>
+  analyse_modobs() +
+  labs(title = bquote("Perfectly correlated, constant error:" ~ y == x + 1)) +
+  ylim(-3,3) + xlim(-3, 3) +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+
+# correlated
+gg6 <- tibble(x = rnorm(100)) |> 
+  mutate(y = x + rnorm(100)) |> 
+  analyse_modobs() +
+  labs(title = bquote("Correlated:" ~ y == x + epsilon[0])) +
+  ylim(-3,3) + xlim(-3, 3) +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+
+# better correlation
+gg7 <- tibble(x = rnorm(100)) |> 
+  mutate(y = x + 0.7 * rnorm(100)) |> 
+  analyse_modobs() +
+  labs(title = bquote("Better correlated:" ~ y == x + ~ .(0.7) ~ epsilon[0])) +
+  # labs(title = "Better correlated (y = x + 0.7 rnorm(100))") +
+  ylim(-3,3) + xlim(-3, 3) +
+  theme(plot.title = element_text(size = 10),
+        plot.subtitle = element_text(size = 8))
+
+cowplot::plot_grid(gg1, gg3, gg4, gg5, gg6, gg7, 
+                   ncol = 2)
+```
+
+
+Common metrics used for evaluating regression fits are:
+
+**MSE**
+
+The mean squared error is defined, as its name suggests,
+as: $$
+\text{MSE} = \frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2
+$$It measures the magnitude of the errors, and is minimized to fit a
+linear regression or, as we will see in [Chapter
+9](#supervised_ml_i), during model training when used as a loss
+function. Note that since it scales with the square of the errors,
+the MSE is sensitive to large errors in single points, including
+outliers.
+
+**RMSE**
+
+The root mean squared error is, as its name suggests, the
+root of the MSE: $$
+\text{RMSE} = \sqrt{\text{MSE}} = \sqrt{\frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2}
+$$Like the MSE, the RMSE also measures the magnitude of
+the errors and is minimized during model training. By taking the
+square root of mean square errors, the RMSE is in the same units as
+the data $Y$ and is less sensitive to outliers than the MSE.
+
+**$R^2$ - coefficient of determination**
+
+also called the *coefficient of determination*, describes the
+proportion of variation in $y$ that is captured by modelled values
+$\hat{y}$. In this case, the goal is to maximize the metric, thus
+trying the explain as much variation as possible. In contrast to the
+MSE and RMSE, $R^2$ measures *consistency*, or *correlation*, or
+*goodness of fit*. It is traditionally defined as:
+$$
+R^2 = 1 - \frac{\sum_i (\hat{Y}_i - Y_i)^2}{\sum_i (Y_i - \bar{Y})^2}\\
+$$
+A perfect fit is quantified by $R^2 = 1$. There is not generally
+valid threshold of $R^2$ for a model to be considered "good". It
+depends on the application and the nature of the data and the
+data-generating process. Note that above equation can also be
+written as $R^2 = 1 - \text{MSE}/var(Y)$.
+
+**Pearson's-r**
+
+The linear association between to variables (here $y$ and $\hat{y}$) is measured by the *Pearson's correlation coefficient* $r$. 
+$$
+r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \hat{\bar{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2 \; (\hat{Y_i}-\hat{\bar{Y}})^2 } }
+$$
+
+The squared value of the Pearson's-*r* is often reported as "$R^2$" but doesn't
+correspond to the definition of the coefficient of determination
+given above. However, the square of the Pearson's-*r* is closely
+related to the coefficient of determination-$R^2$ and in common
+cases of prediction-observation comparisons almost identical. For a
+linear regression, they are identical (see proof
+[here](https://statproofbook.github.io/P/slr-rsq)). 
+
+Note the implementations in R. The $R^2$ reported by the generic
+`summary()` function corresponds to the base-R function `cor()^2` , to
+`yardstick::rsq()`, and to the definition of the square of the
+*Pearson's-*$r$ given above.
+
+```{r}
+# generate correlated random data 
+set.seed(1982)
+df <- tibble(x = rnorm(100)) |> 
+  mutate(y = x + rnorm(100))
+
+summary(lm(y ~ x, data = df))$r.squared
+cor(df$y, df$x)^2
+yardstick::rsq(df, y, x) |> pull(.estimate)
+(sum((df$x - mean(df$x))*(df$y - mean(df$y))))^2/
+  (sum((df$y - mean(df$y))^2)*sum((df$x - mean(df$x))^2))
+```
+
+The `yardstick::rsq_trad()` returns the coefficient of determination as
+defined above and is not equal to the values above.
+
+```{r}
+1 - sum((df$x - df$y)^2) / sum((df$y - mean(df$y))^2)
+yardstick::rsq_trad(df, y, x) %>% pull(.estimate)
+```
+
+An "$R^2$" is commonly reported when evaluating the *agreement* between observed
+and predicted values of a given model. When the *correlation*
+between two different variables in a sample is quantified, $r$ is
+commonly used to reflect also whether the correlation is positive or
+negative ($r$ can attain positive or negative values). The
+coefficient of determination can return negative values when
+comparing observed and predicted values for uninformative estimates
+and is thus not actually bound between 0 and 1. Therefore, the
+definition of the coefficient of determination $R^2$ as given above
+is to be avoided. For subsequent chapters, we will use '$R^2$' to refer to the square of the Pearson's-*r*.
+
+**Bias**
+
+The bias is simply the mean error:
+$$
+\text{Bias} = \frac{1}{n} \sum_i^n{(\hat{Y}_i - Y_i)}
+$$
+
+
+**Slope**
+
+The slope refers to the slope of the linear regression line between predicted and observed values. It is returned as the second element of the vector returned by `coef(lm(..))`:
+```{r}
+coef(lm(y ~ x, data = df))[2]
+```
+
+XXX Exercise: In supervised machine learning, a certain metric is chosen to guide the model training (fitting). Which metric would you chose as a target for optimisation. Discuss why. XXX
+
+#### Metrics for regression model comparison
+
+In general, the aim of regression modelling is to find a model that best explains
+the data - but not the random errors in the data. More complex models tend to *overfit* more than simpler models. The implication of overfitting is that the model fits the data used for model fitting well, but doesn't fit well when evaluating the predictions of the same model to new data (data not used for model fitting). In such a case, the model's *generalisability* is poor. We'll learn more about overfitting and generalisability in the context of supervised machine learning in later chapters. Often, simpler models generalise better than more complex model. The challenge is to strike a balance between complexity and generalisability. But how to find the "sweet spot" of this trade-off?
+
+In this context it should be noted that the $R^2$ *always* increases when predictors are added to a model. Therefore, the $R^2$ is not a suitable metric for comparing models that differ with respect to their number of predictors - a factor controlling model complexity. *Cross-validation* can be regarded as the "gold-standard" for measuring model generalisability if the data is plentiful. It will be introduced in the context of supervised machine learning in Chapter \@ref(supervised_ml_ii). However, when the data size is small, cross validation estimates may not be robust. Without
 resorting to cross validation, the effect of spuriously improving the
 evaluation metric by adding uninformative predictors can also be
 mitigated by penalizing the number of predictors $p$. Different metrics
 are available:
 
--   **Pearson's** $r^2$: The linear correlation between two variables
-    (here $Y$ and $Z$) is measured by the *Pearson's correlation
-    coefficient* $r$ and defined by
-    $$r_{YZ} = \frac{\sum_i (Y_i - \bar{Y}) (Z_i - \bar{Z}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2}\sqrt{ \sum_i(Z_i-\bar{Z})^2 } }.$$
-    The coefficient of determination and Pearson's correlation are
-    closely related. The square of the Pearson's correlation between the
-    observed $Y$ and fitted values $\hat{Y}$ coincides with the
-    coefficient of determination for a linear regression (see proof
-    [here](https://statproofbook.github.io/P/slr-rsq)). It holds that
-    $R^2 = r_{Y \hat{Y}}^2$.
+**Adjusted** $R^2$
 
-The distinction between uppercase and lowercase nomenclature is often
-not consistent in the literature. The uppercase $R^2$ is commonly used
-as coefficient of determination, in the context of comparing observed
-and predicted values. When the *correlation* between two different
-variables in a sample is quantified, the lowercase $r^2$ is commonly
-used.
+The adjusted $R^2$ discounts values of $R^2$ by the
+number of predictors. It is defined as $$
+{R}^2_{adj} = 1 - (1-R^2) \; \frac{n-1}{n-p-1} \;,
+$$ where $n$ (as before) is the number of observations, $p$ the
+number of parameters and $R^2$ the usual coefficient of
+determination. Same as for $R^2$, the goal is to maximize
+$R^2_{adj}$.
 
-The following scatterplots show different synthetic data points and
-regression lines. For each one, the Pearson correlation between target
-and predictor is calculated, together with the $R^2$ and RMSE for the
-corresponding regressions.
+**AIC**
 
-```{r}
-x <- rnorm(100)
-# Function that creates scatterplots with regression metrics
-plot_regression <- function(d, title){
-  d |>
-    ggplot(aes(x = x, y = y)) +
-    geom_point(size = 0.75, alpha = 0.8) +
-    labs(title = title,
-         subtitle = (paste("r^2 =", round(cor(d$x, d$y), 3),
-                           ", R^2 =", round(summary(
-                             lm(y~x, data = d)
-                             )$r.squared, 3)))) +
-    geom_smooth(formula = y ~ x, method = "lm", color = "red", se = FALSE) +
-    lims(x = c(-4, 4), y = c(-4, 4)) +
-    theme_classic()
-}
+The Akaike's Information Criterion is defined in terms of
+log-likelihood (covered in Quantitative Methoden) but for linear
+regression it can be written as: $$
+\text{AIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + 2(p+2)
+$$ where $n$ is the number of observations used for estimation, $p$
+is the number of explanatory variables in the model and SSE is the
+sum of squared errors (SSE$= \sum_i (Y_i-\hat{Y_i})^2$). Also in
+this case we have to minimize it and the model with the minimum
+value of the AIC is often the best model for forecasting. Since it
+penalizes having many parameters, it will favor less complex models.
 
-p1 <- plot_regression(data.frame(x = x,
-                                 y = rnorm(100)),
-                      "Uncorrelated")
+**AIC**$_c$
 
-p2 <- plot_regression(data.frame(x = x,
-                                 y = 0.5 * x),
-                      "Perfectly linearly correlated")
+For small values of $n$ the AIC tends to select too
+many predictors. A bias-corrected version of the AIC is defined as:
+$$
+\text{AIC}_c = \text{AIC} + \frac{2(p + 2)(p + 3)}{n-p-3}
+$$ Also AIC$_c$ is minimized for an optimal predictive model.
 
-p3 <- plot_regression(data.frame(x = x,
-                                 y = 0.5*x + rnorm(100)),
-                      "Low correlation")
-p4 <- plot_regression(data.frame(x = x,
-                                 y = 0.5*x + rnorm(100, sd = 0.2)),
-                      "Higher correlation")
-cowplot::plot_grid(p1, p2, p3, p4)
+**BIC**
 
-# temporary below
-# perfect correlation, no bias
-df <- tibble(
-  x = rnorm(30)
-  ) %>%
-  mutate(y = x)
-analyse_modobs2(df, "x", "y")
-
-# perfect correlation, with constant bias
-df <- tibble(
-  x = rnorm(30)
-  ) %>%
-  mutate(y = x + 1)
-analyse_modobs2(df, "x", "y")
-
-# perfect correlation, with scaling bias
-df <- tibble(
-  x = rnorm(30)
-) %>%
-  mutate(y = 0.7 * x)
-analyse_modobs2(df, "x", "y")
-
-# poorer correlation, no bias
-df <- tibble(
-  x = rnorm(30)
-) %>%
-  mutate(y = x + 0.5 * rnorm(30))
-analyse_modobs2(df, "x", "y")
-
-# poorer correlation, with bias
-df <- tibble(
-  x = rnorm(30)
-) %>%
-  mutate(y = x + 1)
-
-analyse_modobs2(df, "x", "y")
-
-
-# uncorrelated
-df <- tibble(
-  x = rnorm(30),
-  y = rnorm(30))
-
-analyse_modobs2(df, "x", "y")
-
-```
-
-Metrics for correlation like the ones above should not be used as a loss
-function because they do not penalize biased models. All of them keep
-improving as we include more variables, whether they are actually
-informative or not.
-
--   **AIC**: the Akaike's Information Criterion is defined as $$
-    \text{AIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + 2(p+2)
-    $$ where $n$ is the number of observations used for estimation, $p$
-    is the number of explanatory variables in the model and SSE is the
-    sum of squared errors (SSE$= \sum_i (Y_i-\hat{Y_i})^2$). Also here,
-    we want to minimize the metric and the model with the minimum value
-    of the AIC is often the best model for predicting
-    $\hat{Y}_\text{new}$. Since the AIC penalizes having many
-    parameters, it will favor less complex models.
-
--   **Adjusted** $R^2$: The adjusted $R^2$ discounts values by the
-    number of predictors. It is defined as $$
-    {R}^2_{adj} = 1 - (1-R^2) \; \frac{n-1}{n-p-1} \;,
-    $$ where $n$ (as before) is the number of observations, $p$ the
-    number of parameters and $R^2$ the usual coefficient of
-    determination. Same as for $R^2$, the goal is to maximize
-    $R^2_{adj}$.
-
--   **AIC**: the Akaike's Information Criterion is defined in terms of
-    log-likelihood (covered in Quantitative Methoden) but for linear
-    regression it can be written as: $$
-    \text{AIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + 2(p+2)
-    $$ where $n$ is the number of observations used for estimation, $p$
-    is the number of explanatory variables in the model and $SSE$ is the
-    sum of squared errors ($SSE= \sum_i (Y_i-\hat{Y_i})^2$). Also in
-    this case we have to minimize it and the model with the minimum
-    value of the AIC is often the best model for forecasting. Since it
-    penalizes having many parameters, it will favor less complex models.
-
--   **AIC**$_c$: For small values of $n$ the AIC tends to select too
-    many predictors. A bias-corrected version of the AIC is defined as:
-    $$
-    \text{AIC}_c = \text{AIC} + \frac{2(p + 2)(p + 3)}{n-p-3}
-    $$ Also AIC$_c$ is minimized for an optimal predictive model.
-
--   **BIC**: the Schwarz's Bayesian Information Criterion is defined as
-    $$
-    \text{BIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + (p+2)  \log(n)
-    $$ Also for BIC, the goal is to minimize it. This metric has the
-    feature that if there is a true underlying model, the BIC will
-    select that model given enough data. The BIC tends to select a model
-    with fewer predictors than AIC.
+The Schwarz's Bayesian Information Criterion is defined as
+$$
+\text{BIC} = n \log \Big(\frac{\text{SSE}}{n}\Big) + (p+2)  \log(n)
+$$ Also for BIC, the goal is to minimize it. This metric has the
+feature that if there is a true underlying model, the BIC will
+select that model given enough data. The BIC tends to select a model
+with fewer predictors than AIC.
 
 **Implementation in R**
 
@@ -622,31 +688,29 @@ package provides implementations for a few of these metrics, which we
 compute below:
 
 ```{r}
-compute_regr_metrics <- function(linmod){
-  p <- length(linmod$coefficients)
-  sse <- sum(linmod$residuals^2)
-  n <- length(linmod$residuals)
-    
-  round(
-    c(mse = mean(linmod$residuals^2),
-    rmse = sqrt(mean(linmod$residuals^2)),
-    R2 = summary(linmod)$r.squared,
-    R2_adj = summary(linmod)$adj.r.squared,
-    r2 = cor(linmod$fitted, linmod$model$GPP_NT_VUT_REF)^2,
-    AIC = extractAIC(linmod)[2],
-    AIC_adj = extractAIC(linmod)[2] + 2*(p+2)*(p+3)/(n-p-3),
-    BIC = BIC(linmod) # this implementation is based on log-likelihood
-  ), 3)
+compute_regr_metrics <- function(mod){
+  
+  p <- length(mod$coefficients)
+  n <- length(mod$residuals)
+  
+  tibble(
+    mse = mean(mod$residuals^2),
+    R2 = summary(mod)$r.squared,
+    R2_adj = summary(mod)$adj.r.squared,
+    AIC = extractAIC(mod)[2],
+    AIC_adj = extractAIC(mod)[2] + 2*(p+2)*(p+3)/(n-p-3),
+    BIC = BIC(mod) # this implementation is based on log-likelihood
+  )
 }
 
-metrics <- purrr::map_dfr(
+list_metrics <- purrr::map(
     list(linmod1, linmod2, linmod_cat, quadmod), 
-    ~compute_regr_metrics(.)) |> 
-  mutate(type = c("Linear model", "Linear model 2", "Linear + categories",
-                  "Quadratic model"),
-         .before = mse)
-
-metrics
+    ~compute_regr_metrics(.))
+names(list_metrics) <- c("Linear model", 
+                         "Linear model 2", 
+                         "Linear + categories",
+                         "Quadratic model")
+bind_rows(list_metrics, .id = "type")
 ```
 
 ### Classification
@@ -933,13 +997,13 @@ model we fitted before. The `confusionMatrix()` function from the
 ```{r}
 # Make classification predictions
 Y <- logmod$data$Type
-Y_pred <- as.factor(round(logmod$fitted.values)) # Use 0.5 as threshold
+x <- as.factor(round(logmod$fitted.values)) # Use 0.5 as threshold
 
 # Change class names
-levels(Y) <- levels(Y_pred) <- c("Quebec", "Mississippi")
+levels(Y) <- levels(x) <- c("Quebec", "Mississippi")
 
 # plot confusion matrix
-conf_matrix <- caret::confusionMatrix(data = Y_pred, reference = Y)
+conf_matrix <- caret::confusionMatrix(data = x, reference = Y)
 conf_matrix
 ```
 
@@ -1258,6 +1322,21 @@ doesn't align with our preconceptions, so keep looking into it and
 potentially collect more data.
 
 ## Exercises
+
+-   Implement the formula for RMSE using simple "low-level" functions
+    like `sqrt()` and `mean()`. Confirm that the function `rmse()` from
+    the yardstick package computes the RMSE the same way.
+
+    ```{r}
+    ## generate random data 
+    df <- tibble(x = rnorm(100)) %>% 
+      mutate(y = x + rnorm(100),
+             x = x)
+
+    yardstick::rmse(df, y, x) %>% pull(.estimate)
+
+    sqrt(mean((df$x - df$y)^2))
+    ```
 
 -   Performance assessment: Exercise for stepwise regression
     [link](https://stineb.github.io/esds_book/ch-08.html),
