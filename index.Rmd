@@ -14,22 +14,22 @@ github-repo: stineb/agsd
 ---
 
 # Overview {.unnumbered}
+
 ## About this book {.unnumbered}
 
 This book serves as the basis for the courses in *Applied Geodata Science*, taught at the Institute of Geography, University of Bern. The starting point of this book were the tutorials edited by Benjamin Stocker, Loïc Pellissier, and Joshua Payne for the course *Environmental Systems Data Science* (D-USYS, ETH Zürich).
 
-The target of this book are people interested in applying data science methods for research. Methods, example data sets, and prediction challenges are chosen to make the book most relatable to scientists and students in Geography and Environmental Sciences. No prior knowledge of coding is required. Respective essentials are briefly introduced as primers. The focus of this book is not on the theoretical basis of the methods. Other "classical" statistics courses serve this purpose. Instead, this book introduces essential concepts, methods, and tools with an emphasis on covering a wide breadth. It is written in a hands-on approach to enable an intuitive understanding of concepts with only a minimal reliance on mathematical language. Worked examples are provided for typical steps of data science applications in Geography and Environmental Sciences. The aim of this book is to teach the diverse set of skills needed as a basis for data-intensive research (in academia and outside). 
+The target of this book are people interested in applying data science methods for research. Methods, example data sets, and prediction challenges are chosen to make the book most relatable to scientists and students in Geography and Environmental Sciences. No prior knowledge of coding is required. Respective essentials are briefly introduced as primers. The focus of this book is not on the theoretical basis of the methods. Other "classical" statistics courses serve this purpose. Instead, this book introduces essential concepts, methods, and tools for applied data science in Geography and Environmental Sciences with an emphasis on covering a wide breadth. It is written with a hands-on approach and should enable an intuitive understanding of concepts with only a minimal reliance on mathematical language. Worked examples are provided for typical steps of data science applications in Geography and Environmental Sciences. The aim of this book is to teach the diverse set of skills needed as a basis for data-intensive research (in academia and outside).
 
 <br>
 
 Only images and other materials were used which were made available under a non-restrictive license (Creative Commons, etc). Original sources are attributed. Content without attribution is our own and shared under the license below. If there are any errors or any content you find concerning with regard to licensing or other, please [contact us](https://geco-group.org/contact/). Any feedback, positive or negative, is welcome and can be posted [here](https://github.com/stineb/agds/issues).
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 
 <br>
 
-![](./figures/logo_unibern_squid3.png){width="30%"}
-![](./figures/geco_logo_fullname.png){width="30%"}
+![](./figures/logo_unibern_squid3.png){width="30%"} ![](./figures/geco_logo_fullname.png){width="30%"}
 
 ## About this course {.unnumbered}
 
@@ -39,13 +39,13 @@ This book contains the lecture notes and exercises for the following courses, of
 
 This is a course for Bachelors students in their second or third year of studies in Geography.
 
-- Chapters \@ref(getting_started) to Chapter \@ref(random_forest)
+-   Chapters \@ref(getting_started) to Chapter \@ref(random_forest)
 
 **Applied Geodata Science II**
 
 This is a course for Master students in Geography or Climate Sciences.
 
-- TBC
+-   TBC
 
 ### Course goal {.unnumbered}
 
@@ -55,18 +55,31 @@ The overall goal of this set of courses is that students and other readers learn
 
 The overall learning objectives are:
 
-- Design and communicate your research project as a reproducible workflow.
-    - Find, access, process, and visualise large environmental and geographic data.
-    - Write legible code and manage collaborative code and data-centered projects.
-    - Manage analysis code for long-term reproducibility.
-    
-- Identify, quantify, and interpret patterns in large environmental and geographic data.
-    - Devise suitable data visualisations.
-    - Determine suitable model formulations and implement effective model training.
-    - Describe the challenges of model fitting with large data.
-    
-- Implement and make use of Open Science practices and resources to support data science projects in Geography and Environmental Sciences.
+-   Design and communicate your research project as a reproducible workflow.
+    -   Find, access, process, and visualise large environmental and geographic data.
+    -   Write legible code and manage collaborative code and data-centered projects.
+    -   Manage analysis code for long-term reproducibility.
+-   Identify, quantify, and interpret patterns in large environmental and geographic data.
+    -   Devise suitable data visualisations.
+    -   Determine suitable model formulations and implement effective model training.
+    -   Describe the challenges of model fitting with large data.
+-   Implement and make use of Open Science practices and resources to support data science projects in Geography and Environmental Sciences.
 
+### Course contents {.unnumbered}
+
+This course covers all steps along the data science workflow (see figure below) and introduces methods and tools to learn the most from data, to effectively communicate insights, and to make your workflow reproducible. By following this course, you will be well equipped for joining the Open Science movement.
+
+![The data science workflow and keywords of contents covered in Applied Geodata Science I. Figure adapted from: [Wickham & Grolemund *R for Data Science*](https://r4ds.had.co.nz/index.html)](./figures/data_science_workflow_keywords.png)
+
+Chapters \@ref(getting_started) and \@ref(programming_primers) serve as primers to get readers with a diverse background and data science experience up to speed with the basics for programming in R, which we rely on in later chapters.
+
+Chapter \@ref(data-wrangling) introduces the efficient handling and cleaning of large tabular data with the R *tidyverse* "programming dialect". The focus is on non-geospatial data. Closely related to transforming data and its multiple axes of variation is the data visualisation, covered in Chapter \@ref(data-visualisation).
+
+Chapters \@ref(data_variety), \@ref(code_mgmt), and \@ref(open_science) introduce essential tools for the daily work with diverse data and for an Open Science practice.
+
+With Chapters \@ref(regression_classification), Chapter \@ref(supervised_ml_i), Chapter \@ref(supervised_ml_ii), and Chapter \@ref(random_forest), we will get into modelling and identifying patterns in the data.
+
+Chapters 1-11 serve as lecture notes for Applied Geodata Science I and as learning material for students and scientists in any data-intensive research domain. These chapters are not explicitly dealing with geospatial data and modelling. Modelling with geospatial and temporal data is the subject of the course Applied Geodata Science II and will be introduced with a focus on typical applications and modelling tasks in Geography and Environmental Sciences. Respective materials are not currently contained in this book but will be added here later.
 
 # Introduction {.unnumbered}
 
