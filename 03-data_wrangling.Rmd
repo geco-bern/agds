@@ -314,19 +314,19 @@ As a general principle, we want to have *machine readable* data. Key for achievi
 
 -   Even if the data is clean and contains a consistently spelled categorical variable in the form of a character string, R doesn't necessarily treat it as categorical. For certain downstream steps of the workflow, it may be necessary to transform such a variable to one of type `factor`. For example, as entries of an unordered categorical variable, we have `unique(df$gender) = c("female", "male", "non-binary")`. To treat them as categorical and not just mere character strings, we would have to do:
 
-    ```{r, eval=FALSE}
-    df <- df |> mutate(gender = as.factor(gender))
-    ```
+```{r, eval=FALSE}
+df <- df |> mutate(gender = as.factor(gender))
+```
 
 -   Character strings may encode ordinal information. For example, entries specify quality control information and are one of `c("good quality", "fair quality, "poor quality")`. A challenge could be that the spelling is inconsistent (`c("Good quality", "good quality", …)`). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable `NEE_VUT_REF_QC` in our example dataset `hhdf` follows this approach:
 
-    ```{r}
-    unique(hhdf$NEE_VUT_REF_QC)
-    ```
+```{r}
+unique(hhdf$NEE_VUT_REF_QC)
+```
 
 -   An entry like `>10 m` is not a friend of a data scientist. Here, we have three pieces of information: `>` as in "greater than", `10`, and `m` indicating the units. A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see Exercises).
 
--   Can you think of more such examples? (-\> Exercises)
+<!-- -   Can you think of more such examples? (-\> Exercises)  -->
 
 String manipulations are usually required for cleaning data. The section Strings below demonstrates some simple examples.
 
@@ -702,61 +702,11 @@ write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rd
 
 ## Exercises
 
--   find a way to encode `>` in `>10 m` in machine-readable way.
--   Exercise: hhdf cleaning based on QC info, non-random missingness (more at night), removing data implies shift of the mean.
--   aggregate the `CO2` data, calculating the mean by `Treatment.`
+-   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions: 
+  -   a. How many pale characters come from the planets Ryloth and Naboo?
+  -   b. Who is the oldest of the tallest 5 characters?
+  -   c. What is the name of the smallest character and their starship in “Return of the Jedi”
+-   Reuse the code in the tutorial to aggregate the `hhdf` dataset to the daily scale and calculate the following metrics for `VPD_F` using provided functions in R: maximum value, minimum value, median, and standard deviation.
+-   The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes not of high quality. Split your dataset into two - one with actually measured data (`NEE_VUT_REF_QC == 0`) and one with only gap-filled data. Compare the means of `GPP_NT_VUT_REF` of all three datasets and interpret your finding. Can you find a connect between the timepoint of an entry and its quality? What does the temporal pattern imply for the mean values that you calculated?
 
-```{r}
-CO2 |> 
-  group_by(Treatment) |> 
-  summarise(uptake = mean(uptake))
-```
-
--   make the following tables tidy:
-
-    -   `df_sunspots`
-
-    ```{r}
-    df_sunspots <- tibble(count = as.vector(sunspots), 
-           year_dec = time(sunspots)
-           ) |> 
-      mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-      mutate(year = year_dec - month_dec) |> 
-      mutate(month = as.integer(month_dec * 12)) |> 
-      mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
-      mutate(month = month(date, label = TRUE)) |> 
-      select(year, month, count)
-    ```
-
-    -   [link](https://stineb.github.io/esds_book/ch-02.html#exercise-1)
-
--   Exercises: identify outliers in VPD and temperature in our example dataset.
-
-```{r}
-hhdf |> 
-  select(TA_F, VPD_F) |> 
-  boxplot()
-
-# the function used to calculate boxplot statistics
-# returning "outliers" in TA_F
-hhdf$TA_F[hhdf$TA_F %in% boxplot.stats(hhdf$TA_F)$out] |> head()
-
-# returning "outliers" in VPD_F
-hhdf$VPD_F[hhdf$VPD_F %in% boxplot.stats(hhdf$VPD_F)$out] |> head()
-```
-
--   combine `df_sunspots` and `df_co2` along years and months.
-
-```{r}
-df_co2 <- tibble(co2_concentration = as.vector(co2), 
-       year_dec = time(co2)
-       ) |> 
-  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-  mutate(year = year_dec - month_dec) |> 
-  mutate(month = as.integer(month_dec * 12)) |> 
-  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  select(year, month, co2_concentration)
-```
-
-## Solutions
+<!-- -   The elevation data in `siteinfo_fluxnet2015` is a continuous numerical variable. Create one ore more variables that turns elevation into a categorical variable with three levels: < 0, 0-1000, 1001-2000, > 2000. Can you find a elegant way to add that this data is in units of `m`? -->
