@@ -44,7 +44,7 @@ Reproducible science relies on a number of key components. Data management and t
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
-An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/computationales/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
+An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
 
 ``` bash
 data-raw/

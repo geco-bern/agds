@@ -500,7 +500,7 @@ A project directory should only contain code, data and outputs that belong to th
 
 It is advisable to create a separate data directory outside the project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
 
-You can find an [R project template](https://github.com/computationales/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
+You can find an [R project template](https://github.com/geco-bern/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
 
 ## Exercises
 
