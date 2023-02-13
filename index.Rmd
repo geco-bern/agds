@@ -22,10 +22,14 @@ The target of this book are people interested in applying data science methods f
 
 <br>
 
-Only images and other materials were used which were made available under a non-restrictive license (Creative Commons, etc). Original sources are attributed. Content without attribution is our own and shared under the license below. If there are any errors or any content you find concerning with regard to licensing, or that you find offensive, please [contact us](https://geco-group.org/contact/). Any feedback, positive or negative, is welcome!
+Only images and other materials were used which were made available under a non-restrictive license (Creative Commons, etc). Original sources are attributed. Content without attribution is our own and shared under the license below. If there are any errors or any content you find concerning with regard to licensing or other, please [contact us](https://geco-group.org/contact/). Any feedback, positive or negative, is welcome and can be posted [here](https://github.com/stineb/agds/issues).
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 
+<br>
+
+![](./figures/logo_unibern_squid3.png){width="30%"}
+![](./figures/geco_logo_fullname.png){width="30%"}
 
 ## About this course {.unnumbered}
 
