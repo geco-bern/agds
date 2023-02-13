@@ -32,7 +32,7 @@ Git allows for the collaboration of multiple people on the same code, while bein
 
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
 
-> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers](). Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
+> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the Chapter Programming primers. Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
 
 ### Git and local version control
 
@@ -175,7 +175,7 @@ In a forked project, go to the "Pull requests" tab and press the green "New pull
 
 ### Location based code management - github templates
 
-Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using a the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
+Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
 
 In our [R project template](https://github.com/computationales/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
 
@@ -192,6 +192,8 @@ Otherwise you can select the repository from the template dropdown menu, select 
 Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
 ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png)
+
+You can now clone the project to your local computer and continue to populate it with code and data.
 
 ## Exercises
 

@@ -4,7 +4,7 @@
 
 ## Learning objectives
 
-As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
+As a scientist you will encounter variety of data (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
 However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered, you will learn basic API usage to query data which is not represented as a file.
 
@@ -26,9 +26,9 @@ In this chapter you will learn:
 
 ## Tutorial
 
-## Files and file formats
+### Files and file formats
 
-### File extensions
+#### File extensions
 
 In order to manipulate data and make some distinctions on what a data file might contain, files carry a particular [file format extension](https://en.wikipedia.org/wiki/Filename_extension). These file extensions denote the intended content and use of a particular file.
 
@@ -54,7 +54,7 @@ File extensions are therefore an important tool in assessing what data you are d
 
 One of the most important distinctions in data formats falls along the line of it being human readable or not. Human readable data is, as the term specifies, made up of normal text characters. Human readable text has the advantage that it is easily read, and or edited using conventional text processors. This convenience comes at the cost of the files not being compressed in any way, and file sizes can become unsustainable. However, for many applications where file sizes are limited (\<50MB), human readable formats are the preferred option. Most human readable data falls in two broad categories, tabulated data and structured data.
 
-##### Tabulated data
+##### Tabulated data {.unnumbered}
 
 Often, human readable formats provide data in tabulated form using a consistent delimiter. This delimiter is a character separating columns of a table.
 
@@ -67,7 +67,7 @@ Common delimiters in this context are the comma (`,`), as shown in the above exa
 
 > TIP: File extensions aren't always a true indication of the delimiter used. For example, `.txt` files often contain comma or tab separated data. If reading a file using a particular delimiter fails it is best to check the first few lines of a file.
 
-##### Structured data
+##### Structured data {.unnumbered}
 
 Tabulated delimited data is row and column oriented and therefore doesn't allow complex structured content, e.g. tables within tables. This issue is sidestepped by for example the [JSON format](https://www.json.org/json-en.html). The JSON format in particular uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below you see an example of details describing a person, with entries being fo varying length and data content.
 
@@ -200,12 +200,12 @@ One of the advantages of binary data is that it is an efficient representation o
 
 More so than human readable data, the file format (extension) determines how to treat the data. Knowing common data formats and their use cases is therefore key.
 
-### File formats
+#### Common file formats
 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
 | File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
-|----------------|----------------|-------------------------|----------------|
+|-------------------------|----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|----------------------|
 | \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
@@ -214,7 +214,7 @@ Environmental sciences have particular file formats which dominate the field. So
 | \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)              | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster        |
 | \*.shp                  | Shapefile of vector data (see below)                           | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sp, sf               |
 
-## Meta-data
+### Meta-data
 
 Meta-data, or data which is associated with the main data file is key to understanding the content and context of a data file (or the data set to which the file belongs). In some cases you will find this data only as a general description referencing the file(s) itself. In other cases, meta-data is included in the file itself.
 
@@ -247,13 +247,13 @@ gdalinfo your_geotiff.tiff
 >
 > -   manipulations on the data before using the data in a final workflow
 
-## Spatial data representation
+### Spatial data representation
 
 Environmental data often has an explicit spatial and temporal component. For example, climate data is often represented as 2D maps which vary over time. This spatial data requires an additional level of understanding of commonly used data formats and structures.
 
 In general, we can distinguish two important data models when dealing with spatial data, the [raster](https://wiki.gis.com/wiki/index.php/Raster_data_model) and [vector data model](https://wiki.gis.com/wiki/index.php/Vector_data_model). Both data have their typical file formats (see above) and particular use cases. The definition of these formats, optimization of storage and math/logic on such data are the topic of Geographic Information System (GIS) science and beyond the scope of this course. We refer to other elective GIS courses for a greater understanding of these details. However, a basic understanding of both raster and vector data is provided here.
 
-### Raster data model
+#### Raster data model
 
 The basic raster model represents geographic (2D) continuous data as a two-dimensional array, where each position has a geographic (x, y) coordinate, a cell size (or resolution) and a given extent. Using this definition any image adheres to the raster model. However, in most geographic applications, coordinates are referenced and correspond to a geographic position, e.g., a particular latitude longitude. Often, the model is expanded with a time dimension, stacking various two-dimensional arrays into a three-dimensional array.
 
@@ -261,7 +261,7 @@ The raster data model is common for all data sources which use either imaging se
 
 Additional meta-data stores both the geographic reference system, the time components as well as other data which might be helpful to end users. Within the environmental sciences, NetCDF and GeoTiff are common raster data file formats.
 
-### Vector data model
+#### Vector data model
 
 The vector data model, in contrast to the raster data model, describes (unbound) features using a geometry (location, shape) using coordinates and linked feature attributes. Geometries can be points, lines, polygons, or even volumes.
 
@@ -269,13 +269,18 @@ Vector data does not have a defined resolution, making them scale independent. T
 
 Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data.
 
-## Data sources
+``` r
+# read in an example shape file
+# a common vector format
+```
+
+### Online data sources
 
 The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time, gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser or use the internal `download.file()` R function to grab data.
 
 But, many of the data described in previous sections are today warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels. These services allow you to access the underlying (original) data using an API, hence programmatically using code. Mastering the use of these services has become key in gathering research data.
 
-### Direct downloads
+#### Direct downloads
 
 Before diving into a description of APIs we remind you that some file reading functions in R are web aware, and can not only read local files but also remote ones (i.e., URLs). Getting ahead of ourselves a bit (see tutorials below), the example code shows you how to read the content of a URL directly into your R environment.
 
@@ -294,15 +299,15 @@ df <- read.table(
 )
 ```
 
-### APIs
+#### APIs
 
 Web based Application Programming Interfaces (APIs) offer a way to specify the scope of the returned data, and ultimately, the processing which goes on behind the scene in response to a (data) query. APIs are a way to, in a limited way, control a remote server to execute a certain (data) action. In most (RESTful) APIs, such query takes the form of an HTTP URL via an URL-encoded scheme using an API endpoint (or base URL).
 
 To reduce some of the complexity of APIs, it is common that a wrapper is written around an API in the language of choice (e.g., R, python). These dedicated API libraries make it easier to access data and limit coding overhead, as more concisely written.
 
-#### Dedicated API libraries
+##### Dedicated API libraries {.unnumbered}
 
-As an example of a dedicated library we use the [{MODISTools} R package](https://github.com/bluegreen-labs/MODISTools) which queries remote sensing data generated by the MODIS mission from the Oak Ridge National Laboratories data archive.
+As an example of a dedicated library we use the [{MODISTools} R package](https://github.com/bluegreen-labs/MODISTools) which queries remote sensing data generated by the MODIS remote sensing (satellite) mission from the Oak Ridge National Laboratories data archive.
 
 ``` r
 # install the MODISTools package
@@ -338,11 +343,9 @@ print(head(subset))
 
 A detailed description of all functions of the MODISTools R package is beyond the scope of this course. However, the listed command show you what a dedicated API package does. It is a shortcut to functional elements of an API. For example `mt_products()` allows you to quickly list all products without any knowledge of an API URL. Although more complex, as requiring parameters, the `mt_subset()` routine allows you to query remote sensing data for a single location (specified with a latitude `lat` and longitude `lon`), and a given date range (e.g. start, end parameters), a physical extent (in km left-right and above-below).
 
-#### GET
+##### GET {.unnumbered}
 
-Depending on your data source, you will either need to rely on a dedicated R package to query the API or study the API documentation. A dedicated package to query an API is for example the {ecmwfr} package to download ECMWF climate data from the Copernicus data services.
-
-The general scheme for using an API follows the use of the `GET()` command of the {httr} R library. You define a query using API parameters, as a named list, and then use a `GET()` statement to download the data from the endpoint (`url`).
+Depending on your data source, you will either need to rely on a dedicated R package to query the API or study the API documentation. The general scheme for using an API follows the use of the `GET()` command of the {httr} R library. You define a query using API parameters, as a named list, and then use a `GET()` statement to download the data from the endpoint (`url`).
 
 ``` r
 # formulate a named list query to pass to httr
@@ -404,7 +407,7 @@ r <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
 terra::plot(r)
 ```
 
-##### Authentication
+##### Authentication {.unnumbered}
 
 Depending on the API, authentication using a user name and a key or password is required. Then, the template should be slightly altered to accommodate for these requirements. Note that instead of the `GET()` command we use `POST()` as we need to post some authentication data before we can get the data in return.
 
@@ -476,5 +479,3 @@ https://github.com/xxx/xxx/some_data.tiff
 1.  Use the {hwsdr} library (a dedicated package for the API) to download the same data. How does this compare to the previous code written?
 2.  List how many data products there are on the ORNL MODIS data repository.
 3.  Download the MODIS land cover map for the canton of Bern.
-
-## Solutions
