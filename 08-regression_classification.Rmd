@@ -535,6 +535,16 @@ the errors and is minimized during model training. By taking the
 square root of mean square errors, the RMSE is in the same units as
 the data $Y$ and is less sensitive to outliers than the MSE.
 
+**MAE**
+
+The mean absolute error is similarly defined: $$
+\text{MAE} = \frac{1}{n} \sum_{i = 1}^{n} |Y_i - \hat{Y_i}|
+$$
+Measuring the discrepancies between predictions and observations using absolute errors, 
+instead of squared errors, gives less importance to errors of large magnitude and more importance
+to small errors than the MSE would. Hence, this measures is more stable in the presence of 
+outliers.
+
 **$R^2$ - coefficient of determination**
 
 also called the *coefficient of determination*, describes the
