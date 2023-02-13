@@ -4,7 +4,7 @@
 
 ## Learning objectives
 
-As a scientist you will encounter variety of [data](%5Bhttps://en.wikipedia.org/wiki/Data_(computing)%5D(https://en.wikipedia.org/wiki/Data_(computing))) (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
+As a scientist you will encounter variety of data (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
 However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered, you will learn basic API usage to query data which is not represented as a file.
 
