@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Supervised machine learning II | Applied Geodata Science</title>
+  <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Supervised machine learning II | Applied Geodata Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="github-repo" content="stineb/agsd" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Supervised machine learning II | Applied Geodata Science" />
+  
+  <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  
+
+<meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
+
+
+<meta name="date" content="2023-02-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="supervisedmli.html"/>
+<link rel="next" href="randomforest.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Geodata Science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-book"><i class="fa fa-check"></i>About this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-course"><i class="fa fa-check"></i>About this course</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-goal"><i class="fa fa-check"></i>Course goal</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#what-is-applied-geodata-science"><i class="fa fa-check"></i>What is Applied Geodata Science?</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#the-data-science-workflow"><i class="fa fa-check"></i>The data science workflow</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#why-now"><i class="fa fa-check"></i>Why now?</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#a-new-modelling-paradigm"><i class="fa fa-check"></i>A new modelling paradigm</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#reading-and-link-collection"><i class="fa fa-check"></i>Reading and link collection</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="gettingstarted.html"><a href="gettingstarted.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="gettingstarted.html"><a href="gettingstarted.html#learning-objectives-1"><i class="fa fa-check"></i><b>1.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="gettingstarted.html"><a href="gettingstarted.html#tutorial"><i class="fa fa-check"></i><b>1.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
+<li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+<li class="chapter" data-level="1.4" data-path="gettingstarted.html"><a href="gettingstarted.html#solutions"><i class="fa fa-check"></i><b>1.4</b> Solutions</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick"><i class="fa fa-check"></i><b>1.4.1</b> Magic Trick</a></li>
+<li class="chapter" data-level="1.4.2" data-path="gettingstarted.html"><a href="gettingstarted.html#code-clean-up"><i class="fa fa-check"></i><b>1.4.2</b> Code Clean-up</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="programmingprimers.html"><a href="programmingprimers.html#learning-objectives-2"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#tutorial-1"><i class="fa fa-check"></i><b>2.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="programmingprimers.html"><a href="programmingprimers.html#libraries"><i class="fa fa-check"></i><b>2.2.1</b> Libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#programming-basics"><i class="fa fa-check"></i><b>2.2.2</b> Programming basics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#working-with-data-frames"><i class="fa fa-check"></i><b>2.2.3</b> Working with data frames</a></li>
+<li class="chapter" data-level="2.2.4" data-path="programmingprimers.html"><a href="programmingprimers.html#where-to-find-help"><i class="fa fa-check"></i><b>2.2.4</b> Where to find help</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+<li class="chapter" data-level="2.4" data-path="programmingprimers.html"><a href="programmingprimers.html#exercise-for-the-report"><i class="fa fa-check"></i><b>2.4</b> Exercise for The Report</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="programmingprimers.html"><a href="programmingprimers.html#hints"><i class="fa fa-check"></i><b>2.4.1</b> Hints</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="programmingprimers.html"><a href="programmingprimers.html#solutions-1"><i class="fa fa-check"></i><b>2.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="datawrangling.html"><a href="datawrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="datawrangling.html"><a href="datawrangling.html#learning-objectives-3"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="datawrangling.html"><a href="datawrangling.html#tutorial-2"><i class="fa fa-check"></i><b>3.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="datawrangling.html"><a href="datawrangling.html#example-data"><i class="fa fa-check"></i><b>3.2.1</b> Example data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="datawrangling.html"><a href="datawrangling.html#required-libraries"><i class="fa fa-check"></i><b>3.2.2</b> Required libraries</a></li>
+<li class="chapter" data-level="3.2.3" data-path="datawrangling.html"><a href="datawrangling.html#tidyverse"><i class="fa fa-check"></i><b>3.2.3</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.2.4" data-path="datawrangling.html"><a href="datawrangling.html#tabular-data"><i class="fa fa-check"></i><b>3.2.4</b> Tabular data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="datawrangling.html"><a href="datawrangling.html#variable-selection"><i class="fa fa-check"></i><b>3.2.5</b> Variable selection</a></li>
+<li class="chapter" data-level="3.2.6" data-path="datawrangling.html"><a href="datawrangling.html#time-objects"><i class="fa fa-check"></i><b>3.2.6</b> Time objects</a></li>
+<li class="chapter" data-level="3.2.7" data-path="datawrangling.html"><a href="datawrangling.html#variable-re--definition"><i class="fa fa-check"></i><b>3.2.7</b> Variable (re-) definition</a></li>
+<li class="chapter" data-level="3.2.8" data-path="datawrangling.html"><a href="datawrangling.html#axes-of-variation"><i class="fa fa-check"></i><b>3.2.8</b> Axes of variation</a></li>
+<li class="chapter" data-level="3.2.9" data-path="datawrangling.html"><a href="datawrangling.html#tidy-data"><i class="fa fa-check"></i><b>3.2.9</b> Tidy data</a></li>
+<li class="chapter" data-level="3.2.10" data-path="datawrangling.html"><a href="datawrangling.html#aggregating-data"><i class="fa fa-check"></i><b>3.2.10</b> Aggregating data</a></li>
+<li class="chapter" data-level="3.2.11" data-path="datawrangling.html"><a href="datawrangling.html#data-cleaning"><i class="fa fa-check"></i><b>3.2.11</b> Data cleaning</a></li>
+<li class="chapter" data-level="3.2.12" data-path="datawrangling.html"><a href="datawrangling.html#combining-relational-data"><i class="fa fa-check"></i><b>3.2.12</b> Combining relational data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="datawrangling.html"><a href="datawrangling.html#extra-material"><i class="fa fa-check"></i><b>3.3</b> Extra material</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-i"><i class="fa fa-check"></i><b>3.3.1</b> Functional programming I</a></li>
+<li class="chapter" data-level="3.3.2" data-path="datawrangling.html"><a href="datawrangling.html#strings"><i class="fa fa-check"></i><b>3.3.2</b> Strings</a></li>
+<li class="chapter" data-level="3.3.3" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="datawrangling.html"><a href="datawrangling.html#exercises-2"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#solutions-2"><i class="fa fa-check"></i><b>3.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="datavis.html"><a href="datavis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="datavis.html"><a href="datavis.html#learning-objectives-4"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="datavis.html"><a href="datavis.html#required-packages"><i class="fa fa-check"></i><b>4.2</b> Required packages</a></li>
+<li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#tutorial-3"><i class="fa fa-check"></i><b>4.3</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.3.1</b> The grammar of graphics</a></li>
+<li class="chapter" data-level="4.3.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.3.2</b> Every data has its representation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="datavis.html"><a href="datavis.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+<li class="chapter" data-level="4.5" data-path="datavis.html"><a href="datavis.html#solutions-3"><i class="fa fa-check"></i><b>4.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="datavariety.html"><a href="datavariety.html"><i class="fa fa-check"></i><b>5</b> Data variety</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="datavariety.html"><a href="datavariety.html#learning-objectives-5"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="datavariety.html"><a href="datavariety.html#tutorial-4"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="datavariety.html"><a href="datavariety.html#files-and-file-formats"><i class="fa fa-check"></i><b>5.2.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
+<li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
+<li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-4"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="datavariety.html"><a href="datavariety.html#files-and-file-formats-1"><i class="fa fa-check"></i><b>5.3.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.3.2" data-path="datavariety.html"><a href="datavariety.html#api-use"><i class="fa fa-check"></i><b>5.3.2</b> API use</a></li>
+<li class="chapter" data-level="5.3.3" data-path="datavariety.html"><a href="datavariety.html#get-1"><i class="fa fa-check"></i><b>5.3.3</b> GET</a></li>
+<li class="chapter" data-level="5.3.4" data-path="datavariety.html"><a href="datavariety.html#dedicated-library"><i class="fa fa-check"></i><b>5.3.4</b> Dedicated library</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="codemgmt.html"><a href="codemgmt.html"><i class="fa fa-check"></i><b>6</b> Code management</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="codemgmt.html"><a href="codemgmt.html#learning-objectives-6"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="codemgmt.html"><a href="codemgmt.html#tutorial-5"><i class="fa fa-check"></i><b>6.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="codemgmt.html"><a href="codemgmt.html#git-and-local-version-control"><i class="fa fa-check"></i><b>6.2.1</b> Git and local version control</a></li>
+<li class="chapter" data-level="6.2.2" data-path="codemgmt.html"><a href="codemgmt.html#remote-version-control"><i class="fa fa-check"></i><b>6.2.2</b> Remote version control</a></li>
+<li class="chapter" data-level="6.2.3" data-path="codemgmt.html"><a href="codemgmt.html#location-based-code-management---github-templates"><i class="fa fa-check"></i><b>6.2.3</b> Location based code management - github templates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="codemgmt.html"><a href="codemgmt.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+<li class="chapter" data-level="6.4" data-path="codemgmt.html"><a href="codemgmt.html#solutions-4"><i class="fa fa-check"></i><b>6.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="openscience.html"><a href="openscience.html"><i class="fa fa-check"></i><b>7</b> Open science practices</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="openscience.html"><a href="openscience.html#learning-objectives-7"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="openscience.html"><a href="openscience.html#tutorial-6"><i class="fa fa-check"></i><b>7.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="openscience.html"><a href="openscience.html#project-structure"><i class="fa fa-check"></i><b>7.2.1</b> Project structure</a></li>
+<li class="chapter" data-level="7.2.2" data-path="openscience.html"><a href="openscience.html#managing-workflows"><i class="fa fa-check"></i><b>7.2.2</b> Managing workflows</a></li>
+<li class="chapter" data-level="7.2.3" data-path="openscience.html"><a href="openscience.html#capturing-your-session-state"><i class="fa fa-check"></i><b>7.2.3</b> Capturing your session state</a></li>
+<li class="chapter" data-level="7.2.4" data-path="openscience.html"><a href="openscience.html#capturing-a-system-state"><i class="fa fa-check"></i><b>7.2.4</b> Capturing a system state</a></li>
+<li class="chapter" data-level="7.2.5" data-path="openscience.html"><a href="openscience.html#readable-reporting-using-rmarkdown"><i class="fa fa-check"></i><b>7.2.5</b> Readable reporting using Rmarkdown</a></li>
+<li class="chapter" data-level="7.2.6" data-path="openscience.html"><a href="openscience.html#data-retention"><i class="fa fa-check"></i><b>7.2.6</b> Data retention</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="openscience.html"><a href="openscience.html#exercises-6"><i class="fa fa-check"></i><b>7.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regressionclassification.html"><a href="regressionclassification.html"><i class="fa fa-check"></i><b>8</b> Regression and classification</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="regressionclassification.html"><a href="regressionclassification.html#learning-objectives-8"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="regressionclassification.html"><a href="regressionclassification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="regressionclassification.html"><a href="regressionclassification.html#types-of-models"><i class="fa fa-check"></i><b>8.2.1</b> Types of models</a></li>
+<li class="chapter" data-level="8.2.2" data-path="regressionclassification.html"><a href="regressionclassification.html#regression"><i class="fa fa-check"></i><b>8.2.2</b> Regression</a></li>
+<li class="chapter" data-level="8.2.3" data-path="regressionclassification.html"><a href="regressionclassification.html#classification"><i class="fa fa-check"></i><b>8.2.3</b> Classification</a></li>
+<li class="chapter" data-level="8.2.4" data-path="regressionclassification.html"><a href="regressionclassification.html#model-evaluation"><i class="fa fa-check"></i><b>8.2.4</b> Model evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#exercises-7"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
+<li class="chapter" data-level="8.4" data-path="regressionclassification.html"><a href="regressionclassification.html#solutions-5"><i class="fa fa-check"></i><b>8.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="supervisedmli.html"><a href="supervisedmli.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning I</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="supervisedmli.html"><a href="supervisedmli.html#learning-objectives-9"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="supervisedmli.html"><a href="supervisedmli.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="supervisedmli.html"><a href="supervisedmli.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="9.2.2" data-path="supervisedmli.html"><a href="supervisedmli.html#what-is-supervised-machine-learning"><i class="fa fa-check"></i><b>9.2.2</b> What is supervised machine learning?</a></li>
+<li class="chapter" data-level="9.2.3" data-path="supervisedmli.html"><a href="supervisedmli.html#overfitting"><i class="fa fa-check"></i><b>9.2.3</b> Overfitting</a></li>
+<li class="chapter" data-level="9.2.4" data-path="supervisedmli.html"><a href="supervisedmli.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.4</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="9.2.5" data-path="supervisedmli.html"><a href="supervisedmli.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.5</b> K-nearest neighbours</a></li>
+<li class="chapter" data-level="9.2.6" data-path="supervisedmli.html"><a href="supervisedmli.html#model-formulation"><i class="fa fa-check"></i><b>9.2.6</b> Model formulation</a></li>
+<li class="chapter" data-level="9.2.7" data-path="supervisedmli.html"><a href="supervisedmli.html#data-splitting"><i class="fa fa-check"></i><b>9.2.7</b> Data splitting</a></li>
+<li class="chapter" data-level="9.2.8" data-path="supervisedmli.html"><a href="supervisedmli.html#preprocessing"><i class="fa fa-check"></i><b>9.2.8</b> Pre-processing</a></li>
+<li class="chapter" data-level="9.2.9" data-path="supervisedmli.html"><a href="supervisedmli.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.9</b> Putting it all together (half-way)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="supervisedmli.html"><a href="supervisedmli.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="supervisedmli.html"><a href="supervisedmli.html#solutions-6"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="supervisedmlii.html"><a href="supervisedmlii.html"><i class="fa fa-check"></i><b>10</b> Supervised machine learning II</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#learning-objectives-10"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="10.2" data-path="supervisedmlii.html"><a href="supervisedmlii.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#required-packages-2"><i class="fa fa-check"></i><b>10.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="supervisedmlii.html"><a href="supervisedmlii.html#data-and-the-modelling-challenge-1"><i class="fa fa-check"></i><b>10.2.2</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="10.2.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#training"><i class="fa fa-check"></i><b>10.2.3</b> Loss function</a></li>
+<li class="chapter" data-level="10.2.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#hyperparameters"><i class="fa fa-check"></i><b>10.2.4</b> Hyperparameters</a></li>
+<li class="chapter" data-level="10.2.5" data-path="supervisedmlii.html"><a href="supervisedmlii.html#resampling"><i class="fa fa-check"></i><b>10.2.5</b> Resampling</a></li>
+<li class="chapter" data-level="10.2.6" data-path="supervisedmlii.html"><a href="supervisedmlii.html#validation-versus-testing-data"><i class="fa fa-check"></i><b>10.2.6</b> Validation versus testing data</a></li>
+<li class="chapter" data-level="10.2.7" data-path="supervisedmlii.html"><a href="supervisedmlii.html#modeling-with-structured-data"><i class="fa fa-check"></i><b>10.2.7</b> Modeling with structured data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+<li class="chapter" data-level="10.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#solutions-7"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="randomforest.html"><a href="randomforest.html"><i class="fa fa-check"></i><b>11</b> Random Forest</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="randomforest.html"><a href="randomforest.html#learning-objectives-11"><i class="fa fa-check"></i><b>11.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="11.2" data-path="randomforest.html"><a href="randomforest.html#tutorial-10"><i class="fa fa-check"></i><b>11.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="randomforest.html"><a href="randomforest.html#required-packages-3"><i class="fa fa-check"></i><b>11.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#decision-trees"><i class="fa fa-check"></i><b>11.2.2</b> Decision trees</a></li>
+<li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.3</b> Bagging</a></li>
+<li class="chapter" data-level="11.2.4" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.4</b> From trees to a forest</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-10"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+<li class="chapter" data-level="11.4" data-path="randomforest.html"><a href="randomforest.html#solutions-8"><i class="fa fa-check"></i><b>11.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applied Geodata Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="supervisedmlii" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Supervised machine learning II<a href="supervisedmlii.html#supervisedmlii" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Chapter lead author: Benjamin Stocker</strong></p>
+<p>Contents:</p>
+<ul>
+<li><p>Training and loss function</p></li>
+<li><p>Hyperparameters</p></li>
+<li><p>Resampling</p></li>
+<li><p>Lecture (Beni): Wisdom of the crowds, from decision trees to random forests</p></li>
+<li><p>Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance</p></li>
+</ul>
+<div id="learning-objectives-10" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Learning objectives<a href="supervisedmlii.html#learning-objectives-10" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the Chapter <a href="supervisedmli.html#supervisedmli">9</a>, you learned how the data are pre-processed, the model fitted, and how the model’s generasbility to unseen data is tested. In the exercises of Chapter @ref(supervised_ml_i), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model’s performance on the training and the test sets. A “good” model generalises well. That is, it performs well on unseen data.</p>
+<p>In this chapter, you will learn more about the process of model training, the concept of the <em>loss</em>, and how we can chose the right level of model complexity for optimal model generalisability as part of the model training step. This completes your set of skills for your first implementations a supervised machine learning workflow.</p>
+</div>
+<div id="tutorial-9" class="section level2 hasAnchor" number="10.2">
+<h2><span class="header-section-number">10.2</span> Tutorial<a href="supervisedmlii.html#tutorial-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="required-packages-2" class="section level3 hasAnchor" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Required packages<a href="supervisedmlii.html#required-packages-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="supervisedmlii.html#cb439-1" aria-hidden="true" tabindex="-1"></a>use_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;readr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;caret&quot;</span>, <span class="st">&quot;yardstick&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;recipes&quot;</span>)</span>
+<span id="cb439-2"><a href="supervisedmlii.html#cb439-2" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb439-3"><a href="supervisedmlii.html#cb439-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span>
+<span id="cb439-4"><a href="supervisedmlii.html#cb439-4" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+</div>
+<div id="data-and-the-modelling-challenge-1" class="section level3 hasAnchor" number="10.2.2">
+<h3><span class="header-section-number">10.2.2</span> Data and the modelling challenge<a href="supervisedmlii.html#data-and-the-modelling-challenge-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We’re using the same data and address the same modelling challenge as in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. Let’s load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter @ref(supervised_ml_i).</p>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="supervisedmlii.html#cb440-1" aria-hidden="true" tabindex="-1"></a>ddf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb440-2"><a href="supervisedmlii.html#cb440-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb440-3"><a href="supervisedmlii.html#cb440-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only the variables we are interested in</span></span>
+<span id="cb440-4"><a href="supervisedmlii.html#cb440-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(TIMESTAMP,</span>
+<span id="cb440-5"><a href="supervisedmlii.html#cb440-5" aria-hidden="true" tabindex="-1"></a>                GPP_NT_VUT_REF,    <span class="co"># the target</span></span>
+<span id="cb440-6"><a href="supervisedmlii.html#cb440-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>),  <span class="co"># quality control info</span></span>
+<span id="cb440-7"><a href="supervisedmlii.html#cb440-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),   <span class="co"># includes all all meteorological covariates</span></span>
+<span id="cb440-8"><a href="supervisedmlii.html#cb440-8" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)   <span class="co"># weird useless variable</span></span>
+<span id="cb440-9"><a href="supervisedmlii.html#cb440-9" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">|&gt;</span></span>
+<span id="cb440-10"><a href="supervisedmlii.html#cb440-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb440-11"><a href="supervisedmlii.html#cb440-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to a nice date object</span></span>
+<span id="cb440-12"><a href="supervisedmlii.html#cb440-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> <span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
+<span id="cb440-13"><a href="supervisedmlii.html#cb440-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb440-14"><a href="supervisedmlii.html#cb440-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set all -9999 to NA</span></span>
+<span id="cb440-15"><a href="supervisedmlii.html#cb440-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span></span>
+<span id="cb440-16"><a href="supervisedmlii.html#cb440-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb440-17"><a href="supervisedmlii.html#cb440-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># retain only data based on &gt;=80% good-quality measurements</span></span>
+<span id="cb440-18"><a href="supervisedmlii.html#cb440-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># overwrite bad data with NA (not dropping rows)</span></span>
+<span id="cb440-19"><a href="supervisedmlii.html#cb440-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF),</span>
+<span id="cb440-20"><a href="supervisedmlii.html#cb440-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">TA_F           =</span> <span class="fu">ifelse</span>(TA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, TA_F),</span>
+<span id="cb440-21"><a href="supervisedmlii.html#cb440-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">SW_IN_F        =</span> <span class="fu">ifelse</span>(SW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, SW_IN_F),</span>
+<span id="cb440-22"><a href="supervisedmlii.html#cb440-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">LW_IN_F        =</span> <span class="fu">ifelse</span>(LW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, LW_IN_F),</span>
+<span id="cb440-23"><a href="supervisedmlii.html#cb440-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">VPD_F          =</span> <span class="fu">ifelse</span>(VPD_F_QC       <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, VPD_F),</span>
+<span id="cb440-24"><a href="supervisedmlii.html#cb440-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">PA_F           =</span> <span class="fu">ifelse</span>(PA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, PA_F),</span>
+<span id="cb440-25"><a href="supervisedmlii.html#cb440-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">P_F            =</span> <span class="fu">ifelse</span>(P_F_QC         <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, P_F),</span>
+<span id="cb440-26"><a href="supervisedmlii.html#cb440-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">WS_F           =</span> <span class="fu">ifelse</span>(WS_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, WS_F)) <span class="sc">|&gt;</span> </span>
+<span id="cb440-27"><a href="supervisedmlii.html#cb440-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb440-28"><a href="supervisedmlii.html#cb440-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop QC variables (no longer needed)</span></span>
+<span id="cb440-29"><a href="supervisedmlii.html#cb440-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span>
+<span id="cb440-30"><a href="supervisedmlii.html#cb440-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb440-31"><a href="supervisedmlii.html#cb440-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
+<span id="cb440-32"><a href="supervisedmlii.html#cb440-32" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb440-33"><a href="supervisedmlii.html#cb440-33" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(ddf, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
+<span id="cb440-34"><a href="supervisedmlii.html#cb440-34" aria-hidden="true" tabindex="-1"></a>ddf_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
+<span id="cb440-35"><a href="supervisedmlii.html#cb440-35" aria-hidden="true" tabindex="-1"></a>ddf_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
+<span id="cb440-36"><a href="supervisedmlii.html#cb440-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb440-37"><a href="supervisedmlii.html#cb440-37" aria-hidden="true" tabindex="-1"></a><span class="co"># The same model formulation is in the previous chapter</span></span>
+<span id="cb440-38"><a href="supervisedmlii.html#cb440-38" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, <span class="at">data =</span> ddf_train) <span class="sc">|&gt;</span> </span>
+<span id="cb440-39"><a href="supervisedmlii.html#cb440-39" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb440-40"><a href="supervisedmlii.html#cb440-40" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
+</div>
+<div id="training" class="section level3 hasAnchor" number="10.2.3">
+<h3><span class="header-section-number">10.2.3</span> Loss function<a href="supervisedmlii.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between <span class="math inline">\(\hat{Y}\)</span> and <span class="math inline">\(Y\)</span>. The <em>loss</em> function quantifies this mismatch (<span class="math inline">\(L(\hat{Y}, Y)\)</span>), and the algorithm (“optimiser” in Fig. XXX of Chapter <a href="supervisedmli.html#supervisedmli">9</a>) takes care of progressively reducing the loss during model training.</p>
+<p>Let’s say the machine learning model contains two parameters and predictions can be considered a function of the two (<span class="math inline">\(\hat{Y}(w_1, w_2)\)</span>). <span class="math inline">\(Y\)</span> is actually constant. Thus, the loss function is effectively a function <span class="math inline">\(L(w_1, w_2)\)</span>. Therefore, we can consider the model training as a search of the parameter space to find the minimum of the loss. The parameter space spanned by all possible combinations of <span class="math inline">\((w_1, w_2)\)</span>. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.</p>
+<div class="figure">
+<img src="figures/loss_plane.png" style="width:10cm" alt="" />
+<p class="caption">Visualization of a loss function</p>
+</div>
+<p>Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter @ref(#supervisedmli), the {caret} package provides “wrappers” that handle a large selection of different machine learning model implementations in different packages with a unified interface (see <a href="https://topepo.github.io/caret/available-models.html">here</a> for an overview of available models). The {caret} function <code>train()</code> is the center piece also in terms of specifying the loss function as the argument <code>metric</code>. It defaults to the RMSE for regression models and the accuracy for classification.</p>
+</div>
+<div id="hyperparameters" class="section level3 hasAnchor" number="10.2.4">
+<h3><span class="header-section-number">10.2.4</span> Hyperparameters<a href="supervisedmlii.html#hyperparameters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Practically all machine learning algorithms have some “knobs” to turn for controlling a model’s complexity and other features of the model training. The optimal choice of these “knobs” is to be found for efficient model performance. Such “knobs” are the <em>hyperparameters</em>. Each algorithm comes with its own, specific hyperparameters.</p>
+<p>For KNN, <code>k</code> is the (only) hyperparameter. It specifies the number of neighbours to consider for determining distances. There is always an optimum <span class="math inline">\(k\)</span>. Obviously, if <span class="math inline">\(k = n\)</span>, we consider all observations as neighbours and each prediction is simply the mean of all observed target values <span class="math inline">\(Y\)</span>, irrespective of the predictor values. This cannot be optimal and such a model is likely underfit. On the other extreme, with <span class="math inline">\(k = 1\)</span>, the model will be strongly affected by the noise in the single nearest neighbour and its generalisability will suffer. This should be reflected in a poor performance on the validation data.</p>
+<p>Hyperparameters usually have to be “tuned”. The optimal setting depends on the data and can therefore not be known <em>a priori</em>.</p>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="supervisedmlii.html#cb441-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load our custom evaluation function</span></span>
+<span id="cb441-2"><a href="supervisedmlii.html#cb441-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/eval_model.R&quot;</span>)</span>
+<span id="cb441-3"><a href="supervisedmlii.html#cb441-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-4"><a href="supervisedmlii.html#cb441-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the set of K</span></span>
+<span id="cb441-5"><a href="supervisedmlii.html#cb441-5" aria-hidden="true" tabindex="-1"></a>df_k <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb441-6"><a href="supervisedmlii.html#cb441-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idx =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span>
+<span id="cb441-7"><a href="supervisedmlii.html#cb441-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-8"><a href="supervisedmlii.html#cb441-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model training for the specified set of K</span></span>
+<span id="cb441-9"><a href="supervisedmlii.html#cb441-9" aria-hidden="true" tabindex="-1"></a>list_mod_knn <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb441-10"><a href="supervisedmlii.html#cb441-10" aria-hidden="true" tabindex="-1"></a>  df_k<span class="sc">$</span>k,</span>
+<span id="cb441-11"><a href="supervisedmlii.html#cb441-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>caret<span class="sc">::</span><span class="fu">train</span>(pp, </span>
+<span id="cb441-12"><a href="supervisedmlii.html#cb441-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb441-13"><a href="supervisedmlii.html#cb441-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb441-14"><a href="supervisedmlii.html#cb441-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb441-15"><a href="supervisedmlii.html#cb441-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">k =</span> .),   <span class="co"># &#39;.&#39; evaulates k</span></span>
+<span id="cb441-16"><a href="supervisedmlii.html#cb441-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>))</span>
+<span id="cb441-17"><a href="supervisedmlii.html#cb441-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-18"><a href="supervisedmlii.html#cb441-18" aria-hidden="true" tabindex="-1"></a>list_metrics <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb441-19"><a href="supervisedmlii.html#cb441-19" aria-hidden="true" tabindex="-1"></a>  list_mod_knn,</span>
+<span id="cb441-20"><a href="supervisedmlii.html#cb441-20" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span><span class="fu">eval_model</span>(., </span>
+<span id="cb441-21"><a href="supervisedmlii.html#cb441-21" aria-hidden="true" tabindex="-1"></a>              ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb441-22"><a href="supervisedmlii.html#cb441-22" aria-hidden="true" tabindex="-1"></a>              ddf_test, </span>
+<span id="cb441-23"><a href="supervisedmlii.html#cb441-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">return_metrics =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb441-24"><a href="supervisedmlii.html#cb441-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-25"><a href="supervisedmlii.html#cb441-25" aria-hidden="true" tabindex="-1"></a><span class="co"># extract metrics on training data</span></span>
+<span id="cb441-26"><a href="supervisedmlii.html#cb441-26" aria-hidden="true" tabindex="-1"></a>list_metrics_train <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb441-27"><a href="supervisedmlii.html#cb441-27" aria-hidden="true" tabindex="-1"></a>  list_metrics,</span>
+<span id="cb441-28"><a href="supervisedmlii.html#cb441-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;train&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-29"><a href="supervisedmlii.html#cb441-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add K to the data frame</span></span>
+<span id="cb441-30"><a href="supervisedmlii.html#cb441-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">&quot;idx&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-31"><a href="supervisedmlii.html#cb441-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idx =</span> <span class="fu">as.numeric</span>(idx)) <span class="sc">|&gt;</span> </span>
+<span id="cb441-32"><a href="supervisedmlii.html#cb441-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(df_k, <span class="at">by =</span> <span class="st">&quot;idx&quot;</span>)</span>
+<span id="cb441-33"><a href="supervisedmlii.html#cb441-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-34"><a href="supervisedmlii.html#cb441-34" aria-hidden="true" tabindex="-1"></a><span class="co"># extract metrics on testing data</span></span>
+<span id="cb441-35"><a href="supervisedmlii.html#cb441-35" aria-hidden="true" tabindex="-1"></a>list_metrics_test <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb441-36"><a href="supervisedmlii.html#cb441-36" aria-hidden="true" tabindex="-1"></a>  list_metrics,</span>
+<span id="cb441-37"><a href="supervisedmlii.html#cb441-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;test&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-38"><a href="supervisedmlii.html#cb441-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add K to the data frame</span></span>
+<span id="cb441-39"><a href="supervisedmlii.html#cb441-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">&quot;idx&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-40"><a href="supervisedmlii.html#cb441-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idx =</span> <span class="fu">as.numeric</span>(idx)) <span class="sc">|&gt;</span> </span>
+<span id="cb441-41"><a href="supervisedmlii.html#cb441-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(df_k, <span class="at">by =</span> <span class="st">&quot;idx&quot;</span>)</span>
+<span id="cb441-42"><a href="supervisedmlii.html#cb441-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-43"><a href="supervisedmlii.html#cb441-43" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare for visualisation</span></span>
+<span id="cb441-44"><a href="supervisedmlii.html#cb441-44" aria-hidden="true" tabindex="-1"></a>df_mae <span class="ot">&lt;-</span> list_metrics_train <span class="sc">|&gt;</span> </span>
+<span id="cb441-45"><a href="supervisedmlii.html#cb441-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">&quot;mae&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-46"><a href="supervisedmlii.html#cb441-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">set =</span> <span class="st">&quot;train&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-47"><a href="supervisedmlii.html#cb441-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb441-48"><a href="supervisedmlii.html#cb441-48" aria-hidden="true" tabindex="-1"></a>    list_metrics_test <span class="sc">|&gt;</span> </span>
+<span id="cb441-49"><a href="supervisedmlii.html#cb441-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">&quot;mae&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb441-50"><a href="supervisedmlii.html#cb441-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">set =</span> <span class="st">&quot;test&quot;</span>)</span>
+<span id="cb441-51"><a href="supervisedmlii.html#cb441-51" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb441-52"><a href="supervisedmlii.html#cb441-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb441-53"><a href="supervisedmlii.html#cb441-53" aria-hidden="true" tabindex="-1"></a><span class="co"># visualise</span></span>
+<span id="cb441-54"><a href="supervisedmlii.html#cb441-54" aria-hidden="true" tabindex="-1"></a>df_mae <span class="sc">|&gt;</span> </span>
+<span id="cb441-55"><a href="supervisedmlii.html#cb441-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> .estimate, <span class="at">color =</span> set)) <span class="sc">+</span></span>
+<span id="cb441-56"><a href="supervisedmlii.html#cb441-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb441-57"><a href="supervisedmlii.html#cb441-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-227-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The workflow implemented above should remind you of your solution to Exercise XXX in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller <span class="math inline">\(k\)</span>. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.</p>
+<p>Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?</p>
+</div>
+<div id="resampling" class="section level3 hasAnchor" number="10.2.5">
+<h3><span class="header-section-number">10.2.5</span> Resampling<a href="supervisedmlii.html#resampling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The solution is to split the training data again - now into a training and a <em>validation</em> set. Using the validation set, we can “mimick” out-of-sample predictions during training by determining the loss on the validation set and use that for guiding the model training. However, depending on the volume of data we have access to, evaluation metrics determined on the validation set may not be robust. Results may vary depending on the split into training and validation data. This makes it challenging for reliably estimate out-of-sample performance.</p>
+<p>A solution for this problem is to <em>resample</em> the training into a number training-validation splits, yielding several pairs of training and <em>validation</em> data. Model training is then guided by minimising the average loss determined on the different resamples. Having multiple resamples (multiple <em>folds</em> of training-validation splits) avoids the loss minimization from being misguided by random peculiarities in the training and/or validation data.</p>
+<p>Whether or not a resampling is applied depends on the data volume and computational costs of the model training which increase linearly with the number of resamples. For models that take days-weeks to train, resampling is not a realistic option. However, for many machine learning applications in Geography and Environmental Sciences, models are much less costly and resampling is viable and desirable approach to model training. The most important methods of resampling are bootstrapping (not explained here, but see <a href="https://bradleyboehmke.github.io/HOML/process.html">Boehmke &amp; Greenwell (2020)</a>) and k-fold cross validation. An advantage of bootstrap is that it provides an estimation of the distribution of the training error (without the need for data distribution assumptions because it’s non parametric), which informs not only the magnitude of the training error but also the variance of such estimate. Nevertheless, this statistical approach can become very computationally intensive because it needs many resamples with replacement and model runs. Hence cross validation lends itself more to model training.</p>
+<p>In <em>k-fold cross validation</em>, the training data is split into <em>k</em> equally sized subsets (<em>folds</em>). (Don’t confuse this k with the k in KNN.) Then, there will be <em>k</em> iterations, where each fold is used for validation once (while the remaining folds are used for training). An extreme case is <em>leave-one-out cross validation</em>, where <em>k</em> corresponds to the number of data points.</p>
+<div class="figure">
+<img src="figures/cv.png" alt="" />
+<p class="caption">K-fold cross validation. From Boehmke &amp; Greenwell (2020).</p>
+</div>
+<p>XXX Exercises: implement k-fold cross validation by hand XXX</p>
+<p>To do a k-fold cross validation during model training in R, we don’t have to implement the loops around folds ourselves. The resampling procedure can be specified in the {caret} function <code>train()</code> with the argument <code>trControl</code>. The object that this argument takes is the output of a function call to <code>trainControl()</code>. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:</p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="supervisedmlii.html#cb442-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>)</span>
+<span id="cb442-2"><a href="supervisedmlii.html#cb442-2" aria-hidden="true" tabindex="-1"></a>mod_cv <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(pp, </span>
+<span id="cb442-3"><a href="supervisedmlii.html#cb442-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb442-4"><a href="supervisedmlii.html#cb442-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb442-5"><a href="supervisedmlii.html#cb442-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
+<span id="cb442-6"><a href="supervisedmlii.html#cb442-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">100</span>)),</span>
+<span id="cb442-7"><a href="supervisedmlii.html#cb442-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">metric =</span> <span class="st">&quot;MAE&quot;</span>)</span>
+<span id="cb442-8"><a href="supervisedmlii.html#cb442-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb442-9"><a href="supervisedmlii.html#cb442-9" aria-hidden="true" tabindex="-1"></a><span class="co"># generic plot of the caret model object</span></span>
+<span id="cb442-10"><a href="supervisedmlii.html#cb442-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mod_cv)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-228-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="supervisedmlii.html#cb443-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
+<span id="cb443-2"><a href="supervisedmlii.html#cb443-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod_cv)</span></code></pre></div>
+<pre><code>## k-Nearest Neighbors 
+## 
+## 1910 samples
+##    8 predictor
+## 
+## Recipe steps: center, scale 
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 1719, 1718, 1718, 1719, 1720, 1718, ... 
+## Resampling results across tuning parameters:
+## 
+##   k    RMSE      Rsquared   MAE     
+##     2  1.758390  0.5643266  1.331563
+##     5  1.579795  0.6321707  1.199857
+##    10  1.539660  0.6480432  1.163468
+##    15  1.522924  0.6549458  1.155488
+##    20  1.518210  0.6568319  1.152947
+##    25  1.516940  0.6574409  1.151223
+##    30  1.517698  0.6570899  1.153631
+##    35  1.517916  0.6570457  1.153421
+##    40  1.517559  0.6573507  1.153832
+##    60  1.522451  0.6556145  1.161452
+##   100  1.535410  0.6508217  1.177483
+## 
+## MAE was used to select the optimal model using the smallest value.
+## The final value used for the model was k = 25.</code></pre>
+<p>From the output of <code>print(mod_cv)</code>, we get information about model performance for each hyperparameter choice. The values reported are means of respective metrics determined across the ten folds. Also the optimal choice of <span class="math inline">\(k\)</span> (25) is reported. Does this correspond to the <span class="math inline">\(k\)</span> with the best performance determined on the test set? If resampling was a good approach to estimating out-of-sample model performance, then it should!</p>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="supervisedmlii.html#cb445-1" aria-hidden="true" tabindex="-1"></a>df_mae <span class="sc">|&gt;</span></span>
+<span id="cb445-2"><a href="supervisedmlii.html#cb445-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(set <span class="sc">==</span> <span class="st">&quot;test&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb445-3"><a href="supervisedmlii.html#cb445-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.estimate <span class="sc">==</span> <span class="fu">min</span>(.estimate))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 6
+##     idx .metric .estimator .estimate     k set  
+##   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+## 1     7 mae     standard        1.15    30 test</code></pre>
+<p>The evaluation on the test set suggests that <span class="math inline">\(k=30\)</span> is optimal, while 10-fold cross-validation yielded an optimal <span class="math inline">\(k = 25\)</span>. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is primarily a result of randomness in the data.</p>
+<p>Let’s look at the results as we did in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. The model object <code>mod_cv</code> contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the <code>predict()</code> function (as used inside <code>eval_model()</code>), it automatically uses the model trained with the optimal <span class="math inline">\(k\)</span>.</p>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="supervisedmlii.html#cb447-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_cv, <span class="at">df_train =</span> ddf_train, <span class="at">df_test =</span> ddf_test)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-230-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Remember that in Chapter <a href="supervisedmlii.html#supervisedmlii">10</a>, we used <span class="math inline">\(k=5\)</span> and got an <span class="math inline">\(R^2=0.74\)</span> on the training set and <span class="math inline">\(R^2=0.61\)</span> on the test set. The results with the optimal choice of <span class="math inline">\(k=25\)</span> yield an <span class="math inline">\(R^2=0.69\)</span> on the training set and <span class="math inline">\(R^2=0.65\)</span> on the test set - poorer than with <span class="math inline">\(k=5\)</span> on the training set but better on the test set. XXX exercises: explain to your neighbor why XXX.</p>
+</div>
+<div id="validation-versus-testing-data" class="section level3 hasAnchor" number="10.2.6">
+<h3><span class="header-section-number">10.2.6</span> Validation versus testing data<a href="supervisedmlii.html#validation-versus-testing-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A source of confusion can be the distinction of validation and testing data. They are different things. The validation data is used during model training. The model fitting and the selection of the optimal hyperparameters is based on comparing predictions with the validation data. Hence, a evaluations of true out-of-sample predictions should be done with a portion of the data that has never been used during the model training process (see Figure below).</p>
+<div class="figure">
+<img src="figures/training_validation_testing.png" style="width:14cm" alt="" />
+<p class="caption">Figure adopted form <a href="https://developers.google.com/machine-learning/crash-course/validation/video-lecture">Google Machine Learning Crash Course</a></p>
+</div>
+</div>
+<div id="modeling-with-structured-data" class="section level3 hasAnchor" number="10.2.7">
+<h3><span class="header-section-number">10.2.7</span> Modeling with structured data<a href="supervisedmlii.html#modeling-with-structured-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A fundamental assumption underlying many machine learning algorithms and their training setup is that the data are <em>independent and identically distributed (iid)</em>. This means that each observation is generated by the same process, follows the same distribution, and is independent from its neighboring point or any other data point. This assumption is often made in statistical models to simplify the analysis and to ensure the validity of various mathematical results used in machine learning algorithms. In reality, this is often not satisfied. In Chapter <a href="#data-wrangling"><strong>??</strong></a>, we dealt with structure in the data in the context of formatting and aggregating data frames. Such structures are often also relevant for modelling and what it means for a model to “generalize well”. Remember that structure in data arises from similarity of the subjects generating the data. Such structures and their relation to the modelling task should be considered when choosing the model algorithm, formulating the model, and when implementing the training a testing setup.</p>
+<p>Consider, for example, the time series of ecosystem fluxes and meterological covariates in our dataset <code>ddf</code>. When using this data to train a KNN or a linear regression model, we implicitly assume that the data is <em>iid</em>. We assumed that there is a true function <span class="math inline">\(f(X)\)</span> that generates the target data <span class="math inline">\(Y\)</span> and that can be used to predict under any novel condition <span class="math inline">\(X_\text{new}\)</span>. However, in reality, this may not be the case. <span class="math inline">\(f(X)\)</span> may change over time. For example, over the course of a season, the physiology of plants changes (think phenology) and may lead to temporally varying relationships between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> that are not captured by temporal variations in <span class="math inline">\(X\)</span> itself - the relationships are not stationary.</p>
+<p>Working with geographic and environmental data, we often deal with <em>temporal dependencies</em> between predictors and the target data. In our data <code>ddf</code> of ecosystem fluxes and meteorological covariates, this may be, as mentioned, arising from phenological changes in plant physiology and structure, or caused by a lasting effects weather extremes (e.g., a late frost event in spring). In hydrological data, temporal dependencies between weather and streamflow are generated by catchment characteristics and the runoff generation processes. Such temporal dependencies violate the independence assumption. Certain machine learning algorithms (e.g., recurrent neural networks) offer a solution for such cases and are suited for modelling temporal dependencies or, in general, sequential data where the order of the records matters (e.g., language models that consider the order of words in a text). Training-testing and cross-validation splits for sequential data have to preserve the order of the data in the subsets. In this case, the splits have to be done by <em>blocks</em>. That is, model generalisability is to be assessed by training on one block of the time series and testing on the remaining block. Note that the splitting method introduced in Chapter <a href="supervisedmli.html#supervisedmli">9</a> using <code>rsample::initial_split()</code> assumes that the data is <em>iid</em>. In the function, data points are randomly drawn and allocated to either the test or the training subset. It is therefore not applicable for splitting data with temporal dependencies. Modelling temporal dependencies will be dealt in future (not currently available) chapters of this book.</p>
+<p>Other dependencies may arise from the <em>spatial context.</em> For example, a model for classifying an atmospheric pressure field as a high or a low pressure system uses information about the spatial arrangement of the data - in this case raster data. A model predicts one value (‘high pressure system’ or ‘low pressure system’) per pressure field. Such modelling tasks are dealt with yet another class of algorithms (e.g., convolutional neural networks).</p>
+<p>Spatial or group-related structure in the data may arise if, in general, the processes generating the data, cannot be assumed to be identical and lead to identically distributed data across groups. For example, in the data <code>ddf_allsites_nested_joined</code> from Chapter <a href="#data-wrangling"><strong>??</strong></a>, time series of ecosystem fluxes and meteorological covariates are provided for a set of different sites. There, the group structure is linked to site identity. Similarly, streamflow data may be available for multiple catchments. However, considering the between-catchment variations in soil, terrain, vegetation, and geology, a model may not yield accurate predictions when trained by data from one catchment and applied to a different catchment.</p>
+<p>To evaluate model generalisability to a new site or catchment (not just a new time step within a single site or catchment), this structure has to be taken into consideration. In this, case, data splits of training and validation or testing subsets are to be separated along blocks, delineated by the similar groups of data points (by sites, or by catchments). That is, training data from a given site (or catchment) should be either in the training set or in the test (or validation) set, but not in both.</p>
+<p>This illustrates that the data structure and the modelling aim (generalisability in what respect?) have to be accounted for when designing the data split and resampling strategy. The {caret} function <code>groupKFold()</code> offers the solution for such cases, creating folds for cross-validation that respect group delineations. In other cases, such grouping structure may not be evident and may not be reflected by information accessible for modelling. For example, we may be able to separate time series from different sites but we don’t know whether sites are sufficiently independent to be able to consider the test metric to reflect the true uncertainty in predicting to an entirely new location which is neither in the test nor training set. In such cases, creative solutions have to be found and appropriate cross-validations have to be implemented with a view to the data structure and modelling aim.</p>
+</div>
+</div>
+<div id="exercises-9" class="section level2 hasAnchor" number="10.3">
+<h2><span class="header-section-number">10.3</span> Exercises<a href="supervisedmlii.html#exercises-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="solutions-7" class="section level2 hasAnchor" number="10.4">
+<h2><span class="header-section-number">10.4</span> Solutions<a href="supervisedmlii.html#solutions-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<!-- XXXXXXXXX -->
+<!-- For random forests from the **ranger** package, hyperparameters are: -->
+<!-- -   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors. -->
+<!-- -   `min.node.size`: the number of data points at the "bottom" of each decision tree -->
+<!-- -   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision -->
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="supervisedmli.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="randomforest.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/10-supervised_ml_II.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Supervised machine learning I | Applied Geodata Science</title>
+  <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Supervised machine learning I | Applied Geodata Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="github-repo" content="stineb/agsd" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Supervised machine learning I | Applied Geodata Science" />
+  
+  <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  
+
+<meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
+
+
+<meta name="date" content="2023-02-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="regressionclassification.html"/>
+<link rel="next" href="supervisedmlii.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Geodata Science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-book"><i class="fa fa-check"></i>About this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-course"><i class="fa fa-check"></i>About this course</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-goal"><i class="fa fa-check"></i>Course goal</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#what-is-applied-geodata-science"><i class="fa fa-check"></i>What is Applied Geodata Science?</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#the-data-science-workflow"><i class="fa fa-check"></i>The data science workflow</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#why-now"><i class="fa fa-check"></i>Why now?</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#a-new-modelling-paradigm"><i class="fa fa-check"></i>A new modelling paradigm</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#reading-and-link-collection"><i class="fa fa-check"></i>Reading and link collection</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="gettingstarted.html"><a href="gettingstarted.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="gettingstarted.html"><a href="gettingstarted.html#learning-objectives-1"><i class="fa fa-check"></i><b>1.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="gettingstarted.html"><a href="gettingstarted.html#tutorial"><i class="fa fa-check"></i><b>1.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
+<li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+<li class="chapter" data-level="1.4" data-path="gettingstarted.html"><a href="gettingstarted.html#solutions"><i class="fa fa-check"></i><b>1.4</b> Solutions</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick"><i class="fa fa-check"></i><b>1.4.1</b> Magic Trick</a></li>
+<li class="chapter" data-level="1.4.2" data-path="gettingstarted.html"><a href="gettingstarted.html#code-clean-up"><i class="fa fa-check"></i><b>1.4.2</b> Code Clean-up</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="programmingprimers.html"><a href="programmingprimers.html#learning-objectives-2"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#tutorial-1"><i class="fa fa-check"></i><b>2.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="programmingprimers.html"><a href="programmingprimers.html#libraries"><i class="fa fa-check"></i><b>2.2.1</b> Libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#programming-basics"><i class="fa fa-check"></i><b>2.2.2</b> Programming basics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#working-with-data-frames"><i class="fa fa-check"></i><b>2.2.3</b> Working with data frames</a></li>
+<li class="chapter" data-level="2.2.4" data-path="programmingprimers.html"><a href="programmingprimers.html#where-to-find-help"><i class="fa fa-check"></i><b>2.2.4</b> Where to find help</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+<li class="chapter" data-level="2.4" data-path="programmingprimers.html"><a href="programmingprimers.html#exercise-for-the-report"><i class="fa fa-check"></i><b>2.4</b> Exercise for The Report</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="programmingprimers.html"><a href="programmingprimers.html#hints"><i class="fa fa-check"></i><b>2.4.1</b> Hints</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="programmingprimers.html"><a href="programmingprimers.html#solutions-1"><i class="fa fa-check"></i><b>2.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="datawrangling.html"><a href="datawrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="datawrangling.html"><a href="datawrangling.html#learning-objectives-3"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="datawrangling.html"><a href="datawrangling.html#tutorial-2"><i class="fa fa-check"></i><b>3.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="datawrangling.html"><a href="datawrangling.html#example-data"><i class="fa fa-check"></i><b>3.2.1</b> Example data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="datawrangling.html"><a href="datawrangling.html#required-libraries"><i class="fa fa-check"></i><b>3.2.2</b> Required libraries</a></li>
+<li class="chapter" data-level="3.2.3" data-path="datawrangling.html"><a href="datawrangling.html#tidyverse"><i class="fa fa-check"></i><b>3.2.3</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.2.4" data-path="datawrangling.html"><a href="datawrangling.html#tabular-data"><i class="fa fa-check"></i><b>3.2.4</b> Tabular data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="datawrangling.html"><a href="datawrangling.html#variable-selection"><i class="fa fa-check"></i><b>3.2.5</b> Variable selection</a></li>
+<li class="chapter" data-level="3.2.6" data-path="datawrangling.html"><a href="datawrangling.html#time-objects"><i class="fa fa-check"></i><b>3.2.6</b> Time objects</a></li>
+<li class="chapter" data-level="3.2.7" data-path="datawrangling.html"><a href="datawrangling.html#variable-re--definition"><i class="fa fa-check"></i><b>3.2.7</b> Variable (re-) definition</a></li>
+<li class="chapter" data-level="3.2.8" data-path="datawrangling.html"><a href="datawrangling.html#axes-of-variation"><i class="fa fa-check"></i><b>3.2.8</b> Axes of variation</a></li>
+<li class="chapter" data-level="3.2.9" data-path="datawrangling.html"><a href="datawrangling.html#tidy-data"><i class="fa fa-check"></i><b>3.2.9</b> Tidy data</a></li>
+<li class="chapter" data-level="3.2.10" data-path="datawrangling.html"><a href="datawrangling.html#aggregating-data"><i class="fa fa-check"></i><b>3.2.10</b> Aggregating data</a></li>
+<li class="chapter" data-level="3.2.11" data-path="datawrangling.html"><a href="datawrangling.html#data-cleaning"><i class="fa fa-check"></i><b>3.2.11</b> Data cleaning</a></li>
+<li class="chapter" data-level="3.2.12" data-path="datawrangling.html"><a href="datawrangling.html#combining-relational-data"><i class="fa fa-check"></i><b>3.2.12</b> Combining relational data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="datawrangling.html"><a href="datawrangling.html#extra-material"><i class="fa fa-check"></i><b>3.3</b> Extra material</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-i"><i class="fa fa-check"></i><b>3.3.1</b> Functional programming I</a></li>
+<li class="chapter" data-level="3.3.2" data-path="datawrangling.html"><a href="datawrangling.html#strings"><i class="fa fa-check"></i><b>3.3.2</b> Strings</a></li>
+<li class="chapter" data-level="3.3.3" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="datawrangling.html"><a href="datawrangling.html#exercises-2"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#solutions-2"><i class="fa fa-check"></i><b>3.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="datavis.html"><a href="datavis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="datavis.html"><a href="datavis.html#learning-objectives-4"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="datavis.html"><a href="datavis.html#required-packages"><i class="fa fa-check"></i><b>4.2</b> Required packages</a></li>
+<li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#tutorial-3"><i class="fa fa-check"></i><b>4.3</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.3.1</b> The grammar of graphics</a></li>
+<li class="chapter" data-level="4.3.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.3.2</b> Every data has its representation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="datavis.html"><a href="datavis.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+<li class="chapter" data-level="4.5" data-path="datavis.html"><a href="datavis.html#solutions-3"><i class="fa fa-check"></i><b>4.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="datavariety.html"><a href="datavariety.html"><i class="fa fa-check"></i><b>5</b> Data variety</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="datavariety.html"><a href="datavariety.html#learning-objectives-5"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="datavariety.html"><a href="datavariety.html#tutorial-4"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="datavariety.html"><a href="datavariety.html#files-and-file-formats"><i class="fa fa-check"></i><b>5.2.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
+<li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
+<li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-4"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="datavariety.html"><a href="datavariety.html#files-and-file-formats-1"><i class="fa fa-check"></i><b>5.3.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.3.2" data-path="datavariety.html"><a href="datavariety.html#api-use"><i class="fa fa-check"></i><b>5.3.2</b> API use</a></li>
+<li class="chapter" data-level="5.3.3" data-path="datavariety.html"><a href="datavariety.html#get-1"><i class="fa fa-check"></i><b>5.3.3</b> GET</a></li>
+<li class="chapter" data-level="5.3.4" data-path="datavariety.html"><a href="datavariety.html#dedicated-library"><i class="fa fa-check"></i><b>5.3.4</b> Dedicated library</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="codemgmt.html"><a href="codemgmt.html"><i class="fa fa-check"></i><b>6</b> Code management</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="codemgmt.html"><a href="codemgmt.html#learning-objectives-6"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="codemgmt.html"><a href="codemgmt.html#tutorial-5"><i class="fa fa-check"></i><b>6.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="codemgmt.html"><a href="codemgmt.html#git-and-local-version-control"><i class="fa fa-check"></i><b>6.2.1</b> Git and local version control</a></li>
+<li class="chapter" data-level="6.2.2" data-path="codemgmt.html"><a href="codemgmt.html#remote-version-control"><i class="fa fa-check"></i><b>6.2.2</b> Remote version control</a></li>
+<li class="chapter" data-level="6.2.3" data-path="codemgmt.html"><a href="codemgmt.html#location-based-code-management---github-templates"><i class="fa fa-check"></i><b>6.2.3</b> Location based code management - github templates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="codemgmt.html"><a href="codemgmt.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+<li class="chapter" data-level="6.4" data-path="codemgmt.html"><a href="codemgmt.html#solutions-4"><i class="fa fa-check"></i><b>6.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="openscience.html"><a href="openscience.html"><i class="fa fa-check"></i><b>7</b> Open science practices</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="openscience.html"><a href="openscience.html#learning-objectives-7"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="openscience.html"><a href="openscience.html#tutorial-6"><i class="fa fa-check"></i><b>7.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="openscience.html"><a href="openscience.html#project-structure"><i class="fa fa-check"></i><b>7.2.1</b> Project structure</a></li>
+<li class="chapter" data-level="7.2.2" data-path="openscience.html"><a href="openscience.html#managing-workflows"><i class="fa fa-check"></i><b>7.2.2</b> Managing workflows</a></li>
+<li class="chapter" data-level="7.2.3" data-path="openscience.html"><a href="openscience.html#capturing-your-session-state"><i class="fa fa-check"></i><b>7.2.3</b> Capturing your session state</a></li>
+<li class="chapter" data-level="7.2.4" data-path="openscience.html"><a href="openscience.html#capturing-a-system-state"><i class="fa fa-check"></i><b>7.2.4</b> Capturing a system state</a></li>
+<li class="chapter" data-level="7.2.5" data-path="openscience.html"><a href="openscience.html#readable-reporting-using-rmarkdown"><i class="fa fa-check"></i><b>7.2.5</b> Readable reporting using Rmarkdown</a></li>
+<li class="chapter" data-level="7.2.6" data-path="openscience.html"><a href="openscience.html#data-retention"><i class="fa fa-check"></i><b>7.2.6</b> Data retention</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="openscience.html"><a href="openscience.html#exercises-6"><i class="fa fa-check"></i><b>7.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regressionclassification.html"><a href="regressionclassification.html"><i class="fa fa-check"></i><b>8</b> Regression and classification</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="regressionclassification.html"><a href="regressionclassification.html#learning-objectives-8"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="regressionclassification.html"><a href="regressionclassification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="regressionclassification.html"><a href="regressionclassification.html#types-of-models"><i class="fa fa-check"></i><b>8.2.1</b> Types of models</a></li>
+<li class="chapter" data-level="8.2.2" data-path="regressionclassification.html"><a href="regressionclassification.html#regression"><i class="fa fa-check"></i><b>8.2.2</b> Regression</a></li>
+<li class="chapter" data-level="8.2.3" data-path="regressionclassification.html"><a href="regressionclassification.html#classification"><i class="fa fa-check"></i><b>8.2.3</b> Classification</a></li>
+<li class="chapter" data-level="8.2.4" data-path="regressionclassification.html"><a href="regressionclassification.html#model-evaluation"><i class="fa fa-check"></i><b>8.2.4</b> Model evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#exercises-7"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
+<li class="chapter" data-level="8.4" data-path="regressionclassification.html"><a href="regressionclassification.html#solutions-5"><i class="fa fa-check"></i><b>8.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="supervisedmli.html"><a href="supervisedmli.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning I</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="supervisedmli.html"><a href="supervisedmli.html#learning-objectives-9"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="supervisedmli.html"><a href="supervisedmli.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="supervisedmli.html"><a href="supervisedmli.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="9.2.2" data-path="supervisedmli.html"><a href="supervisedmli.html#what-is-supervised-machine-learning"><i class="fa fa-check"></i><b>9.2.2</b> What is supervised machine learning?</a></li>
+<li class="chapter" data-level="9.2.3" data-path="supervisedmli.html"><a href="supervisedmli.html#overfitting"><i class="fa fa-check"></i><b>9.2.3</b> Overfitting</a></li>
+<li class="chapter" data-level="9.2.4" data-path="supervisedmli.html"><a href="supervisedmli.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.4</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="9.2.5" data-path="supervisedmli.html"><a href="supervisedmli.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.5</b> K-nearest neighbours</a></li>
+<li class="chapter" data-level="9.2.6" data-path="supervisedmli.html"><a href="supervisedmli.html#model-formulation"><i class="fa fa-check"></i><b>9.2.6</b> Model formulation</a></li>
+<li class="chapter" data-level="9.2.7" data-path="supervisedmli.html"><a href="supervisedmli.html#data-splitting"><i class="fa fa-check"></i><b>9.2.7</b> Data splitting</a></li>
+<li class="chapter" data-level="9.2.8" data-path="supervisedmli.html"><a href="supervisedmli.html#preprocessing"><i class="fa fa-check"></i><b>9.2.8</b> Pre-processing</a></li>
+<li class="chapter" data-level="9.2.9" data-path="supervisedmli.html"><a href="supervisedmli.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.9</b> Putting it all together (half-way)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="supervisedmli.html"><a href="supervisedmli.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="supervisedmli.html"><a href="supervisedmli.html#solutions-6"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="supervisedmlii.html"><a href="supervisedmlii.html"><i class="fa fa-check"></i><b>10</b> Supervised machine learning II</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#learning-objectives-10"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="10.2" data-path="supervisedmlii.html"><a href="supervisedmlii.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#required-packages-2"><i class="fa fa-check"></i><b>10.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="supervisedmlii.html"><a href="supervisedmlii.html#data-and-the-modelling-challenge-1"><i class="fa fa-check"></i><b>10.2.2</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="10.2.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#training"><i class="fa fa-check"></i><b>10.2.3</b> Loss function</a></li>
+<li class="chapter" data-level="10.2.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#hyperparameters"><i class="fa fa-check"></i><b>10.2.4</b> Hyperparameters</a></li>
+<li class="chapter" data-level="10.2.5" data-path="supervisedmlii.html"><a href="supervisedmlii.html#resampling"><i class="fa fa-check"></i><b>10.2.5</b> Resampling</a></li>
+<li class="chapter" data-level="10.2.6" data-path="supervisedmlii.html"><a href="supervisedmlii.html#validation-versus-testing-data"><i class="fa fa-check"></i><b>10.2.6</b> Validation versus testing data</a></li>
+<li class="chapter" data-level="10.2.7" data-path="supervisedmlii.html"><a href="supervisedmlii.html#modeling-with-structured-data"><i class="fa fa-check"></i><b>10.2.7</b> Modeling with structured data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+<li class="chapter" data-level="10.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#solutions-7"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="randomforest.html"><a href="randomforest.html"><i class="fa fa-check"></i><b>11</b> Random Forest</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="randomforest.html"><a href="randomforest.html#learning-objectives-11"><i class="fa fa-check"></i><b>11.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="11.2" data-path="randomforest.html"><a href="randomforest.html#tutorial-10"><i class="fa fa-check"></i><b>11.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="randomforest.html"><a href="randomforest.html#required-packages-3"><i class="fa fa-check"></i><b>11.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#decision-trees"><i class="fa fa-check"></i><b>11.2.2</b> Decision trees</a></li>
+<li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.3</b> Bagging</a></li>
+<li class="chapter" data-level="11.2.4" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.4</b> From trees to a forest</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-10"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+<li class="chapter" data-level="11.4" data-path="randomforest.html"><a href="randomforest.html#solutions-8"><i class="fa fa-check"></i><b>11.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applied Geodata Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="supervisedmli" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Supervised machine learning I<a href="supervisedmli.html#supervisedmli" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Chapter lead author: Benjamin Stocker</strong></p>
+<div id="learning-objectives-9" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Learning objectives<a href="supervisedmli.html#learning-objectives-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Machine learning may appear magical. The ability of machine learning
+algorithms to detect patterns and make predictions is fascinating.
+However, several challenges have to be met in the process of
+formulating, training, and evaluating the models. In this and the next
+chapter (Chapter <a href="supervisedmlii.html#supervisedmlii">10</a>), we will discuss some basics
+of supervised machine learning and how to achieve best predictive
+results.</p>
+<p>Basic steps of the implementation of supervised machine learning are
+introduced, including data splitting, pre-processing, model formulation,
+and the implementation of these steps using the {caret} and {recipes} R
+packages. A focus is put on learning the concept of the bias-variance
+trade-off and overfitting.</p>
+<p>Contents of this Chapter are inspired and partly adopted by the
+excellent book <a href="https://bradleyboehmke.github.io/HOML/">Hands-On Machine Learning in R by Boehmke &amp;
+Greenwell</a>.</p>
+</div>
+<div id="tutorial-8" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Tutorial<a href="supervisedmli.html#tutorial-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="required-packages-1" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Required packages<a href="supervisedmli.html#required-packages-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="supervisedmli.html#cb395-1" aria-hidden="true" tabindex="-1"></a>use_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;readr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;caret&quot;</span>, <span class="st">&quot;yardstick&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;recipes&quot;</span>, <span class="st">&quot;modelr&quot;</span>, <span class="st">&quot;forcats&quot;</span>)</span>
+<span id="cb395-2"><a href="supervisedmli.html#cb395-2" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb395-3"><a href="supervisedmli.html#cb395-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span>
+<span id="cb395-4"><a href="supervisedmli.html#cb395-4" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+</div>
+<div id="what-is-supervised-machine-learning" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> What is supervised machine learning?<a href="supervisedmli.html#what-is-supervised-machine-learning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Supervised machine learning is a type of machine learning where the
+model is trained using <em>labeled</em> data and the goal is to predict the
+output for new, unseen data. In contrast, <em>unsupervised machine
+learning</em> is a type of machine learning where the algorithms learn from
+data without being provided with labeled targets. The algorithms aim to
+identify patterns and relationships in the data without any guidance.
+Examples include clustering and dimensionality reduction.</p>
+<p>In supervised machine learning, we use a set of <em>predictors</em> <span class="math inline">\(X\)</span> (also
+known as <em>features</em>, or <em>labels</em>, or <em>independent variables</em>) and
+observed values of a target variable <span class="math inline">\(Y\)</span> that are recorded in parallel,
+to find a model <span class="math inline">\(f(X) = \hat{Y}\)</span> that yields a good match between <span class="math inline">\(Y\)</span>
+and <span class="math inline">\(\hat{Y}\)</span> and that can be used for reliably predicting <span class="math inline">\(Y\)</span> for new
+(“unseen”) data points <span class="math inline">\(X_\text{new}\)</span> - data that has not been used
+during model fitting/training. The hat on <span class="math inline">\(\hat{Y}\)</span> denotes an estimate.
+Some algorithms can even handle predictions of multiple target variables
+simultaneously (e.g., neural networks).</p>
+<p>From above definitions, we can note a few key ingredients of supervised
+machine learning:</p>
+<ul>
+<li>Input data (predictors)</li>
+<li>Target data recorded in parallel with predictors</li>
+<li>A model that estimates <span class="math inline">\(f(X) = \hat{Y}\)</span>, made of mathematical
+operations relating <span class="math inline">\(X\)</span> to <span class="math inline">\(\hat{Y}\)</span> and of model parameters
+(coefficients) that are calibrated to yield the best match of <span class="math inline">\(Y\)</span>
+and <span class="math inline">\(\hat{Y}\)</span></li>
+<li>A metric measuring how good the match between <span class="math inline">\(Y\)</span> and <span class="math inline">\(\hat{Y}\)</span> is -
+the <em>loss</em> function</li>
+<li>An algorithm (the <em>optimiser</em>) to find the best set of parameters
+that minimize the loss</li>
+</ul>
+<div class="figure">
+<img src="figures/supervised_ml.png" style="width:13cm" alt="" />
+<p class="caption">Supervised machine learning ingredients, adopted from Chollet &amp;
+Allaire (2018) Deep Learning with R</p>
+</div>
+<p>The type of modelling approach of supervised machine learning is very
+similar to fitting regression models as we did in Chapter
+@ref{#regressionclassification}. In a sense, supervised machine
+learning is just another empirical (or statistical) modelling approach.
+However, you may not want to call linear regression a machine learning
+algorithm because there is no iterative learning involved. Furthermore,
+machine learning differs from traditional statistical modelling methods
+in that it makes no assumptions regarding the data generation process
+and underlying distributions (<a href="https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full">Breiman,
+2001</a>).</p>
+<p>Nevertheless, contrasting a bivariate linear regression model with a
+complex machine learning algorithm is instructive. Also linear
+regression provides a prediction <span class="math inline">\(\hat{Y} = f(X)\)</span>, just like other
+(proper) machine learning algorithms do. The functional form of a
+bivariate linear regression is not particularly flexible (just a
+straight line for the best fit between predictors and targets) and it
+has only two parameters (slope and intercept). At the other extreme are,
+for example, deep neural networks. They are extremely flexible, can
+learn highly non-linear relationships and deal with interactions between
+a large number of predictors. They also contain very large numbers of
+parameters (typically on the order of <span class="math inline">\(10^4 - 10^7\)</span>). You can imagine
+that their high flexibility allows these types of algorithms to very
+effectively learn from the data, but also bears the risk of
+<em>overfitting</em>. What is overfitting?</p>
+</div>
+<div id="overfitting" class="section level3 hasAnchor" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> Overfitting<a href="supervisedmli.html#overfitting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><em>This example is based on <a href="https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.html">this example from
+scikit-learn</a>.</em></p>
+<p>Let’s assume that there is some true underlying relationship between a
+single predictor <span class="math inline">\(X\)</span> and the target variable <span class="math inline">\(Y\)</span>. We don’t know this
+relationship (in the code below, this is <code>true_fun()</code>) and the
+observations contain a (normally distributed) error
+(<code>y = true_fun(x) + 0.1 * rnorm(n_samples)</code>). Based on our training data
+(<code>df_train</code>), we fit three polynomial models that differ with respect to
+their complexity. We fit a polynomial of degree 1, 4, and 15 to the
+observations. A polynomial of degree <span class="math inline">\(N\)</span> is given by: <span class="math display">\[
+y = \sum_{n=0}^N a_n x^n
+\]</span> <span class="math inline">\(a_n\)</span> are the coefficients, i.e., model parameters. The goal of the
+training is to find the coefficients <span class="math inline">\(a_n\)</span> so that the predicted
+<span class="math inline">\(\hat{Y}\)</span> fits observed <span class="math inline">\(Y\)</span> best. From the above definition, the
+polynomial of degree 15 has 16 parameters, while the polynomial of
+degree 1 has two parameters (and corresponds to a simple bivariate
+linear regression). You can imagine that the polynomial of degree 15 is
+much more flexible and should thus yield the closest fit to the training
+data. This is indeed the case.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-195-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We can use the same fitted models on data that was <em>not</em> used for model
+fitting - the <em>test data</em>. This is what’s done below. Again, the same
+true underlying relationship is used, but we sample a new set of data
+points <span class="math inline">\(X\)</span> and add a new sample of errors on top of the true
+relationship.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>You see that, using the test set, we find that “poly4” actually performs
+the best - it has a much lower RMSE than “poly15”. Apparently, “poly15”
+was overfitted. Apparently, it used its flexibility to fit not only the
+shape of the true underlying relationship, but also the observation
+errors on top of it. This has the implication that, when this model is
+used for making predictions for data that was not used for training
+(modl calibration, model fitting), it will yield misguided predictions
+that are affected by the errors in the training set. This is the reason
+why “poly15” performed worse on the test set than the other models.</p>
+<p>From the figures above, we can also conclude that “poly1” was
+underfitted - it performed worse than “poly4” also on the validation
+set.</p>
+<p>The <em>out-of-sample performance</em> of “poly15” gets even worse when
+applying the fitted polynomial models to data that extends beyond the
+range in <span class="math inline">\(X\)</span> that was used for model training. Here, we’re extending
+just 20% to the right.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>You see that the RMSE for “poly15” literally explodes. The model is
+hopelessly overfitted and completely useless for prediction, although it
+looked like it fitted the data best when we considered only the training
+results. This is a fundamental challenge in machine learning - finding
+the model with the best <em>generalisability</em>. That is, a model that not
+only fits the training data well, but also performs well on unseen data.</p>
+<p>The phenomenon of fitting and overfitting as a function of the <em>model
+complexity</em> is also referred to as the <em>bias-variance trade-off</em>. The
+bias describes how well a model matches the training set (average
+error). A model with low bias will match the data set closely and vice
+versa. The variance describes how much a model changes when you train it
+using different portions of your data set. “poly15” has a high variance,
+but much of its variance is the result of misled training on observation
+errors. On the other extreme, “poly1” has a high bias. It’s not affected
+by the noise in observations, but its predictions are also far off the
+observations. In ML, we are challenged to balance this trade-off.</p>
+<p>This chapter and the next chapter introduce the methods for achieveing
+the best model <em>generalisability</em> and find the sweet spot between high
+bias and high variance. One of the key steps of the machine learning
+modelling process is motivated by the example above: the separation of
+the data into a <em>training</em> and a <em>testing</em> set (<em>data splitting</em>). Only
+by withholding part of the data from the model training, we have a good
+basis for testing the model on that unseen data for evaluating its
+generalisability. Additional steps that may be required or beneficial
+for effective model training and their implementation in R are
+introduced in this and the next Chapter. Depending on your application
+or research question, it may also be of interest to evaluate the
+relationships embodied in <span class="math inline">\(f(X)\)</span> or to quantify the <em>importance</em> of
+different predictors in our model. This is referred to as <em>model
+interpretation</em> and is introduced in Chapter @ref(interpretable_ml).</p>
+<p>Of course, a plethora of algorithms exist that do the job of <span class="math inline">\(y = f(X)\)</span>.
+Each of them has its own strengths and limitations. It is beyond the
+scope of this course to introduce a larger number of ML algorithms. For
+illustration purposes in this chapter, we will use and introduce the
+K-nearest-Neighbors (KNN) algorithm and compare its performance to a
+multivariate linear regression for illustration purposes. Chapter
+@ref(supervised_ml_b) introduces Random Forest.</p>
+</div>
+<div id="data-and-the-modelling-challenge" class="section level3 hasAnchor" number="9.2.4">
+<h3><span class="header-section-number">9.2.4</span> Data and the modelling challenge<a href="supervisedmli.html#data-and-the-modelling-challenge" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We’re returning to ecosystem flux data that we’ve used Chapters
+@ref(data_wrangling) and @ref(data_vis). Here, we’re using daily data
+from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects
+of seasonally varying foliage cover for which the data does not contain
+information. To address such additional effects, we would have to, for
+example, combine the flux and meteorological data with remotely sensed
+surface greenness data.</p>
+<p>The data set <code>FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv</code>
+contains a time series of the ecosystem gross primary production (GPP)
+and a range of meteorological variables, measured in parallel. In this
+chapter, we formulate a model for predicting GPP from a set of
+<em>covariates</em> (other variables that vary in parallel, here the
+meteorological variables). This is to say that <code>GPP_NT_VUT_REF</code> is the
+<em>target</em> variable, and other variables that are available in our dataset
+are the <em>predictors.</em></p>
+<p>Let’s read the data, select suitable variables, and interpret missing
+value codes, and select only good-quality data (where at least 80% of
+the underlying half-hourly data was good quality measured data, and not
+gap-filled).</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="supervisedmli.html#cb396-1" aria-hidden="true" tabindex="-1"></a>ddf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb396-2"><a href="supervisedmli.html#cb396-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb396-3"><a href="supervisedmli.html#cb396-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only the variables we are interested in</span></span>
+<span id="cb396-4"><a href="supervisedmli.html#cb396-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(TIMESTAMP,</span>
+<span id="cb396-5"><a href="supervisedmli.html#cb396-5" aria-hidden="true" tabindex="-1"></a>                GPP_NT_VUT_REF,    <span class="co"># the target</span></span>
+<span id="cb396-6"><a href="supervisedmli.html#cb396-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>),  <span class="co"># quality control info</span></span>
+<span id="cb396-7"><a href="supervisedmli.html#cb396-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),   <span class="co"># includes all all meteorological covariates</span></span>
+<span id="cb396-8"><a href="supervisedmli.html#cb396-8" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)   <span class="co"># weird useless variable</span></span>
+<span id="cb396-9"><a href="supervisedmli.html#cb396-9" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">|&gt;</span></span>
+<span id="cb396-10"><a href="supervisedmli.html#cb396-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb396-11"><a href="supervisedmli.html#cb396-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to a nice date object</span></span>
+<span id="cb396-12"><a href="supervisedmli.html#cb396-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> <span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
+<span id="cb396-13"><a href="supervisedmli.html#cb396-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb396-14"><a href="supervisedmli.html#cb396-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set all -9999 to NA</span></span>
+<span id="cb396-15"><a href="supervisedmli.html#cb396-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span></span>
+<span id="cb396-16"><a href="supervisedmli.html#cb396-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb396-17"><a href="supervisedmli.html#cb396-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># retain only data based on &gt;=80% good-quality measurements</span></span>
+<span id="cb396-18"><a href="supervisedmli.html#cb396-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># overwrite bad data with NA (not dropping rows)</span></span>
+<span id="cb396-19"><a href="supervisedmli.html#cb396-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF),</span>
+<span id="cb396-20"><a href="supervisedmli.html#cb396-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">TA_F           =</span> <span class="fu">ifelse</span>(TA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, TA_F),</span>
+<span id="cb396-21"><a href="supervisedmli.html#cb396-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">SW_IN_F        =</span> <span class="fu">ifelse</span>(SW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, SW_IN_F),</span>
+<span id="cb396-22"><a href="supervisedmli.html#cb396-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">LW_IN_F        =</span> <span class="fu">ifelse</span>(LW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, LW_IN_F),</span>
+<span id="cb396-23"><a href="supervisedmli.html#cb396-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">VPD_F          =</span> <span class="fu">ifelse</span>(VPD_F_QC       <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, VPD_F),</span>
+<span id="cb396-24"><a href="supervisedmli.html#cb396-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">PA_F           =</span> <span class="fu">ifelse</span>(PA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, PA_F),</span>
+<span id="cb396-25"><a href="supervisedmli.html#cb396-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">P_F            =</span> <span class="fu">ifelse</span>(P_F_QC         <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, P_F),</span>
+<span id="cb396-26"><a href="supervisedmli.html#cb396-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">WS_F           =</span> <span class="fu">ifelse</span>(WS_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, WS_F)) <span class="sc">|&gt;</span> </span>
+<span id="cb396-27"><a href="supervisedmli.html#cb396-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb396-28"><a href="supervisedmli.html#cb396-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop QC variables (no longer needed)</span></span>
+<span id="cb396-29"><a href="supervisedmli.html#cb396-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span></code></pre></div>
+<p>The steps above are considered data <em>wrangling</em> and are <em>not</em> part of
+the modelling process. After completing this tutorial, you will
+understand this distinction. (-&gt; exercise explain the distinction)</p>
+</div>
+<div id="k-nearest-neighbours" class="section level3 hasAnchor" number="9.2.5">
+<h3><span class="header-section-number">9.2.5</span> K-nearest neighbours<a href="supervisedmli.html#k-nearest-neighbours" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Before we start with the model training workflow, let’s introduce the
+K-nearest neighbour (KNN) algorithm which is used here for demonstration
+purposes. It serves the purpose of demonstrating the bias-variance
+trade-off (see below). As the name suggests, KNN uses the <span class="math inline">\(k\)</span>
+observations that are “nearest” to the new record for which we want to
+make a prediction. It then calculates their average (for regression) or
+most frequent value (for classification) and uses it as the prediction
+of the target value. “Nearest” is determined by some distance metric
+evaluated based on the values of the predictors. In our example
+(<code>GPP_NT_VUT_REF ~ .</code>), KNN would determine the <span class="math inline">\(k\)</span> days where
+conditions, given by our set of predictors, were most similar (nearest)
+to the day for which we seek a prediction. Then, it calculates the
+prediction as the average (mean) GPP value of these days. Determining
+“nearest” neighbors is commonly based on either the <em>Euclidean</em> or
+<em>Manhattan</em> distances between two data points <span class="math inline">\(x_a\)</span> and <span class="math inline">\(x_b\)</span>,
+considering all <span class="math inline">\(P\)</span> predictors <span class="math inline">\(j\)</span>.</p>
+<p>Euclidean distance: <span class="math display">\[
+\sqrt{ \sum_{j=1}^P (x_{a,j} - x_{b,j})^2  } \\
+\]</span></p>
+<p>Manhattan distance: <span class="math display">\[
+\sum_{j=1}^P | x_{a,j} - x_{b,j} |
+\]</span> In two-dimensional space, the Euclidean distance measures the length
+of a straight line between two points (remember Pythagoras!). The
+Manhattan distance is called this way because it measures the distance
+you would have to walk to get from point <span class="math inline">\(a\)</span> to point <span class="math inline">\(b\)</span> in Manhattan,
+New York, where you cannot cut corners but have to follow a rectangular
+grid of streets. <span class="math inline">\(|x|\)</span> is the absolute value of <span class="math inline">\(X\)</span> ( <span class="math inline">\(|-x| = x\)</span>).</p>
+<p>KNN is a simple algorithm that uses knowledge of the “local” data
+structure for prediction. A drawback is that the model training has to
+be done for each prediction step and the computation time of the
+training increases with <span class="math inline">\(x \times p\)</span>. KNNs are used, for example, to
+impute values (fill missing values) and have the advantage that
+predicted values are always within the range of observed values of the
+target variable.</p>
+</div>
+<div id="model-formulation" class="section level3 hasAnchor" number="9.2.6">
+<h3><span class="header-section-number">9.2.6</span> Model formulation<a href="supervisedmli.html#model-formulation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The aim of supervised ML is to find a model <span class="math inline">\(\hat{Y} = f(X)\)</span> so that
+<span class="math inline">\(\hat{Y}\)</span> agrees well with observations <span class="math inline">\(Y\)</span>. We typically start with a
+research question where <span class="math inline">\(Y\)</span> is given - naturally - by the problem we are
+addressing and we have a data set at hand where one or multiple
+predictors (or “features”) <span class="math inline">\(X\)</span> are recorded along with <span class="math inline">\(Y\)</span>. From our
+data, we have information about how GPP (ecosystem-level photosynthesis)
+depends on set of abiotic factors, mostly meteorological measurements.</p>
+<div id="formula-notation" class="section level4 hasAnchor" number="9.2.6.1">
+<h4><span class="header-section-number">9.2.6.1</span> Formula notation<a href="supervisedmli.html#formula-notation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In R, it is common to use the <em>formula</em> notation to specify the target
+and predictor variables. You have encountered formulas before, e.g., for
+a linear regression using the <code>lm()</code> function. To specify a linear
+regression model for <code>GPP_NT_VUT_REF</code> with three predictors <code>SW_F_IN</code>,
+<code>VPD_F</code>, and <code>TA_F</code>, to be fitted to data <code>ddf</code>, we write:</p>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="supervisedmli.html#cb397-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_F_IN <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, <span class="at">data =</span> ddf)</span></code></pre></div>
+</div>
+<div id="the-generic-train" class="section level4 hasAnchor" number="9.2.6.2">
+<h4><span class="header-section-number">9.2.6.2</span> The generic <code>train()</code><a href="supervisedmli.html#the-generic-train" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The way we formulate a model can be understood as being independent of
+the algorithm, or <em>engine</em>, that takes care of fitting <span class="math inline">\(f(X)\)</span>. The R
+package <a href="https://topepo.github.io/caret/"><em>caret</em></a> provides a unified
+interface for using different ML algorithms implemented in separate
+packages. In other words, it acts as a <em>wrapper</em> for multiple different
+model fitting, or ML algorithms. This has the advantage that it unifies
+the interface - the way arguments are provided and outputs are returned.
+<em>caret</em> also provides implementations for a set of commonly used tools
+for data processing, model training, and evaluation. We’ll use <em>caret</em>
+here for model training with the function <code>train()</code>. Note however, that
+using a specific algorithm, which is implemented in a specific package
+outside <em>caret</em>, also requires that the respective package be installed
+and loaded. Using <em>caret</em> for specifying the same linear regression
+model as above, the base-R <code>lm()</code> function, can be done with caret in a
+generalized form as:</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb398-1"><a href="supervisedmli.html#cb398-1" aria-hidden="true" tabindex="-1"></a>caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb398-2"><a href="supervisedmli.html#cb398-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
+<span id="cb398-3"><a href="supervisedmli.html#cb398-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(),  <span class="co"># drop missing values</span></span>
+<span id="cb398-4"><a href="supervisedmli.html#cb398-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>),  <span class="co"># no resampling</span></span>
+<span id="cb398-5"><a href="supervisedmli.html#cb398-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;lm&quot;</span></span>
+<span id="cb398-6"><a href="supervisedmli.html#cb398-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 2729 samples
+##    3 predictor
+## 
+## No pre-processing
+## Resampling: None</code></pre>
+<p>Note the argument specified as
+<code>trControl = trainControl(method = "none")</code>. This suppresses the default
+approach to model fitting in <em>caret</em> - to <em>resample</em> using
+<em>bootstrapping.</em> More on that below. Note also that we dropped all rows
+that contained at least one missing value - necessary to apply the least
+squares method for the linear regression model fitting. It’s advisable
+to apply this data removal step only at the very last point of the data
+processing and modelling workflow. Alternative algorithms may be able to
+deal with missing values and we want to avoid losing information along
+the workflow.</p>
+<p>Of course, it is an overkill compared to write this as in the chunk
+above compared to just writing <code>lm(...)</code>. But the advantage of the
+unified interface is that we can simply replace the <code>method</code> argument to
+use a different model fitting algorithm. For example, to use KNN, we
+just can write:</p>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r fold-show"><code class="sourceCode r"><span id="cb400-1"><a href="supervisedmli.html#cb400-1" aria-hidden="true" tabindex="-1"></a>caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb400-2"><a href="supervisedmli.html#cb400-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">form =</span> GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
+<span id="cb400-3"><a href="supervisedmli.html#cb400-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb400-4"><a href="supervisedmli.html#cb400-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb400-5"><a href="supervisedmli.html#cb400-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;knn&quot;</span></span>
+<span id="cb400-6"><a href="supervisedmli.html#cb400-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## k-Nearest Neighbors 
+## 
+## 2729 samples
+##    3 predictor
+## 
+## No pre-processing
+## Resampling: None</code></pre>
+</div>
+</div>
+<div id="data-splitting" class="section level3 hasAnchor" number="9.2.7">
+<h3><span class="header-section-number">9.2.7</span> Data splitting<a href="supervisedmli.html#data-splitting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The introductory example demonstrated the importance of validating the
+fitted model with data that was <em>not</em> used for training. Thus, we can
+test the model’s <em>generalisability</em> to new (“unseen”) data. The
+essential step that enables us to assess the model’s <em>generalization
+error</em> is to hold out part of the data from training and set it aside
+(leaving it absolutely untouched!) for <em>testing</em>.</p>
+<p>There is no fixed rule for how much data are to be used for training and
+testing, respectively. We have to balance a trade-off:</p>
+<ul>
+<li>Spending too much data for training will leave us with too little
+data for testing and the test results may not be robust. In this
+case, the sample size for getting robust validation statistics is
+not sufficiently large and we don’t know for sure whether we are
+safe from an over-fit model.</li>
+<li>Spending too much data for validation will leave us with too little
+data for training. In this case, the ML algorithm may not be
+successful at finding real relationships due to insufficient amounts
+of training data.</li>
+</ul>
+<p>Typical splits are between 60-80% for training. However, in cases where
+the number of data points is very large, the gains from having more
+training data are marginal, but come at the cost of adding to the
+already high computational burden of model training.</p>
+<p>In environmental sciences, the number of predictors is often smaller
+than the sample size (<span class="math inline">\(p &lt; n\)</span>), because it is typically easier to
+collect repeated observations of a particular variable than to expand
+the set of variables being observed. Nevertheless, in cases where the
+number <span class="math inline">\(p\)</span> gets large, it is important, and for some algorithms
+mandatory, to maintain <span class="math inline">\(p &lt; n\)</span> for model training.</p>
+<p>An important aspect to consider when splitting the data is to make sure
+that all “states” of the system for which we have data are well
+represented in training and testing sets. A particularly challenging
+case is posed when it is of particular interest that the algorithm
+learns relationships <span class="math inline">\(f(X)\)</span> under rare conditions <span class="math inline">\(X\)</span>, for example
+meteorological extreme events. If not addressed with particular
+measures, model training tends to achieve good model performance for the
+most common conditions. A simple way to put more emphasis for model
+training on extreme conditions is to compensate by sampling overly
+proportional from such cases for the training data set.</p>
+<p>Several alternative functions for the data splitting step are available
+from different packages in R. We use the the <em>rsample</em> package here as
+it allows to additionally make sure that data from the full range of a
+given variable’s values (<code>VPD_F</code> in the example below) are well covered
+in both training and testing sets.</p>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="supervisedmli.html#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb402-2"><a href="supervisedmli.html#cb402-2" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(ddf, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
+<span id="cb402-3"><a href="supervisedmli.html#cb402-3" aria-hidden="true" tabindex="-1"></a>ddf_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
+<span id="cb402-4"><a href="supervisedmli.html#cb402-4" aria-hidden="true" tabindex="-1"></a>ddf_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span></code></pre></div>
+<p>Plot the distribution of values in the training and testing sets.</p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="supervisedmli.html#cb403-1" aria-hidden="true" tabindex="-1"></a>ddf_train <span class="sc">|&gt;</span> </span>
+<span id="cb403-2"><a href="supervisedmli.html#cb403-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">split =</span> <span class="st">&quot;train&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb403-3"><a href="supervisedmli.html#cb403-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(ddf_test <span class="sc">|&gt;</span> </span>
+<span id="cb403-4"><a href="supervisedmli.html#cb403-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">split =</span> <span class="st">&quot;test&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb403-5"><a href="supervisedmli.html#cb403-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb403-6"><a href="supervisedmli.html#cb403-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value, <span class="at">y =</span> ..density.., <span class="at">color =</span> split)) <span class="sc">+</span></span>
+<span id="cb403-7"><a href="supervisedmli.html#cb403-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb403-8"><a href="supervisedmli.html#cb403-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-203-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="preprocessing" class="section level3 hasAnchor" number="9.2.8">
+<h3><span class="header-section-number">9.2.8</span> Pre-processing<a href="supervisedmli.html#preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Data pre-processing is aimed at preparing the data for use in a specific
+model fitting procedure and at improving the effectiveness of model
+training. The splitting of the data into a training and test set makes
+sure that no information from the test set is used during or before
+model training. It is important that absolutely no information from the
+test set finds its way into the training set (<em>data leakage</em>).</p>
+<p>In a general sense, pre-processing involve data transformations where
+the transformation functions use parameters that are determined on the
+data itself. Consider, for example, the <em>standardization</em>. That is, the
+linear transformation of a vector of values to have zero mean (data is
+<em>centered</em>, <span class="math inline">\(\mu = 0\)</span>) and a standard deviation of 1 (data is <em>scaled</em>
+to <span class="math inline">\(\sigma = 1\)</span>). In order to avoid data leakage, the mean and standard
+deviation have to be determined on the training set only. Then, the
+normalization of the training and the test sets both use set of
+(<span class="math inline">\(\mu, \sigma\)</span>) determined on the training set. Data leakage would occur
+if the (<span class="math inline">\(\mu, \sigma\)</span>) would be determined on data containing values
+from the test set.</p>
+<p>Often, multiple splits of the data are considered during model training.
+Hence, an even larger number of data transformation parameters
+(<span class="math inline">\(\mu, \sigma\)</span> in the example of normalization) have to be determined
+and transformations applied to the multiple splits of the data. <em>caret</em>
+deals with this for you and the transformations do not have to be
+“manually” applied before applying the <code>train()</code> function call. Instead,
+the data pre-processing is considered an integral step of model training
+and instructions are specified as part of the <code>train()</code> function call
+and along with the un-transformed data.</p>
+<p>The <a href="https://recipes.tidymodels.org/"><em>recipes</em></a> package provides an
+even more powerful way for specifying the <em>formula</em> and pre-processing
+steps in one go. It is compatible with the <code>train()</code> function of
+{caret}. For the same formula as above, and an example where the data
+<code>ddf_train</code> is to be normalized (centered and scaled), we can specify a
+“recipe” using the pipe operator as:</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="supervisedmli.html#cb404-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, <span class="at">data =</span> ddf_train) <span class="sc">|&gt;</span> </span>
+<span id="cb404-2"><a href="supervisedmli.html#cb404-2" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb404-3"><a href="supervisedmli.html#cb404-3" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
+<p>The first line with the <code>recipe()</code> function call assigns <em>roles</em> to the
+different variables. <code>GPP_NT_VUT_REF</code> is an <em>outcome</em> (in “{recipes}
+speak”). Then, we used selectors to apply the recipe step to several
+variables at once. The first selector, <code>all_numeric()</code>, selects all
+variables that are either integers or real values. The second selector,
+<code>-all_outcomes()</code> removes any outcome (target) variables from this
+recipe step. The returned object <code>pp</code> does <em>not</em> contain a normalized
+version of the data frame <code>ddf_train</code>, but rather the information that
+allows us to apply a specific set of pre-processing steps also to any
+data set.</p>
+<p>The object <code>pp</code> can then be supplied to <code>train()</code> as its first argument:</p>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="supervisedmli.html#cb405-1" aria-hidden="true" tabindex="-1"></a>caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb405-2"><a href="supervisedmli.html#cb405-2" aria-hidden="true" tabindex="-1"></a>  pp, </span>
+<span id="cb405-3"><a href="supervisedmli.html#cb405-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train, </span>
+<span id="cb405-4"><a href="supervisedmli.html#cb405-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb405-5"><a href="supervisedmli.html#cb405-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb405-6"><a href="supervisedmli.html#cb405-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>The example above showed data standardization as a data pre-processing
+step. Data pre-processing may be done with different aims, as described
+in sub-sections below.</p>
+<div id="standardization" class="section level4 hasAnchor" number="9.2.8.1">
+<h4><span class="header-section-number">9.2.8.1</span> Standardization<a href="supervisedmli.html#standardization" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Several algorithms explicitly require data to be standardized so that
+values of all predictors vary within a comparable range. The necessity
+of this step becomes obvious when considering KNN, where the magnitude
+of the distance is strongly influenced by the order of magnitude of the
+predictor values. To get a quick overview of the distribution of all
+variables (columns) in our data frame, we can use the {skimr} package.</p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="supervisedmli.html#cb406-1" aria-hidden="true" tabindex="-1"></a>ddf <span class="sc">|&gt;</span> </span>
+<span id="cb406-2"><a href="supervisedmli.html#cb406-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">quantile</span>(.x, <span class="at">probs =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb406-3"><a href="supervisedmli.html#cb406-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb406-4"><a href="supervisedmli.html#cb406-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">&quot;variable&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb406-5"><a href="supervisedmli.html#cb406-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">&quot;variable&quot;</span>, <span class="st">&quot;min&quot;</span>, <span class="st">&quot;q25&quot;</span>, <span class="st">&quot;q50&quot;</span>, <span class="st">&quot;q75&quot;</span>, <span class="st">&quot;max&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 8 × 6
+##   variable           min     q25    q50    q75    max
+##   &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 GPP_NT_VUT_REF  -4.23    0.773   2.87   5.45  12.3 
+## 2 TA_F           -21.9    -1.47    3.51   8.72  20.7 
+## 3 SW_IN_F          3.30   77.8   135.   214.   366.  
+## 4 LW_IN_F        138.    243.    279.   308.   365.  
+## 5 VPD_F            0.001   0.959   2.23   4.06  16.6 
+## 6 PA_F            80.4    83.2    83.7   84.1   85.6 
+## 7 P_F              0       0       0      1.6   92.1 
+## 8 WS_F             0.405   1.56    1.93   2.34   6.54</code></pre>
+<p>We see for example, that typical values of <code>LW_IN_F</code> are by a factor 100
+larger than values of <code>VPD_F</code>. A distance calculated based on these raw
+values would therefore be strongly dominated by the difference in
+<code>LW_IN_F</code> values, and differences in <code>VPD_F</code> would hardly affect the
+distance. Therefore, the data must be <em>standardized</em> before using it
+with the KNN algorithm (and other algorithms, including Neural
+Networks). Standardization is done to each variable separately, by
+centering and scaling each to have <span class="math inline">\(\mu = 0\)</span> and <span class="math inline">\(\sigma = 1\)</span>.</p>
+<p>The steps for centering and scaling using the recipes package are
+described above.</p>
+<p>Standardization can be done not only by centering and scaling (as
+described above), but also by <em>scaling to within range</em>, where values
+are scaled such that the minimum value within each variable (column) is
+0 and the maximum is 1.</p>
+<p>As seen above for the feature engineering example, the object <code>pp</code> does
+not contain a standardized version of the data frame <code>ddf_train</code>, but
+rather the information that allows us to apply the same standardization
+also to other data. In other words,
+<code>recipe(..., data = ddf_train) |&gt; step_center(...) |&gt; step_scale(...)</code>
+doesn’t actually transform <code>ddf_train</code>. There are two more steps
+involved to get there. This might seem bothersome at first but their
+separation is critical in the context of model training and data
+leakage, and translates the conception of the pre-processing as a
+“recipe” into the way we write the code.</p>
+<p>To actually transform the data, we first have to “prepare” the recipe:</p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="supervisedmli.html#cb408-1" aria-hidden="true" tabindex="-1"></a>pp_prep <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">prep</span>(pp, <span class="at">training =</span> ddf_train) </span></code></pre></div>
+<p>Finally we can actually transform the data. That is, “juice” the prepared
+recipe.</p>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="supervisedmli.html#cb409-1" aria-hidden="true" tabindex="-1"></a>ddf_juiced <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">juice</span>(pp_prep)</span></code></pre></div>
+<p>Note, if we are to apply the prepared recipe to new data, we’ll have to <code>bake()</code> it.</p>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="supervisedmli.html#cb410-1" aria-hidden="true" tabindex="-1"></a>ddf_baked <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">bake</span>(pp_prep, <span class="at">new_data =</span> ddf_train)</span>
+<span id="cb410-2"><a href="supervisedmli.html#cb410-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all_equal</span>(ddf_juiced, ddf_baked)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>The effect is of standardization is illustrated by comparing original
+and transformed variables:</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="supervisedmli.html#cb412-1" aria-hidden="true" tabindex="-1"></a>gg1 <span class="ot">&lt;-</span> ddf_train <span class="sc">|&gt;</span> </span>
+<span id="cb412-2"><a href="supervisedmli.html#cb412-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">one_of</span>(<span class="fu">c</span>(<span class="st">&quot;SW_IN_F&quot;</span>, <span class="st">&quot;VPD_F&quot;</span>, <span class="st">&quot;TA_F&quot;</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb412-3"><a href="supervisedmli.html#cb412-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(SW_IN_F, VPD_F, TA_F), <span class="at">names_to =</span> <span class="st">&quot;var&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;val&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb412-4"><a href="supervisedmli.html#cb412-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(val, ..density..)) <span class="sc">+</span></span>
+<span id="cb412-5"><a href="supervisedmli.html#cb412-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb412-6"><a href="supervisedmli.html#cb412-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>var)</span>
+<span id="cb412-7"><a href="supervisedmli.html#cb412-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb412-8"><a href="supervisedmli.html#cb412-8" aria-hidden="true" tabindex="-1"></a>gg2 <span class="ot">&lt;-</span> ddf_juiced <span class="sc">|&gt;</span> </span>
+<span id="cb412-9"><a href="supervisedmli.html#cb412-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">one_of</span>(<span class="fu">c</span>(<span class="st">&quot;SW_IN_F&quot;</span>, <span class="st">&quot;VPD_F&quot;</span>, <span class="st">&quot;TA_F&quot;</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb412-10"><a href="supervisedmli.html#cb412-10" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(SW_IN_F, VPD_F, TA_F), <span class="at">names_to =</span> <span class="st">&quot;var&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;val&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb412-11"><a href="supervisedmli.html#cb412-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(val, ..density..)) <span class="sc">+</span></span>
+<span id="cb412-12"><a href="supervisedmli.html#cb412-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb412-13"><a href="supervisedmli.html#cb412-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>var)</span>
+<span id="cb412-14"><a href="supervisedmli.html#cb412-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb412-15"><a href="supervisedmli.html#cb412-15" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="handling-missing-data-1" class="section level4 hasAnchor" number="9.2.8.2">
+<h4><span class="header-section-number">9.2.8.2</span> Handling missing data<a href="supervisedmli.html#handling-missing-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Several machine learning algorithms require missing values to be
+removed. That is, if any of the cells in one row has a missing value,
+the entire cell gets removed. This can lead to severe data loss. In
+cases where missing values appear predominantly in only a few variables,
+it may be advantageous to drop the affected variable from the data for
+modelling. In other cases, it may be advantageous to fill missing values
+(data <em>imputation</em>, see next section). Although such imputed data is
+“fake”, it may be preferred to impute values than to drop entire rows
+and thus get the benefit of being able to use the information contained
+in available (real) values of affected rows. Whether or not imputation
+is preferred should be determined based on the model skill for an an
+out-of-sample test (more on that later).</p>
+<p>Visualizing missing data is the essential first step in making decisions
+about dropping rows with missing data versus removing predictors from
+the model (which would imply too much data removal).</p>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="supervisedmli.html#cb413-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
+<span id="cb413-2"><a href="supervisedmli.html#cb413-2" aria-hidden="true" tabindex="-1"></a>  ddf,</span>
+<span id="cb413-3"><a href="supervisedmli.html#cb413-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb413-4"><a href="supervisedmli.html#cb413-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
+<span id="cb413-5"><a href="supervisedmli.html#cb413-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-211-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Here, the variable <code>LW_IN_F</code> (longwave radiation) if affected by a lot
+of missing data. Note that we applied a data cleaning step along with
+the data read-in at the very top of this Chapter. There, we applied a
+filtering criterion where values are only retained if at least 80% of
+the underlying half-hourly data is actual measured (and not gap-filled)
+data. Whether to drop the variable for further modelling should be
+informed also by our understanding of the data and the processes
+relevant for the modelling task. Here, the modelling target is GPP and
+the carbon cycle specialists among the readers may know that longwave
+radiation is not a known important control on GPP (ecosystem
+photosynthesis). Therefore, we may consider dropping this variable from
+the dataset for our modelling task. The remaining variables are affected
+by less frequent missingness with which we will deal otherwise.</p>
+</div>
+<div id="imputation" class="section level4 hasAnchor" number="9.2.8.3">
+<h4><span class="header-section-number">9.2.8.3</span> Imputation<a href="supervisedmli.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Imputation refers to the replacement of missing values with with a “best
+guess” value (<a href="https://bradleyboehmke.github.io/HOML/">Boehmke &amp;
+Greenwell</a>). Different
+approaches exist for determining that best guess. The most basic
+approach is to impute missing values with the mean or median of the
+available values of the same variable, which can be implemented using
+<code>step_impute_*()</code> from the {recipes} package. For example, to impute the
+median for all predictors separately:</p>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="supervisedmli.html#cb414-1" aria-hidden="true" tabindex="-1"></a>pp <span class="sc">|&gt;</span> </span>
+<span id="cb414-2"><a href="supervisedmli.html#cb414-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_median</span>(<span class="fu">all_predictors</span>())</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          3
+## 
+## Operations:
+## 
+## Centering for all_numeric(), -all_outcomes()
+## Scaling for all_numeric(), -all_outcomes()
+## Median imputation for all_predictors()</code></pre>
+<p>Imputing by the mean or median is “uninformative”. We may use
+information about the co-variation of multiple variables for imputing
+missing values. For example, for imputing missing VPD values, we may
+consider the fact that VPD tends to be high when air temperature is
+high. Therefore, missing VPD values can be modeled as a function of
+other co-variates (predictors). Several approaches to modelling missing
+values are available through the recipes package (see
+<a href="https://recipes.tidymodels.org/reference/index.html#step-functions-imputation">here</a>).
+For example, we can use KNN with five neighbors as:</p>
+<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="supervisedmli.html#cb416-1" aria-hidden="true" tabindex="-1"></a>pp <span class="sc">|&gt;</span> </span>
+<span id="cb416-2"><a href="supervisedmli.html#cb416-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_predictors</span>(), <span class="at">neighbors =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          3
+## 
+## Operations:
+## 
+## Centering for all_numeric(), -all_outcomes()
+## Scaling for all_numeric(), -all_outcomes()
+## K-nearest neighbor imputation for all_predictors()</code></pre>
+</div>
+<div id="one-hot-encoding" class="section level4 hasAnchor" number="9.2.8.4">
+<h4><span class="header-section-number">9.2.8.4</span> One-hot encoding<a href="supervisedmli.html#one-hot-encoding" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For ML algorithms that require that all predictors be numerical (e.g.,
+neural networks, or KNN), categorical predictors have to be
+pre-processed and converted into new numerical predictors. The most
+common such transformation is <em>one-hot encoding</em>, where a categorical
+predictor variable that has <span class="math inline">\(N\)</span> levels is replaced by <span class="math inline">\(N\)</span> new variables
+that contain either zeros or ones depending whether the value of the
+categorical feature corresponds to the respective column. Because this
+creates perfect collinearity between these new column, we can also drop
+one of them. This is referred to as <em>dummy encoding</em>.</p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="supervisedmli.html#cb418-1" aria-hidden="true" tabindex="-1"></a><span class="co"># original data frame</span></span>
+<span id="cb418-2"><a href="supervisedmli.html#cb418-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">color =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span>
+<span id="cb418-3"><a href="supervisedmli.html#cb418-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>## # A tibble: 4 × 2
+##      id color
+##   &lt;int&gt; &lt;chr&gt;
+## 1     1 red  
+## 2     2 red  
+## 3     3 green
+## 4     4 blue</code></pre>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="supervisedmli.html#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="co"># after one-hot encoding</span></span>
+<span id="cb420-2"><a href="supervisedmli.html#cb420-2" aria-hidden="true" tabindex="-1"></a>dmy <span class="ot">&lt;-</span> <span class="fu">dummyVars</span>(<span class="st">&quot;~ .&quot;</span>, <span class="at">data =</span> df, <span class="at">sep =</span> <span class="st">&quot;_&quot;</span>)</span>
+<span id="cb420-3"><a href="supervisedmli.html#cb420-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">predict</span>(dmy, <span class="at">newdata =</span> df))</span></code></pre></div>
+<pre><code>##   id colorblue colorgreen colorred
+## 1  1         0          0        1
+## 2  2         0          0        1
+## 3  3         0          1        0
+## 4  4         1          0        0</code></pre>
+<p>Note that in a case where color is strictly one of
+<code>c("red", "red", "green", "blue")</code> (and not, for example, <code>"yellow"</code>),
+then one of the columns added by <code>dummyVars()</code> is obsolete (if it’s
+neither <code>"red"</code>, nor <code>"green"</code>, it must be <code>"blue"</code>) - columns are
+collinear. This can be avoided by <code>setting fullRank = FALSE</code>.</p>
+<p>Using the recipes package, one-hot encoding is implemented by:</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="supervisedmli.html#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> ., <span class="at">data =</span> ddf) <span class="sc">|&gt;</span> </span>
+<span id="cb422-2"><a href="supervisedmli.html#cb422-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>(), <span class="at">one_hot =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          8
+## 
+## Operations:
+## 
+## Dummy variables from all_nominal()</code></pre>
+</div>
+<div id="zero-variance-predictors" class="section level4 hasAnchor" number="9.2.8.5">
+<h4><span class="header-section-number">9.2.8.5</span> Zero-variance predictors<a href="supervisedmli.html#zero-variance-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Sometimes, the data generation process yields variables that have the
+same value in each observation. And sometimes this is due to failure of
+the measurement device or some other bug in the data collection
+pipeline. Either way, this may cause some algorithms to crash or become
+unstable. Such “zero-variance” predictors are usually removed
+altogether. The same applies also to variables with “near-zero
+variance”. That is, variables where only a few unique values occur with
+a high frequency in the entire data set. The danger is that, when data
+is split into training and testing sets, the variable may effectively
+become a “zero-variance” variable within the training subset.</p>
+<p>We can test for zero-variance or near-zero variance predictors by
+quantifying the following metrics:</p>
+<ul>
+<li>Frequency ratio: Ratio of the frequency of the most common predictor
+over the second most common predictor. This should be near 1 for
+well-behaved predictors and get very large for problematic ones.</li>
+<li>Percent unique values: The number of unique values divided by the
+total number of rows in the data set (times 100). For problematic
+variables, this ratio gets small (approaches 1/100).</li>
+</ul>
+<p>The function <code>nearZeroVar</code> of the {caret} package flags suspicious
+variables (<code>zeroVar = TRUE</code> or <code>nzv = TRUE</code>). In our data set, we don’t
+find any:</p>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="supervisedmli.html#cb424-1" aria-hidden="true" tabindex="-1"></a>caret<span class="sc">::</span><span class="fu">nearZeroVar</span>(ddf, <span class="at">saveMetrics =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>##                freqRatio percentUnique zeroVar   nzv
+## TIMESTAMP       1.000000    100.000000   FALSE FALSE
+## GPP_NT_VUT_REF  1.000000     93.732887   FALSE FALSE
+## TA_F            1.000000     83.951932   FALSE FALSE
+## SW_IN_F         1.500000     95.375723   FALSE FALSE
+## LW_IN_F         1.000000     43.170064   FALSE FALSE
+## VPD_F           1.142857     60.450259   FALSE FALSE
+## PA_F            1.090909     37.906906   FALSE FALSE
+## P_F            10.268072      5.978096   FALSE FALSE
+## WS_F            1.083333     34.758138   FALSE FALSE</code></pre>
+<p>Using the recipes package, we can add a step that removes zero-variance
+predictors by:</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="supervisedmli.html#cb426-1" aria-hidden="true" tabindex="-1"></a>pp <span class="sc">|&gt;</span> </span>
+<span id="cb426-2"><a href="supervisedmli.html#cb426-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>())</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          3
+## 
+## Operations:
+## 
+## Centering for all_numeric(), -all_outcomes()
+## Scaling for all_numeric(), -all_outcomes()
+## Zero variance filter on all_predictors()</code></pre>
+</div>
+<div id="target-engineering" class="section level4 hasAnchor" number="9.2.8.6">
+<h4><span class="header-section-number">9.2.8.6</span> Target engineering<a href="supervisedmli.html#target-engineering" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Target engineering refers to pre-processing of the target variable. Its
+application can enable improved predictions, particularly for models
+that make assumptions about prediction errors or when the target
+variable follows a “special” distribution (e.g., heavily skewed
+distribution, or where the target variable is a fraction that is
+naturally bounded by 0 and 1). A simple log-transformation of the target
+variable can often resolve issues with skewed distributions. An
+implication of a log-transformation is that errors in predicting values
+in the upper end of the observed range are “discounted” in their weight
+compared to errors in the lower range.</p>
+<p>In our data set, the variable <code>WS_F</code> (wind speed) is skewed. The target
+variable that we have considered so far (<code>GPP_NT_VUT_REF</code>) is not
+skewed. In a case where we would consider <code>WS_F</code> to be our target
+variable, we would thus consider applying a log-transformation.</p>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="supervisedmli.html#cb428-1" aria-hidden="true" tabindex="-1"></a>gg1 <span class="ot">&lt;-</span> ddf <span class="sc">|&gt;</span> </span>
+<span id="cb428-2"><a href="supervisedmli.html#cb428-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> WS_F, <span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb428-3"><a href="supervisedmli.html#cb428-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb428-4"><a href="supervisedmli.html#cb428-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Original&quot;</span>)</span>
+<span id="cb428-5"><a href="supervisedmli.html#cb428-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb428-6"><a href="supervisedmli.html#cb428-6" aria-hidden="true" tabindex="-1"></a>gg2 <span class="ot">&lt;-</span> ddf <span class="sc">|&gt;</span> </span>
+<span id="cb428-7"><a href="supervisedmli.html#cb428-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(WS_F), <span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb428-8"><a href="supervisedmli.html#cb428-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb428-9"><a href="supervisedmli.html#cb428-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Log-transformed&quot;</span>)</span>
+<span id="cb428-10"><a href="supervisedmli.html#cb428-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb428-11"><a href="supervisedmli.html#cb428-11" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-218-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Log transformation as part of the pre-processing is specified using the
+<code>step_log()</code> function, here applied to the model target variable
+(<code>all_outcomes()</code>).</p>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="supervisedmli.html#cb429-1" aria-hidden="true" tabindex="-1"></a>recipes<span class="sc">::</span><span class="fu">recipe</span>(WS_F <span class="sc">~</span> ., <span class="at">data =</span> ddf) <span class="sc">|&gt;</span>   <span class="co"># it&#39;s of course non-sense to model wind speed like this</span></span>
+<span id="cb429-2"><a href="supervisedmli.html#cb429-2" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_log</span>(<span class="fu">all_outcomes</span>())</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          8
+## 
+## Operations:
+## 
+## Log transformation on all_outcomes()</code></pre>
+<p>A log-transformation doesn’t necessarily result in a perfect normal
+distribution of transformed values. The <em>Box-Cox</em> can get us closer. It
+can be considered a generalization of the log-transformation. Values are
+transformed according to the following function: <span class="math display">\[
+y(\lambda) = \begin{cases}
+\frac{Y^\lambda-1}{\lambda}, &amp;\; y \neq 0\\
+\log(Y),                     &amp;\; y = 0
+\end{cases}
+\]</span> <span class="math inline">\(\lambda\)</span> is treated as a parameter that is fitted such that the
+resulting distribution of values <span class="math inline">\(Y\)</span> approaches the normal distribution.
+To specify a Box-Cox-transformation as part of the pre-processing, we
+can use <code>step_BoxCox()</code> from the {recipes} package.</p>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="supervisedmli.html#cb431-1" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">recipe</span>(WS_F <span class="sc">~</span> ., <span class="at">data =</span> ddf_train) <span class="sc">|&gt;</span></span>
+<span id="cb431-2"><a href="supervisedmli.html#cb431-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_BoxCox</span>(<span class="fu">all_outcomes</span>())</span></code></pre></div>
+<p>How do transformed values look like?</p>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="supervisedmli.html#cb432-1" aria-hidden="true" tabindex="-1"></a>prep_pp <span class="ot">&lt;-</span> <span class="fu">prep</span>(pp, <span class="at">training =</span> ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>())</span>
+<span id="cb432-2"><a href="supervisedmli.html#cb432-2" aria-hidden="true" tabindex="-1"></a>ddf_baked <span class="ot">&lt;-</span> <span class="fu">bake</span>(prep_pp, <span class="at">new_data =</span> ddf_test <span class="sc">|&gt;</span> <span class="fu">drop_na</span>())</span>
+<span id="cb432-3"><a href="supervisedmli.html#cb432-3" aria-hidden="true" tabindex="-1"></a>ddf_baked <span class="sc">|&gt;</span></span>
+<span id="cb432-4"><a href="supervisedmli.html#cb432-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> WS_F, <span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb432-5"><a href="supervisedmli.html#cb432-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb432-6"><a href="supervisedmli.html#cb432-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Box-Cox-transformed&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-221-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Note that the Box-Cox-transformation can only be applied to values that
+are strictly positive. In our example, wind speed (<code>WS_F</code>) is. If this
+is not satisfied, a Yeo-Johnson transformation can be applied.</p>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="supervisedmli.html#cb433-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(WS_F <span class="sc">~</span> ., <span class="at">data =</span> ddf) <span class="sc">|&gt;</span></span>
+<span id="cb433-2"><a href="supervisedmli.html#cb433-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_outcomes</span>())</span></code></pre></div>
+<pre><code>## Recipe
+## 
+## Inputs:
+## 
+##       role #variables
+##    outcome          1
+##  predictor          8
+## 
+## Operations:
+## 
+## Yeo-Johnson transformation on all_outcomes()</code></pre>
+</div>
+</div>
+<div id="putting-it-all-together-half-way" class="section level3 hasAnchor" number="9.2.9">
+<h3><span class="header-section-number">9.2.9</span> Putting it all together (half-way)<a href="supervisedmli.html#putting-it-all-together-half-way" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s recap. We have a dataset <code>ddf</code> and we want to predict ecosystem
+GPP (<code>GPP_NT_VUT_REF</code>) from a set of predictors - environmental
+covariates that were measured in parallel to GPP. Let’s compare the
+performance of a multivariate linear regression and KNN model in terms
+of its generalisation to data that was not used for model fitting. The
+following pieces are implemented:</p>
+<ul>
+<li>Missing data: We’ve seen that the predictor <code>LW_IN_F</code> has lots of
+missing values and - given <em>a priori</em> knowledge is not critical for
+predicting GPP and we’ll drop it.</li>
+<li>Data cleaning: Data (<code>ddf</code>) was cleaned based on quality control
+information upon reading the data at the beginning of this Chapter.
+Before modelling, we’re checking the distribution of the target
+value here again to make sure it is “well-behaved”.</li>
+<li>Imputation: We drop rows with missing data for model training,
+instead of imputing them.</li>
+<li>Some of the predictors are distintively not normally distributed.
+Let’s Box-Cox transform all predictors as a pre-processing step.</li>
+<li>We have to standardize the data in order to use it for KNN.</li>
+<li>We have no variable where zero-variance was detected and we have no
+categorical variables that have to be transformed by one-hot
+encoding to be used in KNN. We use a data split, whithholding 30%
+for testing.</li>
+<li>Take <span class="math inline">\(k=10\)</span> for the KNN model. Other choices are possible and will
+affect the prediction error on the training and the testing data in
+different manners. We’ll learn more about the optimal choice of <span class="math inline">\(k\)</span>
+(<em>hyperparameter tuning</em>) in the next chapter.</li>
+<li>Fit models to minimize the root mean square error (RMSE) between
+predictions and observations. More on the choice of the <code>metric</code>
+argument in <code>train()</code> (<em>loss function</em>) in the next chapter.</li>
+<li>For the KNN model, use <span class="math inline">\(k=5\)</span>.</li>
+</ul>
+<p>These steps are implemented by the code below.</p>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="supervisedmli.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data cleaning: looks ok, no obviously bad data</span></span>
+<span id="cb435-2"><a href="supervisedmli.html#cb435-2" aria-hidden="true" tabindex="-1"></a><span class="co"># no long tail, therefore no further target engineering</span></span>
+<span id="cb435-3"><a href="supervisedmli.html#cb435-3" aria-hidden="true" tabindex="-1"></a>ddf <span class="sc">|&gt;</span> </span>
+<span id="cb435-4"><a href="supervisedmli.html#cb435-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> GPP_NT_VUT_REF, <span class="at">y =</span> ..count..)) <span class="sc">+</span> </span>
+<span id="cb435-5"><a href="supervisedmli.html#cb435-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-223-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="supervisedmli.html#cb436-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
+<span id="cb436-2"><a href="supervisedmli.html#cb436-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb436-3"><a href="supervisedmli.html#cb436-3" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(ddf, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
+<span id="cb436-4"><a href="supervisedmli.html#cb436-4" aria-hidden="true" tabindex="-1"></a>ddf_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
+<span id="cb436-5"><a href="supervisedmli.html#cb436-5" aria-hidden="true" tabindex="-1"></a>ddf_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
+<span id="cb436-6"><a href="supervisedmli.html#cb436-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb436-7"><a href="supervisedmli.html#cb436-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Model and pre-processing formulation, use all variables but LW_IN_F</span></span>
+<span id="cb436-8"><a href="supervisedmli.html#cb436-8" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F <span class="sc">+</span> PA_F <span class="sc">+</span> P_F <span class="sc">+</span> WS_F, </span>
+<span id="cb436-9"><a href="supervisedmli.html#cb436-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb436-10"><a href="supervisedmli.html#cb436-10" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_BoxCox</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb436-11"><a href="supervisedmli.html#cb436-11" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb436-12"><a href="supervisedmli.html#cb436-12" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span>
+<span id="cb436-13"><a href="supervisedmli.html#cb436-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb436-14"><a href="supervisedmli.html#cb436-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear regression model</span></span>
+<span id="cb436-15"><a href="supervisedmli.html#cb436-15" aria-hidden="true" tabindex="-1"></a>mod_lm <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb436-16"><a href="supervisedmli.html#cb436-16" aria-hidden="true" tabindex="-1"></a>  pp, </span>
+<span id="cb436-17"><a href="supervisedmli.html#cb436-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb436-18"><a href="supervisedmli.html#cb436-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb436-19"><a href="supervisedmli.html#cb436-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb436-20"><a href="supervisedmli.html#cb436-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span></span>
+<span id="cb436-21"><a href="supervisedmli.html#cb436-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb436-22"><a href="supervisedmli.html#cb436-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb436-23"><a href="supervisedmli.html#cb436-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit KNN model</span></span>
+<span id="cb436-24"><a href="supervisedmli.html#cb436-24" aria-hidden="true" tabindex="-1"></a>mod_knn <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb436-25"><a href="supervisedmli.html#cb436-25" aria-hidden="true" tabindex="-1"></a>  pp, </span>
+<span id="cb436-26"><a href="supervisedmli.html#cb436-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb436-27"><a href="supervisedmli.html#cb436-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb436-28"><a href="supervisedmli.html#cb436-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb436-29"><a href="supervisedmli.html#cb436-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="dv">5</span>),</span>
+<span id="cb436-30"><a href="supervisedmli.html#cb436-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span></span>
+<span id="cb436-31"><a href="supervisedmli.html#cb436-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>We can use the model objects <code>mod_lm</code> and <code>mod_knn</code> to add the fitted
+values to the training data and add the predicted values to the test
+data, both using the generic function <code>predict(..., newdata = ...)</code>. The
+code below implements the prediction step, the measuring of the
+prediction skill, and the visualisation of predicted versus observed
+values on the test and training sets, bundled into one function -
+<code>eval_model()</code> - which we will re-use for each fitted model object.</p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="supervisedmli.html#cb437-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make model evaluation into a function to reuse code</span></span>
+<span id="cb437-2"><a href="supervisedmli.html#cb437-2" aria-hidden="true" tabindex="-1"></a>eval_model <span class="ot">&lt;-</span> <span class="cf">function</span>(mod, df_train, df_test){</span>
+<span id="cb437-3"><a href="supervisedmli.html#cb437-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-4"><a href="supervisedmli.html#cb437-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add predictions to the data frames</span></span>
+<span id="cb437-5"><a href="supervisedmli.html#cb437-5" aria-hidden="true" tabindex="-1"></a>  df_train <span class="ot">&lt;-</span> df_train <span class="sc">%&gt;%</span> </span>
+<span id="cb437-6"><a href="supervisedmli.html#cb437-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb437-7"><a href="supervisedmli.html#cb437-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">fitted =</span>  <span class="fu">predict</span>(mod, <span class="at">newdata =</span> .))</span>
+<span id="cb437-8"><a href="supervisedmli.html#cb437-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-9"><a href="supervisedmli.html#cb437-9" aria-hidden="true" tabindex="-1"></a>  df_test <span class="ot">&lt;-</span> df_test <span class="sc">%&gt;%</span> </span>
+<span id="cb437-10"><a href="supervisedmli.html#cb437-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb437-11"><a href="supervisedmli.html#cb437-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">fitted =</span>  <span class="fu">predict</span>(mod, <span class="at">newdata =</span> .))</span>
+<span id="cb437-12"><a href="supervisedmli.html#cb437-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-13"><a href="supervisedmli.html#cb437-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get metrics tables</span></span>
+<span id="cb437-14"><a href="supervisedmli.html#cb437-14" aria-hidden="true" tabindex="-1"></a>  metrics_train <span class="ot">&lt;-</span> df_train <span class="sc">%&gt;%</span> </span>
+<span id="cb437-15"><a href="supervisedmli.html#cb437-15" aria-hidden="true" tabindex="-1"></a>    yardstick<span class="sc">::</span><span class="fu">metrics</span>(GPP_NT_VUT_REF, fitted)</span>
+<span id="cb437-16"><a href="supervisedmli.html#cb437-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-17"><a href="supervisedmli.html#cb437-17" aria-hidden="true" tabindex="-1"></a>  metrics_test <span class="ot">&lt;-</span> df_test <span class="sc">%&gt;%</span> </span>
+<span id="cb437-18"><a href="supervisedmli.html#cb437-18" aria-hidden="true" tabindex="-1"></a>    yardstick<span class="sc">::</span><span class="fu">metrics</span>(GPP_NT_VUT_REF, fitted)</span>
+<span id="cb437-19"><a href="supervisedmli.html#cb437-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-20"><a href="supervisedmli.html#cb437-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># extract values from metrics tables</span></span>
+<span id="cb437-21"><a href="supervisedmli.html#cb437-21" aria-hidden="true" tabindex="-1"></a>  rmse_train <span class="ot">&lt;-</span> metrics_train <span class="sc">%&gt;%</span> </span>
+<span id="cb437-22"><a href="supervisedmli.html#cb437-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">&quot;rmse&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb437-23"><a href="supervisedmli.html#cb437-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(.estimate)</span>
+<span id="cb437-24"><a href="supervisedmli.html#cb437-24" aria-hidden="true" tabindex="-1"></a>  rsq_train <span class="ot">&lt;-</span> metrics_train <span class="sc">%&gt;%</span> </span>
+<span id="cb437-25"><a href="supervisedmli.html#cb437-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">&quot;rsq&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb437-26"><a href="supervisedmli.html#cb437-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(.estimate)</span>
+<span id="cb437-27"><a href="supervisedmli.html#cb437-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-28"><a href="supervisedmli.html#cb437-28" aria-hidden="true" tabindex="-1"></a>  rmse_test <span class="ot">&lt;-</span> metrics_test <span class="sc">%&gt;%</span> </span>
+<span id="cb437-29"><a href="supervisedmli.html#cb437-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">&quot;rmse&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb437-30"><a href="supervisedmli.html#cb437-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(.estimate)</span>
+<span id="cb437-31"><a href="supervisedmli.html#cb437-31" aria-hidden="true" tabindex="-1"></a>  rsq_test <span class="ot">&lt;-</span> metrics_test <span class="sc">%&gt;%</span> </span>
+<span id="cb437-32"><a href="supervisedmli.html#cb437-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">&quot;rsq&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb437-33"><a href="supervisedmli.html#cb437-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(.estimate)</span>
+<span id="cb437-34"><a href="supervisedmli.html#cb437-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-35"><a href="supervisedmli.html#cb437-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># visualise as a scatterplot</span></span>
+<span id="cb437-36"><a href="supervisedmli.html#cb437-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># adding information of metrics as sub-titles</span></span>
+<span id="cb437-37"><a href="supervisedmli.html#cb437-37" aria-hidden="true" tabindex="-1"></a>  gg1 <span class="ot">&lt;-</span> df_train <span class="sc">%&gt;%</span> </span>
+<span id="cb437-38"><a href="supervisedmli.html#cb437-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(GPP_NT_VUT_REF, fitted)) <span class="sc">+</span></span>
+<span id="cb437-39"><a href="supervisedmli.html#cb437-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb437-40"><a href="supervisedmli.html#cb437-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb437-41"><a href="supervisedmli.html#cb437-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>) <span class="sc">+</span></span>
+<span id="cb437-42"><a href="supervisedmli.html#cb437-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">bquote</span>( <span class="fu">italic</span>(R)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> .(<span class="fu">format</span>(rsq_train, <span class="at">digits =</span> <span class="dv">2</span>)) <span class="sc">~</span><span class="er">~</span></span>
+<span id="cb437-43"><a href="supervisedmli.html#cb437-43" aria-hidden="true" tabindex="-1"></a>                            RMSE <span class="sc">==</span> .(<span class="fu">format</span>(rmse_train, <span class="at">digits =</span> <span class="dv">3</span>))),</span>
+<span id="cb437-44"><a href="supervisedmli.html#cb437-44" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;Training set&quot;</span>) <span class="sc">+</span></span>
+<span id="cb437-45"><a href="supervisedmli.html#cb437-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
+<span id="cb437-46"><a href="supervisedmli.html#cb437-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-47"><a href="supervisedmli.html#cb437-47" aria-hidden="true" tabindex="-1"></a>  gg2 <span class="ot">&lt;-</span> df_test <span class="sc">%&gt;%</span> </span>
+<span id="cb437-48"><a href="supervisedmli.html#cb437-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(GPP_NT_VUT_REF, fitted)) <span class="sc">+</span></span>
+<span id="cb437-49"><a href="supervisedmli.html#cb437-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb437-50"><a href="supervisedmli.html#cb437-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb437-51"><a href="supervisedmli.html#cb437-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>) <span class="sc">+</span></span>
+<span id="cb437-52"><a href="supervisedmli.html#cb437-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">bquote</span>( <span class="fu">italic</span>(R)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> .(<span class="fu">format</span>(rsq_test, <span class="at">digits =</span> <span class="dv">2</span>)) <span class="sc">~</span><span class="er">~</span></span>
+<span id="cb437-53"><a href="supervisedmli.html#cb437-53" aria-hidden="true" tabindex="-1"></a>                            RMSE <span class="sc">==</span> .(<span class="fu">format</span>(rmse_test, <span class="at">digits =</span> <span class="dv">3</span>))),</span>
+<span id="cb437-54"><a href="supervisedmli.html#cb437-54" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">&quot;Test set&quot;</span>) <span class="sc">+</span></span>
+<span id="cb437-55"><a href="supervisedmli.html#cb437-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
+<span id="cb437-56"><a href="supervisedmli.html#cb437-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-57"><a href="supervisedmli.html#cb437-57" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2)</span>
+<span id="cb437-58"><a href="supervisedmli.html#cb437-58" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb437-59"><a href="supervisedmli.html#cb437-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb437-60"><a href="supervisedmli.html#cb437-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb437-61"><a href="supervisedmli.html#cb437-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb437-62"><a href="supervisedmli.html#cb437-62" aria-hidden="true" tabindex="-1"></a><span class="co"># linear regression model</span></span>
+<span id="cb437-63"><a href="supervisedmli.html#cb437-63" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_lm, <span class="at">df_train =</span> ddf_train, <span class="at">df_test =</span> ddf_test)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-224-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="supervisedmli.html#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="co"># KNN</span></span>
+<span id="cb438-2"><a href="supervisedmli.html#cb438-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_knn, <span class="at">df_train =</span> ddf_train, <span class="at">df_test =</span> ddf_test)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-224-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It is advisable to keep workflow notebooks (this RMarkdown file) light
+and legible. Therefore, code chunks should not be excessively long and
+functions should be kept in a <code>./R/*.R</code> file, which can be loaded. This
+also facilitates debugging code inside the function. Here, the function
+<code>eval_model()</code> is part of the book’s git repository, stored in the
+sub-directory <code>./R/</code>, and used also in later chapters.</p>
+</div>
+</div>
+<div id="exercises-8" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Exercises<a href="supervisedmli.html#exercises-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>(Preliminary)</p>
+<ul>
+<li>Interpret results on training and test sets by the two models fitted
+above.
+<ul>
+<li>How would metrics on training and test sets change if <span class="math inline">\(k\)</span> in KNN
+is increased (decreased)? How does <span class="math inline">\(k\)</span> relate to the
+bias-variance trade-off?</li>
+</ul></li>
+<li>Visualise predictions of KNN for different choices of <span class="math inline">\(k\)</span> in a
+univariate model, regressing temperature against the day-of-year
+(1-365) in the <code>ddf</code> dataset.</li>
+</ul>
+</div>
+<div id="solutions-6" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Solutions<a href="supervisedmli.html#solutions-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="regressionclassification.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="supervisedmlii.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/09-supervised_ml_I.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

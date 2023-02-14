@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Open science practices | Applied Geodata Science</title>
+  <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Open science practices | Applied Geodata Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  <meta name="github-repo" content="stineb/agsd" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Open science practices | Applied Geodata Science" />
+  
+  <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
+  
+
+<meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)" />
+
+
+<meta name="date" content="2023-02-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="codemgmt.html"/>
+<link rel="next" href="regressionclassification.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Applied Geodata Science</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-book"><i class="fa fa-check"></i>About this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-course"><i class="fa fa-check"></i>About this course</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-goal"><i class="fa fa-check"></i>Course goal</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
+<ul>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#what-is-applied-geodata-science"><i class="fa fa-check"></i>What is Applied Geodata Science?</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#the-data-science-workflow"><i class="fa fa-check"></i>The data science workflow</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#why-now"><i class="fa fa-check"></i>Why now?</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#a-new-modelling-paradigm"><i class="fa fa-check"></i>A new modelling paradigm</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#reading-and-link-collection"><i class="fa fa-check"></i>Reading and link collection</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="gettingstarted.html"><a href="gettingstarted.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="gettingstarted.html"><a href="gettingstarted.html#learning-objectives-1"><i class="fa fa-check"></i><b>1.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="gettingstarted.html"><a href="gettingstarted.html#tutorial"><i class="fa fa-check"></i><b>1.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
+<li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+<li class="chapter" data-level="1.4" data-path="gettingstarted.html"><a href="gettingstarted.html#solutions"><i class="fa fa-check"></i><b>1.4</b> Solutions</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick"><i class="fa fa-check"></i><b>1.4.1</b> Magic Trick</a></li>
+<li class="chapter" data-level="1.4.2" data-path="gettingstarted.html"><a href="gettingstarted.html#code-clean-up"><i class="fa fa-check"></i><b>1.4.2</b> Code Clean-up</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="programmingprimers.html"><a href="programmingprimers.html#learning-objectives-2"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#tutorial-1"><i class="fa fa-check"></i><b>2.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="programmingprimers.html"><a href="programmingprimers.html#libraries"><i class="fa fa-check"></i><b>2.2.1</b> Libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#programming-basics"><i class="fa fa-check"></i><b>2.2.2</b> Programming basics</a></li>
+<li class="chapter" data-level="2.2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#working-with-data-frames"><i class="fa fa-check"></i><b>2.2.3</b> Working with data frames</a></li>
+<li class="chapter" data-level="2.2.4" data-path="programmingprimers.html"><a href="programmingprimers.html#where-to-find-help"><i class="fa fa-check"></i><b>2.2.4</b> Where to find help</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+<li class="chapter" data-level="2.4" data-path="programmingprimers.html"><a href="programmingprimers.html#exercise-for-the-report"><i class="fa fa-check"></i><b>2.4</b> Exercise for The Report</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="programmingprimers.html"><a href="programmingprimers.html#hints"><i class="fa fa-check"></i><b>2.4.1</b> Hints</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="programmingprimers.html"><a href="programmingprimers.html#solutions-1"><i class="fa fa-check"></i><b>2.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="datawrangling.html"><a href="datawrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="datawrangling.html"><a href="datawrangling.html#learning-objectives-3"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="datawrangling.html"><a href="datawrangling.html#tutorial-2"><i class="fa fa-check"></i><b>3.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="datawrangling.html"><a href="datawrangling.html#example-data"><i class="fa fa-check"></i><b>3.2.1</b> Example data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="datawrangling.html"><a href="datawrangling.html#required-libraries"><i class="fa fa-check"></i><b>3.2.2</b> Required libraries</a></li>
+<li class="chapter" data-level="3.2.3" data-path="datawrangling.html"><a href="datawrangling.html#tidyverse"><i class="fa fa-check"></i><b>3.2.3</b> Tidyverse</a></li>
+<li class="chapter" data-level="3.2.4" data-path="datawrangling.html"><a href="datawrangling.html#tabular-data"><i class="fa fa-check"></i><b>3.2.4</b> Tabular data</a></li>
+<li class="chapter" data-level="3.2.5" data-path="datawrangling.html"><a href="datawrangling.html#variable-selection"><i class="fa fa-check"></i><b>3.2.5</b> Variable selection</a></li>
+<li class="chapter" data-level="3.2.6" data-path="datawrangling.html"><a href="datawrangling.html#time-objects"><i class="fa fa-check"></i><b>3.2.6</b> Time objects</a></li>
+<li class="chapter" data-level="3.2.7" data-path="datawrangling.html"><a href="datawrangling.html#variable-re--definition"><i class="fa fa-check"></i><b>3.2.7</b> Variable (re-) definition</a></li>
+<li class="chapter" data-level="3.2.8" data-path="datawrangling.html"><a href="datawrangling.html#axes-of-variation"><i class="fa fa-check"></i><b>3.2.8</b> Axes of variation</a></li>
+<li class="chapter" data-level="3.2.9" data-path="datawrangling.html"><a href="datawrangling.html#tidy-data"><i class="fa fa-check"></i><b>3.2.9</b> Tidy data</a></li>
+<li class="chapter" data-level="3.2.10" data-path="datawrangling.html"><a href="datawrangling.html#aggregating-data"><i class="fa fa-check"></i><b>3.2.10</b> Aggregating data</a></li>
+<li class="chapter" data-level="3.2.11" data-path="datawrangling.html"><a href="datawrangling.html#data-cleaning"><i class="fa fa-check"></i><b>3.2.11</b> Data cleaning</a></li>
+<li class="chapter" data-level="3.2.12" data-path="datawrangling.html"><a href="datawrangling.html#combining-relational-data"><i class="fa fa-check"></i><b>3.2.12</b> Combining relational data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="datawrangling.html"><a href="datawrangling.html#extra-material"><i class="fa fa-check"></i><b>3.3</b> Extra material</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-i"><i class="fa fa-check"></i><b>3.3.1</b> Functional programming I</a></li>
+<li class="chapter" data-level="3.3.2" data-path="datawrangling.html"><a href="datawrangling.html#strings"><i class="fa fa-check"></i><b>3.3.2</b> Strings</a></li>
+<li class="chapter" data-level="3.3.3" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="datawrangling.html"><a href="datawrangling.html#exercises-2"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#solutions-2"><i class="fa fa-check"></i><b>3.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="datavis.html"><a href="datavis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="datavis.html"><a href="datavis.html#learning-objectives-4"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="datavis.html"><a href="datavis.html#required-packages"><i class="fa fa-check"></i><b>4.2</b> Required packages</a></li>
+<li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#tutorial-3"><i class="fa fa-check"></i><b>4.3</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.3.1</b> The grammar of graphics</a></li>
+<li class="chapter" data-level="4.3.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.3.2</b> Every data has its representation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="datavis.html"><a href="datavis.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+<li class="chapter" data-level="4.5" data-path="datavis.html"><a href="datavis.html#solutions-3"><i class="fa fa-check"></i><b>4.5</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="datavariety.html"><a href="datavariety.html"><i class="fa fa-check"></i><b>5</b> Data variety</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="datavariety.html"><a href="datavariety.html#learning-objectives-5"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="datavariety.html"><a href="datavariety.html#tutorial-4"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="datavariety.html"><a href="datavariety.html#files-and-file-formats"><i class="fa fa-check"></i><b>5.2.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
+<li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
+<li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-4"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="datavariety.html"><a href="datavariety.html#files-and-file-formats-1"><i class="fa fa-check"></i><b>5.3.1</b> Files and file formats</a></li>
+<li class="chapter" data-level="5.3.2" data-path="datavariety.html"><a href="datavariety.html#api-use"><i class="fa fa-check"></i><b>5.3.2</b> API use</a></li>
+<li class="chapter" data-level="5.3.3" data-path="datavariety.html"><a href="datavariety.html#get-1"><i class="fa fa-check"></i><b>5.3.3</b> GET</a></li>
+<li class="chapter" data-level="5.3.4" data-path="datavariety.html"><a href="datavariety.html#dedicated-library"><i class="fa fa-check"></i><b>5.3.4</b> Dedicated library</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="codemgmt.html"><a href="codemgmt.html"><i class="fa fa-check"></i><b>6</b> Code management</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="codemgmt.html"><a href="codemgmt.html#learning-objectives-6"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="codemgmt.html"><a href="codemgmt.html#tutorial-5"><i class="fa fa-check"></i><b>6.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="codemgmt.html"><a href="codemgmt.html#git-and-local-version-control"><i class="fa fa-check"></i><b>6.2.1</b> Git and local version control</a></li>
+<li class="chapter" data-level="6.2.2" data-path="codemgmt.html"><a href="codemgmt.html#remote-version-control"><i class="fa fa-check"></i><b>6.2.2</b> Remote version control</a></li>
+<li class="chapter" data-level="6.2.3" data-path="codemgmt.html"><a href="codemgmt.html#location-based-code-management---github-templates"><i class="fa fa-check"></i><b>6.2.3</b> Location based code management - github templates</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="codemgmt.html"><a href="codemgmt.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+<li class="chapter" data-level="6.4" data-path="codemgmt.html"><a href="codemgmt.html#solutions-4"><i class="fa fa-check"></i><b>6.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="openscience.html"><a href="openscience.html"><i class="fa fa-check"></i><b>7</b> Open science practices</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="openscience.html"><a href="openscience.html#learning-objectives-7"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="openscience.html"><a href="openscience.html#tutorial-6"><i class="fa fa-check"></i><b>7.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="openscience.html"><a href="openscience.html#project-structure"><i class="fa fa-check"></i><b>7.2.1</b> Project structure</a></li>
+<li class="chapter" data-level="7.2.2" data-path="openscience.html"><a href="openscience.html#managing-workflows"><i class="fa fa-check"></i><b>7.2.2</b> Managing workflows</a></li>
+<li class="chapter" data-level="7.2.3" data-path="openscience.html"><a href="openscience.html#capturing-your-session-state"><i class="fa fa-check"></i><b>7.2.3</b> Capturing your session state</a></li>
+<li class="chapter" data-level="7.2.4" data-path="openscience.html"><a href="openscience.html#capturing-a-system-state"><i class="fa fa-check"></i><b>7.2.4</b> Capturing a system state</a></li>
+<li class="chapter" data-level="7.2.5" data-path="openscience.html"><a href="openscience.html#readable-reporting-using-rmarkdown"><i class="fa fa-check"></i><b>7.2.5</b> Readable reporting using Rmarkdown</a></li>
+<li class="chapter" data-level="7.2.6" data-path="openscience.html"><a href="openscience.html#data-retention"><i class="fa fa-check"></i><b>7.2.6</b> Data retention</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="openscience.html"><a href="openscience.html#exercises-6"><i class="fa fa-check"></i><b>7.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regressionclassification.html"><a href="regressionclassification.html"><i class="fa fa-check"></i><b>8</b> Regression and classification</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="regressionclassification.html"><a href="regressionclassification.html#learning-objectives-8"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="regressionclassification.html"><a href="regressionclassification.html#tutorial-7"><i class="fa fa-check"></i><b>8.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="regressionclassification.html"><a href="regressionclassification.html#types-of-models"><i class="fa fa-check"></i><b>8.2.1</b> Types of models</a></li>
+<li class="chapter" data-level="8.2.2" data-path="regressionclassification.html"><a href="regressionclassification.html#regression"><i class="fa fa-check"></i><b>8.2.2</b> Regression</a></li>
+<li class="chapter" data-level="8.2.3" data-path="regressionclassification.html"><a href="regressionclassification.html#classification"><i class="fa fa-check"></i><b>8.2.3</b> Classification</a></li>
+<li class="chapter" data-level="8.2.4" data-path="regressionclassification.html"><a href="regressionclassification.html#model-evaluation"><i class="fa fa-check"></i><b>8.2.4</b> Model evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#exercises-7"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
+<li class="chapter" data-level="8.4" data-path="regressionclassification.html"><a href="regressionclassification.html#solutions-5"><i class="fa fa-check"></i><b>8.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="supervisedmli.html"><a href="supervisedmli.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning I</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="supervisedmli.html"><a href="supervisedmli.html#learning-objectives-9"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="supervisedmli.html"><a href="supervisedmli.html#tutorial-8"><i class="fa fa-check"></i><b>9.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="supervisedmli.html"><a href="supervisedmli.html#required-packages-1"><i class="fa fa-check"></i><b>9.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="9.2.2" data-path="supervisedmli.html"><a href="supervisedmli.html#what-is-supervised-machine-learning"><i class="fa fa-check"></i><b>9.2.2</b> What is supervised machine learning?</a></li>
+<li class="chapter" data-level="9.2.3" data-path="supervisedmli.html"><a href="supervisedmli.html#overfitting"><i class="fa fa-check"></i><b>9.2.3</b> Overfitting</a></li>
+<li class="chapter" data-level="9.2.4" data-path="supervisedmli.html"><a href="supervisedmli.html#data-and-the-modelling-challenge"><i class="fa fa-check"></i><b>9.2.4</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="9.2.5" data-path="supervisedmli.html"><a href="supervisedmli.html#k-nearest-neighbours"><i class="fa fa-check"></i><b>9.2.5</b> K-nearest neighbours</a></li>
+<li class="chapter" data-level="9.2.6" data-path="supervisedmli.html"><a href="supervisedmli.html#model-formulation"><i class="fa fa-check"></i><b>9.2.6</b> Model formulation</a></li>
+<li class="chapter" data-level="9.2.7" data-path="supervisedmli.html"><a href="supervisedmli.html#data-splitting"><i class="fa fa-check"></i><b>9.2.7</b> Data splitting</a></li>
+<li class="chapter" data-level="9.2.8" data-path="supervisedmli.html"><a href="supervisedmli.html#preprocessing"><i class="fa fa-check"></i><b>9.2.8</b> Pre-processing</a></li>
+<li class="chapter" data-level="9.2.9" data-path="supervisedmli.html"><a href="supervisedmli.html#putting-it-all-together-half-way"><i class="fa fa-check"></i><b>9.2.9</b> Putting it all together (half-way)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="supervisedmli.html"><a href="supervisedmli.html#exercises-8"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+<li class="chapter" data-level="9.4" data-path="supervisedmli.html"><a href="supervisedmli.html#solutions-6"><i class="fa fa-check"></i><b>9.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="supervisedmlii.html"><a href="supervisedmlii.html"><i class="fa fa-check"></i><b>10</b> Supervised machine learning II</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#learning-objectives-10"><i class="fa fa-check"></i><b>10.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="10.2" data-path="supervisedmlii.html"><a href="supervisedmlii.html#tutorial-9"><i class="fa fa-check"></i><b>10.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#required-packages-2"><i class="fa fa-check"></i><b>10.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="10.2.2" data-path="supervisedmlii.html"><a href="supervisedmlii.html#data-and-the-modelling-challenge-1"><i class="fa fa-check"></i><b>10.2.2</b> Data and the modelling challenge</a></li>
+<li class="chapter" data-level="10.2.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#training"><i class="fa fa-check"></i><b>10.2.3</b> Loss function</a></li>
+<li class="chapter" data-level="10.2.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#hyperparameters"><i class="fa fa-check"></i><b>10.2.4</b> Hyperparameters</a></li>
+<li class="chapter" data-level="10.2.5" data-path="supervisedmlii.html"><a href="supervisedmlii.html#resampling"><i class="fa fa-check"></i><b>10.2.5</b> Resampling</a></li>
+<li class="chapter" data-level="10.2.6" data-path="supervisedmlii.html"><a href="supervisedmlii.html#validation-versus-testing-data"><i class="fa fa-check"></i><b>10.2.6</b> Validation versus testing data</a></li>
+<li class="chapter" data-level="10.2.7" data-path="supervisedmlii.html"><a href="supervisedmlii.html#modeling-with-structured-data"><i class="fa fa-check"></i><b>10.2.7</b> Modeling with structured data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+<li class="chapter" data-level="10.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#solutions-7"><i class="fa fa-check"></i><b>10.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="randomforest.html"><a href="randomforest.html"><i class="fa fa-check"></i><b>11</b> Random Forest</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="randomforest.html"><a href="randomforest.html#learning-objectives-11"><i class="fa fa-check"></i><b>11.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="11.2" data-path="randomforest.html"><a href="randomforest.html#tutorial-10"><i class="fa fa-check"></i><b>11.2</b> Tutorial</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="randomforest.html"><a href="randomforest.html#required-packages-3"><i class="fa fa-check"></i><b>11.2.1</b> Required packages</a></li>
+<li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#decision-trees"><i class="fa fa-check"></i><b>11.2.2</b> Decision trees</a></li>
+<li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.3</b> Bagging</a></li>
+<li class="chapter" data-level="11.2.4" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.4</b> From trees to a forest</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-10"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+<li class="chapter" data-level="11.4" data-path="randomforest.html"><a href="randomforest.html#solutions-8"><i class="fa fa-check"></i><b>11.4</b> Solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Applied Geodata Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="openscience" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Open science practices<a href="openscience.html#openscience" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Chapter lead author: Koen Hufkens</strong></p>
+<div id="learning-objectives-7" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Learning objectives<a href="openscience.html#learning-objectives-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this chapter you will learn the reasons for practicing open science, and some of the basic methodological techniques that we can use to facilitate an open science workflow.</p>
+<p>In this chapter you will learn how to:</p>
+<ul>
+<li><p>structure a project</p></li>
+<li><p>manage a project workflow</p></li>
+<li><p>capture a session or machine state</p></li>
+<li><p>use dynamic reporting</p></li>
+<li><p>ensure data/project retention</p></li>
+</ul>
+</div>
+<div id="tutorial-6" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Tutorial<a href="openscience.html#tutorial-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.</p>
+<p>Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.</p>
+<p>This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the commodification of science.</p>
+<p>Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitization made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.</p>
+<p>Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.</p>
+<p>It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on the practical aspects for reproducible science, i.e. ensuring that given the same data and code the results will be similar.</p>
+<p><a href="https://the-turing-way.netlify.app/welcome.html"><img src="https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg" alt="by The Turing Way" /></a></p>
+<p>For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this chapter.</p>
+<p>The basics of open science coding and data practices rely on a number of simple concepts. The below sections describe a selection of the most important ones. Sticking to these principles and/or tools will increase the reproducibility of your work greatly.</p>
+<div id="project-structure" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Project structure<a href="openscience.html#project-structure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Reproducible science relies on a number of key components. Data management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to “find” your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, structured, location. This structure allows you to determine both the function and or order of a workflow.</p>
+<p>It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a <a href="">github project</a> from this location, or just copy the project to a new drive.</p>
+<p>An example data structure for raw data processing is given below and we provided an <a href="https://github.com/geco-bern/R_proj_template">R project template</a> to work from and adjust on the lab website. A full description on using the template is provided in the next section (<a href="#version-control"><strong>??</strong></a>).</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb319-1"><a href="openscience.html#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data-raw/</span></span>
+<span id="cb319-2"><a href="openscience.html#cb319-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> raw_data_product/</span>
+<span id="cb319-3"><a href="openscience.html#cb319-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> 00_download_raw_data.R</span>
+<span id="cb319-4"><a href="openscience.html#cb319-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> 01_process_raw_data.R</span></code></pre></div>
+</div>
+<div id="managing-workflows" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Managing workflows<a href="openscience.html#managing-workflows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Although some code is agnostic to the order of execution many projects are effectively workflows, where the output of one routine is required for the successful execution of the next routine.</p>
+<p>In order to make sure that a future you, or a collaborator, understands in which order things should be executed it is best to number scripts / code properly. This is the most basic approach to managing workflows.</p>
+<p>In the example below all statistics code is stored in the statistics folder in an overall analysis folder (which also includes code for figures). All statistical analysis are numbered, to ensure that the output of a first analysis is available to the following one.</p>
+<div class="sourceCode" id="cb320"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb320-1"><a href="openscience.html#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="ex">analysis/</span></span>
+<span id="cb320-2"><a href="openscience.html#cb320-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> statistics/</span>
+<span id="cb320-3"><a href="openscience.html#cb320-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ 00_randomforest_model.R</span>
+<span id="cb320-4"><a href="openscience.html#cb320-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ 01_randomforest_tuning.R</span>
+<span id="cb320-5"><a href="openscience.html#cb320-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> figures/</span>
+<span id="cb320-6"><a href="openscience.html#cb320-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ global_model_results_map.R</span>
+<span id="cb320-7"><a href="openscience.html#cb320-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ complex_process_visualization.R</span></code></pre></div>
+<div id="automating-and-visualizing-workflows-with-targets" class="section level4 hasAnchor" number="7.2.2.1">
+<h4><span class="header-section-number">7.2.2.1</span> Automating and visualizing workflows with targets<a href="openscience.html#automating-and-visualizing-workflows-with-targets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To sidestep some of the manual management in R you can use dedicated pipeline tool like the <strong>{targets} package</strong> in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.</p>
+<div class="figure">
+<img src="https://books.ropensci.org/targets/man/figures/tar_watch.png" alt="" />
+<p class="caption">by rOpenSci {targets}</p>
+</div>
+<p>Due to the added complexity of the targets package we won’t include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples.</p>
+<p><a href="https://books.ropensci.org/targets/walkthrough.html" class="uri">https://books.ropensci.org/targets/walkthrough.html</a></p>
+</div>
+</div>
+<div id="capturing-your-session-state" class="section level3 hasAnchor" number="7.2.3">
+<h3><span class="header-section-number">7.2.3</span> Capturing your session state<a href="openscience.html#capturing-your-session-state" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Often code depends on various components, packages or libraries. These libraries and all software come in specific versions, which might or might not alter the behaviour of the cod which relies on them.</p>
+<p>If you want to ensure full reproducibility, especially across several years, you will need to capture the state of the system and libraries with which you ran the original analysis.</p>
+<p>In R the <a href="https://rstudio.github.io/renv/">{renv} package</a> serves this purpose and will provide an index of all the packages used in your project as well as their version.For a particular project it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis, isolated, portable and reproducible. The analogue in python would be the <a href="https://docs.python.org/3/library/venv.html">virtual environments, or venv program</a>.</p>
+<p>When setting up your project you can run:</p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="openscience.html#cb321-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initiate a {renv} environment</span></span>
+<span id="cb321-2"><a href="openscience.html#cb321-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span></code></pre></div>
+<p>To initiate your static R environment. Whenever you want to save the state of your project (and its packages) you can call:</p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="openscience.html#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the current state of the environment / project</span></span>
+<span id="cb322-2"><a href="openscience.html#cb322-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code></pre></div>
+<p>To save any changes made to your environment. All data will be saved in a project description file called a lock file (i.e. <code>renv.lock</code>). It is advised to update the state of your project regularly, and in particular before closing a project.</p>
+<p>When you move your project to a new system, or share a project on github with collaborators, you can revert to the original state of the analysis by calling:</p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="openscience.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On a new system, or when inheriting a project</span></span>
+<span id="cb323-2"><a href="openscience.html#cb323-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from a collaborator you can use a lock file</span></span>
+<span id="cb323-3"><a href="openscience.html#cb323-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to restore the session/project state using</span></span>
+<span id="cb323-4"><a href="openscience.html#cb323-4" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span></code></pre></div>
+<blockquote>
+<p>NOTE: as mentioned in the {renv} documentation. “For development and collaboration, the <code>.Rprofile</code>, <code>renv.lock</code> and <code>renv/activate.R</code> files should be committed to your version control system. But the <code>renv/library</code> directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore statements to the project <code>.gitignore</code>.” We refer to <a href="codemgmt.html#learning-objectives-6">6.1</a> for details on github and its use.</p>
+</blockquote>
+</div>
+<div id="capturing-a-system-state" class="section level3 hasAnchor" number="7.2.4">
+<h3><span class="header-section-number">7.2.4</span> Capturing a system state<a href="openscience.html#capturing-a-system-state" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the {renv} package which manages package version (environments) for you. When tasks are even more complex and include components outside of R you can use <a href="https://www.docker.com/"><strong>Docker</strong></a> to provide containerization of an operating system and the included ancillary application.</p>
+<p>The <a href="https://rocker-project.org/">{rocker} project</a> provides access to some of these features within the context of reproducible R environments. Using these tools you can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components. The application of docker based installs is outside the scope of the current course, but feel free to explore these resources as they are widespread in data science.</p>
+</div>
+<div id="readable-reporting-using-rmarkdown" class="section level3 hasAnchor" number="7.2.5">
+<h3><span class="header-section-number">7.2.5</span> Readable reporting using Rmarkdown<a href="openscience.html#readable-reporting-using-rmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Within Rstudio you can use Rmarkdown dynamic documents to combine both text and code. Rmarkdown is ideal for <strong>reporting</strong> i.e., writing your final document presenting your analysis results. A Rmarkdown documents consists of a header document properties, such as how it should be rendered (as an html page, a docx file or a pdf), and the actual content.</p>
+<p>Below you see the header file of an Rmarkdown document that should be rendered as an html page.</p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="openscience.html#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb324-2"><a href="openscience.html#cb324-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> My R Markdown Report</span>
+<span id="cb324-3"><a href="openscience.html#cb324-3" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> You</span>
+<span id="cb324-4"><a href="openscience.html#cb324-4" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> html_document</span>
+<span id="cb324-5"><a href="openscience.html#cb324-5" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
+<p>The remainder of the document shows a code chunk outlined by ``` quotes and the chunk arguments in {} brackets. Inline operations, the evaluation of code, in text is also possible by using single quotes around a variable or code.</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb325-1"><a href="openscience.html#cb325-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb325-2"><a href="openscience.html#cb325-2" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="ex">r</span></span>
+<span id="cb325-3"><a href="openscience.html#cb325-3" aria-hidden="true" tabindex="-1"></a><span class="ex">x</span> <span class="op">&lt;</span>- 5  <span class="co"># radius of a circle</span></span>
+<span id="cb325-4"><a href="openscience.html#cb325-4" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb325-5"><a href="openscience.html#cb325-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb325-6"><a href="openscience.html#cb325-6" aria-hidden="true" tabindex="-1"></a><span class="ex">For</span> a circle with the radius 5,</span>
+<span id="cb325-7"><a href="openscience.html#cb325-7" aria-hidden="true" tabindex="-1"></a><span class="ex">its</span> area is 78.5398163.</span></code></pre></div>
+<p>The document can be rendered by calling <code>rmarkdown::render()</code> on the command line or hitting the “Knit” button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="openscience.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># render the document on the command line</span></span>
+<span id="cb326-2"><a href="openscience.html#cb326-2" aria-hidden="true" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>()</span></code></pre></div>
+<div id="referencing-and-finding-files" class="section level4 hasAnchor" number="7.2.5.1">
+<h4><span class="header-section-number">7.2.5.1</span> Referencing and finding files<a href="openscience.html#referencing-and-finding-files" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In R projects all files can be referenced relative to the top most path of the project. When opening <code>your_project.Rproj</code> in RStudio you can load data in the console as such <code>read.table("data/some_data.csv")</code>, specifying a “soft” relative path for <code>some_data.csv</code>.</p>
+<div class="sourceCode" id="cb327"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb327-1"><a href="openscience.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="ex">project/</span></span>
+<span id="cb327-2"><a href="openscience.html#cb327-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> your_project.Rproj</span>
+<span id="cb327-3"><a href="openscience.html#cb327-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> statistics/</span>
+<span id="cb327-4"><a href="openscience.html#cb327-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ your_dynamic_document.Rmd</span>
+<span id="cb327-5"><a href="openscience.html#cb327-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> data/</span>
+<span id="cb327-6"><a href="openscience.html#cb327-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ some_data.csv</span></code></pre></div>
+<p>Rmarkdown files are rendered relative to the file path where to document resides. This means that data which resides in <code>data</code> can’t be accessed by <code>statistics/your_dynamic_document.Rmd</code> even when using an R project and soft relative paths (which work for scripts and functions). As such trying to render the <code>your_dynamic_document.Rmd</code> will fail as the file <code>some_data.csv</code> will not be found.</p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb328-1"><a href="openscience.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb328-2"><a href="openscience.html#cb328-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Your dynamic document</span>
+<span id="cb328-3"><a href="openscience.html#cb328-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> You</span>
+<span id="cb328-4"><a href="openscience.html#cb328-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
+<span id="cb328-5"><a href="openscience.html#cb328-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb328-6"><a href="openscience.html#cb328-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb328-7"><a href="openscience.html#cb328-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb328-8"><a href="openscience.html#cb328-8" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="ex">r</span></span>
+<span id="cb328-9"><a href="openscience.html#cb328-9" aria-hidden="true" tabindex="-1"></a><span class="ex">data</span> <span class="op">&lt;</span>- read.table<span class="er">(</span><span class="st">&#39;data/some_data.csv&#39;</span><span class="kw">)</span></span>
+<span id="cb328-10"><a href="openscience.html#cb328-10" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span></code></pre></div>
+<p>We need to explicitly take the project’s base path into the fold using the <a href="https://here.r-lib.org/">{here} package</a>. The here package gathers the absolute path of files inside an R project. As such, <code>here::here("data/some_data.csv")</code> will return the full path of the data (e.g. <code>/your_computer/project/data/some_data.csv</code>). This absolute path will be a valid path for the read.table() function, making the Rmarkdown file render correctly. The correct Rmarkdown code to read the data therefore reads:</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb329-1"><a href="openscience.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb329-2"><a href="openscience.html#cb329-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Your dynamic document</span>
+<span id="cb329-3"><a href="openscience.html#cb329-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> You</span>
+<span id="cb329-4"><a href="openscience.html#cb329-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
+<span id="cb329-5"><a href="openscience.html#cb329-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb329-6"><a href="openscience.html#cb329-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb329-7"><a href="openscience.html#cb329-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb329-8"><a href="openscience.html#cb329-8" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="ex">r</span></span>
+<span id="cb329-9"><a href="openscience.html#cb329-9" aria-hidden="true" tabindex="-1"></a><span class="ex">data</span> <span class="op">&lt;</span>- read.table<span class="er">(</span><span class="ex">here::here</span><span class="er">(</span><span class="st">&#39;data/some_data.csv&#39;</span><span class="kw">))</span></span>
+<span id="cb329-10"><a href="openscience.html#cb329-10" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span></code></pre></div>
+<p>But why not use absolute paths to begin with? Portability! When I would run your *.Rmd file with an absolute path on my computer it would not render as the file <code>some_data.csv</code> would then be located at: <code>/my_computer/project/data/some_data.csv</code></p>
+</div>
+<div id="limitations" class="section level4 hasAnchor" number="7.2.5.2">
+<h4><span class="header-section-number">7.2.5.2</span> Limitations<a href="openscience.html#limitations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The file referencing issue and the common use of Rmarkdown as a one size fits all solution, containing all aspects from data cleaning to reporting, makes Rmarkdown files not portable or reproducible. The one size fits all approach to Rmarkdown also encourages bad project management practices.</p>
+<p>As illustrated above, if no session management tools such as the package {here} are used this automatically causes files to pile up in the top most level of a project, undoing most efforts to physically structure data and code as highlighted in <a href="openscience.html#project-structure">7.2.1</a>.</p>
+<p>At the heart of this discussion are not only practical considerations but also the fact that R markdown documents mix two cognitive tasks, writing text content (i.e. reporting) and writing code. Switching between these two modes comes with undue overhead. If you code, you should not be writing prose, and vise versa.</p>
+<p>If your R markdown file contains more code than it does text, it should be considered an R script or function (with comments or documentation). Conversely, if your markdown file contains more text than code it probably is easier to collaborate on a true word processing file (or cloud based solution). The use case where the notebooks might serve some importance is true reporting of general statistics.</p>
+<p>R markdown files have their function for reporting concise results, once generated (through functions or analysis scripts) but should be generally be avoided to develop code &amp; ideas as it encourages bad project management practices.</p>
+</div>
+</div>
+<div id="data-retention" class="section level3 hasAnchor" number="7.2.6">
+<h3><span class="header-section-number">7.2.6</span> Data retention<a href="openscience.html#data-retention" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long term data and code retention and versioning.</p>
+<p>For code online collaboration tools, such as <a href="https://github.com">github</a>, <a href="https://gitlab.com">gitlab</a> or <a href="https://codeberg.org">codeberg</a>, provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly ~2GB). For small projects data can be included in the repository itself, for larger projects this won’t be possible.</p>
+<p>To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example <a href="https://zenodo.org/">Zenodo</a>. Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include <a href="https://datadryad.org/stash">Dryad</a> and the <a href="https://osf.io/">Center for Open Science</a>.</p>
+</div>
+</div>
+<div id="exercises-6" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Exercises<a href="openscience.html#exercises-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="external-data" class="section level4 hasAnchor" number="7.3.0.1">
+<h4><span class="header-section-number">7.3.0.1</span> External data<a href="openscience.html#external-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>You inherit a project folder which contains the following files.</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb330-1"><a href="openscience.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/project/</span></span>
+<span id="cb330-2"><a href="openscience.html#cb330-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> survey.xlsx</span>
+<span id="cb330-3"><a href="openscience.html#cb330-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> xls conversion.csv</span>
+<span id="cb330-4"><a href="openscience.html#cb330-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> xls conversion <span class="er">(</span><span class="ex">copy</span> 1<span class="kw">)</span><span class="ex">.csv</span></span>
+<span id="cb330-5"><a href="openscience.html#cb330-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Model-test_1.R</span>
+<span id="cb330-6"><a href="openscience.html#cb330-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Model-test-final.R</span>
+<span id="cb330-7"><a href="openscience.html#cb330-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Plots.R</span>
+<span id="cb330-8"><a href="openscience.html#cb330-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Figure 1.png</span>
+<span id="cb330-9"><a href="openscience.html#cb330-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> test.png</span>
+<span id="cb330-10"><a href="openscience.html#cb330-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Rplot01.png</span>
+<span id="cb330-11"><a href="openscience.html#cb330-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Report.Rmd</span>
+<span id="cb330-12"><a href="openscience.html#cb330-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Report.html</span></code></pre></div>
+<p>What are your steps to make this project more reproducible? Write down how and why you would organize your project.</p>
+</div>
+<div id="a-new-project" class="section level4 hasAnchor" number="7.3.0.2">
+<h4><span class="header-section-number">7.3.0.2</span> A new project<a href="openscience.html#a-new-project" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>What are the basic steps to create a reproducible workflow from a file management perspective? Create your own project using these principles and provide details the on steps involved and why they matter.</p>
+<p>The project should be a reproducible workflow:</p>
+<ul>
+<li><p>to download and plot a MODIS land cover map for Belgium using skills you learned in <a href="datavariety.html#datavariety">5</a></p></li>
+<li><p>contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in <a href="#data-wrangling"><strong>??</strong></a></p></li>
+<li><p>create a plot of the land cover map <a href="#data-visualisation"><strong>??</strong></a></p></li>
+<li><p>contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow</p></li>
+</ul>
+</div>
+<div id="tracking-the-state-of-your-project" class="section level4 hasAnchor" number="7.3.0.3">
+<h4><span class="header-section-number">7.3.0.3</span> Tracking the state of your project<a href="openscience.html#tracking-the-state-of-your-project" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>Track the packages you use in the project you created using {renv}</p></li>
+<li><p>Install any additional library and update the state of your project</p></li>
+<li><p>create a simple {targets} project using the above workflow</p>
+<ul>
+<li><p>make changes to the API download routine</p></li>
+<li><p>rerun the targets project</p></li>
+</ul></li>
+</ul>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="codemgmt.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="regressionclassification.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-open_science.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
