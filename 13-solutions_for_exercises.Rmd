@@ -243,12 +243,12 @@ library(lubridate)  # not part of the automatic load of tidyverse
 ### Tidyverse exercises
 ```{r message=FALSE}
 # a.
-dplyr::starwars %>% filter(skin_color == "pale", homeworld == "Naboo" | homeworld == "Ryloth") %>% nrow      
+dplyr::starwars |> filter(skin_color == "pale", homeworld == "Naboo" | homeworld == "Ryloth") |> nrow      
 # b.
-dplyr::starwars %>% unnest_wider(starships) %>% filter_at(vars(contains("...")), all_vars(!is.na(.)))  
+dplyr::starwars |> unnest_wider(starships) |> filter_at(vars(contains("...")), all_vars(!is.na(.)))  
 
 # c.
-dplyr::starwars %>% unnest(starships) %>% filter(films == "Return of the Jedi") %>% top_n(-1, height) %>% select(name, starships) 
+dplyr::starwars |> unnest(starships) |> filter(films == "Return of the Jedi") |> top_n(-1, height) |> select(name, starships) 
 ```
 
 ### Aggregation of data in tidy style
@@ -275,7 +275,7 @@ hhdf |>
             VPD_F_median = median(VPD_F),
             VPD_F_min    = min(VPD_F),
             VPD_F_max    = max(VPD_F),
-            VPD_F_sd     = sd(VPD_F)) %>% 
+            VPD_F_sd     = sd(VPD_F)) |> 
   head()
 ```
 
@@ -419,5 +419,70 @@ hhdf_meanseason |>
   
   # avoid adding distance from the lowest values to the axes
   scale_x_continuous(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
+```
+
+## Chapter 05
+## Chapter 06
+## Chapter 07
+## Chapter 08
+
+### Warm-up Exercises
+#### Loops and Ifs
+
+```{r}
+A <- matrix(c(6, 7, 3, NA, 15, 6, 7, 
+              8, 9, 12, 6, 11, NA, 3, 
+              9, 4, 7, 3, 21, NA, 6, 
+              7, 19, 6, NA, 15, 8, 10),
+            nrow = 4, byrow = TRUE)
+B <- c(8, 4, 12, 9, 15, 6)
+```
+
+#### Finding best predictor
+
+```{r}
+df <- read_csv("df_for_stepwise_regression.csv")
+
+## specify target variable
+target <- 'GPP_NT_VUT_REF'
+
+## determine predictors as all except site ID, timestamp, and the target (should be 14)
+preds <- df |> 
+  dplyr::select(-target, -siteid, -TIMESTAMP) |> 
+  names()
+
+## initialise an empty data frame (necessary, because otherwise we cannot use bind_rows() below)
+df_rsq <- data.frame()
+# rsq_list <- c()  # alternative for vector
+
+for (var in preds){
+  
+  ## create formula dynamically
+  forml <- as.formula(paste(target, "~", var))
+  
+  ## fit linear model
+  fit_lin <- lm(forml, data = df)
+  
+  ## extract R2 from linear model
+  rsq <- summary(fit_lin)[["r.squared"]]
+  
+  ## add a row to the data frame that holds the results
+  df_rsq <- bind_rows(df_rsq, data.frame(pred = var, rsq = rsq))
+  
+  # rsq_list <- c(rsq_list,rsq)  # alternative with vector
+}
+
+## print a table arrange by best rsq at the top
+df_rsq |> arrange(-rsq) |> knitr::kable()
+
+## alternative: determine the first variable to enter into our model
+# preds[which.max(rsq_list)]
+
+## use the data frame that holds the results for plotting
+df_rsq %>% 
+  ggplot(aes(x = reorder(pred, rsq), y = rsq)) +
+  geom_bar(stat = "identity") + 
+  labs(y = expression(italic(R)^2), x = "Variable") +
+  coord_flip()
 ```
 
