@@ -1,4 +1,4 @@
-# Open science practices {#open_science}
+# Open science practices {#openscience}
 
 **Chapter lead author: Koen Hufkens**
 
@@ -24,9 +24,9 @@ The scientific method relies on repeated testing of hypothesis. When dealing wit
 
 Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
 
-This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the comodification of science.
+This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the commodification of science.
 
-Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitzation made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
+Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitization made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
 
 Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
 
@@ -44,7 +44,7 @@ Reproducible science relies on a number of key components. Data management and t
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
-An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/computationales/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
+An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
 
 ``` bash
 data-raw/
@@ -64,8 +64,8 @@ In the example below all statistics code is stored in the statistics folder in a
 ``` bash
 analysis/
 ├─ statistics/
-│  ├─ 00_random_forest_model.R
-│  ├─ 01_random_forest_tuning.R
+│  ├─ 00_randomforest_model.R
+│  ├─ 01_randomforest_tuning.R
 ├─ figures/
 │  ├─ global_model_results_map.R
 │  ├─ complex_process_visualization.R
@@ -219,8 +219,6 @@ To ensure long term storage of code and data, outside of commercial for profit s
 
 ## Exercises
 
-### Data and code management
-
 #### External data
 
 You inherit a project folder which contains the following files.
@@ -248,11 +246,11 @@ What are the basic steps to create a reproducible workflow from a file managemen
 
 The project should be a reproducible workflow:
 
--   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(data_variety)
+-   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(datavariety)
 
--   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(data_wrangling)
+-   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(data-wrangling)
 
--   create a plot of the land cover map (see \@ref(data_vis))
+-   create a plot of the land cover map \@ref(data-visualisation)
 
 -   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
 
@@ -267,7 +265,3 @@ The project should be a reproducible workflow:
     -   make changes to the API download routine
 
     -   rerun the targets project
-
-## References
-
--   complete references

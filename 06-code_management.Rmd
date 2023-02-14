@@ -1,4 +1,4 @@
-# Code management {#code_mgmt}
+# Code management {#codemgmt}
 
 **Chapter lead author: Koen Hufkens**
 
@@ -32,7 +32,7 @@ Git allows for the collaboration of multiple people on the same code, while bein
 
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
 
-> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the [programming primers](). Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
+> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the Chapter Programming primers. Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
 
 ### Git and local version control
 
@@ -175,9 +175,9 @@ In a forked project, go to the "Pull requests" tab and press the green "New pull
 
 ### Location based code management - github templates
 
-Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using a the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
+Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(openscience) chapter.
 
-In our [R project template](https://github.com/computationales/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
+In our [R project template](https://github.com/geco-bern/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
 
 You can use the template in combination with a github based version (\@ref(version-control)) control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be tracked by the workflows described above.
 
@@ -185,13 +185,15 @@ To use the template create a new repository on github, as you otherwise would us
 
 ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png)
 
-Otherwise you can select the repository from the template dropdown menu, select `computationales/R-project-template`.
+Otherwise you can select the repository from the template dropdown menu, select `geco-bern/R-project-template`.
 
 ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png)
 
 Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
 ![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png)
+
+You can now clone the project to your local computer and continue to populate it with code and data.
 
 ## Exercises
 

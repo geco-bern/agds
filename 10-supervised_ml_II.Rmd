@@ -1,4 +1,4 @@
-# Supervised machine learning II {#supervised_ml_ii}
+# Supervised machine learning II {#supervisedmlii}
 
 **Chapter lead author: Benjamin Stocker**
 
@@ -16,7 +16,7 @@ Contents:
 
 ## Learning objectives
 
-In the Chapter \@ref(supervised_ml_i), you learned how the data are pre-processed, the model fitted, and how the model's generasbility to unseen data is tested. In the exercises of Chapter \@ref(supervised_ml_i), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model's performance on the training and the test sets. A "good" model generalises well. That is, it performs well on unseen data.
+In the Chapter \@ref(supervisedmli), you learned how the data are pre-processed, the model fitted, and how the model's generasbility to unseen data is tested. In the exercises of Chapter \@ref(supervised_ml_i), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model's performance on the training and the test sets. A "good" model generalises well. That is, it performs well on unseen data.
 
 In this chapter, you will learn more about the process of model training, the concept of the *loss*, and how we can chose the right level of model complexity for optimal model generalisability as part of the model training step. This completes your set of skills for your first implementations a supervised machine learning workflow.
 
@@ -33,7 +33,7 @@ invisible(lapply(use_pkgs, require, character.only = TRUE))
 
 ### Data and the modelling challenge
 
-We're using the same data and address the same modelling challenge as in Chapter \@ref(supervised_ml_i). Let's load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter \@ref(supervised_ml_i).
+We're using the same data and address the same modelling challenge as in Chapter \@ref(supervisedmli). Let's load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter \@ref(supervised_ml_i).
 
 ```{r warning=FALSE, message=FALSE}
 ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
@@ -80,13 +80,13 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train)
 
 ### Loss function {#training}
 
-Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm ("optimiser" in Fig. XXX of Chapter \@ref(supervised_ml_i)) takes care of progressively reducing the loss during model training.
+Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm ("optimiser" in Fig. XXX of Chapter \@ref(supervisedmli)) takes care of progressively reducing the loss during model training.
 
 Let's say the machine learning model contains two parameters and predictions can be considered a function of the two ($\hat{Y}(w_1, w_2)$). $Y$ is actually constant. Thus, the loss function is effectively a function $L(w_1, w_2)$. Therefore, we can consider the model training as a search of the parameter space to find the minimum of the loss. The parameter space spanned by all possible combinations of $(w_1, w_2)$. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.
 
 ![Visualization of a loss function](figures/loss_plane.png){width="10cm"}
 
-Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter \@ref(#supervised_ml_i), the {caret} package provides "wrappers" that handle a large selection of different machine learning model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The {caret} function `train()` is the center piece also in terms of specifying the loss function as the argument `metric`. It defaults to the RMSE for regression models and the accuracy for classification.
+Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter \@ref(#supervisedmli), the {caret} package provides "wrappers" that handle a large selection of different machine learning model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The {caret} function `train()` is the center piece also in terms of specifying the loss function as the argument `metric`. It defaults to the RMSE for regression models and the accuracy for classification.
 
 ### Hyperparameters
 
@@ -156,7 +156,7 @@ df_mae |>
   geom_line()
 ```
 
-The workflow implemented above should remind you of your solution to Exercise XXX in Chapter \@ref(supervised_ml_i). It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller $k$. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.
+The workflow implemented above should remind you of your solution to Exercise XXX in Chapter \@ref(supervisedmli). It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller $k$. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.
 
 Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?
 
@@ -202,13 +202,13 @@ df_mae |>
 
 The evaluation on the test set suggests that $k=30$ is optimal, while 10-fold cross-validation yielded an optimal $k = 25$. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is primarily a result of randomness in the data.
 
-Let's look at the results as we did in Chapter \@ref(supervised_ml_i). The model object `mod_cv` contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the `predict()` function (as used inside `eval_model()`), it automatically uses the model trained with the optimal $k$.
+Let's look at the results as we did in Chapter \@ref(supervisedmli). The model object `mod_cv` contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the `predict()` function (as used inside `eval_model()`), it automatically uses the model trained with the optimal $k$.
 
 ```{r}
 eval_model(mod = mod_cv, df_train = ddf_train, df_test = ddf_test)
 ```
 
-Remember that in Chapter \@ref(supervised_ml_ii), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set. XXX exercises: explain to your neighbor why XXX.
+Remember that in Chapter \@ref(supervisedmlii), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set. XXX exercises: explain to your neighbor why XXX.
 
 ### Validation versus testing data
 
@@ -222,7 +222,7 @@ A fundamental assumption underlying many machine learning algorithms and their t
 
 Consider, for example, the time series of ecosystem fluxes and meterological covariates in our dataset `ddf`. When using this data to train a KNN or a linear regression model, we implicitly assume that the data is *iid*. We assumed that there is a true function $f(X)$ that generates the target data $Y$ and that can be used to predict under any novel condition $X_\text{new}$. However, in reality, this may not be the case. $f(X)$ may change over time. For example, over the course of a season, the physiology of plants changes (think phenology) and may lead to temporally varying relationships between $X$ and $Y$ that are not captured by temporal variations in $X$ itself - the relationships are not stationary.
 
-Working with geographic and environmental data, we often deal with *temporal dependencies* between predictors and the target data. In our data `ddf` of ecosystem fluxes and meteorological covariates, this may be, as mentioned, arising from phenological changes in plant physiology and structure, or caused by a lasting effects weather extremes (e.g., a late frost event in spring). In hydrological data, temporal dependencies between weather and streamflow are generated by catchment characteristics and the runoff generation processes. Such temporal dependencies violate the independence assumption. Certain machine learning algorithms (e.g., recurrent neural networks) offer a solution for such cases and are suited for modelling temporal dependencies or, in general, sequential data where the order of the records matters (e.g., language models that consider the order of words in a text). Training-testing and cross-validation splits for sequential data have to preserve the order of the data in the subsets. In this case, the splits have to be done by *blocks*. That is, model generalisability is to be assessed by training on one block of the time series and testing on the remaining block. Note that the splitting method introduced in Chapter \@ref(supervised_ml_i) using `rsample::initial_split()` assumes that the data is *iid*. In the function, data points are randomly drawn and allocated to either the test or the training subset. It is therefore not applicable for splitting data with temporal dependencies. Modelling temporal dependencies will be dealt in future (not currently available) chapters of this book.
+Working with geographic and environmental data, we often deal with *temporal dependencies* between predictors and the target data. In our data `ddf` of ecosystem fluxes and meteorological covariates, this may be, as mentioned, arising from phenological changes in plant physiology and structure, or caused by a lasting effects weather extremes (e.g., a late frost event in spring). In hydrological data, temporal dependencies between weather and streamflow are generated by catchment characteristics and the runoff generation processes. Such temporal dependencies violate the independence assumption. Certain machine learning algorithms (e.g., recurrent neural networks) offer a solution for such cases and are suited for modelling temporal dependencies or, in general, sequential data where the order of the records matters (e.g., language models that consider the order of words in a text). Training-testing and cross-validation splits for sequential data have to preserve the order of the data in the subsets. In this case, the splits have to be done by *blocks*. That is, model generalisability is to be assessed by training on one block of the time series and testing on the remaining block. Note that the splitting method introduced in Chapter \@ref(supervisedmli) using `rsample::initial_split()` assumes that the data is *iid*. In the function, data points are randomly drawn and allocated to either the test or the training subset. It is therefore not applicable for splitting data with temporal dependencies. Modelling temporal dependencies will be dealt in future (not currently available) chapters of this book.
 
 Other dependencies may arise from the *spatial context.* For example, a model for classifying an atmospheric pressure field as a high or a low pressure system uses information about the spatial arrangement of the data - in this case raster data. A model predicts one value ('high pressure system' or 'low pressure system') per pressure field. Such modelling tasks are dealt with yet another class of algorithms (e.g., convolutional neural networks).
 
