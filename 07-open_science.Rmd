@@ -1,4 +1,4 @@
-# Open science practices {#open_science}
+# Open science practices {#openscience}
 
 **Chapter lead author: Koen Hufkens**
 
@@ -44,7 +44,7 @@ Reproducible science relies on a number of key components. Data management and t
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
-An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/computationales/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
+An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
 
 ``` bash
 data-raw/
@@ -64,8 +64,8 @@ In the example below all statistics code is stored in the statistics folder in a
 ``` bash
 analysis/
 ├─ statistics/
-│  ├─ 00_random_forest_model.R
-│  ├─ 01_random_forest_tuning.R
+│  ├─ 00_randomforest_model.R
+│  ├─ 01_randomforest_tuning.R
 ├─ figures/
 │  ├─ global_model_results_map.R
 │  ├─ complex_process_visualization.R
@@ -246,7 +246,7 @@ What are the basic steps to create a reproducible workflow from a file managemen
 
 The project should be a reproducible workflow:
 
--   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(data_variety)
+-   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(datavariety)
 
 -   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(data-wrangling)
 

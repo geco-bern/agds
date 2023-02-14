@@ -1,4 +1,4 @@
-# Data variety {#data_variety}
+# Data variety {#datavariety}
 
 **Chapter lead author: Koen Hufkens**
 

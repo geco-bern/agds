@@ -1,4 +1,4 @@
-# Data wrangling {#data_wrangling}
+# Data wrangling {#datawrangling}
 
 **Chapter lead author: Benjamin Stocker**
 
@@ -58,7 +58,7 @@ From this design principles, even the most convoluted code and implementation of
 
 ### Tabular data
 
-Tabular data is organised in rows and columns. Each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter \@ref(data_variety), you will be introduced to other types of data. The most common format for tabular data is CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
+Tabular data is organised in rows and columns. Each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter \@ref(datavariety), you will be introduced to other types of data. The most common format for tabular data is CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
 
 Let's get started with working with our example data set and read it into R, as the variable `hhdf`. Note that the naming of variables can be important for keeping code legible. For example, it may indicate the type of the object it holds (`df` for data frame) and that the data is half-hourly (`hh`).
 
@@ -342,7 +342,7 @@ Ideally, information about the quality of the data is provided as part of the da
 
 Bad data may come in the form of *outliers*, which are commonly defined based on their value with respect to the *distribution* of all values of the same variable in a dataset. Hence, their identification most commonly relies on quantifying their distance from the center of the variable's empirical distribution. The default `boxplot()` plotting function in R (which we will learn about more in Chapter \@ref(data_vis)) shows the median (bold line in the center), the upper and lower quartiles (corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , given by the upper and lower edge of the box plot) and the range of $( Q_1 - 1.5 (Q_3 - Q_1), Q_3 + 1.5 (Q_3 - Q_1))$. Any point outside this range is plotted by a circle and labeled an "outlier". However, this definition is very restrictive and may lead to a false labeling of outliers, in particular if they are drawn from a distribution with a fat tail or from asymmetrical distributions.
 
-Outliers may also be identified via multivariate distributions. We will re-visit such methods later, in Chapter \@ref(regression_classification). For certain applications, outliers or *anomalies* may be the target of the investigation, not the noise in the data. This has spurred the field of [*anomaly detection*](https://en.wikipedia.org/wiki/Anomaly_detection) which relies on machine learning algorithms for determining whether a value is anomalous, given a set of covariates.
+Outliers may also be identified via multivariate distributions. We will re-visit such methods later, in Chapter \@ref(regressionclassification). For certain applications, outliers or *anomalies* may be the target of the investigation, not the noise in the data. This has spurred the field of [*anomaly detection*](https://en.wikipedia.org/wiki/Anomaly_detection) which relies on machine learning algorithms for determining whether a value is anomalous, given a set of covariates.
 
 Sensor error may generate spurious values, identified, for example when a continuous variable attains the numerically identical value with a spuriously high frequency.
 
@@ -591,7 +591,7 @@ ddf_allsites
 
 ### Functional programming II
 
-Functions can be applied to a list of objects of any type. Therefore, `map()` is a powerful approach to "iterating" over multiple instances of the same object type and can be used for all sorts of tasks. In the following, list elements are data frames of daily data and the function `lm()` fits a linear regression model of GPP versus shortwave radiation to each sites' data. We'll learn more about fitting statistical models in R in Chapter \@ref(regression_classification).
+Functions can be applied to a list of objects of any type. Therefore, `map()` is a powerful approach to "iterating" over multiple instances of the same object type and can be used for all sorts of tasks. In the following, list elements are data frames of daily data and the function `lm()` fits a linear regression model of GPP versus shortwave radiation to each sites' data. We'll learn more about fitting statistical models in R in Chapter \@ref(regressionclassification).
 
 ```{r}
 list_linmod <- map(list_df, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))
