@@ -250,8 +250,9 @@ A further limitation is that least squares regression requires $n>p$. In
 words: the number of observations must be greater than the number of
 predictors. If this is not given, one can resort to step-wise forward
 regression, where predictors are sequentially added based on which
-predictor adds the most additional information at each step. XXX
-exercises XXX.
+predictor adds the most additional information at each step. 
+
+<!-- XXXexercises XXX. -->
 
 When multiple predictors are linearly correlated, then linear regression
 cannot discern individual effects and individual predictors may appear
@@ -619,7 +620,7 @@ The slope refers to the slope of the linear regression line between predicted an
 coef(lm(y ~ x, data = df))[2]
 ```
 
-XXX Exercise: In supervised machine learning, a certain metric is chosen to guide the model training (fitting). Which metric would you chose as a target for optimisation. Discuss why. XXX
+<!-- XXX Exercise: In supervised machine learning, a certain metric is chosen to guide the model training (fitting). Which metric would you chose as a target for optimisation. Discuss why. XXX -->
 
 #### Metrics for regression model comparison
 
