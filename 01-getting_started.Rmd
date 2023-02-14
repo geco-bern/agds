@@ -1,4 +1,4 @@
-# Getting started {#getting_started}
+# Getting started {#gettingstarted}
 
 **Chapter lead author: Pepa Arán**
 
@@ -450,7 +450,7 @@ c <- 10 # c() is used to create a vector (example <- c(1, 2, 3))
 
 #### R Markdown
 
-[R Markdown](https://rmarkdown.rstudio.com/) files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (*knitted*) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Code chunks start with: ```{r} (the {r} is very important because it's what makes it specifically an R chunk, as opposed to a different type of code chunk) They end with ```. When run (not knitted), objects defined by the executed code are available in the environment.
+[R Markdown](https://rmarkdown.rstudio.com/) files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (*knitted*) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Code chunks start with: `{r} (the {r} is very important because it's what makes it specifically an R chunk, as opposed to a different type of code chunk) They end with`. When run (not knitted), objects defined by the executed code are available in the environment.
 
 Text can be formatted using the [Markdown syntax](https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html). For example, a top-level section title is specified by `#` and a title of a section one level lower by `##`.
 
@@ -466,7 +466,7 @@ Using *R projects* in combination with *Git* is the essence of efficient workspa
 
 #### Installing Git
 
-*Git* is a version control system (covered in detail in [Tutorial 6](#code_mgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
+*Git* is a version control system (covered in detail in [Tutorial 6](#codemgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
 
 -   First, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
 -   Once Git is installed, set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". You can check that the path to your Git installation is correct.
@@ -500,22 +500,22 @@ A project directory should only contain code, data and outputs that belong to th
 
 It is advisable to create a separate data directory outside the project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
 
-You can find an [R project template](https://github.com/computationales/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
+You can find an [R project template](https://github.com/geco-bern/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
 
 ## Exercises
 
 Alright, let's get started with the first exercise! First, set up a new R project dedicated to this course:
 
--   Choose the location in your computer for your project and create a folder with an appropriate name. Then open RStudio and follow the instructions from the tutorial to create a new R Project. 
+-   Choose the location in your computer for your project and create a folder with an appropriate name. Then open RStudio and follow the instructions from the tutorial to create a new R Project.
 
--   The first file in your new R project will be an R Markdown (`.Rmd`) file which you can use to copy text and code from the different chapters of this book and try running the code yourself. Create such a file by clicking on the "new file" menu at the top left of RStudio and selecting **R Markdown ...**, give it a title and save. 
+-   The first file in your new R project will be an R Markdown (`.Rmd`) file which you can use to copy text and code from the different chapters of this book and try running the code yourself. Create such a file by clicking on the "new file" menu at the top left of RStudio and selecting **R Markdown ...**, give it a title and save.
 
 Let's go over the basics of working with R Markdown (inspired by [this exercise](https://github.com/EcoForecast/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)).
 
- -   To render a `.Rmd` file into an HTML file that reads like this book, you have to *knit* the document. To do this, you will need the {knitr} package. Install is by running `install.packages("knitr")` in the R console. Restart your R session and when it's ready, you should see a blue yarn icon above the source panel saying **Knit**. Knit your `.Rmd` document and check out the result. A new file with the same name but `.html` extension has been created and opened by RStudio for preview.
- -   Feel free to delete the example text and code from your file to start with a clean slate. But don't delete the header delimited by `---`. You can modify the `.Rmd` file but not the `.html` file. To update the content of the nicely readable `.html` you will need to knit again. Knitting is also a very good way to check that all your code runs.
- -   All your code should be placed into what we call "R chunks". When you run a chunk (on the green arrow) you will see the output of the code below it. 
- -   You can take notes or write answers in normal text outside those chunks. This [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) can help you use its formatting capabilities, like titles, highlighting, mathematical formulas...
+-   To render a `.Rmd` file into an HTML file that reads like this book, you have to *knit* the document. To do this, you will need the {knitr} package. Install is by running `install.packages("knitr")` in the R console. Restart your R session and when it's ready, you should see a blue yarn icon above the source panel saying **Knit**. Knit your `.Rmd` document and check out the result. A new file with the same name but `.html` extension has been created and opened by RStudio for preview.
+-   Feel free to delete the example text and code from your file to start with a clean slate. But don't delete the header delimited by `---`. You can modify the `.Rmd` file but not the `.html` file. To update the content of the nicely readable `.html` you will need to knit again. Knitting is also a very good way to check that all your code runs.
+-   All your code should be placed into what we call "R chunks". When you run a chunk (on the green arrow) you will see the output of the code below it.
+-   You can take notes or write answers in normal text outside those chunks. This [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) can help you use its formatting capabilities, like titles, highlighting, mathematical formulas...
 
 Now that you are set up, here are few exercises to get you started - remind yourself often of the guidelines on proper coding to make your life easier! Create a new `.R` file inside the project folder for solving the exercises.
 

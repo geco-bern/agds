@@ -1,4 +1,4 @@
-# Regression and classification {#regression_classification}
+# Regression and classification {#regressionclassification}
 
 **Chapter lead author: Pepa Aran**
 
@@ -94,7 +94,7 @@ short wave radiation, like in the [Chapter 4](#data_vis). The figure
 below shows a cloud of data points, and a straight line predicting GPP
 based on observed shortwave radiation values.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # read and format data from Ch 3
 hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 
@@ -392,17 +392,15 @@ df_cat |>
 
 Metrics measure the quality of fit between predicted and observed
 values, are essential to model training (where the metric defines the
-loss function, see Chapter \@ref(supervised_ml_ii)), and inform model
+loss function, see Chapter \@ref(supervisedmlii)), and inform model
 evaluation. Different metrics measure different aspects of the
 model-data agreement. In other words, a single metric never captures all aspects and
 patterns of the model-data agreement. Therefore, a visual inspection of
 the model fit is always a good start of the model evaluation.
 
-To get an intuitive understanding of the different abilities of different metrics, compare
-the scatterplots below and how different aspects of the model-data
-agreement are measured by different metrics. Definitions of the metrics displayed and other metrics are given below.
+To get an intuitive understanding of the different abilities of different metrics, compare the scatterplots in Fig. \@ref(fig:correlationplots) and how different aspects of the model-data agreement are measured by different metrics. Definitions of the metrics displayed and other metrics are given below.
 
-```{r correlation_plots, out.height='500%', warning=FALSE, message=FALSE, echo=FALSE}
+```{r correlationplots, echo=FALSE, fig.cap="Correlation plots", fig.height=10, message=FALSE, warning=FALSE}
 analyse_modobs <- function(df){
   
   # fit linear regression model to get slope
@@ -433,10 +431,18 @@ analyse_modobs <- function(df){
     dplyr::mutate(.estimate_form = format(.estimate, digits = 2))
   
   subtitle <- bquote( 
-    italic(R)^2 == .(df_metrics |> dplyr::filter(.metric == "rsq") |> pull(.estimate_form)) ~~
-    RMSE == .(df_metrics |> dplyr::filter(.metric == "rmse") |> pull(.estimate_form)) ~~
-    Bias == .(df_metrics |> dplyr::filter(.metric == "bias") |> pull(.estimate_form)) ~~
-    Slope == .(df_metrics|> dplyr::filter(.metric == "slope")|> pull(.estimate_form))
+    italic(R)^2 == .(df_metrics |> 
+                       dplyr::filter(.metric == "rsq") |> 
+                       pull(.estimate_form)) ~~
+    RMSE == .(df_metrics |> 
+                dplyr::filter(.metric == "rmse") |> 
+                pull(.estimate_form)) ~~
+    Bias == .(df_metrics |> 
+                dplyr::filter(.metric == "bias") |> 
+                pull(.estimate_form)) ~~
+    Slope == .(df_metrics|> 
+                 dplyr::filter(.metric == "slope")|> 
+                 pull(.estimate_form))
     )
   
   # points
@@ -521,7 +527,7 @@ as: $$
 \text{MSE} = \frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2
 $$It measures the magnitude of the errors, and is minimized to fit a
 linear regression or, as we will see in [Chapter
-9](#supervised_ml_i), during model training when used as a loss
+9](#supervisedmli), during model training when used as a loss
 function. Note that since it scales with the square of the errors,
 the MSE is sensitive to large errors in single points, including
 outliers.
@@ -627,7 +633,7 @@ coef(lm(y ~ x, data = df))[2]
 In general, the aim of regression modelling is to find a model that best explains
 the data - but not the random errors in the data. More complex models tend to *overfit* more than simpler models. The implication of overfitting is that the model fits the data used for model fitting well, but doesn't fit well when evaluating the predictions of the same model to new data (data not used for model fitting). In such a case, the model's *generalisability* is poor. We'll learn more about overfitting and generalisability in the context of supervised machine learning in later chapters. Often, simpler models generalise better than more complex model. The challenge is to strike a balance between complexity and generalisability. But how to find the "sweet spot" of this trade-off?
 
-In this context it should be noted that the $R^2$ *always* increases when predictors are added to a model. Therefore, the $R^2$ is not a suitable metric for comparing models that differ with respect to their number of predictors - a factor controlling model complexity. *Cross-validation* can be regarded as the "gold-standard" for measuring model generalisability if the data is plentiful. It will be introduced in the context of supervised machine learning in Chapter \@ref(supervised_ml_ii). However, when the data size is small, cross validation estimates may not be robust. Without
+In this context it should be noted that the $R^2$ *always* increases when predictors are added to a model. Therefore, the $R^2$ is not a suitable metric for comparing models that differ with respect to their number of predictors - a factor controlling model complexity. *Cross-validation* can be regarded as the "gold-standard" for measuring model generalisability if the data is plentiful. It will be introduced in the context of supervised machine learning in Chapter \@ref(supervisedmlii). However, when the data size is small, cross validation estimates may not be robust. Without
 resorting to cross validation, the effect of spuriously improving the
 evaluation metric by adding uninformative predictors can also be
 mitigated by penalizing the number of predictors $p$. Different metrics
@@ -720,7 +726,7 @@ which contains data from an experiment on the cold tolerance of a grass
 species. We will try to classify the origin of each plant (categorical
 variable `Type` with values `Quebec` or `Mississippi`) depending on the
 carbon dioxide uptake rate of the plant (continuous variable `uptake`
-measured in $\mu$mol m$^{-2}$s$^{-1}$).
+measured in $\mu$mol m$^{-2}$s$^{-1}$). More information on the dataset can be obtained by typing `?datasets::CO2` in the console.
 
 ```{r}
 gg2 <- datasets::CO2 |>
@@ -785,7 +791,7 @@ Furthermore, to fit a logistic regression model means to calculate the
 maximum likelihood estimator of $\beta$ with an iterative algorithm. We
 will learn more about iterative model fitting, i.e. parameter
 optimization, in the context of supervised machine learning (Chapter
-\@ref(##supervised_ml_ii)).
+\@ref(supervisedmlii)).
 
 **Implementation in R**
 
@@ -875,7 +881,7 @@ Nevertheless, logistic regression relies on statistical assumptions to
 fit the parameters and interpret the fitted parameters. So whenever
 these assumptions are not met, one must be careful with the conclusions
 drawn. Other machine learning methods, that will be covered in Chapters
-[9](#supervised_ml_i) and [10](#supervised_ml_ii), can also be used for
+[9](#supervisedmli) and [10](#supervisedmlii), can also be used for
 classification tasks. These offer more flexibility than logistic
 regression (are not necessarily linear) and don't need to satisfy strict
 statistical assumptions.

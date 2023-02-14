@@ -1,4 +1,4 @@
-# Supervised machine learning I {#supervised_ml_i}
+# Supervised machine learning I {#supervisedmli}
 
 **Chapter lead author: Benjamin Stocker**
 
@@ -8,7 +8,7 @@ Machine learning may appear magical. The ability of machine learning
 algorithms to detect patterns and make predictions is fascinating.
 However, several challenges have to be met in the process of
 formulating, training, and evaluating the models. In this and the next
-chapter (Chapter \@ref(supervised_ml_ii)), we will discuss some basics
+chapter (Chapter \@ref(supervisedmlii)), we will discuss some basics
 of supervised machine learning and how to achieve best predictive
 results.
 
@@ -73,7 +73,7 @@ R](./figures/supervised_ml.png){width="13cm"}
 
 The type of modelling approach of supervised machine learning is very
 similar to fitting regression models as we did in Chapter
-\@ref{#regression_classification}. In a sense, supervised machine
+\@ref{#regressionclassification}. In a sense, supervised machine
 learning is just another empirical (or statistical) modelling approach.
 However, you may not want to call linear regression a machine learning
 algorithm because there is no iterative learning involved. Furthermore,
