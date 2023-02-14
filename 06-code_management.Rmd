@@ -1,4 +1,4 @@
-# Code management {#code_mgmt}
+# Code management {#codemgmt}
 
 **Chapter lead author: Koen Hufkens**
 
@@ -175,7 +175,7 @@ In a forked project, go to the "Pull requests" tab and press the green "New pull
 
 ### Location based code management - github templates
 
-Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(open_science) chapter.
+Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the \@ref(openscience) chapter.
 
 In our [R project template](https://github.com/geco-bern/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
 

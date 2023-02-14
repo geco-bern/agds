@@ -1,4 +1,4 @@
-# Programming primers {#programming_primers}
+# Programming primers {#programmingprimers}
 
 **Chapter lead author: Pepa Aran**
 
@@ -232,7 +232,7 @@ class(df)
 
 Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features.
 
-Other types of data inputs and how to read them will be covered in [Tutorial 5](#data_variety).
+Other types of data inputs and how to read them will be covered in [Tutorial 5](#datavariety).
 
 #### Understanding the data structure
 
@@ -353,7 +353,7 @@ A data frame can be written to a CSV file by:
 write_csv(df_small, file = "data/df_small.csv")
 ```
 
-Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in [Tutorial 5](#data_variety).
+Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in [Tutorial 5](#datavariety).
 
 #### Intro to visualisation
 
@@ -440,7 +440,7 @@ Finally, many packages have a mailing list or allow you to open a query on the c
 
 -   Logical operators are covered in the previous tutorial.
 
--   If you started an endlessly running loop, pres `Esc` on your keyboard or click the little red "stop" pictogram in the RStudio console. 
+-   If you started an endlessly running loop, pres `Esc` on your keyboard or click the little red "stop" pictogram in the RStudio console.
 
 -   To find out whether any number is another number's multiple, use conditional statements in combination with the modulo-operator `%%`. The modulo operator returns the remainder of a division, for example `8 %% 3 = 2`.
 
@@ -468,7 +468,6 @@ while (loop_status) { # while-loop is repeated as long as loop_status is true
 print(sum)
 ```
 
-
 ```{r}
 # 2. Add up all numbers that are multiples of 3 and 7
 sum <- 0
@@ -479,7 +478,6 @@ for (i in seq(100)) {
 }	
 print(paste0("The sum is of multiples of 3 and 7 within 1-100 is: ", sum))
 ```
-
 
 ```{r}
 # 3. Define and interpolate vector
@@ -583,4 +581,3 @@ for (j in 1:ncol(values)){
 
 cat("\n Final vector col_sum: ", col_sum)
 ```
-

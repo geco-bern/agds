@@ -1,4 +1,4 @@
-# Getting started {#getting_started}
+# Getting started {#gettingstarted}
 
 **Chapter lead author: Pepa Arán**
 
@@ -466,7 +466,7 @@ Using *R projects* in combination with *Git* is the essence of efficient workspa
 
 #### Installing Git
 
-*Git* is a version control system (covered in detail in [Tutorial 6](#code_mgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
+*Git* is a version control system (covered in detail in [Tutorial 6](#codemgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
 
 -   First, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
 -   Once Git is installed, set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". You can check that the path to your Git installation is correct.

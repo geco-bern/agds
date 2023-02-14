@@ -1,4 +1,4 @@
-# Data visualisation {#data_vis}
+# Data visualisation {#datavis}
 
 **Chapter lead author: Benjamin Stocker**
 
