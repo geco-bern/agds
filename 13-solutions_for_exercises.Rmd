@@ -34,26 +34,30 @@ Let's try out some false input arguments to see, if our function correctly captu
 ```{r eval = FALSE}
 magic_trick("7")
 ```
-
+```
     ## Error in magic_trick("7") : Error: Input is not a numeric value.
     ## 2. stop("Error: Input is not a numeric value.")
     ## 1. magic_trick("7")
+```
 
 ```{r eval = FALSE}
 magic_trick(7.5)
 ```
-
+```
     ## Error in magic_trick(7.5) : Error: Input is not an integer.
     ## 2. stop("Error: Input is not an integer.")
     ## 1. magic_trick("7")
+```
 
 ```{r eval = FALSE}
 magic_trick(77)
 ```
 
+```
     ## Error in magic_trick(77) : Error: Input is outside of 1 and 20.
     ## 2. stop("Error: Input is outside of 1 and 20.")
     ## 1. magic_trick(77)
+```
 
 And now let us test, whether the magic trick works:
 
@@ -62,7 +66,6 @@ magic_trick(1)
 magic_trick(7)
 magic_trick(11)
 magic_trick(20)
-
 ```
 
 ### Code Clean-up
@@ -243,7 +246,7 @@ library(lubridate)  # not part of the automatic load of tidyverse
 ### Tidyverse exercises
 ```{r message=FALSE}
 # a.
-dplyr::starwars |> filter(skin_color == "pale", homeworld == "Naboo" | homeworld == "Ryloth") |> nrow      
+dplyr::starwars |> dplyr::filter(skin_color == "pale", homeworld == "Naboo" | homeworld == "Ryloth") |> nrow()   
 # b.
 dplyr::starwars |> unnest_wider(starships) |> filter_at(vars(contains("...")), all_vars(!is.na(.)))  
 
@@ -479,7 +482,7 @@ df_rsq |> arrange(-rsq) |> knitr::kable()
 # preds[which.max(rsq_list)]
 
 ## use the data frame that holds the results for plotting
-df_rsq %>% 
+df_rsq |> 
   ggplot(aes(x = reorder(pred, rsq), y = rsq)) +
   geom_bar(stat = "identity") + 
   labs(y = expression(italic(R)^2), x = "Variable") +
