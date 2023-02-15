@@ -1,6 +1,6 @@
 # Regression and classification {#regressionclassification}
 
-**Chapter lead author: Pepa Aran**
+**Chapter lead author: Pepa Arán**
 
 Contents:
 
