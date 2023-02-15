@@ -489,10 +489,29 @@ Interested readers can find more content on geospatial data visualisation here:
 
 ## Exercises
 
--   Using the data frame `ddf_allsites_nested_joined` from Chapter \@ref(data_wrangling), visualise the mean seasonal cycle of GPP for each site.
+**Identifying Outliers**:
 
--   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors.
+-   Based on this and previous tutorials, read the half-hourly dataset for site CH-Lae, drop entries with `-9999` and aggregate `GPP_NT_VUT_REF` and `PPFD_IN` to daily means. 
+-   Fit a linear relationship between `GPP_NT_VUT_REF` and `PPFD_IN`, using `lm()`.
+-   The function returns a list of objects which you can access using the `$` syntax. Access the fitted `residuals` and use them in `boxplot.stats()` to get box plot statistics to determine outliers.
+-   The output of `boxplot.stats()` is a list with the object `out`, a named vector where the names are the row number of the `residuals` in your original dataframe and the values are the entries for that row. Use `out_boxplot$out |> names() |> as.integer()` to get all row numbers.
+-   Create a new variable in the daily-aggregated dataset, which defines whether a datapoint is an outlier or not.
 
+**Visualising diurnal and seasonal cycles:** 
+-   Using the half-hourly dataset for site CH-Lae (after dropping `-9999` entries), visualise how GPP (`GPP_NT_VUT_REF`) varies on two time scales: diurnal (within-day at hourly time scale) and seasonal. To implement this, follow the following steps:
+- Summarise half-hourly data for each hour and day across multiple years to get a mean seasonality with a mean diurnal cycle for each day of the year. To deal with date-time objects, use the {lubridate} package. Use the functions `lubridate::yday()` and `lubridate::hour()` to extract the day of year and hour of day across entries. See `?yday` to get more hints.
+-   Create a raster plot (`geom_raster()`), mapping the hour of the day to the x-axis, the day of the year to the y-axis, and the magnitude of `GPP_NT_VUT_REF` to color (use the `fill` argument).
+-   Make this figure ready for publication by adding nice labels and choosing a good color scale.
+
+<!-- -   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors. -->
+
+
+## Exercises for The Report
+
+**Running mean of monthly CO2 concentrations:**
+-   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
+
+-   Define a function to compute a 12-month running mean of the monthly CO2 time series. Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken (in this case 12). Plot the running mean on top of the monthly data. Use a different color for the running mean graph.
+
+**Data exploration:**
 -   \*\*\*Tell a story about the `airquality` data (data is directly available, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
-
-## Solutions
