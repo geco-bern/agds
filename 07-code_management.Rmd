@@ -144,7 +144,6 @@ In the "repository URL" paste the URL of your new GitHub repository, in the exam
 
 Once a remote git service has been configured you can push your local git repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using `git push`. At the end of a day or a session it is always advised to push your changes to your remote repository to store any changes.
 
-
 ```{r label="remotegithubworkflow", echo=FALSE, fig.cap="Remote git workflow - by Paola Corrales and Elio Campitelli"}
 knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png")
 ```
@@ -179,11 +178,15 @@ to create a local copy of your remote repositories. You can then start working o
 
 You can also create a copy of any public github project from within your github account by creating a fork. You can create a fork of a project by pressing the fork button top right on any public github project page. The number of forks of a project is displayed next to the button, in case of the {rpmodel} package there are 24 forks of this project.
 
-![](figures/git_fork.png)
+```{r label="creatingforks", echo=FALSE, fig.cap="Creating a fork of an existing project (rpmodel)"}
+knitr::include_graphics("./figures/git_fork.png")
+```
 
 You can give the forked project a new name and description if so desired.
 
-![](figures/git_fork_settings.png)
+```{r label="forksettings", echo=FALSE, fig.cap="Github fork settings"}
+knitr::include_graphics("./figures/git_fork_settings.png")
+```
 
 A fork allows you to experiment with the code stored in the original project without affecting it. However, the relation to the original project is maintained. If you want to contribute changes to the original project you can do so with a **pull request**.
 
@@ -191,7 +194,9 @@ A fork allows you to experiment with the code stored in the original project wit
 
 In a forked project, go to the "Pull requests" tab and press the green "New pull request" button. You will then have to provide description of the changes you made. This information will be forwarded to the original owner of the project, who can accept these changes and accept the pull request and "pull" in the changes.
 
-![](figures/git_pull_request.png)
+```{r label="pullrequest", echo=FALSE, fig.cap="Creating a new github pull request"}
+knitr::include_graphics("./figures/git_pull_request.png")
+```
 
 ### Location based code management - github templates
 
@@ -203,15 +208,21 @@ You can use the template in combination with a github based version (\@ref(versi
 
 To use the template create a new repository on github, as you otherwise would using the big green button. If you are in the project on github you can hit the green button top right (Use this template).
 
-![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png)
+```{r label="projecttemplate", echo=FALSE, fig.cap="Use a github project as a template"}
+knitr::include_graphics("https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png")
+```
 
 Otherwise you can select the repository from the template dropdown menu, select `geco-bern/R-project-template`.
 
-![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png)
+```{r label="newtemplaterepository", echo=FALSE, fig.cap="Using a new template based repository"}
+knitr::include_graphics("https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png")
+```
 
 Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
-![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png)
+```{r label="newtemplaterepositoryname", echo=FALSE, fig.cap="Assigning a new template based repository"}
+knitr::include_graphics("https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png")
+```
 
 You can now clone the project to your local computer and continue to populate it with code and data.
 
