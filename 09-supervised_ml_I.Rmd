@@ -68,7 +68,8 @@ machine learning:
     that minimize the loss
 
 ![Supervised machine learning ingredients, adopted from Chollet &
-Allaire (2018) Deep Learning with R](./figures/supervised_ml.png){width="13cm"}
+Allaire (2018) Deep Learning with
+R](./figures/supervised_ml.png){width="13cm"}
 
 The type of modelling approach of supervised machine learning is very
 similar to fitting regression models as we did in Chapter
@@ -389,13 +390,17 @@ prediction as the average (mean) GPP value of these days. Determining
 *Manhattan* distances between two data points $x_a$ and $x_b$,
 considering all $P$ predictors $j$.
 
-Euclidean distance: $$
+Euclidean distance: 
+$$
 \sqrt{ \sum_{j=1}^P (x_{a,j} - x_{b,j})^2  } \\
 $$
 
-Manhattan distance: $$
+Manhattan distance: 
+$$
 \sum_{j=1}^P | x_{a,j} - x_{b,j} |
-$$ In two-dimensional space, the Euclidean distance measures the length
+$$ 
+
+In two-dimensional space, the Euclidean distance measures the length
 of a straight line between two points (remember Pythagoras!). The
 Manhattan distance is called this way because it measures the distance
 you would have to walk to get from point $a$ to point $b$ in Manhattan,
@@ -425,11 +430,11 @@ depends on set of abiotic factors, mostly meteorological measurements.
 In R, it is common to use the *formula* notation to specify the target
 and predictor variables. You have encountered formulas before, e.g., for
 a linear regression using the `lm()` function. To specify a linear
-regression model for `GPP_NT_VUT_REF` with three predictors `SW_F_IN`,
+regression model for `GPP_NT_VUT_REF` with three predictors `SW_IN_F`,
 `VPD_F`, and `TA_F`, to be fitted to data `ddf`, we write:
 
 ```{r eval=F}
-lm(GPP_NT_VUT_REF ~ SW_F_IN + VPD_F + TA_F, data = ddf)
+lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf)
 ```
 
 #### The generic `train()`
@@ -677,14 +682,16 @@ To actually transform the data, we first have to "prepare" the recipe:
 pp_prep <- recipes::prep(pp, training = ddf_train) 
 ```
 
-Finally we can actually transform the data. That is, "juice" the prepared
-recipe.
+Finally we can actually transform the data. That is, "juice" the
+prepared recipe.
 
 ```{r warning=FALSE, message=FALSE}
 ddf_juiced <- recipes::juice(pp_prep)
 ```
 
-Note, if we are to apply the prepared recipe to new data, we'll have to `bake()` it.
+Note, if we are to apply the prepared recipe to new data, we'll have to
+`bake()` it.
+
 ```{r}
 ddf_baked <- recipes::bake(pp_prep, new_data = ddf_train)
 all_equal(ddf_juiced, ddf_baked)
@@ -901,12 +908,16 @@ recipes::recipe(WS_F ~ ., data = ddf) |>   # it's of course non-sense to model w
 A log-transformation doesn't necessarily result in a perfect normal
 distribution of transformed values. The *Box-Cox* can get us closer. It
 can be considered a generalization of the log-transformation. Values are
-transformed according to the following function: $$
+transformed according to the following function: 
+
+$$
 y(\lambda) = \begin{cases}
 \frac{Y^\lambda-1}{\lambda}, &\; y \neq 0\\
 \log(Y),                     &\; y = 0
 \end{cases}
-$$ $\lambda$ is treated as a parameter that is fitted such that the
+$$ 
+
+$\lambda$ is treated as a parameter that is fitted such that the
 resulting distribution of values $Y$ approaches the normal distribution.
 To specify a Box-Cox-transformation as part of the pre-processing, we
 can use `step_BoxCox()` from the {recipes} package.
