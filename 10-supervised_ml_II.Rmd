@@ -2,18 +2,6 @@
 
 **Chapter lead author: Benjamin Stocker**
 
-Contents:
-
--   Training and loss function
-
--   Hyperparameters
-
--   Resampling
-
--   Lecture (Beni): Wisdom of the crowds, from decision trees to random forests
-
--   Performance assessment: Competition for best-performing model, given training-testing split of data; others should be able to reproduce performance
-
 ## Learning objectives
 
 In the Chapter \@ref(supervisedmli), you learned how the data are pre-processed, the model fitted, and how the model's generasbility to unseen data is tested. In the exercises of Chapter \@ref(supervised_ml_i), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model's performance on the training and the test sets. A "good" model generalises well. That is, it performs well on unseen data.

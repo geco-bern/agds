@@ -2,21 +2,6 @@
 
 **Chapter lead author: Pepa Aran**
 
-TBC
-
-Contents:
-
--   Lecture (Beni): Models and data
--   Base R
--   variables, classes
--   data frames
--   loops
--   conditional statements
--   functions
--   input and output
--   intro to visualisation
--   Performance assessment: [link](https://stineb.netlify.app/files/ex1.pdf) to my exercise, [link to Dietze exercise](https://github.com/stineb/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)
-
 ## Learning objectives
 
 After you've gone over the lecture and solved the exercises, you should be able to:

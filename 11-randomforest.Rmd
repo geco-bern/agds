@@ -2,20 +2,9 @@
 
 **Chapter lead author: Benjamin Stocker**
 
-Contents:
-
-
--   measure feature importance based on the sum of the reduction in the loss function
--   pdp
-
-
--   Sampling less than 100% adds additional randomness in the procedure, which helps to further de-correlate the trees.
--   permutation-based importance measure: model-agnostic, argument 'permutation'
--   because mtry \< p, RF is faster than CART (and at the same time better)
--   gradient boosting: fitting each tree in the sequence to the previous tree's residuals
--   Unlike random forests, GBMs can have high variability in accuracy dependent on their hyperparameter settings
-
 ## Learning objectives
+
+TBC
 
 ## Tutorial
 
