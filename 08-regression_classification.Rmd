@@ -19,17 +19,6 @@ Greenwell](https://bradleyboehmke.github.io/HOML/).
 
 ## Tutorial
 
-```{r message=F, warning=F}
-# Load necessary packages
-library(tidyr)
-library(dplyr)
-library(readr)
-library(lubridate)
-library(ggplot2)
-library(caret)
-library(broom)
-```
-
 ### Types of models
 
 Models try to explain relationships between variables through a
