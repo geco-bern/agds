@@ -1,27 +1,6 @@
 # Regression and classification {#regressionclassification}
 
-**Chapter lead author: Pepa Aran**
-
-Contents:
-
--   Difference between regression and classification
--   [Linear
-    regression](https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/06_supervised_ml_1.Rmd#L84)
--   Logistic regression
--   [Regression
-    metrics](https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/07_supervised_ml_2.Rmd#L236)
--   [Classification
-    metrics](https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/07_supervised_ml_2.Rmd#L345),
-    [another
-    link](https://bookdown.org/max/FES/measuring-performance.html#class-metrics)
--   Comparing models (AIC, ...)
--   Detecting outliers: identification via distributions [hist(),
-    boxplot(), qqnorm()], multivariate (Cook's Distance to get
-    influential values)
--   Feature selection, [stepwise
-    regression](https://github.com/stineb/esds_book-gitlab/blob/master/08_variable_selection.Rmd),
-    multi-colinearity
-    ([vif](http://www.sthda.com/english/articles/39-regression-model-diagnostics/160-multicollinearity-essentials-and-vif-in-r/))
+**Chapter lead author: Pepa Arán**
 
 ## Learning objectives
 
@@ -39,17 +18,6 @@ excellent book [Hands-On Machine Learning in R by Boehmke &
 Greenwell](https://bradleyboehmke.github.io/HOML/).
 
 ## Tutorial
-
-```{r message=F, warning=F}
-# Load necessary packages
-library(tidyr)
-library(dplyr)
-library(readr)
-library(lubridate)
-library(ggplot2)
-library(caret)
-library(broom)
-```
 
 ### Types of models
 
@@ -388,7 +356,7 @@ df_cat |>
   theme_classic()
 ```
 
-#### Metrics for regression
+#### Metrics for regression evaluation
 
 Metrics measure the quality of fit between predicted and observed
 values, are essential to model training (where the metric defines the
@@ -398,7 +366,10 @@ model-data agreement. In other words, a single metric never captures all aspects
 patterns of the model-data agreement. Therefore, a visual inspection of
 the model fit is always a good start of the model evaluation.
 
-To get an intuitive understanding of the different abilities of different metrics, compare the scatterplots in Fig. \@ref(fig:correlationplots) and how different aspects of the model-data agreement are measured by different metrics. Definitions of the metrics displayed and other metrics are given below.
+To get an intuitive understanding of the different abilities of different metrics, compare
+the scatterplots in Fig. \@ref(fig:correlationplots) and how different aspects of the model-data
+agreement are measured by different metrics. The observed target values $y$ are plotted against the predicted values $\hat{y}$ from a 
+regression model, and the dashed line represents the ideal scenario: our predictions matching the data perfectly. Definitions of the metrics displayed and other metrics are given below.
 
 ```{r correlationplots, echo=FALSE, fig.cap="Correlation plots", fig.height=10, message=FALSE, warning=FALSE}
 analyse_modobs <- function(df){
@@ -464,6 +435,7 @@ gg1 <- tibble(x = rnorm(100),
   analyse_modobs() +
   labs(title = "Uncorrelated") +
   ylim(-3,3) + xlim(-3, 3) +
+  xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
@@ -471,8 +443,9 @@ gg1 <- tibble(x = rnorm(100),
 gg3 <- tibble(x = rnorm(100)) |> 
   mutate(y = x) |> 
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, zero error:" ~ y == x)) +
+  labs(title = bquote("Perfectly correlated, zero error:" ~ y == hat(y))) +
   ylim(-3,3) + xlim(-3, 3) +
+  xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
@@ -480,8 +453,9 @@ gg3 <- tibble(x = rnorm(100)) |>
 gg4 <- tibble(x = rnorm(100)) |> 
   mutate(y = 0.6 * x) |> 
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ x)) +
+  labs(title = bquote("Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ hat(y))) +
   ylim(-3,3) + xlim(-3, 3) +
+  xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
@@ -489,8 +463,9 @@ gg4 <- tibble(x = rnorm(100)) |>
 gg5 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + 1) |>
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, constant error:" ~ y == x + 1)) +
+  labs(title = bquote("Perfectly correlated, constant error:" ~ y == hat(y) + 1)) +
   ylim(-3,3) + xlim(-3, 3) +
+  xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
@@ -498,8 +473,9 @@ gg5 <- tibble(x = rnorm(100)) |>
 gg6 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + rnorm(100)) |> 
   analyse_modobs() +
-  labs(title = bquote("Correlated:" ~ y == x + epsilon[0])) +
+  labs(title = bquote("Correlated:" ~ y == hat(y) + epsilon[0])) +
   ylim(-3,3) + xlim(-3, 3) +
+  xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
@@ -507,7 +483,8 @@ gg6 <- tibble(x = rnorm(100)) |>
 gg7 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + 0.7 * rnorm(100)) |> 
   analyse_modobs() +
-  labs(title = bquote("Better correlated:" ~ y == x + ~ .(0.7) ~ epsilon[0])) +
+  labs(title = bquote("Better correlated:" ~ y == hat(y) + ~ .(0.7) ~ epsilon[0])) +
+  xlab(expression(hat(y))) +
   # labs(title = "Better correlated (y = x + 0.7 rnorm(100))") +
   ylim(-3,3) + xlim(-3, 3) +
   theme(plot.title = element_text(size = 10),
@@ -542,74 +519,100 @@ the errors and is minimized during model training. By taking the
 square root of mean square errors, the RMSE is in the same units as
 the data $Y$ and is less sensitive to outliers than the MSE.
 
+**MAE**
+
+The mean absolute error is similarly defined: $$
+\text{MAE} = \frac{1}{n} \sum_{i = 1}^{n} |Y_i - \hat{Y_i}|
+$$
+Measuring the discrepancies between predictions and observations using absolute errors, 
+instead of squared errors, gives less importance to errors of large magnitude and more importance
+to small errors than the MSE would. Hence, this measures is more stable in the presence of 
+outliers.
+
 **$R^2$ - coefficient of determination**
 
-also called the *coefficient of determination*, describes the
-proportion of variation in $y$ that is captured by modelled values
-$\hat{y}$. In this case, the goal is to maximize the metric, thus
+describes the proportion of variation in $y$ that is captured by modelled values
+$\hat{y_i}$. It tells us how much better our fitted values $\hat{y_i}$ are than just
+taking the average of the target $\bar{y}$ as predictions. In this case, the goal is to maximize the metric, thus
 trying the explain as much variation as possible. In contrast to the
 MSE and RMSE, $R^2$ measures *consistency*, or *correlation*, or
-*goodness of fit*. It is traditionally defined as:
+*goodness of fit*. It is defined as:
 $$
 R^2 = 1 - \frac{\sum_i (\hat{Y}_i - Y_i)^2}{\sum_i (Y_i - \bar{Y})^2}\\
 $$
-A perfect fit is quantified by $R^2 = 1$. There is not generally
+When the regression model is fitted by minimizing the MSE, the $R^2$ takes values
+between 0 and 1. A perfect fit is quantified by $R^2 = 1$. There is no generally
 valid threshold of $R^2$ for a model to be considered "good". It
 depends on the application and the nature of the data and the
-data-generating process. Note that above equation can also be
+data-generating process. Note that the above equation can also be
 written as $R^2 = 1 - \text{MSE}/var(Y)$.
 
-**Pearson's-r**
+$r$ - **Pearson's correlation**
 
-The linear association between to variables (here $y$ and $\hat{y}$) is measured by the *Pearson's correlation coefficient* $r$. 
+The linear association between two variables (here $y$ and $\hat{y}$) is measured by the *Pearson's correlation coefficient* $r$. 
 $$
-r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \hat{\bar{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2 \; (\hat{Y_i}-\hat{\bar{Y}})^2 } }
+r = \frac{\sum_i (Y_i - \bar{Y}) (\hat{Y_i} - \bar{\hat{Y}}) }{\sqrt{ \sum_i(Y_i-\bar{Y})^2 \; (\hat{Y_i}-\bar{\hat{Y}})^2 } }
 $$
 
-The squared value of the Pearson's-*r* is often reported as "$R^2$" but doesn't
+The correlation calculated between the target $Y$ and a predictor $X$ can tell us about the predictive 
+power of $X$ in a linear regression model (the higher the correlation, the more powerful). We can also compute
+the correlation between the target $Y$ and the predicted values $\hat{Y}$ by a model (multivariate, or even 
+not linear) to assess the adequacy of the model chosen. See Figure \@ref(fig:correlationplots) as an example. It is
+noteworthy to mention that correlation is location and scale invariant, hence it will not detect 
+model deviations like the ones in the middle row plots.
+
+The squared value of the Pearson's *r* is often reported as "$R^2$" but doesn't
 correspond to the definition of the coefficient of determination
-given above. However, the square of the Pearson's-*r* is closely
-related to the coefficient of determination-$R^2$ and in common
-cases of prediction-observation comparisons almost identical. For a
-linear regression, they are identical (see proof
-[here](https://statproofbook.github.io/P/slr-rsq)). 
+given above. However, the square of the Pearson's *r* is closely
+related to the coefficient of determination $R^2$. For a
+linear regression, fitted minimizing the MSE, they are identical (see proof
+[here](https://statproofbook.github.io/P/slr-rsq)). In subsequent chapters, we 
+will use "$R^2$" to refer to the square of the Pearson's *r*
+between the observed $Y$ and predicted $\hat{Y}$ values.
 
-Note the implementations in R. The $R^2$ reported by the generic
+> Note the implementations in R.The $R^2$ reported by the generic
 `summary()` function corresponds to the base-R function `cor()^2` , to
 `yardstick::rsq()`, and to the definition of the square of the
-*Pearson's-*$r$ given above.
+*Pearson's* $r$ given above. The `yardstick::rsq_trad()` returns the coefficient of determination as
+traditionally defined and is not equal to the values above, unless computed on the predicted values $\hat{y}$. 
+
+> Sometimes the Person's version is computed between $y$ and $x$, and it leads to the 
+same number due to its "location and scale invariant" property. Nevertheless, this is 
+conceptually wrong, as we should look at the predictions, not the predictors: We are 
+not predicting $y$ by just giving the values of $x$ instead. Hence, especially when 
+using {yardstick} functions, make sure you compute the values on $\hat{y}$. When we 
+have several predictors, it's already clear that we should compare $y$ to $\hat{y}$
+instead of $y$ to each predictor separately.
 
 ```{r}
 # generate correlated random data 
 set.seed(1982)
 df <- tibble(x = rnorm(100)) |> 
-  mutate(y = x + rnorm(100))
+  mutate(y = x + rnorm(100)) |>
+  mutate(y_fitted = lm(y ~ x)$fitted.values)
 
+# implementations using Pearson's correlation
 summary(lm(y ~ x, data = df))$r.squared
-cor(df$y, df$x)^2
+cor(df$y, df$x)^2 # remember: location and scale invariant
 yardstick::rsq(df, y, x) |> pull(.estimate)
 (sum((df$x - mean(df$x))*(df$y - mean(df$y))))^2/
   (sum((df$y - mean(df$y))^2)*sum((df$x - mean(df$x))^2))
+
+# implementations using coefficient of determination definition
+1 - sum((df$x - df$y)^2) / sum((df$y - mean(df$y))^2) # should be \hat{y}, not x
+yardstick::rsq_trad(df, y, x) %>% pull(.estimate) # incorrect
+yardstick::rsq_trad(df, y, y_fitted) %>% pull(.estimate) # correct
 ```
 
-The `yardstick::rsq_trad()` returns the coefficient of determination as
-defined above and is not equal to the values above.
-
-```{r}
-1 - sum((df$x - df$y)^2) / sum((df$y - mean(df$y))^2)
-yardstick::rsq_trad(df, y, x) %>% pull(.estimate)
-```
-
-An "$R^2$" is commonly reported when evaluating the *agreement* between observed
+> An "$R^2$" is commonly reported when evaluating the *agreement* between observed
 and predicted values of a given model. When the *correlation*
 between two different variables in a sample is quantified, $r$ is
 commonly used to reflect also whether the correlation is positive or
-negative ($r$ can attain positive or negative values). The
+negative ($r$ can attain positive or negative values in the interval $[-1, 1]$). The
 coefficient of determination can return negative values when
-comparing observed and predicted values for uninformative estimates
-and is thus not actually bound between 0 and 1. Therefore, the
-definition of the coefficient of determination $R^2$ as given above
-is to be avoided. For subsequent chapters, we will use '$R^2$' to refer to the square of the Pearson's-*r*.
+comparing observed and predicted values for uninformative estimates (worse than just using the average of $Y$)
+and is thus not actually bound between 0 and 1. Therefore, be careful with the interpreration of "$R^2$" and
+think on which variables it was computed and with which method.
 
 **Bias**
 
@@ -623,7 +626,7 @@ $$
 
 The slope refers to the slope of the linear regression line between predicted and observed values. It is returned as the second element of the vector returned by `coef(lm(..))`:
 ```{r}
-coef(lm(y ~ x, data = df))[2]
+coef(lm(y ~ y_fitted, data = df))[2]
 ```
 
 <!-- XXX Exercise: In supervised machine learning, a certain metric is chosen to guide the model training (fitting). Which metric would you chose as a target for optimisation. Discuss why. XXX -->

@@ -1,6 +1,6 @@
 ---
 title: "Applied Geodata Science"
-author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)"
+author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(fig.align="center")
 
 ## About this book {.unnumbered}
 
-This book serves as the basis for the series of courses in *Applied Geodata Science*, taught at the Institute of Geography, University of Bern. The starting point of this book were the tutorials edited by Benjamin Stocker, Loïc Pellissier, and Joshua Payne for the course *Environmental Systems Data Science* (D-USYS, ETH Zürich). The present book was written as a collaborative effort led by [Benjamin Stocker](https://geco-group.org/author/benjamin-stocker/), with contributions by [Pepa Aran](https://geco-group.org/author/pepa-aran/) and [Koen Hufkens](https://geco-group.org/author/koen-hufkens/), and exercises by [Pascal Schneider](https://geco-group.org/author/pascal-schneider/).
+This book serves as the basis for the series of courses in *Applied Geodata Science*, taught at the Institute of Geography, University of Bern. The starting point of this book were the tutorials edited by Benjamin Stocker, Loïc Pellissier, and Joshua Payne for the course *Environmental Systems Data Science* (D-USYS, ETH Zürich). The present book was written as a collaborative effort led by [Benjamin Stocker](https://geco-group.org/author/benjamin-stocker/), with contributions by [Pepa Arán](https://geco-group.org/author/pepa-aran/) and [Koen Hufkens](https://geco-group.org/author/koen-hufkens/), and exercises by [Pascal Schneider](https://geco-group.org/author/pascal-schneider/).
 
 The target of this book are people interested in applying data science methods for research. Methods, example data sets, and prediction challenges are chosen to make the book most relatable to scientists and students in Geography and Environmental Sciences. No prior knowledge of coding is required. Respective essentials are briefly introduced as primers. The focus of this book is not on the theoretical basis of the methods. Other "classical" statistics courses serve this purpose. Instead, this book introduces essential concepts, methods, and tools for applied data science in Geography and Environmental Sciences with an emphasis on covering a wide breadth. It is written with a hands-on approach using the R programming language and should enable an intuitive understanding of concepts with only a minimal reliance on mathematical language. Worked examples are provided for typical steps of data science applications in Geography and Environmental Sciences. The aim of this book is to teach the diverse set of skills needed as a basis for data-intensive research in academia and outside.
 
@@ -47,7 +47,7 @@ This book contains the lecture notes and exercises for the following courses, of
 
 This is a course for Bachelors students in their second or third year of studies in Geography.
 
--   Chapters \@ref(getting_started) to Chapter \@ref(randomforest)
+-   Chapters \@ref(gettingstarted) to Chapter \@ref(randomforest)
 
 **Applied Geodata Science II**
 

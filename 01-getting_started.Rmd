@@ -2,16 +2,6 @@
 
 **Chapter lead author: Pepa Arán**
 
-TBC
-
-Contents:
-
--   Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
--   installing environment
--   workspace management
--   R, RStudio
--   R libraries, other libraries and applications
-
 ## Learning objectives
 
 After you've gone over the lecture and solved the exercises, you should be able to:
@@ -373,8 +363,6 @@ At the beginning of each file add a **header** as a fully commented text section
 Note that Git stores all meta information about the file, including who created it, who modified it and when. This information should not be added to the header. Then, load all libraries needed within the script. Then, source any scripts and load data, and only then, start with the sequence of statements. To visually separate parts, break up your code using, commented lines.
 
 For example, a script could look like this:
-
-<!-- For this chapter, we will mostly work with functions already integrated into R directly, also known as *base R*. Additionally, you will work with functions from the [*tidyverse*](https://www.tidyverse.org/). *tidyverse* is a collection of packages specifically designed for writing efficient data science workflows. Code written for the tidyverse follows its own "dialect" within the R langague. It will be introduced in @ref(ch-02). -->
 
 ```{r eval=FALSE, message=F}
 #////////////////////////////////////////
