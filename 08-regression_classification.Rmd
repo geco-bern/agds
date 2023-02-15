@@ -2,27 +2,6 @@
 
 **Chapter lead author: Pepa Arán**
 
-Contents:
-
--   Difference between regression and classification
--   [Linear
-    regression](https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/06_supervised_ml_1.Rmd#L84)
--   Logistic regression
--   [Regression
-    metrics](https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/07_supervised_ml_2.Rmd#L236)
--   [Classification
-    metrics](https://github.com/stineb/esds_book-gitlab/blob/e27fbc390fa302bc99be3d1796c4e75dc6ee1c41/07_supervised_ml_2.Rmd#L345),
-    [another
-    link](https://bookdown.org/max/FES/measuring-performance.html#class-metrics)
--   Comparing models (AIC, ...)
--   Detecting outliers: identification via distributions [hist(),
-    boxplot(), qqnorm()], multivariate (Cook's Distance to get
-    influential values)
--   Feature selection, [stepwise
-    regression](https://github.com/stineb/esds_book-gitlab/blob/master/08_variable_selection.Rmd),
-    multi-colinearity
-    ([vif](http://www.sthda.com/english/articles/39-regression-model-diagnostics/160-multicollinearity-essentials-and-vif-in-r/))
-
 ## Learning objectives
 
 After completing this tutorial, you will be able to:

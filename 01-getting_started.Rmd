@@ -2,16 +2,6 @@
 
 **Chapter lead author: Pepa Arán**
 
-TBC
-
-Contents:
-
--   Lecture (Beni): Data revolution, opportunities, challenges; explain relevance and why new methods are required
--   installing environment
--   workspace management
--   R, RStudio
--   R libraries, other libraries and applications
-
 ## Learning objectives
 
 After you've gone over the lecture and solved the exercises, you should be able to:
