@@ -250,7 +250,7 @@ The project should be a reproducible workflow:
 
 -   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(datawrangling)
 
--   create a plot of the land cover map \@ref(data-visualisation)
+-   create a plot of the land cover map \@ref(datavisualisation)
 
 -   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
 
