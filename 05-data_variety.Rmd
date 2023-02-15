@@ -460,9 +460,7 @@ Download and open the following file:
 ``` r
 https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tiff
 ```
-
-1.  What does this file contain?
-2.  Does this data seem familiar, and how can you tell? What are your conclusions?
+1.  Does this data seem familiar, and how can you tell? What are your conclusions?
 
 ``` r
 # Your solution script
