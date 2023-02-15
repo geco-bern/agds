@@ -94,7 +94,7 @@ short wave radiation, like in the [Chapter 4](#data_vis). The figure
 below shows a cloud of data points, and a straight line predicting GPP
 based on observed shortwave radiation values.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # read and format data from Ch 3
 hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 
@@ -398,11 +398,11 @@ patterns of the model-data agreement. Therefore, a visual inspection of
 the model fit is always a good start of the model evaluation.
 
 To get an intuitive understanding of the different abilities of different metrics, compare
-the scatterplots below and how different aspects of the model-data
+the scatterplots in Fig. \@ref(fig:correlationplots) and how different aspects of the model-data
 agreement are measured by different metrics. The observed target values $y$ are plotted against the predicted values $\hat{y}$ from a 
 regression model, and the dashed line represents the ideal scenario: our predictions matching the data perfectly. Definitions of the metrics displayed and other metrics are given below.
 
-```{r correlation_plots, out.height='500%', warning=FALSE, message=FALSE, echo=FALSE}
+```{r correlationplots, echo=FALSE, fig.cap="Correlation plots", fig.height=10, message=FALSE, warning=FALSE}
 analyse_modobs <- function(df){
   
   # fit linear regression model to get slope
@@ -433,10 +433,18 @@ analyse_modobs <- function(df){
     dplyr::mutate(.estimate_form = format(.estimate, digits = 2))
   
   subtitle <- bquote( 
-    italic(R)^2 == .(df_metrics |> dplyr::filter(.metric == "rsq") |> pull(.estimate_form)) ~~
-    RMSE == .(df_metrics |> dplyr::filter(.metric == "rmse") |> pull(.estimate_form)) ~~
-    Bias == .(df_metrics |> dplyr::filter(.metric == "bias") |> pull(.estimate_form)) ~~
-    Slope == .(df_metrics|> dplyr::filter(.metric == "slope")|> pull(.estimate_form))
+    italic(R)^2 == .(df_metrics |> 
+                       dplyr::filter(.metric == "rsq") |> 
+                       pull(.estimate_form)) ~~
+    RMSE == .(df_metrics |> 
+                dplyr::filter(.metric == "rmse") |> 
+                pull(.estimate_form)) ~~
+    Bias == .(df_metrics |> 
+                dplyr::filter(.metric == "bias") |> 
+                pull(.estimate_form)) ~~
+    Slope == .(df_metrics|> 
+                 dplyr::filter(.metric == "slope")|> 
+                 pull(.estimate_form))
     )
   
   # points
@@ -580,7 +588,7 @@ $$
 The correlation calculated between the target $Y$ and a predictor $X$ can tell us about the predictive 
 power of $X$ in a linear regression model (the higher the correlation, the more powerful). We can also compute
 the correlation between the target $Y$ and the predicted values $\hat{Y}$ by a model (multivariate, or even 
-not linear) to assess the adequacy of the model chosen. See Figure \@ref{fig:correlation_plots} as an example. It is
+not linear) to assess the adequacy of the model chosen. See Figure \@ref(fig:correlationplots) as an example. It is
 noteworthy to mention that correlation is location and scale invariant, hence it will not detect 
 model deviations like the ones in the middle row plots.
 
@@ -752,7 +760,7 @@ which contains data from an experiment on the cold tolerance of a grass
 species. We will try to classify the origin of each plant (categorical
 variable `Type` with values `Quebec` or `Mississippi`) depending on the
 carbon dioxide uptake rate of the plant (continuous variable `uptake`
-measured in $\mu$mol m$^{-2}$s$^{-1}$).
+measured in $\mu$mol m$^{-2}$s$^{-1}$). More information on the dataset can be obtained by typing `?datasets::CO2` in the console.
 
 ```{r}
 gg2 <- datasets::CO2 |>
@@ -817,7 +825,7 @@ Furthermore, to fit a logistic regression model means to calculate the
 maximum likelihood estimator of $\beta$ with an iterative algorithm. We
 will learn more about iterative model fitting, i.e. parameter
 optimization, in the context of supervised machine learning (Chapter
-\@ref(##supervisedmlii)).
+\@ref(supervisedmlii)).
 
 **Implementation in R**
 
