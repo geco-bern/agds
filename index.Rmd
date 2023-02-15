@@ -94,6 +94,14 @@ Chapters \@ref(gettingstarted)-\@ref(randomforest) serve as lecture notes for *A
 
 All tutorials use the R programming language.
 
+## System information and package list {.unnumbered}
+
+This book was compiled with the following environment:
+
+```{r}
+sessioninfo::session_info()
+```
+
 # Introduction {.unnumbered}
 
 The sheer volume of data that is becoming available today bears a huge potential for answering long-standing questions in all fields of environmental and geo-sciences. This gives rise to a new set of tools that can be used and a new set of challenges when applying them.
@@ -152,26 +160,28 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
 **Foundations**
 
--   Leo Breiman. "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
+-   Leo Breiman: "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
 
     -   A paper describing the paradigm shift in statistical modelling - from traditional approaches to machine learning. Written in accessible language by the inventor of the Random Forest algorithm.
     
 **Data wrangling**
 
-- R4DS
+- Hadley Wickham and Garrett Grolemund: "R for Data Science", https://r4ds.had.co.nz/
+
+    - A comprehensive resource for data analysis (and visualisation) using R *tidyverse*. Covers contents of Chapters \@ref(gettingstarted), \@ref(programmingprimers), and \@ref(datawrangling) - but in more depth.
 
 **Data visualisation**
 
-- asdf
+- Claus O. Wilke: "Fundamentals of Data Visualization", https://clauswilke.com/dataviz/
+
+    - A comprehensive resource for data visualisation - not specific to any programming language, but specific about the *grammar of graphics*. Covers concepts of Chapter \@ref(datavis) - but in more depth. The go-to resource for the *implementation* of data visualisation using the {ggplot2} R library is Wickham & Grolemund (see above).
 
 **Machine learning**
 
--   HOML
+- Bradley Boehmke and Brandon Greenwell: "Hands-On Machine Learning with R", https://bradleyboehmke.github.io/HOML/
+
+    - A great entry point for machine learning in R. It demonstrates concepts and a range of algorithms of varying complexity - from linear regression to Random Forest - with examples in R. This book served as an inspiration and starting point for the (in some ways reduced) contents of this course, covered in Chapters \@ref(regressionclassification)-\@ref(randomforest).
+
+
 -   Chollet & Allaire "Deep learning with R"
-
-
-## System information and package list
-
-```{r echo = FALSE}
-sessioninfo::session_info()
-```
+    - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).
