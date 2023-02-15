@@ -9,11 +9,8 @@ In this chapter you will learn how to manage your code with common version contr
 You will learn how to:
 
 -   create a git project (new or from a template)
-
 -   track changes in your code project
-
 -   collaborate with others
-
 -   ensure reproducibility of your project by openly sharing your work and progress.
 
 ## Tutorial

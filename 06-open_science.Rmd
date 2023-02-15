@@ -9,13 +9,9 @@ In this chapter you will learn the reasons for practicing open science, and some
 In this chapter you will learn how to:
 
 -   structure a project
-
 -   manage a project workflow
-
 -   capture a session or machine state
-
 -   use dynamic reporting
-
 -   ensure data/project retention
 
 ## Tutorial
@@ -140,13 +136,14 @@ output: html_document
 
 The remainder of the document shows a code chunk outlined by \`\`\` quotes and the chunk arguments in {} brackets. Inline operations, the evaluation of code, in text is also possible by using single quotes around a variable or code.
 
-``` bash
+````bash
 ``` {r}
 x <- 5  # radius of a circle
 ```
 
 For a circle with the radius `r x`,
 its area is `r pi * x^2`.
+
 ````
 
 The document can be rendered by calling `rmarkdown::render()` on the command line or hitting the "Knit" button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).
@@ -171,17 +168,17 @@ project/
 
 Rmarkdown files are rendered relative to the file path where to document resides. This means that data which resides in `data` can't be accessed by `statistics/your_dynamic_document.Rmd` even when using an R project and soft relative paths (which work for scripts and functions). As such trying to render the `your_dynamic_document.Rmd` will fail as the file `some_data.csv` will not be found.
 
-```` bash
+``` bash
 ---
 title: Your dynamic document
 author: You
 output: html_document
 ---
+```
 
 ```{r eval = FALSE}
 data <- read.table('data/some_data.csv')
 ```
-````
 
 We need to explicitly take the project's base path into the fold using the [{here} package](https://here.r-lib.org/). The here package gathers the absolute path of files inside an R project. As such, `here::here("data/some_data.csv")` will return the full path of the data (e.g. `/your_computer/project/data/some_data.csv`). This absolute path will be a valid path for the read.table() function, making the Rmarkdown file render correctly. The correct Rmarkdown code to read the data therefore reads:
 
@@ -195,7 +192,6 @@ output: html_document
 
 ```{r eval = FALSE}
 data <- read.table(here::here('data/some_data.csv'))
-```
 ```
 
 But why not use absolute paths to begin with? Portability! When I would run your \*.Rmd file with an absolute path on my computer it would not render as the file `some_data.csv` would then be located at: `/my_computer/project/data/some_data.csv`
