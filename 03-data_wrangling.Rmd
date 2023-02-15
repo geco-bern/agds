@@ -35,17 +35,6 @@ For our demonstrations, the following variables are the most relevant:
 
 Suffixes `_*` indicate that multiple estimates for respective variables are available and distinguished by different suffixes. For example, variables `TA_*` contain the same information, but are derived with slightly different assumptions and gap-filling techniques. The meanings of suffixes are described in [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3).
 
-### Required libraries
-
-Install missing packages and load all required packages for this tutorial.
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr", "visdat")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
-
 ### Tidyverse
 
 The tidyverse is a collection of R packages and functions that share a common design philosophy, enabling a particularly efficient implementation of transformation steps on tabular data. The most important data and function design principle of the tidyverse is that each function takes a data frame as its first argument and returns a data frame as its output.
