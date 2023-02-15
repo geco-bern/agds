@@ -145,6 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
 <ul>
@@ -153,7 +154,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#why-now"><i class="fa fa-check"></i>Why now?</a></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#a-new-modelling-paradigm"><i class="fa fa-check"></i>A new modelling paradigm</a></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html#reading-and-link-collection"><i class="fa fa-check"></i>Reading and link collection</a></li>
-<li class="chapter" data-level="0.1" data-path="introduction.html"><a href="introduction.html#system-information-and-package-list"><i class="fa fa-check"></i><b>0.1</b> System information and package list</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="gettingstarted.html"><a href="gettingstarted.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
 <ul>
@@ -389,7 +389,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.2</span> Tutorial<a href="gettingstarted.html#tutorial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="working-with-r-and-rstudio" class="section level3 hasAnchor" number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> Working with R and RStudio<a href="gettingstarted.html#working-with-r-and-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used among statisticians and data miners for developing statistical software and data analysis. RStudio is an integrated development environment (IDE) for R that makes it easy to use R for data analysis and visualization.</p>
+<p>R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used, not only among statisticians and data miners for developing statistical software, but also by scientist in various domains for data analysis, visualisation, and modelling. RStudio is an integrated development environment (IDE) that provides a user-friendly “center stage” for your work in R (and Python, see <a href="https://posit.co/blog/three-ways-to-program-in-python-with-rstudio/">here</a>).</p>
 <div id="installing-r-and-rstudio" class="section level4 hasAnchor" number="1.2.1.1">
 <h4><span class="header-section-number">1.2.1.1</span> Installing R and RStudio<a href="gettingstarted.html#installing-r-and-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To use R and RStudio, you will first need to download and install them on your computer.</p>
@@ -422,17 +422,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>The code will be executed in the <em>console</em> panel, and any output will be displayed there.</li>
 <li>Alternatively, you can directly type single-statement R commands in the console and run them by pressing Enter.</li>
 </ul>
-<p>For example, let’s say you want to calculate the sum of the numbers 1, 2, and 3. You can write the following code in the source editor:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="gettingstarted.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the sum of 1, 2, and 3</span></span>
-<span id="cb3-2"><a href="gettingstarted.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
+<p>For example, let’s say you want to calculate the sum of the numbers 1, 2, and 3. You can write the following code in the console or in the source editor:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="gettingstarted.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the sum of 1, 2, and 3</span></span>
+<span id="cb4-2"><a href="gettingstarted.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] 6</code></pre>
-<p>Then, you can press the <strong>Run</strong> button or use the keyboard shortcut to run the code. The output will be displayed in the console:</p>
+<p>If you’ve entered it in the console, press Enter. If you’ve entered it in the source editor, you can press the <strong>Run</strong> button or use the keyboard shortcut to run the code. The output will be displayed in the console:</p>
 <pre><code>    &gt; 1 + 2 + 3
     [1] 6</code></pre>
 </div>
 <div id="base-r-operations" class="section level4 hasAnchor" number="1.2.1.4">
 <h4><span class="header-section-number">1.2.1.4</span> Base R operations<a href="gettingstarted.html#base-r-operations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>The R <code>base</code> package contains the basic functions which let R function as a programming language: arithmetic, input/output, basic programming support, etc. Its contents are always available when you start an R session. Here we introduce the main binary operators, which work on vectors, matrices and scalars.</p>
+<p>The R {base} package contains the basic functions which let R function as a programming language: arithmetic, input/output, basic programming support, etc. Its contents are always available when you start an R session. Here we introduce the main binary operators, which work on vectors, matrices and scalars.</p>
 <p>Arithmetic operators:</p>
 <ul>
 <li><code>+</code> addition</li>
@@ -454,8 +454,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="working-directory" class="section level4 hasAnchor" number="1.2.1.5">
 <h4><span class="header-section-number">1.2.1.5</span> Working directory<a href="gettingstarted.html#working-directory" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The <em>working directory</em> is the default location to which R writes to and reads files from. You can check what is your current working directory or change it with the following commands:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="gettingstarted.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()         <span class="co"># get working directory</span></span>
-<span id="cb6-2"><a href="gettingstarted.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;~/agds&quot;</span>) <span class="co"># set working directory</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="gettingstarted.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()         <span class="co"># get working directory</span></span>
+<span id="cb7-2"><a href="gettingstarted.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;~/agds&quot;</span>) <span class="co"># set working directory</span></span></code></pre></div>
 <p>Ideally, the working directory is a folder containing only the files relevant to your data analysis project. As we will see later, working with R Projects sets the working directory correctly for you.</p>
 </div>
 </div>
@@ -464,153 +464,155 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In addition to running single statements in the R console, the output of a statement can be saved as a new <em>object</em>. There are many kinds of R objects, some of which are covered here and in future chapters.</p>
 <div id="types-of-data" class="section level4 hasAnchor" number="1.2.2.1">
 <h4><span class="header-section-number">1.2.2.1</span> Types of data<a href="gettingstarted.html#types-of-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>First, we will introduce the different types of data that one can encounter. We can classify statistical variables according to what values they take.</p>
+<p>First, we will introduce the different types of data that one can encounter. We can classify variables according to what values they take.</p>
 <ul>
-<li><em>Numerical</em>: These statistical variables can be measured quantitatively and their value is a number.
+<li><em>Numerical</em>: These variables can be measured quantitatively and their value is a number.
 <ul>
-<li><em>Continuous</em>: We say that a variable is continuous when it can take an infinite number of real values within an interval (for example, the altitude of a mountain). One could consider unbounded variables (temperature) or restricted variables, like positive variables (weight of a person) or an interval (a proportion between 0 and 1).</li>
+<li><em>Continuous</em>: We say that a variable is continuous when it can take an infinite number of real values within an interval. One could consider unbounded variables (height above sea level) or restricted variables, like positive variables (weight of a person) or an interval (a proportion between 0 and 1).</li>
 <li><em>Discrete</em>: When the variable can only take a finite number of values in an interval, we say it is discrete. A common example is count data, like the population of a city.</li>
 </ul></li>
 <li><em>Categorical</em>: The values are characteristics that cannot be quantified.
 <ul>
-<li><em>Binary</em>: These variables have two possible values: TRUE or FALSE (a variable indicating whether the person has siblings or not).</li>
-<li><em>Nominal</em>: They describe a name, label or category without natural order (for example the name of a person).</li>
-<li><em>Ordinal</em>: Like their name indicates, ordinal variables are categorical and follow a natural order. For example, “terrible”, “bad”, “neutral”, “good”, “great”. A numerical variable can sometimes be discretized and put into categories, like dividing people into age groups “toddler”, “child”, “teenager”, “adult”.</li>
+<li><em>Binary</em>: These variables have two possible values: <code>TRUE</code> or <code>FALSE</code> (a variable indicating whether the person has siblings or not).</li>
+<li><em>Nominal</em>: They describe a name, label, or category without a natural order (for example, the name of a person).</li>
+<li><em>Ordinal</em>: Like their name indicates, ordinal variables are categorical and follow a natural order. For example, “terrible”, “bad”, “neutral”, “good”, “great”. A numerical variable can sometimes be discretized and put into categories, like dividing a person’s age into age groups (bins) “toddler”, “child”, “teenager”, “adult”.</li>
 </ul></li>
 </ul>
 <p>Next, we will see how these different types of variables can be treated in R.</p>
 </div>
 <div id="variables-and-classes" class="section level4 hasAnchor" number="1.2.2.2">
 <h4><span class="header-section-number">1.2.2.2</span> Variables and classes<a href="gettingstarted.html#variables-and-classes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>In R, a <em>variable</em> is a named location in memory that stores a value. To create a variable, you simply assign a value to a name using the <code>&lt;-</code> operator (or the <code>=</code> operator, which is equivalent, but <code>&lt;-</code> is preferred). For example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="gettingstarted.html#cb7-1" aria-hidden="true" tabindex="-1"></a>my_variable <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
+<p>In R, a <em>variable</em> is a named location in memory that stores a value. To create a variable, you simply assign a value to a name using the <code>&lt;-</code> operator (or the <code>=</code> operator, which has an equivalent role when assigning values to a variable, but <code>&lt;-</code> is preferred). For example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="gettingstarted.html#cb8-1" aria-hidden="true" tabindex="-1"></a>my_variable <span class="ot">&lt;-</span> <span class="dv">5</span></span></code></pre></div>
 <p>This code creates a variable called <code>my_variable</code> and assigns the value <code>5</code> to it. You can access the value of a variable or any other object by simply referring to its name, like this:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="gettingstarted.html#cb8-1" aria-hidden="true" tabindex="-1"></a>my_variable</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="gettingstarted.html#cb9-1" aria-hidden="true" tabindex="-1"></a>my_variable</span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
 <p>When you run this code, the value of <code>my_variable</code> will be printed to the console. Running <code>print(my_variable)</code> is an alternative syntax, using the <code>print()</code> function.</p>
 <p>In R, every object and value has a <em>class</em> that determines how it is stored and how it behaves. For example, the <code>5</code> in our example above is a number, so its class is <code>numeric</code>. To find out the class of a value or a variable, you can use the <code>class()</code> function, like this:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="gettingstarted.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="gettingstarted.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="gettingstarted.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_variable)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="gettingstarted.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_variable)</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>The most basic classes are:</p>
 <ul>
 <li><code>numeric</code> (<code>num</code>) - any real number, e.g. 2.375</li>
 <li><code>integer</code> (<code>int</code>) - integer numbers, e.g. 2</li>
-<li><code>character</code> (<code>chr</code>) - any string, e.g. “fluxes”</li>
-<li><code>logical</code> (<code>logi</code>) - binary, i.e. <code>TRUE</code>/<code>FALSE</code> values</li>
-<li><code>factor</code> (<code>Factor</code>) - categorical data, the variable can only be one of a defined amount of options, e.g. female/male/other. Factors can also be given an order.</li>
+<li><code>character</code> (<code>chr</code>) - any string, e.g., “fluxes”</li>
+<li><code>logical</code> (<code>logi</code>) - binary, i.e., <code>TRUE</code>/<code>FALSE</code> values</li>
+<li><code>factor</code> (<code>Factor</code>) - categorical data, the variable can only be one of a defined number of options, e.g., one of C3, C4, or CAM (the three pathways of photosynthesis). Factors may also be given an order.</li>
 <li><code>function</code> - a set of statements organized to perform a specific task, for example <code>mean()</code></li>
 </ul>
 <p>By default, any number is coerced as <code>"numeric"</code>. So if you want an integer value to have class <code>"integer"</code>, you need to specify it like this:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="gettingstarted.html#cb14-1" aria-hidden="true" tabindex="-1"></a>my_variable <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="dv">5</span>)</span>
-<span id="cb14-2"><a href="gettingstarted.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_variable)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="gettingstarted.html#cb15-1" aria-hidden="true" tabindex="-1"></a>my_variable <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="dv">5</span>)</span>
+<span id="cb15-2"><a href="gettingstarted.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_variable)</span></code></pre></div>
 <pre><code>## [1] &quot;integer&quot;</code></pre>
-<p>Sometimes you need to convert the class of an object, for example turning a <code>"integer"</code> number into a <code>"character"</code>. You can do so as follows:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="gettingstarted.html#cb16-1" aria-hidden="true" tabindex="-1"></a>my_variable <span class="ot">&lt;-</span> <span class="fu">as.character</span>(my_variable)</span>
-<span id="cb16-2"><a href="gettingstarted.html#cb16-2" aria-hidden="true" tabindex="-1"></a>my_variable</span></code></pre></div>
+<p>Sometimes, you need to convert the class of an object, for example turning an <code>"integer"</code> number into a <code>"character"</code>. You can do so as follows:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="gettingstarted.html#cb17-1" aria-hidden="true" tabindex="-1"></a>my_variable <span class="ot">&lt;-</span> <span class="fu">as.character</span>(my_variable)</span>
+<span id="cb17-2"><a href="gettingstarted.html#cb17-2" aria-hidden="true" tabindex="-1"></a>my_variable</span></code></pre></div>
 <pre><code>## [1] &quot;5&quot;</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="gettingstarted.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_variable)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="gettingstarted.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(my_variable)</span></code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<p>Notice that now the values are in quotes <code>"5"</code>. This way, R interprets it as a text and you will not be able to do any numeric calculations with it anymore.</p>
+<p>Note that now, the values are in quotes <code>"5"</code>. This way, R interprets it as a text and you will not be able to do any numeric calculations with it anymore.</p>
 </div>
 <div id="vectors" class="section level4 hasAnchor" number="1.2.2.3">
 <h4><span class="header-section-number">1.2.2.3</span> Vectors<a href="gettingstarted.html#vectors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>A <em>vector</em> in R is a sequence of data elements of the same class. Vectors can be created with the <code>c()</code> function, which stands for <em>concatenate</em>, i.e., to link together in a series or chain. For example, the following code creates a numeric vector:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="gettingstarted.html#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="gettingstarted.html#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span></code></pre></div>
 <p>To access the elements of a vector, you can use the square bracket notation. For example, the following code retrieves the second element of the vector <code>x</code>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="gettingstarted.html#cb21-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="gettingstarted.html#cb22-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 <p>You can also use the square bracket notation to extract a sub-vector from a larger vector. For example, you can extract the second to fourth elements of the vector x:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="gettingstarted.html#cb23-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="gettingstarted.html#cb24-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] 2 3 4</code></pre>
 <p>Another useful property of vectors in R is that they can be easily combined using arithmetic operators. For example, adding the elements of two vectors <code>x</code> and <code>y</code> element-wise:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="gettingstarted.html#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb25-2"><a href="gettingstarted.html#cb25-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
-<span id="cb25-3"><a href="gettingstarted.html#cb25-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> y</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="gettingstarted.html#cb26-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb26-2"><a href="gettingstarted.html#cb26-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb26-3"><a href="gettingstarted.html#cb26-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> y</span></code></pre></div>
 <pre><code>## [1] 5 7 9</code></pre>
 <p>R also supports vectors of other classes, for example character vectors. Since all elements must be of the same class, the most general class will be adopted. The following code concatenates the vectors <code>x</code> and <code>y</code>, followed by new character elements:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="gettingstarted.html#cb27-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(x, y, <span class="st">&quot;seven&quot;</span>, <span class="st">&quot;eight&quot;</span>)</span>
-<span id="cb27-2"><a href="gettingstarted.html#cb27-2" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="gettingstarted.html#cb28-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(x, y, <span class="st">&quot;seven&quot;</span>, <span class="st">&quot;eight&quot;</span>)</span>
+<span id="cb28-2"><a href="gettingstarted.html#cb28-2" aria-hidden="true" tabindex="-1"></a>z</span></code></pre></div>
 <pre><code>## [1] &quot;1&quot;     &quot;2&quot;     &quot;3&quot;     &quot;4&quot;     &quot;5&quot;     &quot;6&quot;     &quot;seven&quot; &quot;eight&quot;</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="gettingstarted.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(z)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="gettingstarted.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(z)</span></code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <p>Operations on vectors are performed element-wise. For example, if we ask what numbers in <code>x</code> are greater than 2, we obtain a vector of logical values (and class <code>"logical"</code>):</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="gettingstarted.html#cb31-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&gt;</span> <span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="gettingstarted.html#cb32-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&gt;</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] FALSE FALSE  TRUE</code></pre>
 </div>
 <div id="lists" class="section level4 hasAnchor" number="1.2.2.4">
 <h4><span class="header-section-number">1.2.2.4</span> Lists<a href="gettingstarted.html#lists" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p><em>Lists</em> are another R object, of class <code>"list"</code>. They are extremely flexible. They allow us to store different types of data, even if they are of different lengths or classes. They are created with the function <code>list()</code> and can be named or not. Here is an example where each element of the list is named.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="gettingstarted.html#cb33-1" aria-hidden="true" tabindex="-1"></a>mylist <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb33-2"><a href="gettingstarted.html#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">temperatures =</span> <span class="fu">c</span>(<span class="fl">2.234</span>, <span class="fl">1.987</span>, <span class="fl">4.345</span>), </span>
-<span id="cb33-3"><a href="gettingstarted.html#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_favourite_function =</span> mean, </span>
-<span id="cb33-4"><a href="gettingstarted.html#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">best_course =</span> <span class="st">&quot;Applied Geodata Science&quot;</span></span>
-<span id="cb33-5"><a href="gettingstarted.html#cb33-5" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<p><em>Lists</em> are R objects, of class <code>"list"</code>. They are a bit like vectors, but more flexible. They allow us to store different types of data, even if they are of different lengths or of different classes. They are created with the function <code>list()</code> and can be named or not. Here is an example where each element of the list is named.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="gettingstarted.html#cb34-1" aria-hidden="true" tabindex="-1"></a>mylist <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb34-2"><a href="gettingstarted.html#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">temperatures =</span> <span class="fu">c</span>(<span class="fl">2.234</span>, <span class="fl">1.987</span>, <span class="fl">4.345</span>), </span>
+<span id="cb34-3"><a href="gettingstarted.html#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_favourite_function =</span> mean, </span>
+<span id="cb34-4"><a href="gettingstarted.html#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">my_favourite_course =</span> <span class="st">&quot;Applied Geodata Science&quot;</span></span>
+<span id="cb34-5"><a href="gettingstarted.html#cb34-5" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
 <p>Similar to vectors, we can extract elements from lists, either by index <code>[[1]]</code> or by the name using <code>[["temperatures"]]</code> or <code>$temperatures</code>. Note the double <code>[[]]</code> here, indicating an element of a list as opposed to <code>[]</code> indicating an element of a vector. To get the entire vector of temperatures, do either of the three:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="gettingstarted.html#cb34-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="dv">1</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="gettingstarted.html#cb35-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>## [1] 2.234 1.987 4.345</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="gettingstarted.html#cb36-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="st">&quot;temperatures&quot;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="gettingstarted.html#cb37-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="st">&quot;temperatures&quot;</span>]]</span></code></pre></div>
 <pre><code>## [1] 2.234 1.987 4.345</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="gettingstarted.html#cb38-1" aria-hidden="true" tabindex="-1"></a>mylist<span class="sc">$</span>temperatures</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="gettingstarted.html#cb39-1" aria-hidden="true" tabindex="-1"></a>mylist<span class="sc">$</span>temperatures</span></code></pre></div>
 <pre><code>## [1] 2.234 1.987 4.345</code></pre>
-<p>Notice below how, if we index the list like we would index a vector, a list with just one element would be returned, rather than the element itself. <code>[</code> is used to select multiple elements and <code>[[</code> or <code>$</code> for selecting a single element. A thorough explanation of these differences is given <a href="https://r4ds.hadley.nz/base-r#sec-subset-many">here</a> and <a href="https://r4ds.hadley.nz/base-r#sec-subset-one">here</a>.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="gettingstarted.html#cb40-1" aria-hidden="true" tabindex="-1"></a>mylist[<span class="dv">1</span>]</span></code></pre></div>
+<p>Note below how, if we index the list like we would index a vector, a list with just one element would be returned, rather than the element itself. <code>[</code> is used to subset a list (and a list is returned). In contrast, <code>[[</code> or <code>$</code> extract a single element from a list. A thorough explanation of these differences is given <a href="https://r4ds.hadley.nz/base-r#sec-subset-many">here</a> and <a href="https://r4ds.hadley.nz/base-r#sec-subset-one">here</a>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="gettingstarted.html#cb41-1" aria-hidden="true" tabindex="-1"></a>mylist[<span class="dv">1</span>]  <span class="co"># returns a subset of the list as a new list</span></span></code></pre></div>
 <pre><code>## $temperatures
 ## [1] 2.234 1.987 4.345</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="gettingstarted.html#cb43-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="dv">1</span>]]  <span class="co"># extracts the first element of the list (a vector)</span></span></code></pre></div>
+<pre><code>## [1] 2.234 1.987 4.345</code></pre>
 <p>To get the first temperature value, which is an element of the vector (at the same time an element of the list), we can run:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="gettingstarted.html#cb42-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="st">&quot;temperatures&quot;</span>]][<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="gettingstarted.html#cb45-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="st">&quot;temperatures&quot;</span>]][<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [1] 2.234</code></pre>
 <p>You can also append elements to the list (either way is possible):</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="gettingstarted.html#cb44-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="st">&quot;my_second_favourite_function&quot;</span>]] <span class="ot">&lt;-</span> median</span>
-<span id="cb44-2"><a href="gettingstarted.html#cb44-2" aria-hidden="true" tabindex="-1"></a>mylist<span class="sc">$</span>my_second_favourite_function <span class="ot">&lt;-</span> median</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="gettingstarted.html#cb47-1" aria-hidden="true" tabindex="-1"></a>mylist[[<span class="st">&quot;my_second_favourite_function&quot;</span>]] <span class="ot">&lt;-</span> median</span>
+<span id="cb47-2"><a href="gettingstarted.html#cb47-2" aria-hidden="true" tabindex="-1"></a>mylist<span class="sc">$</span>my_second_favourite_function <span class="ot">&lt;-</span> median</span></code></pre></div>
 <p>This was a very condensed introduction to vectors and lists. A more complete introduction is given <a href="https://r4ds.had.co.nz/vectors.html">here</a>.</p>
 </div>
 <div id="data-frames" class="section level4 hasAnchor" number="1.2.2.5">
 <h4><span class="header-section-number">1.2.2.5</span> Data frames<a href="gettingstarted.html#data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>A <em>data frame</em>, of class <code>"data.frame"</code>, is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.</p>
+<p>A <em>data frame</em> is an object of class <code>"data.frame"</code> is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.</p>
 <p>A data frame can be created as follows:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="gettingstarted.html#cb45-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Maria&quot;</span>, <span class="st">&quot;Peter&quot;</span>, <span class="st">&quot;Alex&quot;</span>),</span>
-<span id="cb45-2"><a href="gettingstarted.html#cb45-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">56</span>, <span class="dv">30</span>))</span>
-<span id="cb45-3"><a href="gettingstarted.html#cb45-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="gettingstarted.html#cb48-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Maria&quot;</span>, <span class="st">&quot;Peter&quot;</span>, <span class="st">&quot;Alex&quot;</span>),</span>
+<span id="cb48-2"><a href="gettingstarted.html#cb48-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">56</span>, <span class="dv">30</span>))</span>
+<span id="cb48-3"><a href="gettingstarted.html#cb48-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>##    name age
 ## 1 Maria  13
 ## 2 Peter  56
 ## 3  Alex  30</code></pre>
 <p>The elements of a data frame can be accessed the same way that we treated lists, with each column being one element of the list. To get the vector of ages:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="gettingstarted.html#cb47-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="gettingstarted.html#cb50-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age</span></code></pre></div>
 <pre><code>## [1] 13 56 30</code></pre>
-<p>Furthermore, they can be treated as a <em>matrix</em>. Notice that the first index refers to rows and the second to columns. For example:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="gettingstarted.html#cb49-1" aria-hidden="true" tabindex="-1"></a>df[, <span class="dv">1</span>]   <span class="co"># first column</span></span></code></pre></div>
+<p>Furthermore, they can be treated as a <em>matrix</em>. Note that the first index refers to rows and the second to columns. For example:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="gettingstarted.html#cb52-1" aria-hidden="true" tabindex="-1"></a>df[, <span class="dv">1</span>]   <span class="co"># first column</span></span></code></pre></div>
 <pre><code>## [1] &quot;Maria&quot; &quot;Peter&quot; &quot;Alex&quot;</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="gettingstarted.html#cb51-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>, ]   <span class="co"># second row</span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="gettingstarted.html#cb54-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>, ]   <span class="co"># second row</span></span></code></pre></div>
 <pre><code>##    name age
 ## 2 Peter  56</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="gettingstarted.html#cb53-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>,<span class="dv">2</span>]   <span class="co"># age of Peter</span></span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="gettingstarted.html#cb56-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>,<span class="dv">2</span>]   <span class="co"># age of Peter</span></span></code></pre></div>
 <pre><code>## [1] 56</code></pre>
-<p>There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in <a href="#programming_primers">Tutorial 2</a> and have dedicated all of <a href="#data_wrangling">Tutorial 3</a> to teach you how to work with data frames in a tidy way.</p>
+<p>There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in <a href="#programming_primers">Chapter 2</a> and have dedicated all of <a href="#data_wrangling">Chapter 3</a> to teach you how to work with data frames in a tidy way.</p>
 </div>
 <div id="functions" class="section level4 hasAnchor" number="1.2.2.6">
 <h4><span class="header-section-number">1.2.2.6</span> Functions<a href="gettingstarted.html#functions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>R <em>functions</em> can be applied to an object (or several objects) and return another object. For example the <code>mean()</code> function can take a numeric vector as input and output the mean of its values.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="gettingstarted.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>age)</span></code></pre></div>
+<p>R <em>functions</em> can be applied to an object (or several objects) and return another object. For example, the <code>mean()</code> function can take a numeric vector as input and output the mean of its elements.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="gettingstarted.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>age)</span></code></pre></div>
 <pre><code>## [1] 33</code></pre>
-<p>Functions are also R objects and have class <code>"function"</code>. They are covered in more detail in <a href="#programming_primers">Tutorial 2</a>.</p>
+<p>Functions are also R objects and have class <code>"function"</code>. They are covered in more detail in <a href="#programming_primers">Chapter 2</a>.</p>
 </div>
 <div id="missing-values" class="section level4 hasAnchor" number="1.2.2.7">
 <h4><span class="header-section-number">1.2.2.7</span> Missing values<a href="gettingstarted.html#missing-values" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>R has two representations for missing values: <code>NA</code> and <code>NULL</code>. Similar objects also exist in other programming languages.</p>
-<p><code>NA</code> is an identifyer to mark missing data and stands for <em>not available</em>. You will encounter this when reading data into a data frame, and some of its cells show <code>NA</code> because that value is missing. Also, if you ask for the 4th element of a vector of length 3, R returns <code>NA</code>.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="gettingstarted.html#cb57-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">4</span>]</span></code></pre></div>
+<p><code>NA</code> is an identifier to mark missing data and stands for <em>not available</em>. You will encounter this when reading data into a data frame, and some of its cells show <code>NA</code> because that value is missing. Also, if you ask for the fourth element of a vector of length 3, R returns <code>NA</code>.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="gettingstarted.html#cb60-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
-<p>Almost all operations on vectors where at least one value is <code>NA</code> also return <code>NA</code>. For example:</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="gettingstarted.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>))</span></code></pre></div>
+<p>In general, operations on vectors that contain at least one <code>NA</code> value return <code>NA</code>. For example:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="gettingstarted.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>))</span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
 <p>To remove all missing values in the function evaluation, the common argument to set in the respective function call is <code>na.rm</code>. By default, it is usually set to <code>FALSE</code>, but we can do:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="gettingstarted.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="gettingstarted.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 1.5</code></pre>
 <p>Furthermore, <code>NA</code> counts as an element in vectors. A variable assigned just <code>NA</code> would have length 1 (of class <code>"logical"</code>) and the vector above has length 3, as can be determined using the <code>length()</code> function, and has class <code>"numeric"</code>.</p>
-<p>By contrast, <code>NULL</code> is the R null object or empty space. You can also assign <code>NULL</code> to a variable, which will have length zero because it is empty. Functions may return <code>NULL</code> when no output was defined, or if an error occurred.</p>
+<p>By contrast, <code>NULL</code> is the R null object or empty space. You can also assign <code>NULL</code> to a variable, which will then have length zero because it is empty. Functions may return <code>NULL</code> when no output was defined, or if an error occurred.</p>
 </div>
 <div id="r-environment" class="section level4 hasAnchor" number="1.2.2.8">
 <h4><span class="header-section-number">1.2.2.8</span> R environment<a href="gettingstarted.html#r-environment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -620,59 +622,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="read-and-save-data" class="section level4 hasAnchor" number="1.2.2.9">
 <h4><span class="header-section-number">1.2.2.9</span> Read and save data<a href="gettingstarted.html#read-and-save-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The function <code>save()</code> allows to save multiple R objects of any form as a single <code>.RData</code> file. This is how the environment of your R session is saved. This is how we would save several R objects:</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="gettingstarted.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(df, df_small, <span class="at">file =</span> <span class="st">&quot;data/data_frames.RData&quot;</span>)</span></code></pre></div>
-<p><code>.RData</code> files are read into your environment using the <code>load()</code> function, rather than <code>read()</code>. This function loads the objects with the name that they were saved with.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="gettingstarted.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/data_frames.RData&quot;</span>)</span></code></pre></div>
-<p>Alternatively, the function <code>saveRDS()</code> allows you save individual R objects of any form (not just a data frame). <code>saveRDS()</code> creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix <code>.rds</code>. It is recommended to name the <code>.rds</code> files according to the single object they contain. For example:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="gettingstarted.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(df_small, <span class="at">file =</span> <span class="st">&quot;data/df_small.rds&quot;</span>)</span></code></pre></div>
-<p>This file can then be read into your R environment. We need to assign a name to the object read, otherwise it will be just printed to the console but not loaded into the R environment. Sometimes, it is useful to give it a new name, for example:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="gettingstarted.html#cb66-1" aria-hidden="true" tabindex="-1"></a>df_small_2 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/df_small.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="gettingstarted.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(df, df_small, <span class="at">file =</span> <span class="st">&quot;data/data_frames.RData&quot;</span>)</span></code></pre></div>
+<p><code>.RData</code> files are read into your environment using the <code>load()</code> function. This function loads the objects with the name that they were saved with.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="gettingstarted.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/data_frames.RData&quot;</span>)</span></code></pre></div>
+<p>Alternatively, the function <code>saveRDS()</code> allows you save single R objects that can then be read into with a specific (potentially new) variable name. This is more transparent than using <code>save()</code> and <code>load()</code> and gives the user more control.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="gettingstarted.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(df_small, <span class="at">file =</span> <span class="st">&quot;data/df_small.rds&quot;</span>)</span>
+<span id="cb68-2"><a href="gettingstarted.html#cb68-2" aria-hidden="true" tabindex="-1"></a>df_small_2 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/df_small.rds&quot;</span>)</span></code></pre></div>
+<p><code>save()</code> and <code>saveRDS()</code> create <em>binary</em> files that are fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix <code>.rds</code>. It is recommended to name the <code>.rds</code> files according to the single object they contain. When publishing and sharing data, avoid file formats that are not readable across different platforms and programming languages. We will learn more about open source binary file formats in Chapter <a href="datavariety.html#datavariety">5</a>.</p>
 </div>
 </div>
 <div id="r-scripts" class="section level3 hasAnchor" number="1.2.3">
 <h3><span class="header-section-number">1.2.3</span> R scripts<a href="gettingstarted.html#r-scripts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Usually, multiple statements are needed to get, e.g., from reading data into R to final numbers and figures that make up a further analysis. Together, these multiple statements constitute a <em>workflow</em>. It is essential that all workflows that underlie results of publications are <em>reproducible</em>, that is, that another person can replicate your results using your code and certain data.</p>
-<p>To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R <em>script</em>. A script is a text file named with the suffix <code>.R</code> to indicate that it is executable by R. It contains a sequence of R commands, which you can run all at once or one at a time. These commands will always be run line-by-line, starting from the top.</p>
+<p>To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R <em>script</em>. A script is a text file named with the suffix <code>.R</code> to indicate that it is executable by R. It contains a sequence of R commands, which you can be executed, line by line, starting from the top.</p>
 <p>To create a new script in RStudio, go to the <strong>File</strong> menu and select <strong>New File &gt; R Script</strong>. This will open a new script file in the source editor. You can then type your R code in the script file and save it to your computer.</p>
 <p>To run a script, you can either use the <strong>Source</strong> button in the source editor or use the keyboard shortcut Ctrl + Shift + Enter (Windows) or Command + Shift + Enter (Mac). This will run all of the commands in the script file, in the order they are written, in the console. Alternatively, you can type into the console:</p>
 <pre><code>&gt; source(&quot;my_r_script.R&quot;)</code></pre>
-<p>Note that, to be able to run the code above, the file <code>my_r_script.R</code> must be in your curretn working directory.</p>
+<p>Note that, to be able to run the code above, the file <code>my_r_script.R</code> must be in your current working directory, which you can determine by <code>getwd()</code>.</p>
 <p>You can find more useful information about scripts and workflows in <a href="https://r4ds.had.co.nz/workflow-scripts.html">R for Data Science</a> <span class="citation">(<a href="#ref-Wickham2017R" role="doc-biblioref"><strong>Wickham2017R?</strong></a>)</span>.</p>
 <p>We should always strive to write nice scripts and good code. Good code is clean, readable, consistent, and extensible (easily modified or adapted). To achieve this, here are a few points to consider - inspired by <a href="https://www.r-bloggers.com/r-code-best-practices/">best practices for coding</a> and by the <a href="https://style.tidyverse.org/">Tidyverse style guide</a> <span class="citation">(<a href="#ref-wickham_welcome_nodate" role="doc-biblioref"><strong>wickham_welcome_nodate?</strong></a>)</span>.</p>
 <div id="structure-your-script" class="section level4 hasAnchor" number="1.2.3.1">
 <h4><span class="header-section-number">1.2.3.1</span> Structure your script<a href="gettingstarted.html#structure-your-script" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>At the beginning of each file add a <strong>header</strong> as a fully commented text section, describing what the code contains, and how it fits into the larger analysis framework.</p>
-<p>Note that Git stores all meta information about the file, including who created it, who modified it and when. This information should not be added to the header. Then, load all libraries needed within the script. Then, source any scripts and load data, and only then, start with the sequence of statements. To visually separate parts, break up your code using, commented lines.</p>
-<p>For example, a script could look like this:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="gettingstarted.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#////////////////////////////////////////</span></span>
-<span id="cb68-2"><a href="gettingstarted.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Demonstrating script structure</span></span>
-<span id="cb68-3"><a href="gettingstarted.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb68-4"><a href="gettingstarted.html#cb68-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-5"><a href="gettingstarted.html#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="co">#----Load packages, functions and data</span></span>
-<span id="cb68-6"><a href="gettingstarted.html#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb68-7"><a href="gettingstarted.html#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/my_functions.R&quot;</span>)</span>
-<span id="cb68-8"><a href="gettingstarted.html#cb68-8" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;data/my_df.csv&quot;</span>)</span>
-<span id="cb68-9"><a href="gettingstarted.html#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb68-10"><a href="gettingstarted.html#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Main part</span></span>
-<span id="cb68-11"><a href="gettingstarted.html#cb68-11" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb68-12"><a href="gettingstarted.html#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="co"># convert units</span></span>
-<span id="cb68-13"><a href="gettingstarted.html#cb68-13" aria-hidden="true" tabindex="-1"></a>my_df<span class="sc">$</span>temp <span class="ot">&lt;-</span> my_df<span class="sc">$</span>temp <span class="sc">+</span> <span class="fl">273.15</span>  <span class="co"># deg C -&gt; K</span></span>
-<span id="cb68-14"><a href="gettingstarted.html#cb68-14" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb68-15"><a href="gettingstarted.html#cb68-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Writing output</span></span>
-<span id="cb68-16"><a href="gettingstarted.html#cb68-16" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb68-17"><a href="gettingstarted.html#cb68-17" aria-hidden="true" tabindex="-1"></a>filn <span class="ot">&lt;-</span> <span class="st">&quot;data/my_df_kelvin.csv&quot;</span></span>
-<span id="cb68-18"><a href="gettingstarted.html#cb68-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Writing file&quot;</span>, filn, <span class="st">&quot;...&quot;</span>))</span>
-<span id="cb68-19"><a href="gettingstarted.html#cb68-19" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(my_df, filn)</span></code></pre></div>
+<p>A script should start with a brief and concise statment of what it does, followed by statements to load libraries and source functions that are saved in separate <code>.R</code> files. Then, start with statements that implement the purpose of the respective script.</p>
+<p>Statements, or groups of statements, should be preceeded by comments. Comments are all that appears to the right of a <code>#</code> and are code parts that are not interpreted by R and not executed. Adding comments in the code helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).</p>
+<p>To visually separate parts of a script, use commented lines (e.g., <code>----</code>). The RStudio text editor automatically recognizes <code>----</code> added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (<strong>Outline</strong> button in the top right corner of the editor panel).</p>
+<p>A script script could look like this:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="gettingstarted.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
+<span id="cb70-2"><a href="gettingstarted.html#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a vector with random values</span></span>
+<span id="cb70-3"><a href="gettingstarted.html#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Save as file &quot;data/vec_randomvalues.rds&quot;</span></span>
+<span id="cb70-4"><a href="gettingstarted.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
+<span id="cb70-5"><a href="gettingstarted.html#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb70-6"><a href="gettingstarted.html#cb70-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-7"><a href="gettingstarted.html#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data----</span></span>
+<span id="cb70-8"><a href="gettingstarted.html#cb70-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Random 100 values are from a distribution </span></span>
+<span id="cb70-9"><a href="gettingstarted.html#cb70-9" aria-hidden="true" tabindex="-1"></a><span class="co"># with mean 20 and standard deviation 5</span></span>
+<span id="cb70-10"><a href="gettingstarted.html#cb70-10" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">20</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb70-11"><a href="gettingstarted.html#cb70-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-12"><a href="gettingstarted.html#cb70-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to file----</span></span>
+<span id="cb70-13"><a href="gettingstarted.html#cb70-13" aria-hidden="true" tabindex="-1"></a>filn <span class="ot">&lt;-</span> <span class="st">&quot;data/vec_randomvalues.rds&quot;</span></span>
+<span id="cb70-14"><a href="gettingstarted.html#cb70-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Writing file:&quot;</span>, filn, <span class="st">&quot;...&quot;</span>))</span>
+<span id="cb70-15"><a href="gettingstarted.html#cb70-15" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(vec, filn)</span></code></pre></div>
+<p>Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter <a href="codemgmt.html#codemgmt">7</a>, we will learn about the code versioning control system <em>git</em>, which keeps track of all this as meta information associated with files.</p>
 </div>
-<div id="comments" class="section level4 hasAnchor" number="1.2.3.2">
-<h4><span class="header-section-number">1.2.3.2</span> Comments<a href="gettingstarted.html#comments" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Adding comments in the code helps to explain exactly what the code is doing and why. This makes it easy to understand and modify the code, and can be key when debugging. In R source files, comments are prefixed with a <code>#</code>, which means that all what is right of the <code>#</code> is not interpreted by R.</p>
-<p>Avoid redundant comments like the one below. Instead, comments should explain the “why” of that chunk of code, not the “what” or “how”.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="gettingstarted.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take the mean </span></span>
-<span id="cb69-2"><a href="gettingstarted.html#cb69-2" aria-hidden="true" tabindex="-1"></a>myvar_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(myvar)</span></code></pre></div>
-</div>
-<div id="spaces-and-breaks" class="section level4 hasAnchor" number="1.2.3.3">
-<h4><span class="header-section-number">1.2.3.3</span> Spaces and breaks<a href="gettingstarted.html#spaces-and-breaks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="spaces-and-breaks" class="section level4 hasAnchor" number="1.2.3.2">
+<h4><span class="header-section-number">1.2.3.2</span> Spaces and breaks<a href="gettingstarted.html#spaces-and-breaks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Adding enough white spaces and line breaks in the right locations greatly helps the legibility of any code. Cramping it up too much leads to an unintelligible sequence of characters and it will not be clear what parts go together (operators, variable names, brackets). Therefore, consider the following points:</p>
 <ul>
 <li>Use spaces around operators (<code>=</code>, <code>+</code>, <code>-</code>, <code>&lt;-</code>, <code>&gt;</code>, etc.).</li>
@@ -681,29 +674,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Code inside curly brackets should be <em>indented</em> (recommended: two white spaces at the beginning of each line for each indentation level - don’t use tabs).</li>
 </ul>
 <p>For example, well written code looks like this:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="gettingstarted.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="fl">5.0</span>){</span>
-<span id="cb70-2"><a href="gettingstarted.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  growth_temp <span class="ot">&lt;-</span> growth_temp <span class="sc">+</span> temp  </span>
-<span id="cb70-3"><a href="gettingstarted.html#cb70-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="gettingstarted.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="fl">5.0</span>){</span>
+<span id="cb71-2"><a href="gettingstarted.html#cb71-2" aria-hidden="true" tabindex="-1"></a>  growth_temp <span class="ot">&lt;-</span> growth_temp <span class="sc">+</span> temp  </span>
+<span id="cb71-3"><a href="gettingstarted.html#cb71-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="variable-naming" class="section level4 hasAnchor" number="1.2.3.4">
-<h4><span class="header-section-number">1.2.3.4</span> Variable naming<a href="gettingstarted.html#variable-naming" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="variable-naming" class="section level4 hasAnchor" number="1.2.3.3">
+<h4><span class="header-section-number">1.2.3.3</span> Variable naming<a href="gettingstarted.html#variable-naming" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (<code>_</code>) to separate words within a name (<code>_</code>). Avoid (<code>.</code>) as they are reserved for S3 objects (base R). Also, you should avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.</p>
 <p>For example, <code>df_daily</code> is a data frame with data at a daily resolution. Or <code>clean_daily</code> is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (<code>_</code>) is used to separate words.</p>
 <p>It is also recommendable to avoid variable names consisting of only one character. This makes it practically impossible to search for that variable.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="gettingstarted.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb71-2"><a href="gettingstarted.html#cb71-2" aria-hidden="true" tabindex="-1"></a>day_01</span>
-<span id="cb71-3"><a href="gettingstarted.html#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
-<span id="cb71-4"><a href="gettingstarted.html#cb71-4" aria-hidden="true" tabindex="-1"></a>DayOne</span>
-<span id="cb71-5"><a href="gettingstarted.html#cb71-5" aria-hidden="true" tabindex="-1"></a>day.one</span>
-<span id="cb71-6"><a href="gettingstarted.html#cb71-6" aria-hidden="true" tabindex="-1"></a>first_day_of_the_month</span>
-<span id="cb71-7"><a href="gettingstarted.html#cb71-7" aria-hidden="true" tabindex="-1"></a>djm1</span>
-<span id="cb71-8"><a href="gettingstarted.html#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Very bad</span></span>
-<span id="cb71-9"><a href="gettingstarted.html#cb71-9" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x) <span class="co"># mean() itself is already a function</span></span>
-<span id="cb71-10"><a href="gettingstarted.html#cb71-10" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># T is an abbreviation of TRUE</span></span>
-<span id="cb71-11"><a href="gettingstarted.html#cb71-11" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># c() is used to create a vector (example &lt;- c(1, 2, 3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="gettingstarted.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb72-2"><a href="gettingstarted.html#cb72-2" aria-hidden="true" tabindex="-1"></a>day_01</span>
+<span id="cb72-3"><a href="gettingstarted.html#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb72-4"><a href="gettingstarted.html#cb72-4" aria-hidden="true" tabindex="-1"></a>DayOne</span>
+<span id="cb72-5"><a href="gettingstarted.html#cb72-5" aria-hidden="true" tabindex="-1"></a>day.one</span>
+<span id="cb72-6"><a href="gettingstarted.html#cb72-6" aria-hidden="true" tabindex="-1"></a>first_day_of_the_month</span>
+<span id="cb72-7"><a href="gettingstarted.html#cb72-7" aria-hidden="true" tabindex="-1"></a>djm1</span>
+<span id="cb72-8"><a href="gettingstarted.html#cb72-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Very bad</span></span>
+<span id="cb72-9"><a href="gettingstarted.html#cb72-9" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x) <span class="co"># mean() itself is already a function</span></span>
+<span id="cb72-10"><a href="gettingstarted.html#cb72-10" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># T is an abbreviation of TRUE</span></span>
+<span id="cb72-11"><a href="gettingstarted.html#cb72-11" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># c() is used to create a vector (example &lt;- c(1, 2, 3))</span></span></code></pre></div>
 </div>
-<div id="r-markdown" class="section level4 hasAnchor" number="1.2.3.5">
-<h4><span class="header-section-number">1.2.3.5</span> R Markdown<a href="gettingstarted.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="r-markdown" class="section level4 hasAnchor" number="1.2.3.4">
+<h4><span class="header-section-number">1.2.3.4</span> R Markdown<a href="gettingstarted.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (<em>knitted</em>) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Code chunks start with: <code>{r} (the {r} is very important because it's what makes it specifically an R chunk, as opposed to a different type of code chunk) They end with</code>. When run (not knitted), objects defined by the executed code are available in the environment.</p>
 <p>Text can be formatted using the <a href="https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Markdown syntax</a>. For example, a top-level section title is specified by <code>#</code> and a title of a section one level lower by <code>##</code>.</p>
 <p>R Markdown documents are also the basis of this book, with each chapter written in a separate R Markdown file. This lets you use the book in an interactive fashion.</p>
@@ -772,12 +765,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Advanced: Can you turn the little magic trick into a function that checks if the original value is an integer (<a href="https://statisticsglobe.com/check-if-number-is-integer-in-r">hint</a>) between 1 and 20 and prints the final value at the end?</p></li>
 <li><p>Clean up the code chunk below following the {tidyverse} style guide. Run the statements in your console - do they work? If not, why?</p></li>
 </ul>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="gettingstarted.html#cb73-1" aria-hidden="true" tabindex="-1"></a>anothervariable <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>)</span>
-<span id="cb73-2"><a href="gettingstarted.html#cb73-2" aria-hidden="true" tabindex="-1"></a>seq <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="dv">1</span>,<span class="dv">2</span> <span class="dv">3</span> ,<span class="dv">4</span>)</span>
-<span id="cb73-3"><a href="gettingstarted.html#cb73-3" aria-hidden="true" tabindex="-1"></a>is_true <span class="ot">&lt;-</span> T</span>
-<span id="cb73-4"><a href="gettingstarted.html#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">a=</span><span class="dv">1</span>, <span class="at">b =</span> This is some really bad code<span class="er">}</span></span>
-<span id="cb73-5"><a href="gettingstarted.html#cb73-5" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> <span class="dv">7</span></span>
-<span id="cb73-6"><a href="gettingstarted.html#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="fu">my_new_function</span>(<span class="at">this_is_a_very_long_argument =</span> <span class="st">&quot;value 1&quot;</span>, <span class="at">and_this_is_another_very_long_argument =</span> <span class="st">&quot;value 2&quot;</span>, <span class="at">short_but_still_long_argument =</span> <span class="cn">NA</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="gettingstarted.html#cb74-1" aria-hidden="true" tabindex="-1"></a>anothervariable <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>)</span>
+<span id="cb74-2"><a href="gettingstarted.html#cb74-2" aria-hidden="true" tabindex="-1"></a>seq <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="dv">1</span>,<span class="dv">2</span> <span class="dv">3</span> ,<span class="dv">4</span>)</span>
+<span id="cb74-3"><a href="gettingstarted.html#cb74-3" aria-hidden="true" tabindex="-1"></a>is_true <span class="ot">&lt;-</span> T</span>
+<span id="cb74-4"><a href="gettingstarted.html#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">a=</span><span class="dv">1</span>, <span class="at">b =</span> This is some really bad code<span class="er">}</span></span>
+<span id="cb74-5"><a href="gettingstarted.html#cb74-5" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb74-6"><a href="gettingstarted.html#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="fu">my_new_function</span>(<span class="at">this_is_a_very_long_argument =</span> <span class="st">&quot;value 1&quot;</span>, <span class="at">and_this_is_another_very_long_argument =</span> <span class="st">&quot;value 2&quot;</span>, <span class="at">short_but_still_long_argument =</span> <span class="cn">NA</span> )</span></code></pre></div>
 
 </div>
 </div>

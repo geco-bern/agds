@@ -22,7 +22,6 @@ fig:projecttemplate
 fig:newtemplaterepository
 fig:newtemplaterepositoryname
 fig:correlationplots
-system-information-and-package-list
 gettingstarted
 learning-objectives-1
 tutorial
@@ -44,7 +43,6 @@ r-environment
 read-and-save-data
 r-scripts
 structure-your-script
-comments
 spaces-and-breaks
 variable-naming
 r-markdown
