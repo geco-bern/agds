@@ -24,15 +24,6 @@ Greenwell](https://bradleyboehmke.github.io/HOML/).
 
 ## Tutorial
 
-### Required packages
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "caret", "yardstick", "lubridate", "rsample", "recipes", "modelr", "forcats")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
-
 ### What is supervised machine learning?
 
 Supervised machine learning is a type of machine learning where the
