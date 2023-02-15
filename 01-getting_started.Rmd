@@ -364,8 +364,6 @@ Note that Git stores all meta information about the file, including who created 
 
 For example, a script could look like this:
 
-<!-- For this chapter, we will mostly work with functions already integrated into R directly, also known as *base R*. Additionally, you will work with functions from the [*tidyverse*](https://www.tidyverse.org/). *tidyverse* is a collection of packages specifically designed for writing efficient data science workflows. Code written for the tidyverse follows its own "dialect" within the R langague. It will be introduced in @ref(ch-02). -->
-
 ```{r eval=FALSE, message=F}
 #////////////////////////////////////////
 # Demonstrating script structure
