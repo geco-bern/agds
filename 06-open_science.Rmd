@@ -20,27 +20,25 @@ In this chapter you will learn how to:
 
 ## Tutorial
 
-The scientific method relies on repeated testing of hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the data and code.
+The scientific method relies on repeated testing of a hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the described methodology, the data and code.
 
 Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
 
 This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the commodification of science.
 
-Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, and outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitization made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
+Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, or outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitization made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
 
-Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable.
+Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable (e.g. privacy or security reasons).
 
 It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on the practical aspects for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
 
 [![by The Turing Way](https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg)](https://the-turing-way.netlify.app/welcome.html)
 
-For further reading on the topic of reproducibility from an epistemic, or the science of doing science, point of view and general open science practices facilitating other reproducibility modes as shown in the table above I refer to the reference list at the end of this chapter.
-
 The basics of open science coding and data practices rely on a number of simple concepts. The below sections describe a selection of the most important ones. Sticking to these principles and/or tools will increase the reproducibility of your work greatly.
 
 ### Project structure
 
-Reproducible science relies on a number of key components. Data management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, structured, location. This structure allows you to determine both the function and or order of a workflow.
+Reproducible science relies on a number of key components. Data and code management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, structured, location. This structure allows you to determine both the function and or order of a workflow.
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
@@ -242,7 +240,7 @@ What are your steps to make this project more reproducible? Write down how and w
 
 #### A new project
 
-What are the basic steps to create a reproducible workflow from a file management perspective? Create your own project using these principles and provide details the on steps involved and why they matter.
+What are the basic steps to create a reproducible workflow from a file management perspective? Create your own R project using these principles and provide details the on steps involved and why they matter.
 
 The project should be a reproducible workflow:
 
