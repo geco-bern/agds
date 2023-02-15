@@ -4,18 +4,6 @@
 
 ## Learning objectives
 
-TBC
-
-## Required packages
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "cowplot", 
-              "lubridate", "scico", "hexbin")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
-
 ## Tutorial
 
 Visualizations often take the center stage of publications and are often the main vehicles for transporting information in scientific publications and (ever more often) in the media. Visualizations communicate data and its patterns in visual form. Visualizing data is also an integral part of the exploratory data analysis cycle. Visually understanding the data guides its transformation and the identification of suitable models and analysis methods.

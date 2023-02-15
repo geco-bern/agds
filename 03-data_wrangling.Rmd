@@ -4,8 +4,6 @@
 
 ## Learning objectives
 
-TBC
-
 ## Tutorial
 
 Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them in a transparent fashion and efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
@@ -36,17 +34,6 @@ For our demonstrations, the following variables are the most relevant:
 -   `*_QC`: Quality control information for the variable `*`. Important for us: `NEE_*_QC` is the quality control information for the net ecosystem CO$_2$ exchange flux (`NEE_*`) and for GPP derived from the corresponding NEE estimate (`GPP_*`). 0 = measured, 1 = good quality gap-filled, 2 = medium, 3 = poor.
 
 Suffixes `_*` indicate that multiple estimates for respective variables are available and distinguished by different suffixes. For example, variables `TA_*` contain the same information, but are derived with slightly different assumptions and gap-filling techniques. The meanings of suffixes are described in [Pastorello et al., 2020](https://www.nature.com/articles/s41597-020-0534-3).
-
-### Required libraries
-
-Install missing packages and load all required packages for this tutorial.
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr", "visdat")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
 
 ### Tidyverse
 

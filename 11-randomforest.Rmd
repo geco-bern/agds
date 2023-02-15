@@ -8,15 +8,6 @@ TBC
 
 ## Tutorial
 
-### Required packages
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "ggplot2", "caret", "yardstick", "lubridate", "rsample", "recipes", "modelr", "forcats", "rpart", "rpart.plot", "ranger")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
-
 ### Decision trees
 
 Just as a forest consists of trees, a *Random Forest* model consists of *decision trees.* Therefore, let's start with a decision tree, also known as CART (classification and regression tree). Consider a similar example as in Chapter \@ref(supervisedmli) where we fitted a function $Y = f(X)$ with polynomials. Instead, here we fit it with a decision tree. The tree grows by successively splitting (branching) the predictor range ($X$) into binary classes (two regions along $X$) and predicting a different and constant value $c$ for the target variable on either side of the split. The location of the split is chosen such that the overall error between the observed response ($Y_i$) and the predicted constant ($c_i$) is minimized. The error is determined based on whether we're dealing with a regression or a classification problem.
