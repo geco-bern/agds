@@ -4,8 +4,6 @@
 
 ## Learning objectives
 
-TBC
-
 ## Tutorial
 
 Exploratory data analysis - the transformation, visualization, and modelling of data - is the central part of any (geo-) data science workflow and typically takes up a majority of the time we spend on a research project. The transformation of data often turns out to be particularly (and often surprisingly) time-demanding. Therefore, it is key to master typical steps of data transformation, and to implement them in a transparent fashion and efficiently - both in terms of robustness against coding errors ("bugs") and in terms of code execution speed. This chapter introduces typical transformation steps (the reduction, filtering, aggregation, and combination of data), applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below).
