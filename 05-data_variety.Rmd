@@ -205,7 +205,7 @@ More so than human readable data, the file format (extension) determines how to 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
 | File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
-|-------------|--------------|---------------------------------|-------------|
+|-------------------------|----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|----------------------|
 | \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
@@ -246,6 +246,8 @@ gdalinfo your_geotiff.tiff
 > -   the date when the data was downloaded
 >
 > -   manipulations on the data before using the data in a final workflow
+
+Meta-data of data read into R can be accessed by plotting the object itself, i.e. calling the object on the command line. If it is a simple table the first lines of the table will be shown. When it is a more complex object the meta-data will be output as a formatted statement. You can also use the `str` or `summary` commands to summarize data and meta-data. For in depth discussions on meta-data and data wrangling look at Chapter \@ref(data-wrangling).
 
 ### Spatial data representation
 
@@ -430,9 +432,9 @@ status <- httr::POST(
 While **not leaving your R session**, download and open the files at location the following locations:
 
 ``` r
-https://github.com/xxx/data/demo1.csv
-https://github.com/xxx/data/demo2.csv
-https://github.com/xxx/data/demo3.csv
+https://github.com/geco-bern/agsd/data/demo1.csv
+https://github.com/geco-bern/agsd/data/demo2.csv
+https://github.com/geco-bern/agsd/data/demo3.csv
 ```
 
 Once loaded into your R environment, combine and save all data as a **temporary** `CSV` file. Read in the new temporary `CSV` file, and save it as a `JSON` file in your current working directory.
@@ -444,11 +446,11 @@ Once loaded into your R environment, combine and save all data as a **temporary*
 Download and open the following file:
 
 ``` r
-https://github.com/xxx/xxx/some_data.nc
+https://github.com/geco-bern/agsd/data/some_data.nc
 ```
 
 1.  What does this file contain?
-2.  Write this file to disk (use the R documentation).
+2.  Write this file to disk in any format you desire (use the R documentation).
 
 ``` r
 # Your solution script
@@ -457,7 +459,7 @@ https://github.com/xxx/xxx/some_data.nc
 Download and open the following file:
 
 ``` r
-https://github.com/xxx/xxx/some_data.tiff
+https://github.com/geco-bern/agsd/data/some_data.tiff
 ```
 
 1.  What does this file contain?

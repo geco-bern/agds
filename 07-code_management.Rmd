@@ -24,11 +24,15 @@ In this chapter, we will discuss the management of code in both the location sen
 
 Current version control of code is dominated by the software tool `git`. However, version control has a long history and can be found not only in code development practices.For example, whenever you use track changes in a text document you apply a form of version control i.e., you track changes in your text over time and selectively accepted changes. In this respect git, as a tool for version control of code, does not differ much from track changes of a text document, but follows a manual modify --\> staged --\> commit workflow.
 
-![Git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/file_cycle2.png)
+```{r label="gitworkflow", echo=FALSE, fig.cap="The git workflow- by Paola Corrales and Elio Campitelli"}
+knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/file_cycle2.png")
+```
 
 Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) which make these collaborative decisions and operations even easier.
 
-![Remote git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/local_remote.png)
+```{r label="githubworkflow", echo=FALSE, fig.cap="The github remote workflow- by Paola Corrales and Elio Campitelli"}
+knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/local_remote.png")
+```
 
 In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
 
@@ -62,25 +66,30 @@ git add your_file.csv
 
 Or using the RStudio git panel. In this panel you will see all un-tracked files or directories highlighted with a yellow question mark.
 
-![](./figures/git_unstaged_files.png)
+```{r label="unstagedfiles", echo=FALSE, fig.cap="Unstaged files in a git enabled R project"}
+knitr::include_graphics("./figures/git_unstaged_files.png")
+```
 
 You select the file tick boxes to the left to stage all files for inclusion into the git repository. Once staged, the next step will be to finally commit these staged files to be included in git tracking.
 
-![](./figures/git_staged_files.png)
+
+```{r label="stagedfiles", echo=FALSE, fig.cap="Staged files in a git enabled R project"}
+knitr::include_graphics("./figures/git_staged_files.png")
+```
 
 #### git commit
 
 To store any changes to the files which were staged we need to commit these changes. We therefore hit the commit button, this will pop up a new window.
 
-![](./figures/git_commit_message.png)
+```{r label="commitmessage", echo=FALSE, fig.cap="Entering a commit message"}
+knitr::include_graphics("./figures/git_commit_message.png")
+```
 
-Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right.
+Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right. You need to provide this small message before pressing the commit button once more. This will let git track the changes to these files. A message will be shown if the commit is successful.
 
-![](./figures/git_commit_message.png)
-
-You need to provide this small message before pressing the commit button once more. This will let git track the changes to these files. A message will be shown if the commit is successful.
-
-![](./figures/git_commit_completed.png)
+```{r label="commitcompleted", echo=FALSE, fig.cap="A completed commit"}
+knitr::include_graphics("./figures/git_commit_completed.png")
+```
 
 With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked, this is a manual step. As with normal documents you are advised to save (commit) your changes to your project frequently. More so, if you create a new file you will need to add it before you can commit it.
 
@@ -107,19 +116,27 @@ For security reasons the use of your github password is not allowed in remote ac
 
 To create a new project on github hit the "+" sign top left on the github main page (once logged in), and select the "new repository" from the dropdown menu.
 
-![](figures/git_new_project.png)
+```{r label="newgithubrepo", echo=FALSE, fig.cap="Create a new github repository"}
+knitr::include_graphics("./figures/git_new_project.png")
+```
 
 A new interface will open up in which you should not use any template, but specify your own project name and brief description. Make sure your project is public, and all other settings are kept as is before you hit the "Create repository" button.
 
-![](figures/git_new_project_settings.png)
+```{r label="newgithubsettings", echo=FALSE, fig.cap="Set the github project name"}
+knitr::include_graphics("./figures/git_new_project_settings.png")
+```
 
-Note the URL that is generated for your project, you will need it when creating a new RStudio project.
+Note the URL that is generated for your project, you will need it when creating a new RStudio project which is linked to github.
 
-![](figures/git_project_link.png)
+```{r label="githubsetup", echo=FALSE, fig.cap="A repository link you need during the R project wizard"}
+knitr::include_graphics("./figures/git_project_link.png")
+```
 
 Next we'll setup an R project which is associated with the repository. Use: File \> New Project \> Version Control \> Git.
 
-![](figures/git_project_wizard.png)
+```{r label="projectwizard", echo=FALSE, fig.cap="Linking the github project to a new git enabled R project"}
+knitr::include_graphics("./figures/git_project_wizard.png")
+```
 
 In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". A window will pop up, asking for your github username and a password. This password is _not_ your github login password but the PAT described above. After entering your credential, RStudio creates a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
 
@@ -127,7 +144,9 @@ In the "repository URL" paste the URL of your new GitHub repository, in the exam
 
 Once a remote git service has been configured you can push your local git repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using `git push`. At the end of a day or a session it is always advised to push your changes to your remote repository to store any changes.
 
-![Remote git workflow - by Paola Corrales and Elio Campitelli](https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png)
+```{r label="remotegithubworkflow", echo=FALSE, fig.cap="Remote git workflow - by Paola Corrales and Elio Campitelli"}
+knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png")
+```
 
 > NOTE: Syncing between github and your local repository is a manual task. If not performed the repository will not be synced. To retain all your changes sync both repositories often!
 
@@ -159,11 +178,15 @@ to create a local copy of your remote repositories. You can then start working o
 
 You can also create a copy of any public github project from within your github account by creating a fork. You can create a fork of a project by pressing the fork button top right on any public github project page. The number of forks of a project is displayed next to the button, in case of the {rpmodel} package there are 24 forks of this project.
 
-![](figures/git_fork.png)
+```{r label="creatingforks", echo=FALSE, fig.cap="Creating a fork of an existing project (rpmodel)"}
+knitr::include_graphics("./figures/git_fork.png")
+```
 
 You can give the forked project a new name and description if so desired.
 
-![](figures/git_fork_settings.png)
+```{r label="forksettings", echo=FALSE, fig.cap="Github fork settings"}
+knitr::include_graphics("./figures/git_fork_settings.png")
+```
 
 A fork allows you to experiment with the code stored in the original project without affecting it. However, the relation to the original project is maintained. If you want to contribute changes to the original project you can do so with a **pull request**.
 
@@ -171,7 +194,9 @@ A fork allows you to experiment with the code stored in the original project wit
 
 In a forked project, go to the "Pull requests" tab and press the green "New pull request" button. You will then have to provide description of the changes you made. This information will be forwarded to the original owner of the project, who can accept these changes and accept the pull request and "pull" in the changes.
 
-![](figures/git_pull_request.png)
+```{r label="pullrequest", echo=FALSE, fig.cap="Creating a new github pull request"}
+knitr::include_graphics("./figures/git_pull_request.png")
+```
 
 ### Location based code management - github templates
 
@@ -183,15 +208,21 @@ You can use the template in combination with a github based version (\@ref(versi
 
 To use the template create a new repository on github, as you otherwise would using the big green button. If you are in the project on github you can hit the green button top right (Use this template).
 
-![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png)
+```{r label="projecttemplate", echo=FALSE, fig.cap="Use a github project as a template"}
+knitr::include_graphics("https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png")
+```
 
 Otherwise you can select the repository from the template dropdown menu, select `geco-bern/R-project-template`.
 
-![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png)
+```{r label="newtemplaterepository", echo=FALSE, fig.cap="Using a new template based repository"}
+knitr::include_graphics("https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png")
+```
 
 Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default `.Proj` file.
 
-![](https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png)
+```{r label="newtemplaterepositoryname", echo=FALSE, fig.cap="Assigning a new template based repository"}
+knitr::include_graphics("https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png")
+```
 
 You can now clone the project to your local computer and continue to populate it with code and data.
 
@@ -199,9 +230,7 @@ You can now clone the project to your local computer and continue to populate it
 
 #### Location based code management
 
-Create a github account (if you do not have one already).
-
-Create a new R project using the R project template.
+Create a new R project using the git R project template.
 
 -   Make some changes to the README.md
 
@@ -213,20 +242,18 @@ Create a new R project using the R project template.
 
 This is a team exercise: team up with someone else in the classroom.
 
-1.  Person 1 - clone the github project of Person 2
+1.  Person 1 - clone the github project of the previous step of Person 2
 
 2.  Person 1 - create a new file in this project
 
-3.  Person 1 - with changes made on github create a pull request
+3.  Person 1 - with changes made on github create a **pull request**
 
-4.  Person 2 - review the pull request, and accept the pull request integrating new code in the project of Person 2
+4.  Person 2 - review the pull request, provide some comments and accept the pull request integrating new code in the project of Person 2
 
 5.  Person 2 - add a new file to your own project, and update the github project
 
 6.  Person 1 - integrate these changes in your project
 
-7.  Create a merge conflict and resolve the merge conflict
+7.  Can you create a merge conflict and resolve the merge conflict?
 
 To complete the exercise, reverse rolls between Person 1 and Person 2!
-
-## Solutions
