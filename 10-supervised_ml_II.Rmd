@@ -236,10 +236,10 @@ This illustrates that the data structure and the modelling aim (generalisability
 
 ## Solutions
 
-XXXXXXXXX
+<!-- XXXXXXXXX -->
 
-For random forests from the **ranger** package, hyperparameters are:
+<!-- For random forests from the **ranger** package, hyperparameters are: -->
 
--   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors.
--   `min.node.size`: the number of data points at the "bottom" of each decision tree
--   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision
+<!-- -   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors. -->
+<!-- -   `min.node.size`: the number of data points at the "bottom" of each decision tree -->
+<!-- -   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision -->
