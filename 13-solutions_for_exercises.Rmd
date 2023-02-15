@@ -425,6 +425,83 @@ hhdf_meanseason |>
 ```
 
 ## Chapter 05
+
+### Files and file formats
+
+The below code shows how to read in the different demo data sets (CSV files). You will note that they all need separate settings, and that a given file extension isn't necessarily a reflection of the content the file. Inspection of your read in data is therefore key.
+
+```{r}
+# read in the first demo
+demo_01 <- read.table(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_1.csv",
+  sep = ",",
+  header = TRUE
+  )
+
+# read in second demo
+demo_02 <- read.table(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_2.csv",
+  sep = " ",
+  header = TRUE
+  )
+
+demo_03 <- read.table(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_3.csv",
+  sep = ";",
+  comment.char = "|",
+  header = TRUE,
+  )
+```
+
+All the demo data sets are equal, except for their formatting. We can test if the content is identical by using the `identical()` function in R.
+
+```{r}
+# compare 1 with 2
+identical(demo_01, demo_02)
+
+# compare 2 with 3
+identical(demo_02, demo_03)
+
+# Given transitive properties, demo_01 is identical to demo_03
+```
+
+You can combine the three datasets using the {dplyr} `bind_rows()` function.
+```{r}
+# combining all demo datasets
+demo_all <- dplyr::bind_rows(demo_01, demo_02, demo_03)
+
+# writing the data to a temporary CSV file
+write.table(
+  demo_all, 
+  path = file.path(tempdir(), "tmp_csv_file.csv"),
+  col.names = TRUE,
+  row.names = FALSE,
+  sep = ","
+)
+
+# or...
+write.csv(
+  demo_all,
+  file.path(tempdir(), "tmp_csv_file.csv"),
+  row.names = FALSE
+)
+
+# read in the previous CSV file
+demo_all_new <-read.table(
+  file.path(tempdir(), "tmp_csv_file.csv"),
+  header = TRUE,
+  sep = ","
+)
+
+# writing the data to a JSON file
+jsonlite::write_json(demo_all_new, path = "./my_json_file.json")
+```
+
+1. It is a NetCDF file
+2. the {terra} library (see Table xyz)
+3. Temperature data for Switzerland at noon on 2021-01-01
+4. 
+
 ## Chapter 06
 ## Chapter 07
 ## Chapter 08
