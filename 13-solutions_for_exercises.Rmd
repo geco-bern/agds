@@ -428,6 +428,8 @@ hhdf_meanseason |>
 
 ### Files and file formats
 
+#### Reading and writing human readable files {-}
+
 The below code shows how to read in the different demo data sets (CSV files). You will note that they all need separate settings, and that a given file extension isn't necessarily a reflection of the content the file. Inspection of your read in data is therefore key.
 
 ```{r}
@@ -497,12 +499,87 @@ demo_all_new <-read.table(
 jsonlite::write_json(demo_all_new, path = "./my_json_file.json")
 ```
 
+#### Reading and writing binary files {-}
+
 1. It is a NetCDF file
 2. the {terra} library (see Table xyz)
 3. Temperature data for Switzerland at noon on 2021-01-01
+
+```{r}
+# read unknown netcdf file using the {terra} library
+library(terra)
+unkown_netcdf <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc")
+
+# print the meta-data by calling the variable
+unknown_netcdf
+
+# visually plot the data
+terra::plot(unknown_netcdf)
+```
+
 4. 
 
+```{r}
+# write the data as a geotiff (other options are possible as well in writeRaster)
+terra::writeRaster(
+  unknown_netcdf,
+  filename = "./test.tif",
+  overwrite = TRUE
+  )
+```
+
+```{r}
+# read unknown tif file using the {terra} library
+library(terra)
+unkown_tif <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif")
+
+# print the meta-data by calling the variable
+unknown_tif
+
+# visually plot the data
+terra::plot(unknown_tif)
+
+# Are they exactly the same
+terra::plot(unknown_tif - unknown_netcdf)
+
+# or...
+identical(unkown_netcdf, unkown_tif)
+```
+
+1. Looks similar to the NetCDF data, however one pixel is different as shown by taking the difference between both datasets.
+
 ## Chapter 06
+
+### External data
+
+The project data is stored in one folder without folders to sort data from code to give it structure.
+
+The project can be re-organized using a simple project structure as such:
+
+``` bash
+~/project/
+├─ data/
+     ├─ 00_convert_data.R
+     ├─ survey.xlsx # the original
+     ├─ survey.csv # from (xls conversion (copy 1).csv)
+├─ R/
+     ├─ my_functions.R
+├─ analysis/
+     ├─ 00_model_fits.R # from Model-test-final.R
+     ├─ 01_model_plots.R # from Plots.R
+├─ vignettes/
+     ├─ Report.Rmd
+├─ manuscript/
+     ├─ Report.html
+     ├─ Figure 1.png
+```
+
+Note that duplicate files are removed, code to cleanup data is numbered and stored with the data, functions which are accessible for analysis are stored in the R folder, Rmarkdown files are stored in the vignettes folder and the results of the full analysis is stored in a manuscript folder. Some variations on naming is possible.
+
+### A new project
+
+
+
 ## Chapter 07
 ## Chapter 08
 
