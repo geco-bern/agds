@@ -47,11 +47,11 @@ This book contains the lecture notes and exercises for the following courses, of
 
 This is a course for Bachelors students in their second or third year of studies in Geography.
 
--   Chapters \@ref(getting_started) to Chapter \@ref(randomforest)
+-   Chapters \@ref(gettingstarted) to Chapter \@ref(randomforest)
 
 **Applied Geodata Science II**
 
-This is a course for Master students in Geography or Climate Sciences.
+This is a course for Master students in Geography or Climate Sciences. Chapters in development.
 
 
 ### Course goal {.unnumbered}
