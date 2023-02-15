@@ -79,7 +79,6 @@ datawrangling
 learning-objectives-3
 tutorial-2
 example-data
-required-libraries
 tidyverse
 tabular-data
 variable-selection
@@ -100,7 +99,6 @@ functional-programming-ii
 exercises-2
 datavis
 learning-objectives-4
-required-packages
 tutorial-3
 the-grammar-of-graphics
 every-data-has-its-representation
@@ -177,7 +175,7 @@ regression
 linear-regression
 regression-on-categorical-variables
 polynomial-regression
-metrics-for-regression
+metrics-for-regression-evaluation
 metrics-for-regression-model-comparison
 classification
 logistic-regression
@@ -194,7 +192,6 @@ find-the-single-best-predictor
 supervisedmli
 learning-objectives-9
 tutorial-8
-required-packages-1
 what-is-supervised-machine-learning
 overfitting
 data-and-the-modelling-challenge
@@ -216,7 +213,6 @@ solutions
 supervisedmlii
 learning-objectives-10
 tutorial-9
-required-packages-2
 data-and-the-modelling-challenge-1
 training
 hyperparameters
@@ -227,7 +223,6 @@ exercises-8
 randomforest
 learning-objectives-11
 tutorial-10
-required-packages-3
 decision-trees
 bagging
 from-trees-to-a-forest
