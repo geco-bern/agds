@@ -12,7 +12,7 @@ Contributing authors: Koen Hufkens, Pepa Aran, Pascal Schneider
 
 The course introduces the typical data science workflow using various examples of geographical and environmental data. With a strong hands-on component and a series of input lectures, the course introduces the basic concepts of data science and teaches how to conduct each step of the data science workflow. This includes the handling of various data formats, the formulation and fitting of robust statistical models, including basic machine learning algorithms, the effective visualization and communication of results, and the implementation of reproducible workflows, founded in Open Science principles. The overall course goal is to teach students to tell a story with data.
 
-![](./figures/data_science_workflow.png)
+![](./figures/data_science_workflow_simpl.png)
 
 ## Issues: bugs and errors
 
