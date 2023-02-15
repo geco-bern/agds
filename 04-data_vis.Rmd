@@ -445,8 +445,9 @@ cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 Scatter plots can appear "overcrowded" when points are plotted on top of each other and potentially important information is lost in the visualization.
 
 ```{r}
-hhdf |>
-  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+ggplot(
+    data = hhdf,
+    aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point() +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
        y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
@@ -473,8 +474,9 @@ ggplot(
   scale_y_continuous(expand = c(0, 0))
 
 # density hexagonal bins
-ddf |>
-  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+ggplot(
+    data = ddf,
+    aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_hex() +
   scale_fill_viridis_c() +
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
@@ -506,7 +508,9 @@ df_volcano <- tibble(
   height = c(volcano) - 140  # subtract 140 for example below
 )
 
-ggplot(df_volcano, aes(x = x, y = y, fill = height)) + 
+ggplot(
+  data = df_volcano,
+  aes(x = x, y = y, fill = height)) + 
   geom_raster() + 
   scico::scale_fill_scico(palette = 'bukavu', midpoint = 0) + 
   scale_x_continuous(expand = c(0, 0)) +
