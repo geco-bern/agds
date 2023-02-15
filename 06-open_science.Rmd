@@ -9,13 +9,9 @@ In this chapter you will learn the reasons for practicing open science, and some
 In this chapter you will learn how to:
 
 -   structure a project
-
 -   manage a project workflow
-
 -   capture a session or machine state
-
 -   use dynamic reporting
-
 -   ensure data/project retention
 
 ## Tutorial
