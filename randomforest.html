@@ -400,17 +400,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb414-2"><a href="randomforest.html#cb414-2" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
 <span id="cb414-3"><a href="randomforest.html#cb414-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span></code></pre></div>
 <pre><code>## Retrieving &#39;https://mran.microsoft.com/snapshot/2023-01-08/bin/macosx/contrib/4.2/ranger_0.14.1.tgz&#39; ...
-##  OK [downloaded 2 Mb in 0.9 secs]
+##  OK [downloaded 2 Mb in 1.7 secs]
 ## Retrieving &#39;https://mran.microsoft.com/snapshot/2023-01-08/bin/macosx/contrib/4.2/RcppEigen_0.3.3.9.3.tgz&#39; ...
-##  OK [downloaded 4.5 Mb in 0.7 secs]
+##  OK [downloaded 4.5 Mb in 1.5 secs]
 ## Installing RcppEigen [0.3.3.9.3] ...
 ##  OK [installed binary]
 ## Moving RcppEigen [0.3.3.9.3] into the cache ...
-##  OK [moved to cache in 1.4 milliseconds]
+##  OK [moved to cache in 1.6 milliseconds]
 ## Installing ranger [0.14.1] ...
 ##  OK [installed binary]
 ## Moving ranger [0.14.1] into the cache ...
-##  OK [moved to cache in 1.5 milliseconds]</code></pre>
+##  OK [moved to cache in 1.4 milliseconds]</code></pre>
 <div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="randomforest.html#cb416-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 </div>
 <div id="decision-trees" class="section level3 hasAnchor" number="11.2.2">
