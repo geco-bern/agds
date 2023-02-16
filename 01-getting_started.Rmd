@@ -81,17 +81,6 @@ Logical operators:
 -   `<=` less than or equal to
 -   `!=` not equal
 
-#### Working directory
-
-The *working directory* is the default location to which R writes to and reads files from. You can check what is your current working directory or change it with the following commands:
-
-```{r eval = FALSE}
-getwd()         # get working directory
-setwd("~/agds") # set working directory
-```
-
-Ideally, the working directory is a folder containing only the files relevant to your data analysis project. As we will see later, working with R Projects sets the working directory correctly for you.
-
 ### R objects
 
 In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in future chapters.
@@ -310,7 +299,9 @@ By contrast, `NULL` is the R null object or empty space. You can also assign `NU
 
 The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel in R Studio, grouped as Data, Values and Functions.
 
-After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory. However, this is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.
+After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your *working directory*. The working directory is the default location to which R writes to and reads files from. You can check what your current working directory is running `getwd()` in the command line.
+
+However, this is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.
 
 #### Read and save data
 
@@ -350,7 +341,7 @@ To run a script, you can either use the **Source** button in the source editor o
 
     > source("my_r_script.R")
 
-Note that, to be able to run the code above, the file `my_r_script.R` must be in your curretn working directory.
+Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory.
 
 You can find more useful information about scripts and workflows in [R for Data Science](https://r4ds.had.co.nz/workflow-scripts.html) [@Wickham2017R].
 
