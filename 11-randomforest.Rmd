@@ -4,6 +4,8 @@
 
 ## Learning objectives
 
+TBC
+
 ## Tutorial
 
 ### Decision trees

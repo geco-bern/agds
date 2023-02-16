@@ -16,7 +16,7 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 ### Working with R and RStudio
 
-R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used among statisticians and data miners for developing statistical software and data analysis. RStudio is an integrated development environment (IDE) for R that makes it easy to use R for data analysis and visualization.
+R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used, not only among statisticians and data miners for developing statistical software, but also by scientist in various domains for data analysis, visualisation, and modelling. RStudio is an integrated development environment (IDE) that provides a user-friendly "center stage" for your work in R (and Python, see [here](https://posit.co/blog/three-ways-to-program-in-python-with-rstudio/)).
 
 #### Installing R and RStudio
 
@@ -48,21 +48,21 @@ Once you have both programs installed, you can open RStudio and begin a new *R s
 -   The code will be executed in the *console* panel, and any output will be displayed there.
 -   Alternatively, you can directly type single-statement R commands in the console and run them by pressing Enter.
 
-For example, let's say you want to calculate the sum of the numbers 1, 2, and 3. You can write the following code in the source editor:
+For example, let's say you want to calculate the sum of the numbers 1, 2, and 3. You can write the following code in the console or in the source editor:
 
 ```{r}
 # Calculate the sum of 1, 2, and 3
 1 + 2 + 3
 ```
 
-Then, you can press the **Run** button or use the keyboard shortcut to run the code. The output will be displayed in the console:
+If you've entered it in the console, press Enter. If you've entered it in the source editor, you can press the **Run** button or use the keyboard shortcut to run the code. The output will be displayed in the console:
 
         > 1 + 2 + 3
         [1] 6
 
 #### Base R operations
 
-The R `base` package contains the basic functions which let R function as a programming language: arithmetic, input/output, basic programming support, etc. Its contents are always available when you start an R session. Here we introduce the main binary operators, which work on vectors, matrices and scalars.
+The R {base} package contains the basic functions which let R function as a programming language: arithmetic, input/output, basic programming support, etc. Its contents are always available when you start an R session. Here we introduce the main binary operators, which work on vectors, matrices and scalars.
 
 Arithmetic operators:
 
@@ -87,21 +87,21 @@ In addition to running single statements in the R console, the output of a state
 
 #### Types of data
 
-First, we will introduce the different types of data that one can encounter. We can classify statistical variables according to what values they take.
+First, we will introduce the different types of data that one can encounter. We can classify variables according to what values they take.
 
--   *Numerical*: These statistical variables can be measured quantitatively and their value is a number.
-    -   *Continuous*: We say that a variable is continuous when it can take an infinite number of real values within an interval (for example, the altitude of a mountain). One could consider unbounded variables (temperature) or restricted variables, like positive variables (weight of a person) or an interval (a proportion between 0 and 1).
+-   *Numerical*: These variables can be measured quantitatively and their value is a number.
+    -   *Continuous*: We say that a variable is continuous when it can take an infinite number of real values within an interval. One could consider unbounded variables (height above sea level) or restricted variables, like positive variables (weight of a person) or an interval (a proportion between 0 and 1).
     -   *Discrete*: When the variable can only take a finite number of values in an interval, we say it is discrete. A common example is count data, like the population of a city.
 -   *Categorical*: The values are characteristics that cannot be quantified.
-    -   *Binary*: These variables have two possible values: TRUE or FALSE (a variable indicating whether the person has siblings or not).
-    -   *Nominal*: They describe a name, label or category without natural order (for example the name of a person).
-    -   *Ordinal*: Like their name indicates, ordinal variables are categorical and follow a natural order. For example, "terrible", "bad", "neutral", "good", "great". A numerical variable can sometimes be discretized and put into categories, like dividing people into age groups "toddler", "child", "teenager", "adult".
+    -   *Binary*: These variables have two possible values: `TRUE` or `FALSE` (a variable indicating whether the person has siblings or not).
+    -   *Nominal*: They describe a name, label, or category without a natural order (for example, the name of a person).
+    -   *Ordinal*: Like their name indicates, ordinal variables are categorical and follow a natural order. For example, "terrible", "bad", "neutral", "good", "great". A numerical variable can sometimes be discretized and put into categories, like dividing a person's age into age groups (bins) "toddler", "child", "teenager", "adult".
 
 Next, we will see how these different types of variables can be treated in R.
 
 #### Variables and classes
 
-In R, a *variable* is a named location in memory that stores a value. To create a variable, you simply assign a value to a name using the `<-` operator (or the `=` operator, which is equivalent, but `<-` is preferred). For example:
+In R, a *variable* is a named location in memory that stores a value. To create a variable, you simply assign a value to a name using the `<-` operator (or the `=` operator, which has an equivalent role when assigning values to a variable, but `<-` is preferred). For example:
 
 ```{r}
 my_variable <- 5
@@ -126,9 +126,9 @@ The most basic classes are:
 
 -   `numeric` (`num`) - any real number, e.g. 2.375
 -   `integer` (`int`) - integer numbers, e.g. 2
--   `character` (`chr`) - any string, e.g. "fluxes"
--   `logical` (`logi`) - binary, i.e. `TRUE`/`FALSE` values
--   `factor` (`Factor`) - categorical data, the variable can only be one of a defined amount of options, e.g. female/male/other. Factors can also be given an order.
+-   `character` (`chr`) - any string, e.g., "fluxes"
+-   `logical` (`logi`) - binary, i.e., `TRUE`/`FALSE` values
+-   `factor` (`Factor`) - categorical data, the variable can only be one of a defined number of options, e.g., one of C3, C4, or CAM (the three pathways of photosynthesis). Factors may also be given an order.
 -   `function` - a set of statements organized to perform a specific task, for example `mean()`
 
 By default, any number is coerced as `"numeric"`. So if you want an integer value to have class `"integer"`, you need to specify it like this:
@@ -138,7 +138,7 @@ my_variable <- as.integer(5)
 class(my_variable)
 ```
 
-Sometimes you need to convert the class of an object, for example turning a `"integer"` number into a `"character"`. You can do so as follows:
+Sometimes, you need to convert the class of an object, for example turning an `"integer"` number into a `"character"`. You can do so as follows:
 
 ```{r}
 my_variable <- as.character(my_variable)
@@ -146,7 +146,7 @@ my_variable
 class(my_variable)
 ```
 
-Notice that now the values are in quotes `"5"`. This way, R interprets it as a text and you will not be able to do any numeric calculations with it anymore.
+Note that now, the values are in quotes `"5"`. This way, R interprets it as a text and you will not be able to do any numeric calculations with it anymore.
 
 #### Vectors
 
@@ -192,13 +192,13 @@ x > 2
 
 #### Lists
 
-*Lists* are another R object, of class `"list"`. They are extremely flexible. They allow us to store different types of data, even if they are of different lengths or classes. They are created with the function `list()` and can be named or not. Here is an example where each element of the list is named.
+*Lists* are R objects, of class `"list"`. They are a bit like vectors, but more flexible. They allow us to store different types of data, even if they are of different lengths or of different classes. They are created with the function `list()` and can be named or not. Here is an example where each element of the list is named.
 
 ```{r}
 mylist <- list(
     temperatures = c(2.234, 1.987, 4.345), 
     my_favourite_function = mean, 
-    best_course = "Applied Geodata Science"
+    my_favourite_course = "Applied Geodata Science"
     )
 ```
 
@@ -210,10 +210,11 @@ mylist[["temperatures"]]
 mylist$temperatures
 ```
 
-Notice below how, if we index the list like we would index a vector, a list with just one element would be returned, rather than the element itself. `[` is used to select multiple elements and `[[` or `$` for selecting a single element. A thorough explanation of these differences is given [here](https://r4ds.hadley.nz/base-r#sec-subset-many) and [here](https://r4ds.hadley.nz/base-r#sec-subset-one).
+Note below how, if we index the list like we would index a vector, a list with just one element would be returned, rather than the element itself. `[` is used to subset a list (and a list is returned). In contrast, `[[` or `$` extract a single element from a list. A thorough explanation of these differences is given [here](https://r4ds.hadley.nz/base-r#sec-subset-many) and [here](https://r4ds.hadley.nz/base-r#sec-subset-one).
 
 ```{r}
-mylist[1]
+mylist[1]  # returns a subset of the list as a new list
+mylist[[1]]  # extracts the first element of the list (a vector)
 ```
 
 To get the first temperature value, which is an element of the vector (at the same time an element of the list), we can run:
@@ -233,7 +234,7 @@ This was a very condensed introduction to vectors and lists. A more complete int
 
 #### Data frames
 
-A *data frame*, of class `"data.frame"`, is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.
+A *data frame* is an object of class `"data.frame"` is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.
 
 A data frame can be created as follows:
 
@@ -249,7 +250,7 @@ The elements of a data frame can be accessed the same way that we treated lists,
 df$age
 ```
 
-Furthermore, they can be treated as a *matrix*. Notice that the first index refers to rows and the second to columns. For example:
+Furthermore, they can be treated as a *matrix*. Note that the first index refers to rows and the second to columns. For example:
 
 ```{r}
 df[, 1]   # first column
@@ -257,29 +258,29 @@ df[2, ]   # second row
 df[2,2]   # age of Peter
 ```
 
-There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in [Tutorial 2](#programming_primers) and have dedicated all of [Tutorial 3](#data_wrangling) to teach you how to work with data frames in a tidy way.
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in [Chapter 2](#programming_primers) and have dedicated all of [Chapter 3](#data_wrangling) to teach you how to work with data frames in a tidy way.
 
 #### Functions
 
-R *functions* can be applied to an object (or several objects) and return another object. For example the `mean()` function can take a numeric vector as input and output the mean of its values.
+R *functions* can be applied to an object (or several objects) and return another object. For example, the `mean()` function can take a numeric vector as input and output the mean of its elements.
 
 ```{r}
 mean(df$age)
 ```
 
-Functions are also R objects and have class `"function"`. They are covered in more detail in [Tutorial 2](#programming_primers).
+Functions are also R objects and have class `"function"`. They are covered in more detail in [Chapter 2](#programming_primers).
 
 #### Missing values
 
 R has two representations for missing values: `NA` and `NULL`. Similar objects also exist in other programming languages.
 
-`NA` is an identifyer to mark missing data and stands for *not available*. You will encounter this when reading data into a data frame, and some of its cells show `NA` because that value is missing. Also, if you ask for the 4th element of a vector of length 3, R returns `NA`.
+`NA` is an identifier to mark missing data and stands for *not available*. You will encounter this when reading data into a data frame, and some of its cells show `NA` because that value is missing. Also, if you ask for the fourth element of a vector of length 3, R returns `NA`.
 
 ```{r}
 x[4]
 ```
 
-Almost all operations on vectors where at least one value is `NA` also return `NA`. For example:
+In general, operations on vectors that contain at least one `NA` value return `NA`. For example:
 
 ```{r}
 mean(c(1, 2, NA))
@@ -293,7 +294,7 @@ mean(c(1, 2, NA), na.rm = TRUE)
 
 Furthermore, `NA` counts as an element in vectors. A variable assigned just `NA` would have length 1 (of class `"logical"`) and the vector above has length 3, as can be determined using the `length()` function, and has class `"numeric"`.
 
-By contrast, `NULL` is the R null object or empty space. You can also assign `NULL` to a variable, which will have length zero because it is empty. Functions may return `NULL` when no output was defined, or if an error occurred.
+By contrast, `NULL` is the R null object or empty space. You can also assign `NULL` to a variable, which will then have length zero because it is empty. Functions may return `NULL` when no output was defined, or if an error occurred.
 
 #### R environment
 
@@ -313,29 +314,26 @@ The function `save()` allows to save multiple R objects of any form as a single 
 save(df, df_small, file = "data/data_frames.RData")
 ```
 
-`.RData` files are read into your environment using the `load()` function, rather than `read()`. This function loads the objects with the name that they were saved with.
+`.RData` files are read into your environment using the `load()` function. This function loads the objects with the name that they were saved with.
 
 ```{r eval=FALSE}
 load("data/data_frames.RData")
 ```
 
-Alternatively, the function `saveRDS()` allows you save individual R objects of any form (not just a data frame). `saveRDS()` creates a binary file that is fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. For example:
+Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()` and gives the user more control.
 
 ```{r, eval=F}
 saveRDS(df_small, file = "data/df_small.rds")
-```
-
-This file can then be read into your R environment. We need to assign a name to the object read, otherwise it will be just printed to the console but not loaded into the R environment. Sometimes, it is useful to give it a new name, for example:
-
-```{r, eval=F}
 df_small_2 <- readRDS("data/df_small.rds")
 ```
+
+`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, avoid file formats that are not readable across different platforms and programming languages. We will learn more about open source binary file formats in Chapter \@ref(datavariety).
 
 ### R scripts
 
 Usually, multiple statements are needed to get, e.g., from reading data into R to final numbers and figures that make up a further analysis. Together, these multiple statements constitute a *workflow*. It is essential that all workflows that underlie results of publications are *reproducible*, that is, that another person can replicate your results using your code and certain data.
 
-To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R *script*. A script is a text file named with the suffix `.R` to indicate that it is executable by R. It contains a sequence of R commands, which you can run all at once or one at a time. These commands will always be run line-by-line, starting from the top.
+To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R *script*. A script is a text file named with the suffix `.R` to indicate that it is executable by R. It contains a sequence of R commands, which you can be executed, line by line, starting from the top.
 
 To create a new script in RStudio, go to the **File** menu and select **New File \> R Script**. This will open a new script file in the source editor. You can then type your R code in the script file and save it to your computer.
 
@@ -351,44 +349,34 @@ We should always strive to write nice scripts and good code. Good code is clean,
 
 #### Structure your script
 
-At the beginning of each file add a **header** as a fully commented text section, describing what the code contains, and how it fits into the larger analysis framework.
+A script should start with a brief and concise statment of what it does, followed by statements to load libraries and source functions that are saved in separate `.R` files. Then, start with statements that implement the purpose of the respective script. 
 
-Note that Git stores all meta information about the file, including who created it, who modified it and when. This information should not be added to the header. Then, load all libraries needed within the script. Then, source any scripts and load data, and only then, start with the sequence of statements. To visually separate parts, break up your code using, commented lines.
+Statements, or groups of statements, should be preceeded by comments. Comments are all that appears to the right of a `#` and are code parts that are not interpreted by R and not executed. Adding comments in the code helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).
 
-For example, a script could look like this:
+To visually separate parts of a script, use commented lines (e.g., `----`). The RStudio text editor automatically recognizes `----` added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (**Outline** button in the top right corner of the editor panel). 
+
+A script script could look like this:
 
 ```{r eval=FALSE, message=F}
-#////////////////////////////////////////
-# Demonstrating script structure
 #---------------------------------------
-
-#----Load packages, functions and data
+# Create a vector with random values
+# Save as file "data/vec_randomvalues.rds"
+#---------------------------------------
 library(tidyverse)
-source("R/my_functions.R")
-my_df <- readr::read_csv("data/my_df.csv")
-#---------------------------------------
-# Main part
-#---------------------------------------
-# convert units
-my_df$temp <- my_df$temp + 273.15  # deg C -> K
-#---------------------------------------
-# Writing output
-#---------------------------------------
-filn <- "data/my_df_kelvin.csv"
-print(paste("Writing file", filn, "..."))
-readr::write_csv(my_df, filn)
+
+# Generate data----
+# Random 100 values are from a distribution 
+# with mean 20 and standard deviation 5
+vec <- rnorm(100, mean = 20, sd = 5)
+
+# Write to file----
+filn <- "data/vec_randomvalues.rds"
+print(paste("Writing file:", filn, "..."))
+saveRDS(vec, filn)
 ```
 
-#### Comments
+Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter \@ref(codemgmt), we will learn about the code versioning control system *git*, which keeps track of all this as meta information associated with files.
 
-Adding comments in the code helps to explain exactly what the code is doing and why. This makes it easy to understand and modify the code, and can be key when debugging. In R source files, comments are prefixed with a `#`, which means that all what is right of the `#` is not interpreted by R.
-
-Avoid redundant comments like the one below. Instead, comments should explain the "why" of that chunk of code, not the "what" or "how".
-
-```{r eval=F}
-# take the mean 
-myvar_mean <- mean(myvar)
-```
 
 #### Spaces and breaks
 

@@ -1,6 +1,6 @@
 # Programming primers {#programmingprimers}
 
-**Chapter lead author: Pepa Arán**
+**Chapter lead author: Pepa Aran**
 
 ## Learning objectives
 
