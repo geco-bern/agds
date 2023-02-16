@@ -64,11 +64,11 @@ invisible(lapply(use_pkgs, require, character.only = TRUE))
 
 For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
 
-For example, to work with *netcdf* files in R, you would need to install the `"ncdf4"` library and the `netCDF` command-line tools:
+For example, to work with *netcdf* files in R, you would need to install the {ncdf4} library and the `netCDF` command-line tools:
 
--   To install the `"ncdf4"` library, follow the same steps as above for installing an R library.
+-   To install the {ncdf4} library, follow the same steps as above for installing an R library.
 -   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
--   Once the `"ncdf4"` library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
+-   Once the {ncdf4} library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
 
 ### Programming basics
 
@@ -208,7 +208,7 @@ The file is automatically machine-readable because we have:
 
 -   Only one header row, containing the column (variable) names.
 -   Variables organised by columns, and observations by rows.
--   Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (\`<dbl>').
+-   Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (`<dbl>`).
 -   One value per cell.
 -   No merged cells. In short, the data frame is tidy. To understand the sort of object we work with, i.e. the *class*, we can do:
 
@@ -216,9 +216,9 @@ The file is automatically machine-readable because we have:
 class(df)
 ```
 
-Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features.
+Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`"spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features.
 
-Other types of data inputs and how to read them will be covered in [Tutorial 5](#datavariety).
+Other types of data inputs and how to read them will be covered in Chapter \@ref(datavariety).
 
 #### Understanding the data structure
 
@@ -298,7 +298,7 @@ Another method is to select the columns by column names, i.e. giving as input a 
 df[, c("TIMESTAMP_START", "TA_F_MDS", "TA_F_MDS_QC")]
 ```
 
-In [Tutorial 3](#data_wrangling), we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in a way that makes your workflow more clear and understandable. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
+In Chapter \@ref(datawrangling), we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in a way that makes your workflow more clear and understandable. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
 
 ```{r}
 select(df, 1) # reduces the data frame (tibble) to its first column
@@ -311,7 +311,7 @@ As a further shortcut in tidyverse, we can use the pipe `%>%` operator. The data
 df %>% select(1)
 ```
 
-We *pipe* the object `df` into the `select()` function with argument `1`. Note that the pipe operator `%>%` can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument.
+We *pipe* the object `df` into the `select()` function with argument `1`. Note that the pipe operator `%>%` can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument. A recent new version of {base} R also includes a pipe operator `|>` that you may encounter in code snippets online and in this course.
 
 For the remainder of the tutorial several variables will be required. The methods of data selection demonstrated above will be used below to get the desired variables.
 
@@ -339,11 +339,11 @@ A data frame can be written to a CSV file by:
 write_csv(df_small, file = "data/df_small.csv")
 ```
 
-Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in [Tutorial 5](#datavariety).
+Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
 
 #### Intro to visualisation
 
-Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In [Tutorial 4](#data_visualisation), you will get introduced to additional methods for visualising data. Our data frame `fluxes_subset` contains three variables, one of which is `time`. In other words, we are dealing with a time series. Let's look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (`type = "l"`).
+Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. Our data frame `fluxes_subset` contains three variables, one of which is `time`. In other words, we are dealing with a time series. Let's look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (`type = "l"`).
 
 ```{r}
 plot(1:1440, df_small$temp[1:1440], type = "l") 

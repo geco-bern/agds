@@ -184,4 +184,4 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
 
 -   Chollet & Allaire "Deep learning with R"
-    - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).
+  - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).

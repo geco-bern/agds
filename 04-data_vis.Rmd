@@ -14,9 +14,9 @@ This tutorial is inspired by the comprehensive and online available textbook Fun
 
 ### The grammar of graphics
 
-In Chapter \@ref(data_wrangling), we learned about axes of variation in the data. For example, time is an axis of variation in our example data `hhdf`, or site identity and the date are axes of variation in our example data `ddf`. We have also learned that we can aggregate over axes of variation, and that we can often separate an axis of variation into a hierarchy of subordinate axes of variation (e.g., years, months, days, and a half-hourly time axis).
+In Chapter \@ref(datawrangling), we learned about axes of variation in the data. For example, time is an axis of variation in our example data `hhdf`, or site identity and the date are axes of variation in our example data `ddf`. We have also learned that we can aggregate over axes of variation, and that we can often separate an axis of variation into a hierarchy of subordinate axes of variation (e.g., years, months, days, and a half-hourly time axis).
 
-In this chapter, we will be working mainly with the same half-hourly time series data of ecosystem-atmosphere fluxes and parallel measurements of meteorological variables - as in Chapters \@ref(getting_started) and \@ref(data_wrangling). For time series data, the entry point of the exploratory data analysis cycle may be a visualization of some variable of interest (here `GPP_NT_VUT_REF`) against time:
+In this chapter, we will be working mainly with the same half-hourly time series data of ecosystem-atmosphere fluxes and parallel measurements of meteorological variables - as in Chapters \@ref(gettingstarted) and \@ref(datawrangling). For time series data, the entry point of the exploratory data analysis cycle may be a visualization of some variable of interest (here `GPP_NT_VUT_REF`) against time:
 
 ```{r}
 hhdf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
@@ -80,10 +80,11 @@ Not only the different aesthetics, but also the type of *geometry* (the layers o
 
 #### One value per category
 
-Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(data_wrangling).
+Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(datawrangling).
 
 ```{r}
 # read in demo daily data
+# as saved in the previous chapter
 ddf <- read_csv("data/ddf.csv")
 
 # Bar plot
@@ -177,7 +178,7 @@ Note that the red line plotted by `geom_density()` on top of the density histogr
 
 #### Distributions within categories
 
-To visualize distributions of a single continuous variable within categories, perhaps the most common visualization type is the *box plot*. As described in Chapter \@ref(data_wrangling), it shows the median (bold line in the center), the upper and lower quartiles, corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot. The lines extending from the box edges visualize the range of $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Any point outside this range is plotted by a point.
+To visualize distributions of a single continuous variable within categories, perhaps the most common visualization type is the *box plot*. As described in Chapter \@ref(datawrangling), it shows the median (bold line in the center), the upper and lower quartiles, corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot. The lines extending from the box edges visualize the range of $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Any point outside this range is plotted by a point.
 
 The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, $Q_1$ , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution and does not reflect information about the data volume. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to each box. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The form of their edge is given by the density distribution of the points they represent.
 
@@ -291,12 +292,12 @@ Choices of colors and their combination is far from trivial. Colors in color sch
 -   Intuitively encoding the information in the data (for example, blue-red for cold-hot)
 -   Visually appealing
 
-In (d), we mapped temperature, a continuous variable, onto the color aesthetic of the points and chose the continuous *viridis* color scale by specifying `+ scale_color_viridis_c()`. The viridis scales have become popular for their respect of the points listed above.
+In (d), we mapped temperature, a continuous variable, onto the color aesthetic of the points and chose the continuous {viridis} color scale by specifying `+ scale_color_viridis_c()`. The viridis scales have become popular for their respect of the points listed above.
 
 For further reading, several excellent resources exist that theorize and guide the use of color in data visualization. Excellent sources are:
 
--   [Fabio Crameri's Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/), [Crameri (2018)](https://gmd.copernicus.org/articles/11/2541/2018/) and its R package *scico* (on CRAN).
--   [Paul Tol's Notes](https://personal.sron.nl/~pault/), available for example in the *khroma* R package (on CRAN).
+-   [Fabio Crameri's Scientific colour maps](https://www.fabiocrameri.ch/colourmaps/), [Crameri (2018)](https://gmd.copernicus.org/articles/11/2541/2018/) and its R package {scico} (on CRAN).
+-   [Paul Tol's Notes](https://personal.sron.nl/~pault/), available for example in the {khroma} R package (on CRAN).
 
 #### Regression within categories {#vis_regr_cat}
 
@@ -328,7 +329,7 @@ Note three aspects here. First, the color-mapping is specified within `aes()` in
 
 Second, we specified a formula for the linear regression "smooting curve" to force the lines through the origin (`y ~ x + 0`). This is motivated by our a priori understanding of the process generating the data: when solar radiation is zero, photosynthesis (and hence GPP) should be zero.
 
-Third, we chose a color palette that reflects the cyclic (or periodic) nature of the categories (months). January is closer to December than it is to April. Therefore, their respective colors should also be closer in the *color space*. An appropriate palette for this is `"romaO"` from the *scico* package.
+Third, we chose a color palette that reflects the cyclic (or periodic) nature of the categories (months). January is closer to December than it is to April. Therefore, their respective colors should also be closer in the *color space*. An appropriate palette for this is `"romaO"` from the {scico} package.
 
 **Separation into sub-plots**
 
@@ -360,7 +361,7 @@ ggplot(
   theme_classic()
 ```
 
-In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter \@ref(data_wrangling), we aggregated the half-hourly `hhdf` data frame to a daily data frame `ddf` from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). This yields a "data quality axis". Is there a pattern between `f_measured` and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?
+In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter \@ref(datawrangling), we aggregated the half-hourly `hhdf` data frame to a daily data frame `ddf` from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). This yields a "data quality axis". Is there a pattern between `f_measured` and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?
 
 A solution is to "map" `f_measured` to the color axis. When adding such an additional mapping to visualisation dimensions ("aesthetics"), we have to specify it using `aes()`. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write `aes(x = date, y = GPP_NT_VUT_REF)` in the `ggplot()` function call (indicating that all subsequent additions of `geom_` layers share this x-y mapping); while `aes(color = f_measured)` is specified only in the `geom_point()` layer.
 
@@ -486,7 +487,7 @@ The base-R function `image()` can be used to visualize such spatial data as imag
 image(volcano)
 ```
 
-{ggplot2}forces us to the data frame paradigm and therefore doesn't lend itself naturally to raster data. We can, however, convert raster data into a data frame in a separate step.
+{ggplot2} forces us to the data frame paradigm and therefore doesn't lend itself naturally to raster data. We can, however, convert raster data into a data frame in a separate step.
 
 ```{r}
 # example from https://github.com/thomasp85/scico
@@ -505,7 +506,7 @@ ggplot(
   scale_y_continuous(expand = c(0, 0))
 ```
 
-In this example, we used the *multisequential* `"bukavu"` color scale from the *scico* package to reflect values above 0 (e.g., elevation above the sea level) and below 0 (ocean depth).
+In this example, we used the *multisequential* `"bukavu"` color scale from the {scico} package to reflect values above 0 (e.g., elevation above the sea level) and below 0 (ocean depth).
 
 #### Geospatial data
 
@@ -527,6 +528,7 @@ Interested readers can find more content on geospatial data visualisation here:
 -   Create a new variable in the daily-aggregated dataset, which defines whether a datapoint is an outlier or not.
 
 **Visualising diurnal and seasonal cycles:** 
+
 -   Using the half-hourly dataset for site CH-Lae (after dropping `-9999` entries), visualise how GPP (`GPP_NT_VUT_REF`) varies on two time scales: diurnal (within-day at hourly time scale) and seasonal. To implement this, follow the following steps:
 - Summarise half-hourly data for each hour and day across multiple years to get a mean seasonality with a mean diurnal cycle for each day of the year. To deal with date-time objects, use the {lubridate} package. Use the functions `lubridate::yday()` and `lubridate::hour()` to extract the day of year and hour of day across entries. See `?yday` to get more hints.
 -   Create a raster plot (`geom_raster()`), mapping the hour of the day to the x-axis, the day of the year to the y-axis, and the magnitude of `GPP_NT_VUT_REF` to color (use the `fill` argument).
@@ -538,9 +540,11 @@ Interested readers can find more content on geospatial data visualisation here:
 ## Exercises for The Report
 
 **Running mean of monthly CO2 concentrations:**
+
 -   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
 
 -   Define a function to compute a 12-month running mean of the monthly CO2 time series. Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken (in this case 12). Plot the running mean on top of the monthly data. Use a different color for the running mean graph.
 
 **Data exploration:**
+
 -   \*\*\*Tell a story about the `airquality` data (data is directly available, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.

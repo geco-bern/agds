@@ -81,17 +81,6 @@ Logical operators:
 -   `<=` less than or equal to
 -   `!=` not equal
 
-#### Working directory
-
-The *working directory* is the default location to which R writes to and reads files from. You can check what is your current working directory or change it with the following commands:
-
-```{r eval = FALSE}
-getwd()         # get working directory
-setwd("~/agds") # set working directory
-```
-
-Ideally, the working directory is a folder containing only the files relevant to your data analysis project. As we will see later, working with R Projects sets the working directory correctly for you.
-
 ### R objects
 
 In addition to running single statements in the R console, the output of a statement can be saved as a new *object*. There are many kinds of R objects, some of which are covered here and in future chapters.
@@ -269,7 +258,7 @@ df[2, ]   # second row
 df[2,2]   # age of Peter
 ```
 
-There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in [Chapter 2](#programming_primers) and have dedicated all of [Chapter 3](#data_wrangling) to teach you how to work with data frames in a tidy way.
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Chapter \@ref(programmingprimers) and have dedicated all of Chapter \@ref(datawrangling) to teach you how to work with data frames in a tidy way.
 
 #### Functions
 
@@ -279,7 +268,7 @@ R *functions* can be applied to an object (or several objects) and return anothe
 mean(df$age)
 ```
 
-Functions are also R objects and have class `"function"`. They are covered in more detail in [Chapter 2](#programming_primers).
+Functions are also R objects and have class `"function"`. They are covered in more detail in Chapter \@ref(programmingprimers).
 
 #### Missing values
 
@@ -311,7 +300,11 @@ By contrast, `NULL` is the R null object or empty space. You can also assign `NU
 
 The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel in R Studio, grouped as Data, Values and Functions.
 
-After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory. However, this is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.
+After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory. 
+
+The *working directory* is the default location to which R writes to and reads files from. You can check what your current working directory is running `getwd()` in the command line.
+
+However, this workflow is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.
 
 #### Read and save data
 
@@ -348,7 +341,7 @@ To run a script, you can either use the **Source** button in the source editor o
 
     > source("my_r_script.R")
 
-Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory, which you can determine by `getwd()`.
+Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory.
 
 You can find more useful information about scripts and workflows in [R for Data Science](https://r4ds.had.co.nz/workflow-scripts.html) [@Wickham2017R].
 
@@ -413,11 +406,13 @@ It is also recommendable to avoid variable names consisting of only one characte
 ```{r eval=F}
 # Good
 day_01
+
 # Bad
 DayOne
 day.one
 first_day_of_the_month
 djm1
+
 # Very bad
 mean <- function(x) sum(x)/length(x) # mean() itself is already a function
 T <- FALSE # T is an abbreviation of TRUE
@@ -442,14 +437,14 @@ Using *R projects* in combination with *Git* is the essence of efficient workspa
 
 #### Installing Git
 
-*Git* is a version control system (covered in detail in [Tutorial 6](#codemgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
+*Git* is a version control system (covered in detail in Chapter \@ref(codemgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
 
 -   First, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
 -   Once Git is installed, set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". You can check that the path to your Git installation is correct.
 -   If you don't have one already, create a GitHub account on <https://github.com> and sign in.
 -   Connect your GitHub account with Git locally, using SSH keys. You should sequentially follow the instructions to [check for existing SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys), [generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), [add a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) and finally [test your SSH connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Note that, at the top of these websites, there's an option to choose your OS because the steps vary depending on the type of computer your work with.
 
-Now you should be able to use Git in the **Terminal** panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools [in a few weeks](#code-mgmt) and they will be a crucial part of the course.
+Now you should be able to use Git in the **Terminal** panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.
 
 #### R projects
 
