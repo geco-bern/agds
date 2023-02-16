@@ -535,7 +535,7 @@ Interested readers can find more content on geospatial data visualisation here:
 <!-- -   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors. -->
 
 
-## Exercises for The Report
+## Report Exercises
 
 **Running mean of monthly CO2 concentrations:**
 -   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
