@@ -241,7 +241,7 @@ gdalinfo your_geotiff.tiff
 >
 > -   manipulations on the data before using the data in a final workflow
 
-Meta-data of data read into R can be accessed by plotting the object itself, i.e. calling the object on the command line. If it is a simple table the first lines of the table will be shown. When it is a more complex object the meta-data will be output as a formatted statement. You can also use the `str` or `summary` commands to summarize data and meta-data. For in depth discussions on meta-data and data wrangling look at Chapter \@ref(data-wrangling).
+Meta-data of data read into R can be accessed by plotting the object itself, i.e. calling the object on the command line. If it is a simple table the first lines of the table will be shown. When it is a more complex object the meta-data will be output as a formatted statement. You can also use the `str` or `summary` commands to summarize data and meta-data. For in depth discussions on meta-data and data wrangling look at Chapter \@ref(datawrangling).
 
 ### Spatial data representation
 
