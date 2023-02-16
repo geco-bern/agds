@@ -690,9 +690,9 @@ write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rd
 ## Exercises
 
 -   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio): 
-  -   a. How many pale characters come from the planets Ryloth and Naboo?
-  -   b. Who is the oldest of the tallest 5 characters?
-  -   c. What is the name of the smallest character and their starship in “Return of the Jedi”
+  a. How many pale characters come from the planets Ryloth and Naboo?
+  b. Who is the oldest of the tallest 5 characters?
+  c. What is the name of the smallest character and their starship in “Return of the Jedi”
 -   Reuse the code in the tutorial to aggregate the `hhdf` dataset to the daily scale and calculate the following metrics for `VPD_F` using R functions: maximum value, minimum value, median, and standard deviation.
 -   The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes not of high quality. Split your dataset into two - one with actually measured data (`NEE_VUT_REF_QC == 0`) and one with only gap-filled data. Compare the means of `GPP_NT_VUT_REF` of all three datasets and interpret your finding. Can you find a connect between the timepoint of an entry and its quality? What does the temporal pattern imply for the mean values that you calculated?
 
