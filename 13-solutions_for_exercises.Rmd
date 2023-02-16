@@ -475,7 +475,7 @@ demo_all <- dplyr::bind_rows(demo_01, demo_02, demo_03)
 # writing the data to a temporary CSV file
 write.table(
   demo_all, 
-  path = file.path(tempdir(), "tmp_csv_file.csv"),
+  file = file.path(tempdir(), "tmp_csv_file.csv"),
   col.names = TRUE,
   row.names = FALSE,
   sep = ","
