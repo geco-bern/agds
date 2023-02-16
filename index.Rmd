@@ -168,10 +168,3 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
 -   HOML
 -   Chollet & Allaire "Deep learning with R"
-
-
-## System information and package list
-
-```{r echo = FALSE}
-sessioninfo::session_info()
-```
