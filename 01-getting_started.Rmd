@@ -406,11 +406,13 @@ It is also recommendable to avoid variable names consisting of only one characte
 ```{r eval=F}
 # Good
 day_01
+
 # Bad
 DayOne
 day.one
 first_day_of_the_month
 djm1
+
 # Very bad
 mean <- function(x) sum(x)/length(x) # mean() itself is already a function
 T <- FALSE # T is an abbreviation of TRUE
