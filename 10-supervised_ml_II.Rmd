@@ -135,7 +135,7 @@ df_mae |>
   geom_line()
 ```
 
-The workflow implemented above should remind you of your solution to Exercise XXX in Chapter \@ref(supervisedmli). It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller $k$. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.
+The workflow implemented above should remind you of your the exercise in Chapter \@ref(supervisedmli). It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller $k$. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.
 
 Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?
 
@@ -213,8 +213,21 @@ To evaluate model generalisability to a new site or catchment (not just a new ti
 
 This illustrates that the data structure and the modelling aim (generalisability in what respect?) have to be accounted for when designing the data split and resampling strategy. The {caret} function `groupKFold()` offers the solution for such cases, creating folds for cross-validation that respect group delineations. In other cases, such grouping structure may not be evident and may not be reflected by information accessible for modelling. For example, we may be able to separate time series from different sites but we don't know whether sites are sufficiently independent to be able to consider the test metric to reflect the true uncertainty in predicting to an entirely new location which is neither in the test nor training set. In such cases, creative solutions have to be found and appropriate cross-validations have to be implemented with a view to the data structure and modelling aim.
 
-## Exercises
+<!-- ## Exercises -->
 
 <!-- XXX Exercises: implement k-fold cross validation by hand XXX -->
+
+## Report Exercises
+
+In this tutorial's exercise, you will explore the key idea of generalisability!
+
+The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
+
+-   How do the model metric on the test set change, when you are training and testing on the same or on different datasets?
+-   What are the differences between Davos and Laegern that could cause the pattern that you found?
+-   What do you expect when training and testing on Davos and Laegern simultaneously? Is this a valid approach? Use your new knowledge to reason for or against a situation where you would train on both sites.
+
+
+
 
 
