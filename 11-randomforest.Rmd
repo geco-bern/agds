@@ -12,13 +12,13 @@ TBC
 
 Just as a forest consists of trees, a *Random Forest* model consists of *decision trees.* Therefore, let's start with a decision tree, also known as CART (classification and regression tree). Consider a similar example as in Chapter \@ref(supervisedmli) where we fitted a function $Y = f(X)$ with polynomials. Instead, here we fit it with a decision tree. The tree grows by successively splitting (branching) the predictor range ($X$) into binary classes (two regions along $X$) and predicting a different and constant value $c$ for the target variable on either side of the split. The location of the split is chosen such that the overall error between the observed response ($Y_i$) and the predicted constant ($c_i$) is minimized. The error is determined based on whether we're dealing with a regression or a classification problem.
 
--   For regression problems, the sum of square errors is minimized.
+-   For regression problems, the *sum of square errors* is minimized.
 
 $$
     \text{SSE} = \sum_i{(\hat{Y_i}-Y_i)^2}
 $$
 
--   For classification problems, the *cross-entropy* or the *Gini index* are typically maximized.
+-   For classification problems, the *cross-entropy* or the *Gini index* are typically maximized. Both are measures of the difference between probability distributions (main ideas in [this blogpost](https://towardsdatascience.com/cross-entropy-for-classification-d98e7f974451)).
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 # Code adopted from https://koalaverse.github.io/homlr/notebooks/09-decision-trees.nb.html 
@@ -182,7 +182,7 @@ mod <- train(
   metric = "RMSE",
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 2000,           # high number ok since no hperparam tuning
+  num.trees = 2000,           # high number ok since no hyperparam tuning
   seed = 1982                # for reproducibility
 )
 
@@ -198,7 +198,12 @@ eval_model(mod = mod, df_train = ddf_train, df_test = ddf_test)
 
 ## Exercises
 
-XXX Exercise: implement bagging 12 decision trees, each with a maximum depth of 4, for the same data as used in the demonstration above.
+In a previous tutorial, you learned how to tune the hyperparameter $k$ in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are three hyperparameters in :
+
+Answer the following questions:
+
+-   
+
 
 XXX Exercise: fit a random forest model to the flux data used in previous chapters. Use a single set of hyperparameters. Same modelling task, different engine.
 
