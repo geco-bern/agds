@@ -1091,24 +1091,15 @@ eval_model(mod = mod_lm, df_train = ddf_train, df_test = ddf_test)
 eval_model(mod = mod_knn, df_train = ddf_train, df_test = ddf_test)
 ```
 
-It is advisable to keep workflow notebooks (this RMarkdown file) light
-and legible. Therefore, code chunks should not be excessively long and
-functions should be kept in a `./R/*.R` file, which can be loaded. This
-also facilitates debugging code inside the function. Here, the function
-`eval_model()` is part of the book's git repository, stored in the
-sub-directory `./R/`, and used also in later chapters.
+It is advisable to keep workflow notebooks (this RMarkdown file) light and legible. Therefore, code chunks should not be excessively long and functions should be kept in a `./R/*.R` file, which can be loaded. This also facilitates debugging code inside the function. Here, the function `eval_model()` is part of the book's git repository, stored in the sub-directory `./R/`, and used also in later chapters.
 
-## Exercises
+## Report Exercises
 
-(Preliminary)
+1.  The last figures of this tutorial show the training of testing of a linear model and a KNN model. Compare the four figures and answer to following questions:
+    a.  How does the point cloud differ between the two training set plots? Why does the $R^2$ value increase from LM to KNN? Use your knowledge on the fundamental difference between the two fitted models!
+    b.  How does the performance of both models (LM and KNN) change when predicting onto the test set? Why do they change in that manner?
+    c.  The test set plots for both models show a tendency to have more points on the right side of the dotted one-to-one line. What does that tell you about the performance of the model? How do you interpret this model performance in an ecophysiological manner? Note that we are comparing predicted (y-axis) against observed (x-axis) values of gross primary production.
 
--   Interpret results on training and test sets by the two models fitted
-    above.
-    -   How would metrics on training and test sets change if $k$ in KNN
-        is increased (decreased)? How does $k$ relate to the
-        bias-variance trade-off?
--   Visualise predictions of KNN for different choices of $k$ in a
-    univariate model, regressing temperature against the day-of-year
-    (1-365) in the `ddf` dataset.
-
-## Solutions
+2.  Let's look at the role of $k$ in a KNN. Answer the following questions:
+    a. Write a hypothesis based on the following questions: What do you expect, how do the model metrics of both sets, the training set **and** the test set, change if you increase or decrease $k$? Connect this question to what you learned about the bias-variance trade-off!
+    b. Put your hypothesis to the test! Write a code script that repeats fitting different values for $k$ as done in the tutorial. Use a simple bivariate model, regressing temperature against the day-of-year in the `ddf` dataset (`DOY ~ TA_F`). **Visualise** your results in an intuitive plot that is understandable without additional explanation. To get the DOY from a date, you can use `lubridate::yday()`.
