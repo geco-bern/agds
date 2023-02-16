@@ -299,7 +299,9 @@ By contrast, `NULL` is the R null object or empty space. You can also assign `NU
 
 The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel in R Studio, grouped as Data, Values and Functions.
 
-After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your *working directory*. The working directory is the default location to which R writes to and reads files from. You can check what your current working directory is running `getwd()` in the command line.
+After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory. 
+
+The *working directory* is the default location to which R writes to and reads files from. You can check what your current working directory is running `getwd()` in the command line.
 
 However, this is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.
 
