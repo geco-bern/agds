@@ -439,12 +439,29 @@ A <- matrix(c(6, 7, 3, NA, 15, 6, 7,
               7, 19, 6, NA, 15, 8, 10),
             nrow = 4, byrow = TRUE)
 B <- c(8, 4, 12, 9, 15, 6)
+
+summ <- data.frame()
+
+for (i in 1:nrow(A)){
+  
+  for (j in 1:ncol(A)){
+    
+    if (is.na(A[i,j])){
+      A[i,j] <- max(B)
+    }
+  }
+  
+  B <- B[-which(B == max(B))] # update the B vector removing the biggest values
+  summ <- bind_rows(summ, data.frame(row_number = i, avg = mean(B)))
+}
+  
+summ
 ```
 
 #### Finding best predictor
 
 ```{r}
-df <- read_csv("df_for_stepwise_regression.csv")
+df <- read_csv("data/df_for_stepwise_regression.csv")
 
 ## specify target variable
 target <- 'GPP_NT_VUT_REF'
