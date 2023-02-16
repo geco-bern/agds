@@ -84,6 +84,7 @@ Probably the simplest case of data visualization is where a single value is show
 
 ```{r}
 # read in demo daily data
+# as saved in the previous chapter
 ddf <- read_csv("data/ddf.csv")
 
 # Bar plot
