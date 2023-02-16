@@ -1352,7 +1352,7 @@ Re-read the section on stepwise regression of this tutorial and write a pseudo-c
 
 
 ```{r}
-df <- read_csv("data/df_for_stepwise_regression.csv")
+df <- readr::read_csv("data/df_for_stepwise_regression.csv")
 ```
 
 *Hints*:
@@ -1417,8 +1417,9 @@ The first step of a stepwise forward regression is to find the single most power
 -   The "counter" variables in the for loop can be provided as a vector, and the counter will sequentially take on the value of each element in that vector. For example:
 
 ```{r}
-all_predictors <- df |>
-  select(-GPP_NT_VUT_REF) |>
+all_predictors <- 
+  df |>
+  dplyr::select(-GPP_NT_VUT_REF) |>
   names()
 
 cat("Predictor variables and their first 3 entries in df: \n")
