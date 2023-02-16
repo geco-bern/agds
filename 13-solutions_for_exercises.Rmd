@@ -225,7 +225,7 @@ cat("\n Final vector col_sum: ", col_sum)
 ```
 
 
-## Chapter 03 - Data Wrangling
+## Chapter 03 - Data wrangling
 
 ```{r include=FALSE}
 # Load packages
@@ -323,7 +323,7 @@ hhdf |>
        y = "Count of quality flags")
 ```
 
-## Chapter 04 - Data Visualisation
+## Chapter 04 - Data visualisation
 
 ### Identifying Outliers
 
@@ -424,7 +424,7 @@ hhdf_meanseason |>
   scale_x_continuous(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
 ```
 
-## Chapter 05
+## Chapter 05 - Data variety
 
 ### Files and file formats
 
@@ -548,7 +548,7 @@ identical(unkown_netcdf, unkown_tif)
 
 1. Looks similar to the NetCDF data, however one pixel is different as shown by taking the difference between both datasets.
 
-## Chapter 06
+## Chapter 06 - Open Science
 
 ### External data
 
@@ -580,7 +580,10 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 
 
 
-## Chapter 07
+## Chapter 07 - Code management
+
+There are no exercises that require solutions.
+
 ## Chapter 08 - Regression and classification
 
 ### Warm-up Exercises

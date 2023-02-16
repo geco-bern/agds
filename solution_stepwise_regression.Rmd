@@ -5,9 +5,9 @@ library(tidyverse)
 ```
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 vec_files <- list.files("data", pattern = "_FLUXNET2015_FULLSET_DD_", full.names = TRUE)
-list_df <- purrr:::map(as.list(vec_files), ~read_csv(.))
+list_df <- purrr:::map(as.list(vec_files), ~readr::read_csv(.))
 names(list_df) <- vec_files
 
 clean_fluxnet_dd <- function(df){
@@ -38,7 +38,10 @@ clean_fluxnet_dd <- function(df){
         
         ## set all -9999 to NA
         na_if(-9999) %>% 
-        
+    
+        # drop NAs
+        drop_na() %>% 
+    
         ## filter bad data (at least 80% must be measured or good quality gapfilled)
         mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) %>% 
         
@@ -48,10 +51,10 @@ clean_fluxnet_dd <- function(df){
 }
 
 df <- purrr::map(list_df, ~clean_fluxnet_dd(.)) %>% 
-    bind_rows(.id = "siteid") %>% 
-    mutate(siteid = str_sub(siteid, start = 10, end = 15))
+    dplyr::bind_rows(.id = "siteid") %>% 
+    dplyr::mutate(siteid = str_sub(siteid, start = 10, end = 15))
 
-write_csv(df, "df_for_stepwise_regression.csv")
+readr::write_csv(df, "data/df_for_stepwise_regression.csv")
 ```
 
 
@@ -99,11 +102,11 @@ for (k_index in 1:length(preds)){
     rsq <- summary(fit_lin)[["r.squared"]]
     df_rsq_candidates <- bind_rows(df_rsq_candidates, data.frame(pred = ipred, rsq = rsq))  # when storing R2 in a data frame
     # rsq_candidates <- c(rsq_candidates,  rsq)  # when storing R2 as a vector
-    
   }
   
   ## get name of candidate predictor that achieved the highest R2.
-  pred_add <- df_rsq_candidates %>%  # when storing R2 in a data frame
+  pred_add <- 
+    df_rsq_candidates %>%  # when storing R2 in a data frame
     arrange(desc(rsq)) %>% 
     slice(1) %>% 
     pull(pred) %>% 
@@ -130,6 +133,8 @@ for (k_index in 1:length(preds)){
   preds_candidate <- preds_candidate[-which(preds_candidate == pred_add)]
   # preds_candidate <- setdiff(preds_candidate,pred_add)  # alternative
   
+  # Printing information on model development
+  cat("\n Next Best Model: GPP_NT_VUT_REF ~ ", paste(preds_retained, collapse = " + "))
 }
 
 data.frame(df_metrics$pred) # order in which variables enter the model
