@@ -1,6 +1,6 @@
 eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
   
-  ## add predictions to the data frames
+  # add predictions to the data frames----
   df_train <- df_train %>% 
     drop_na() %>% 
     mutate(fitted =  predict(mod, newdata = .))
@@ -9,7 +9,7 @@ eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
     drop_na() %>% 
     mutate(fitted =  predict(mod, newdata = .))
   
-  ## get metrics tables
+  # get metrics tables----
   metrics_train <- df_train %>% 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
@@ -21,7 +21,7 @@ eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
     return(list(train = metrics_train, test = metrics_test))
     
   } else {
-    ## extract values from metrics tables
+    # extract values from metrics tables----
     rmse_train <- metrics_train %>% 
       filter(.metric == "rmse") %>% 
       pull(.estimate)
@@ -36,7 +36,7 @@ eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
       filter(.metric == "rsq") %>% 
       pull(.estimate)
     
-    # visualise as a scatterplot
+    # visualise as a scatterplot----
     # adding information of metrics as sub-titles
     gg1 <- df_train %>% 
       ggplot(aes(GPP_NT_VUT_REF, fitted)) +

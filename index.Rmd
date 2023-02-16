@@ -1,6 +1,6 @@
 ---
 title: "Applied Geodata Science"
-author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Aran (contributing), Pascal Schneider (contributing)"
+author: "Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(fig.align="center")
 
 ## About this book {.unnumbered}
 
-This book serves as the basis for the series of courses in *Applied Geodata Science*, taught at the Institute of Geography, University of Bern. The starting point of this book were the tutorials edited by Benjamin Stocker, Loïc Pellissier, and Joshua Payne for the course *Environmental Systems Data Science* (D-USYS, ETH Zürich). The present book was written as a collaborative effort led by [Benjamin Stocker](https://geco-group.org/author/benjamin-stocker/), with contributions by [Pepa Aran](https://geco-group.org/author/pepa-aran/) and [Koen Hufkens](https://geco-group.org/author/koen-hufkens/), and exercises by [Pascal Schneider](https://geco-group.org/author/pascal-schneider/).
+This book serves as the basis for the series of courses in *Applied Geodata Science*, taught at the Institute of Geography, University of Bern. The starting point of this book were the tutorials edited by Benjamin Stocker, Loïc Pellissier, and Joshua Payne for the course *Environmental Systems Data Science* (D-USYS, ETH Zürich). The present book was written as a collaborative effort led by [Benjamin Stocker](https://geco-group.org/author/benjamin-stocker/), with contributions by [Pepa Arán](https://geco-group.org/author/pepa-aran/) and [Koen Hufkens](https://geco-group.org/author/koen-hufkens/), and exercises by [Pascal Schneider](https://geco-group.org/author/pascal-schneider/).
 
 The target of this book are people interested in applying data science methods for research. Methods, example data sets, and prediction challenges are chosen to make the book most relatable to scientists and students in Geography and Environmental Sciences. No prior knowledge of coding is required. Respective essentials are briefly introduced as primers. The focus of this book is not on the theoretical basis of the methods. Other "classical" statistics courses serve this purpose. Instead, this book introduces essential concepts, methods, and tools for applied data science in Geography and Environmental Sciences with an emphasis on covering a wide breadth. It is written with a hands-on approach using the R programming language and should enable an intuitive understanding of concepts with only a minimal reliance on mathematical language. Worked examples are provided for typical steps of data science applications in Geography and Environmental Sciences. The aim of this book is to teach the diverse set of skills needed as a basis for data-intensive research in academia and outside.
 
@@ -47,11 +47,11 @@ This book contains the lecture notes and exercises for the following courses, of
 
 This is a course for Bachelors students in their second or third year of studies in Geography.
 
--   Chapters \@ref(getting_started) to Chapter \@ref(randomforest)
+-   Chapters \@ref(gettingstarted) to Chapter \@ref(randomforest)
 
 **Applied Geodata Science II**
 
-This is a course for Master students in Geography or Climate Sciences.
+This is a course for Master students in Geography or Climate Sciences. Chapters in development.
 
 
 ### Course goal {.unnumbered}
@@ -86,13 +86,21 @@ Chapters \@ref(gettingstarted) and \@ref(programmingprimers) serve as primers to
 
 Chapter \@ref(datawrangling) introduces efficient handling and cleaning of large tabular data with the R *tidyverse* "programming dialect". The focus is on non-geospatial data. Closely related to transforming data and its multiple axes of variation is data visualisation, covered in Chapter \@ref(datavis).
 
-Chapters \@ref(datavariety), \@ref(codemgmt), and \@ref(openscience) introduce essential tools for the daily work with diverse data and for an Open Science practice.
+Chapters \@ref(datavariety), \@ref(codemgmt), and \@ref(openscience) introduce essential tools for the daily work with diverse data, for collaborative code development, and for an Open Science practice.
 
 With Chapters \@ref(regressionclassification), Chapter \@ref(supervisedmli), Chapter \@ref(supervisedmlii), and Chapter \@ref(randomforest), we will get into modelling and identifying patterns in the data.
 
 Chapters \@ref(gettingstarted)-\@ref(randomforest) serve as lecture notes for *Applied Geodata Science I* and as learning material for students and scientists in any data-intensive research domain. These chapters are not explicitly dealing with geospatial data and modelling. Modelling with geospatial and temporal data is the subject of the course *Applied Geodata Science II* and will be introduced with a focus on typical applications and modelling tasks in Geography and Environmental Sciences. Respective materials are not currently contained in this book but will be added here later.
 
 All tutorials use the R programming language.
+
+## System information and package list {.unnumbered}
+
+This book was compiled with the following environment:
+
+```{r}
+sessioninfo::session_info()
+```
 
 # Introduction {.unnumbered}
 
@@ -138,13 +146,13 @@ Models can be more or less explicit and more or less quantitative. Models can co
 
 A further distinction within mechanistic models can be made between *dynamic models* that describe a temporal evolution of a system (e.g., the dynamics of the atmosphere and the ocean in a General Circulation Model) and "static" models (e.g., a model for estimating the power generation of a solar photovoltaics station). In a dynamic model, we need to specify an initial state and the model (in many cases given additional inputs) predicts the evolution of the system from that. In a static model, the prediction can be described as a *function* of a set of inputs, without temporal dependencies between the inputs and the model prediction.
 
-Often, mechanistic and *empirical models* are distinguished. Empirical models can be viewed as somewhere closer towards the less explicit end of the spectrum described above. In mechanistic models, the mathematical descriptions of relationships are informed by theory or by independently determined relationships (e.g., laboratory measurements of metabolic rates of an enzyme). In contrast, empirical models rely on no, or only a very limited amount of *a priori* knowledge that is built into the model formulation. However, it should be noted that mechanistic models often also rely on empirical or statistical descriptions for individual components (e.g., the parametrisation of convection in a climate model), and statistical models may, in some cases, also be viewed as a representation of mechanisms that is consistent with the theoretical understanding. A related example is the light use efficiency model (Monteith, 1972) that linearly relates vegetation productivity to the amount of absorbed solar radiation. It has the form of a bivariate linear regression model. Vice-versa, traditional statistical models also rely on assumptions regarding the data generating process(es) and the resulting distribution of the data.
+Often, mechanistic and *empirical models* (or, here used as synonym, *statistical models*) are distinguished. Empirical models can be viewed as somewhere closer towards the less explicit end of the spectrum described above. In mechanistic models, the mathematical descriptions of relationships are informed by theory or by independently determined relationships (e.g., laboratory measurements of metabolic rates of an enzyme). In contrast, empirical models rely on no, or only a very limited amount of *a priori* knowledge that is built into the model formulation. However, it should be noted that mechanistic models often also rely on empirical or statistical descriptions for individual components (e.g., the parametrisation of convection in a climate model), and statistical models may, in some cases, also be viewed as a representation of mechanisms that is consistent with the theoretical understanding. A related example is the light use efficiency model ([Monteith, 1972](http://www.jstor.org/stable/2401901)) that linearly relates vegetation productivity to the amount of absorbed solar radiation. It has the form of a bivariate linear regression model. Vice-versa, traditional statistical models also rely on assumptions regarding the data generating process(es) and the resulting distribution of the data.
 
 *Supervised machine learning* models can be regarded as empirical models that are even further "assumption free" side than traditional statistical models. In contrast to mechanistic models where rules and hypotheses are explicitly and mathematically encoded, and in contrast to statistical models where assumptions of the data distribution are made for specifying the model, machine learning approaches modelling from the flip side: from the data to the insight [(Breiman, 2001)](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full). Rules are not encoded by a human, but discovered by the machine. Machine learning models learn from *patterns in the data* for making new predictions, rather than relying on theory and *a priori* knowledge of the system. In that sense, machine learning follows a new modelling paradigm. The *learning* aspect in machine learning refers to the automatic search process and the guidance of the model fitting by some feedback signal (loss function) that are employed in machine learning algorithms (see also Chapter \@ref(supervisedmlii)).
 
-The aspect of "patterns in the data" is key here. Often, these patterns are fuzzy. Rule-based algorithms have a limited capacity for dealing with such problems. *Symbolic artificial intelligence* is based on rules and underlies, for example, a computer playing chess [(Chollet & Allaire, 2018)](https://www.manning.com/books/deep-learning-with-r). However, where rules cannot be encoded from the outset, symbolic artificial intelligence has reached its limits. A breakthrough in learning from fuzzy patterns in the data has been enabled by deep learning. Through multiple layers of abstraction of the data, deep learning models identify underlying, abstract, relationships and use them for prediction. Deep learning has been extremely successful in solving problems, e.g., in image classification, speech recognition, or language translation.
+The aspect of "patterns in the data" is key here. Often, these patterns are fuzzy. Rule-based algorithms have a limited capacity for dealing with such problems. *Symbolic artificial intelligence* is based on rules and underlies, for example, a computer playing chess [(Chollet & Allaire, 2018)](https://www.manning.com/books/deep-learning-with-r). However, where rules cannot be encoded from the outset, symbolic artificial intelligence has reached its limits. A breakthrough in learning from fuzzy patterns in the data has been enabled by *deep learning*. Through multiple layers of abstraction of the data, deep learning models identify underlying, abstract, relationships and use them for prediction. Deep learning has been extremely successful in solving problems, e.g., in image classification, speech recognition, or language translation.
 
-However, the abstraction comes at the cost of interpretability. Deep learning models and machine learning models in general are used with an emphasis on *prediction* and have seen particularly wide adoption in fields where a false prediction has acceptable consequences (An inappropriate book recommendation based on your previous purchases is not grave.) ([Knüsel et al., 2019](https://doi.org/10.1038/s41558-019-0404-1)). The model itself remains a black box and its utility for hypothesis testing is limited. This challenge has spurred the field of *interpretable machine learning*, where solutions are sought for uncovering the black box and proble the model for its trustworthiness.
+However, the abstraction comes at the cost of interpretability. Deep learning models and machine learning models in general are used with an emphasis on *prediction* and have seen particularly wide adoption in fields where a false prediction has acceptable consequences (An inappropriate book recommendation based on your previous purchases is not grave.) ([Knüsel et al., 2019](https://doi.org/10.1038/s41558-019-0404-1)). The model itself remains a black box and its utility for hypothesis testing is limited. This challenge has spurred the field of *interpretable machine learning*, where solutions are sought for uncovering the black box and probe the model for its trustworthiness.
 
 Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world of machine learning and introduce the essential steps of the modelling workflow without delving into deep learning. Together with its preceeding chapters, this completes the toolbox required for making the first data scientific steps for applications in Geography and Environmental Sciences. This may be only just the beginning...
 
@@ -152,19 +160,28 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
 **Foundations**
 
--   Leo Breiman. "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
+-   Leo Breiman: "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
 
     -   A paper describing the paradigm shift in statistical modelling - from traditional approaches to machine learning. Written in accessible language by the inventor of the Random Forest algorithm.
     
 **Data wrangling**
 
-- R4DS
+- Hadley Wickham and Garrett Grolemund: "R for Data Science", https://r4ds.had.co.nz/
+
+    - A comprehensive resource for data analysis (and visualisation) using R *tidyverse*. Covers contents of Chapters \@ref(gettingstarted), \@ref(programmingprimers), and \@ref(datawrangling) - but in more depth.
 
 **Data visualisation**
 
-- asdf
+- Claus O. Wilke: "Fundamentals of Data Visualization", https://clauswilke.com/dataviz/
+
+    - A comprehensive resource for data visualisation - not specific to any programming language, but specific about the *grammar of graphics*. Covers concepts of Chapter \@ref(datavis) - but in more depth. The go-to resource for the *implementation* of data visualisation using the {ggplot2} R library is Wickham & Grolemund (see above).
 
 **Machine learning**
 
--   HOML
+- Bradley Boehmke and Brandon Greenwell: "Hands-On Machine Learning with R", https://bradleyboehmke.github.io/HOML/
+
+    - A great entry point for machine learning in R. It demonstrates concepts and a range of algorithms of varying complexity - from linear regression to Random Forest - with examples in R. This book served as an inspiration and starting point for the (in some ways reduced) contents of this course, covered in Chapters \@ref(regressionclassification)-\@ref(randomforest).
+
+
 -   Chollet & Allaire "Deep learning with R"
+  - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).
