@@ -505,7 +505,7 @@ jsonlite::write_json(demo_all_new, path = "./my_json_file.json")
 2. the {terra} library (see Table xyz)
 3. Temperature data for Switzerland at noon on 2021-01-01
 
-```{r}
+```{r eval=FALSE}
 # read unknown netcdf file using the {terra} library
 library(terra)
 unkown_netcdf <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc")
@@ -519,7 +519,7 @@ terra::plot(unknown_netcdf)
 
 4. 
 
-```{r}
+```{r eval=FALSE}
 # write the data as a geotiff (other options are possible as well in writeRaster)
 terra::writeRaster(
   unknown_netcdf,
