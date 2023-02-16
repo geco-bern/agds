@@ -30,7 +30,6 @@ installing-r-and-rstudio
 the-rstudio-interface
 running-r-code
 base-r-operations
-working-directory
 r-objects
 types-of-data
 variables-and-classes
@@ -90,11 +89,11 @@ cleaning-formats
 bad-data
 handling-missing-data
 combining-relational-data
-extra-material
+extramaterialwrangling
 functional-programming-i
 strings
 functional-programming-ii
-exercises-2
+exerciseswrangling
 datavis
 learning-objectives-4
 tutorial-3
@@ -111,7 +110,7 @@ periodic-data
 density-along-two-continuous-variables
 raster-data
 geospatial-data
-exercises-3
+exercises-2
 exercises-for-the-report
 datavariety
 learning-objectives-5
@@ -129,7 +128,7 @@ vector-data-model
 online-data-sources
 direct-downloads
 apis
-exercises-4
+exercises-3
 files-and-file-formats-1
 api-use
 get-1
@@ -146,7 +145,7 @@ readable-reporting-using-rmarkdown
 referencing-and-finding-files
 limitations
 data-retention
-exercises-5
+exercises-4
 external-data
 a-new-project
 tracking-the-state-of-your-project
@@ -162,7 +161,7 @@ git-pull-and-merge-conflicts
 git-clone
 git-fork-and-pull-request
 location-based-code-management---github-templates
-exercises-6
+exercises-5
 location-based-code-management
 github
 regressionclassification
@@ -206,7 +205,7 @@ one-hot-encoding
 zero-variance-predictors
 target-engineering
 putting-it-all-together-half-way
-exercises-7
+exercises-6
 solutions
 supervisedmlii
 learning-objectives-10
@@ -217,14 +216,14 @@ hyperparameters
 resampling
 validation-versus-testing-data
 modeling-with-structured-data
-exercises-8
+exercises-7
 randomforest
 learning-objectives-11
 tutorial-10
 decision-trees
 bagging
 from-trees-to-a-forest
-exercises-9
+exercises-8
 solutions-1
 solutions-2
 chapter-01---getting-started
@@ -243,7 +242,10 @@ chapter-04---data-visualisation
 identifying-outliers
 diurnal-and-seasonal-cycles
 chapter-05
+files-and-file-formats-2
 chapter-06
+external-data-1
+a-new-project-1
 chapter-07
 chapter-08
 warm-up-exercises-1
