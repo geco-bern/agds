@@ -615,6 +615,177 @@ for (i in 1:nrow(A)){
 summ
 ```
 
+#### Stepwise regression
+
+```{r message=FALSE, warning=FALSE}
+vec_files <- list.files("data", pattern = "_FLUXNET2015_FULLSET_DD_", full.names = TRUE)
+list_df <- purrr:::map(as.list(vec_files), ~readr::read_csv(.))
+names(list_df) <- vec_files
+
+clean_fluxnet_dd <- function(df){
+    
+    df %>%
+        
+        ## select only the variables we're interested in
+        select(starts_with("TIMESTAMP"),
+               ends_with("_F"),
+               ends_with("_F_MDS"),
+               # ends_with("_ERA"),
+               starts_with("_SWC_F_MDS"),
+               CO2_F_MDS,
+               PPFD_IN,
+               GPP_NT_VUT_REF,
+               NEE_VUT_REF_QC,
+               USTAR,
+               -starts_with("G_"),
+               -starts_with("LE_"),
+               -starts_with("H_"),
+               -contains("JSB")
+        ) %>%
+        
+        ## convert to a nice date object
+        mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) %>%
+        
+        ## not setting heavily gapfilled data to zero
+        
+        ## set all -9999 to NA
+        na_if(-9999) %>% 
+    
+        # drop NAs
+        drop_na() %>% 
+    
+        ## filter bad data (at least 80% must be measured or good quality gapfilled)
+        mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) %>% 
+        
+        ## drop QC variables (no longer needed), except NEE_VUT_REF_QC
+        select(-ends_with("_QC"))
+    
+}
+
+df <- purrr::map(list_df, ~clean_fluxnet_dd(.)) %>% 
+    dplyr::bind_rows(.id = "siteid") %>% 
+    dplyr::mutate(siteid = str_sub(siteid, start = 10, end = 15))
+
+readr::write_csv(df, "data/df_for_stepwise_regression.csv")
+```
+
+
+```{r}
+## specify target variable (as above)
+target <- 'GPP_NT_VUT_REF'
+
+## determine predictors as all except date, siteid and target
+preds <- df %>% 
+  dplyr::select(-target, -TIMESTAMP, -siteid) %>% 
+  names()
+
+# This is the vector of candidate predictors to be added in the model. To begin with, consider all as candidates.
+preds_candidate <- preds 
+
+# predictors retained in the model from the previous step. To begin with, is empty.
+preds_retained <- c()
+
+## work with lists as much as possible (more flexible!)
+df_metrics <- data.frame()
+
+## outer loop for k predictors
+for (k_index in 1:length(preds)){
+  
+  # rsq_candidates <- c()
+  df_rsq_candidates <- data.frame()
+  linmod_candidates <- list()
+  
+  ## inner loop for single additional predictor
+  for (ipred in preds_candidate){
+    
+    # variable vector (new variable + retained variables) used in regression
+    pred_add <- c(preds_retained, ipred)
+    
+    # define formulate with newly-added predictor
+    forml  <- as.formula(paste( target, '~', paste(pred_add, collapse = '+')))
+    
+    # fit linear model
+    fit_lin <- lm(forml, data = df)
+    
+    # add model object to list, and name the element according to the added variable
+    linmod_candidates[[ ipred ]] <- fit_lin
+    
+    # record metrics for all candidates
+    rsq <- summary(fit_lin)[["r.squared"]]
+    df_rsq_candidates <- bind_rows(df_rsq_candidates, data.frame(pred = ipred, rsq = rsq))  # when storing R2 in a data frame
+    # rsq_candidates <- c(rsq_candidates,  rsq)  # when storing R2 as a vector
+  }
+  
+  ## get name of candidate predictor that achieved the highest R2.
+  pred_add <- 
+    df_rsq_candidates %>%  # when storing R2 in a data frame
+    arrange(desc(rsq)) %>% 
+    slice(1) %>% 
+    pull(pred) %>% 
+    as.character()
+  
+  # pred_add <- preds_candidate[ which.max(rsq_candidates) ]   # when storing R2 as a vector
+  
+  ## add best predictors to retained predictors 
+  preds_retained <- c(preds_retained, pred_add)
+  
+  # record AIC and BIC and adjusted-R2 of the respective model
+  df_metrics <- df_metrics %>% 
+    bind_rows(
+      data.frame( pred = pred_add,
+                  rsq = summary(linmod_candidates[[ pred_add ]])[["r.squared"]],
+                  adj_rsq = summary(linmod_candidates[[ pred_add ]])[["adj.r.squared"]],
+                  aic = AIC(linmod_candidates[[ pred_add ]]),
+                  bic = BIC(linmod_candidates[[ pred_add ]])
+      )
+    )
+  
+
+  # remove the selected variable from the candidate variable list
+  preds_candidate <- preds_candidate[-which(preds_candidate == pred_add)]
+  # preds_candidate <- setdiff(preds_candidate,pred_add)  # alternative
+  
+  # Printing information on model development
+  cat("\n Next Best Model: GPP_NT_VUT_REF ~ ", paste(preds_retained, collapse = " + "))
+}
+
+data.frame(df_metrics$pred) # order in which variables enter the model
+
+df_metrics %>% 
+  arrange(desc(rsq)) %>% 
+  knitr::kable()
+```
+
+```{r}
+library(ggplot2)
+
+df_metrics$pred <-  factor(df_metrics$pred, levels = df_metrics$pred)
+
+ggplot() +
+  geom_point(data = df_metrics, aes(x = pred, y = rsq)) +
+  geom_point(data = filter(df_metrics, rsq == max(rsq)), aes(x = pred, y = rsq), color = "red") +
+  labs(title = expression(italic(R)^2)) + 
+  coord_flip()
+
+ggplot() +
+  geom_point(data = df_metrics, aes(x = pred, y = adj_rsq)) +
+  geom_point(data = filter(df_metrics, adj_rsq == max(adj_rsq)), aes(x = pred, y = adj_rsq), color = "red") +
+  labs(title = expression(paste("Adjusted-", italic(R)^2))) + 
+  coord_flip()
+
+ggplot() +
+  geom_point(data = df_metrics, aes(x = pred, y = aic)) +
+  geom_point(data = filter(df_metrics, aic == min(aic)), aes(x = pred, y = aic), color = "red") +
+  labs(title = "AIC")+ 
+  coord_flip()
+
+ggplot() +
+  geom_point(data = df_metrics, aes(x = pred, y = bic)) +
+  geom_point(data = filter(df_metrics, bic == min(bic)), aes(x = pred, y = bic), color = "red") +
+  labs(title = "BIC")+ 
+  coord_flip()
+```
+
 #### Finding best predictor
 
 ```{r}

@@ -51,7 +51,7 @@ This is a course for Bachelors students in their second or third year of studies
 
 **Applied Geodata Science II**
 
-This is a course for Master students in Geography or Climate Sciences. Chapters in development.
+This is a course for Master students in Geography or Climate Sciences. Chapters are in development.
 
 
 ### Course goal {.unnumbered}
@@ -182,6 +182,6 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
     - A great entry point for machine learning in R. It demonstrates concepts and a range of algorithms of varying complexity - from linear regression to Random Forest - with examples in R. This book served as an inspiration and starting point for the (in some ways reduced) contents of this course, covered in Chapters \@ref(regressionclassification)-\@ref(randomforest).
 
-
 -   Chollet & Allaire "Deep learning with R"
-  - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).
+
+    - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).

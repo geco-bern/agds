@@ -140,10 +140,8 @@ The remainder of the document shows a code chunk outlined by \`\`\` quotes and t
 ``` {r}
 x <- 5  # radius of a circle
 ```
-
 For a circle with the radius `r x`,
 its area is `r pi * x^2`.
-
 ````
 
 The document can be rendered by calling `rmarkdown::render()` on the command line or hitting the "Knit" button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).
