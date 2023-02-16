@@ -528,7 +528,7 @@ terra::writeRaster(
   )
 ```
 
-```{r}
+```{r eval=FALSE}
 # read unknown tif file using the {terra} library
 library(terra)
 unkown_tif <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif")
