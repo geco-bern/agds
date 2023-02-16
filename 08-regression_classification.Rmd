@@ -58,7 +58,7 @@ have studied linear regression from a statistical perspective, here we
 will take a data-fitting approach.
 
 For example, we can try to explain the relationship between GPP and
-short wave radiation, like in the [Chapter 4](#data_vis). The figure
+short wave radiation, like in the Chapter \@ref(datavis). The figure
 below shows a cloud of data points, and a straight line predicting GPP
 based on observed shortwave radiation values.
 
@@ -124,7 +124,7 @@ regression, and hyperplanes in higher dimensions.
 **Implementation in R**
 
 To fit a univariate linear regression model in R, we can use the `lm()`
-function. Already in Chapter [3](#data_wrangling), we created linear
+function. Already in Chapter \@ref(datawrangling), we created linear
 models by doing:
 
 ```{r message=F}
@@ -206,7 +206,7 @@ m$^{-2}$s$^{-1}$.
 
 Another advantage of linear regression is that it's much less prone to
 *overfit* than other algorithms. You'll learn more about the concept of
-overfitting in Chapter \@ref(#supervised_ml_a). Not being prone to
+overfitting in Chapter \@ref(supervisedmli). Not being prone to
 overfitting can also be a disadvantage: linear regression models are
 often not flexible enough to be effectively fit to the data. They are
 also not able to capture non-linearities in the observed relationship
@@ -247,8 +247,7 @@ to the target variable. You can read more on their implementation in R
 
 #### Regression on categorical variables
 
-In the [regression within categories](#vis_regr_cat) section of [Chapter
-5](#data_vis), we saw that when we separate the data into sub-plots,
+In the [regression within categories](#vis_regr_cat) section of Chapter \@ref(datavis), we saw that when we separate the data into sub-plots,
 hidden patterns emerge. This information is very relevant for modeling,
 because it can be included in our regression model. It is crucial to
 spend enough time exploring the data before you start modeling, because
@@ -371,7 +370,7 @@ the scatterplots in Fig. \@ref(fig:correlationplots) and how different aspects o
 agreement are measured by different metrics. The observed target values $y$ are plotted against the predicted values $\hat{y}$ from a 
 regression model, and the dashed line represents the ideal scenario: our predictions matching the data perfectly. Definitions of the metrics displayed and other metrics are given below.
 
-```{r correlationplots, echo=FALSE, fig.cap="Correlation plots", fig.height=10, message=FALSE, warning=FALSE}
+```{r correlationplots, echo=FALSE, fig.cap="Correlation plots between observed and fitted target values.", fig.height=10, message=FALSE, warning=FALSE}
 analyse_modobs <- function(df){
   
   # fit linear regression model to get slope
@@ -503,8 +502,8 @@ The mean squared error is defined, as its name suggests,
 as: $$
 \text{MSE} = \frac{1}{n} \sum_{i=1}^n (Y_i - \hat{Y_i})^2
 $$It measures the magnitude of the errors, and is minimized to fit a
-linear regression or, as we will see in [Chapter
-9](#supervisedmli), during model training when used as a loss
+linear regression or, as we will see in Chapter
+\@ref(supervisedmli), during model training when used as a loss
 function. Note that since it scales with the square of the errors,
 the MSE is sensitive to large errors in single points, including
 outliers.
@@ -884,7 +883,7 @@ Nevertheless, logistic regression relies on statistical assumptions to
 fit the parameters and interpret the fitted parameters. So whenever
 these assumptions are not met, one must be careful with the conclusions
 drawn. Other machine learning methods, that will be covered in Chapters
-[9](#supervisedmli) and [10](#supervisedmlii), can also be used for
+\@ref(supervisedmli) and \@ref(supervisedmlii), can also be used for
 classification tasks. These offer more flexibility than logistic
 regression (are not necessarily linear) and don't need to satisfy strict
 statistical assumptions.
@@ -1057,7 +1056,7 @@ models and choose the one that answers your research question the best.
 
 One must be careful not to keep training or improving models until they
 fit the data perfectly, but maintain the models' ability to generalize
-to newly available data. Chapter [9](#suspervised_ml_i) introduces the
+to newly available data. Chapter \@ref(supervisedmli) introduces the
 concept of overfitting, which is central to data science. Think of model
 interpretation and generalization when comparing them, not only of
 performance. Simple models can be more valuable than very complex ones
@@ -1200,7 +1199,7 @@ cowplot::plot_grid(gg3, gg4)
 The first step to identifying outliers is to look at your data, one
 variable at a time. Plot a histogram to see the rough distribution of a
 variable. This will help identify what kind of values to expect. In
-Chapters [3](#data_wrangling) and [4](#data_vis) it was introduced how
+Chapters \@ref(datawrangling) and \@ref(datavis) it was introduced how
 to identify values that fell out of this distribution using histograms
 and boxplots. Checking in the histogram if the distribution has fat
 tails helps to discern whether the values that pop out of a boxplot
@@ -1282,7 +1281,7 @@ cowplot::plot_grid(gg9, gg10, ncol=2)
 ```
 
 For linear (and logistic) regression, we would like predictor variables
-to look as normal as possible. You've probably learned some of the
+to look as normal, i.e. gaussian, as possible. You've probably learned some of the
 reasons for this in quantitative methods courses, but are beyond the
 scope of this class. It's common to study the distribution of the
 regression residuals with QQ-plots to assess if model assumptions are
@@ -1339,7 +1338,7 @@ potentially collect more data.
 <!--     sqrt(mean((df$x - df$y)^2)) -->
 <!--     ``` -->
 
-This tutorial's exercise is a bit special. Although there is a lot of helpful information out there, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are a crucial parts of this process (see second chapter for more on getting help). To learn these skills, you will attempt to write your own step-wise forward regression from scratch using the theory and code provided this and previous chapters (see task statement and hints below).
+This tutorial's exercise is a bit special. Although there is a lot of helpful information out there, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are crucial parts of this process (see second chapter for more on getting help). To learn these skills, you will attempt to write your own step-wise forward regression from scratch using the theory and code provided this and previous chapters (see task statement and hints below).
 
 **Important:** We do not expect that all of you solve this exercise without any issues - which is completely fine! **Thus, in your final report**, you will have to add a minimum reproducible example (MRE), following [this guideline](%5Bgreat%20template%5D(https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example)). Write this MRE as if you were addressing an online audience; describe in detail what you goal is, where you got stuck, what the error message is, provide a code example that is runnable without needing the .csv files that you have locally (see `dput()`), etc. If you can solve this problem without any issues, congratulations! But it is likely that you did not do so without facing any error messages - take one of these errors and write a MRE.
 

@@ -10,7 +10,7 @@ Exploratory data analysis - the transformation, visualization, and modelling of 
 
 We refer to data *wrangling* here to encompass the steps for preparing the data set *prior* to modelling - including, the combination of variables from different data sources, the removal of bad data, and the aggregation of data to the desired resolution or granularity (e.g., averaging over all time steps in a day, or over all replicates in a sample).
 
-In contrast, *pre-processing* refers to the additional steps that are either required by the the specific machine learning algorithm used with the data (e.g., centering and scaling for K-Nearest Neighbors or Neural Networks), the gap-filling of variables, or the transformation of variables guided by the resulting improvement of the predictive power of the machine learning model. Pre-processing is part of the modelling workflow and includes all steps that apply transformations that use parameters derived from the data. We will introduce and discuss data pre-processing in Chapter \@ref(supervised_ml).
+In contrast, *pre-processing* refers to the additional steps that are either required by the the specific machine learning algorithm used with the data (e.g., centering and scaling for K-Nearest Neighbors or Neural Networks), the gap-filling of variables, or the transformation of variables guided by the resulting improvement of the predictive power of the machine learning model. Pre-processing is part of the modelling workflow and includes all steps that apply transformations that use parameters derived from the data. We will introduce and discuss data pre-processing in Chapter \@ref(supervisedmli).
 
 ### Example data
 
@@ -54,7 +54,7 @@ hhdf <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
 hhdf
 ```
 
-Since the file is properly formatted, with variable names given in the first line of the file, the function `read_csv()` identifies them correctly as column names and interprets values in each column as values of a consistent type. We used the function `read_csv()` from the **readr** package (part of tidyverse) here for reading the CSV since it is faster than the base-R `read.csv()` and generates a nicely readable output when printing the object as is done above.
+Since the file is properly formatted, with variable names given in the first line of the file, the function `read_csv()` identifies them correctly as column names and interprets values in each column as values of a consistent type. We used the function `read_csv()` from the {readr} package (part of tidyverse) here for reading the CSV since it is faster than the base-R `read.csv()` and generates a nicely readable output when printing the object as is done above.
 
 ### Variable selection
 
@@ -93,7 +93,7 @@ class(hhdf$TIMESTAMP_START[[1]])
 as.character(hhdf$TIMESTAMP_START[[1]])
 ```
 
-As we can see, it is considered by R as a numeric variable with 12 digits ("double-precision", occupying 64 bits in computer memory). After printing the variable as a string, we can guess that the format is: YYYYMMDDhhmm. The **lubridate** [@R-lubridate] package is designed to facilitate processing date and time objects. Knowing the format of the timestamp variables in our dataset, we can use `ymd_hm()` to convert them to actual date-time objects.
+As we can see, it is considered by R as a numeric variable with 12 digits ("double-precision", occupying 64 bits in computer memory). After printing the variable as a string, we can guess that the format is: `YYYYMMDDhhmm`. The {lubridate} [@R-lubridate] package is designed to facilitate processing date and time objects. Knowing the format of the timestamp variables in our dataset, we can use `ymd_hm()` to convert them to actual date-time objects.
 
 ```{r, message=FALSE}
 dates <- ymd_hm(hhdf$TIMESTAMP_START)
@@ -113,7 +113,7 @@ The following returns the month of each date object:
 month(dates[1])
 ```
 
-The number 1 stands for the month of the year, i.e., January. You can find more information on formatting dates and time within the **tidyverse** [here](https://r4ds.had.co.nz/dates-and-times.html), and a complete reference of the **lubridate** package is available [here](https://lubridate.tidyverse.org/).
+The number 1 stands for the month of the year, i.e., January. You can find more information on formatting dates and time within the {tidyverse} [here](https://r4ds.had.co.nz/dates-and-times.html), and a complete reference of the {lubridate} package is available [here](https://lubridate.tidyverse.org/).
 
 ### Variable (re-) definition
 
@@ -129,7 +129,7 @@ Modifying existing or creating new variables (columns) in a data frame is done i
 hhdf <- mutate(hhdf, TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
 ```
 
-Note that in the code chunk above, the function `mutate()` is from the tidyverse package *dplyr*. It takes a dataframe as its first argument (here `hhdf`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
+Note that in the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `hhdf`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
 
 ```{r, eval=FALSE}
 hhdf <- hhdf |> 
@@ -186,7 +186,7 @@ Note that we used `mutate()` here to create a new variable (column) in the data 
 
 ### Tidy data
 
-Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in some remotely tabular form and merged cells as we will see in the Exercises. A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.
+Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in some remotely tabular form and merged cells as we will see in the [Exercises](#exerciseswrangling). A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.
 
 ```{r echo=FALSE}
 ## this is hidden - used to create the objects printed in next chunk
@@ -232,7 +232,7 @@ The concept of tidy data can even be taken further by understanding a "value" as
 
 Aggregating data refers to collapsing a larger set of values into a smaller set of values that are derived from the larger set. For example, we can aggregate over all $N$ rows in a data frame ($N\times M$), calculating the sum for each of the $M$ columns. This returns a data frame ($1 \times M$) with the same number of columns as the initial data frame, but only one row. Often, aggregations are done not across all rows but for rows within $G$ groups of rows. This yields a data frame ($G \times M$) with the number of rows corresponding to the number of groups.
 
-Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the *dplyr* functions `group_by()` and `summarise()`. The entire aggregation workflow is implemented by the following code:
+Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the {dplyr} functions `group_by()` and `summarise()`. The entire aggregation workflow is implemented by the following code:
 
 ```{r}
 ddf <- hhdf |>  
@@ -278,7 +278,7 @@ More info on how to group values using summarise functions [here](https://r4ds.h
 
 Let's
 
-Aggregating is related to *nesting* performed by the *tidyr* function `nest()`:
+Aggregating is related to *nesting* performed by the {tidyr} function `nest()`:
 
 ```{r message=FALSE}
 hhdf |>  
@@ -287,11 +287,11 @@ hhdf |>
   nest()
 ```
 
-Here, the data frame has one row per date and therefore the same number of rows as the data frame `ddf`, but the data itself is not reduced by a summarising function. Instead, the data is kept at the half-hourly level, but it's nested inside the new column `data`, which now contains a list of half-hourly data frames for each day. This is just a brief perspective of what nesting is about. More is explained in the Section Extra material below. More comprehensive tutorials on nesting and functional programming are available in [Altman, Behrman and Wickham (2021)](https://dcl-prog.stanford.edu/) or in [Wickham & Grolemund (2017), Chapter 21](https://r4ds.had.co.nz/iteration.html).
+Here, the data frame has one row per date and therefore the same number of rows as the data frame `ddf`, but the data itself is not reduced by a summarising function. Instead, the data is kept at the half-hourly level, but it's nested inside the new column `data`, which now contains a list of half-hourly data frames for each day. This is just a brief perspective of what nesting is about. More is explained in the Section \@ref(extramaterialwrangling) Extra material below. More comprehensive tutorials on nesting and functional programming are available in [Altman, Behrman and Wickham (2021)](https://dcl-prog.stanford.edu/) or in [Wickham & Grolemund (2017), Chapter 21](https://r4ds.had.co.nz/iteration.html).
 
 ### Data cleaning
 
-Data cleaning is often a time-consuming task and decisions taken during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data. An excellent source for further reading is the [Quartz Guide to Bad Data](https://github.com/Quartz/bad-data-guide) which provides an overview of how to deal with different types of bad data.
+Data cleaning is often a time-consuming task and decisions taken during data cleaning may be critical for analyses and modelling. In the following, we distinguish between cleaning formats, the identification (and removal) of "bad" data, and the gap-filling of missing or removed data. An excellent resource for further reading is the [Quartz Guide to Bad Data](https://github.com/Quartz/bad-data-guide) which provides an overview of how to deal with different types of bad data.
 
 #### Cleaning formats
 
@@ -311,13 +311,13 @@ df <- df |> mutate(gender = as.factor(gender))
 unique(hhdf$NEE_VUT_REF_QC)
 ```
 
--   An entry like `>10 m` is not a friend of a data scientist. Here, we have three pieces of information: `>` as in "greater than", `10`, and `m` indicating the units. A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see Exercises).
+-   An entry like `>10 m` is not a friend of a data scientist. Here, we have three pieces of information: `>` as in "greater than", `10`, and `m` indicating the units. A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see [Exercises](#exerciseswrangling)).
 
 <!-- -   Can you think of more such examples? (-\> Exercises)  -->
 
-String manipulations are usually required for cleaning data. The section Strings below demonstrates some simple examples.
+String manipulations are usually required for cleaning data. The section [Strings](#strings) below demonstrates some simple examples.
 
-Note that a majority of machine learning algorithms and other statistical model types require all data to be numeric. Methods exist to convert categorical data into numeric data, as we will learn later. We re-visit data cleaning in the form of data *preprocessing* as part of the modelling workflow in Chapter \@ref(supervised_ml).
+Note that a majority of machine learning algorithms and other statistical model types require all data to be numeric. Methods exist to convert categorical data into numeric data, as we will learn later. We re-visit data cleaning in the form of data *preprocessing* as part of the modelling workflow in Chapter \@ref(supervisedmli).
 
 #### Bad data
 
@@ -350,7 +350,7 @@ The question about when data is "bad" and whether to remove it is often critical
 
 Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* (Kuhn & Johnson, 2003) and its information can be used for modelling. For categorical data, we may replace such data with `"none"` (instead of `NA`), while randomly missing data may be dropped altogether. Some machine learning algorithms (mainly tree-based methods, e.g., Random Forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
 
-Most machine learning algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. This generally leads to a loss of information contained in the remaining variables that are not missing. Methods exist to *impute* missing values in order to avoid this information loss. However, the gain of data imputation has to be traded off against effects of associating the available variables with the imputed (knowingly wrong) values, and effects of *data leakage* have to be considered. Data imputation as part of the modelling process will be dealt with in Chapter \@ref(supervised_ml).
+Most machine learning algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. This generally leads to a loss of information contained in the remaining variables that are not missing. Methods exist to *impute* missing values in order to avoid this information loss. However, the gain of data imputation has to be traded off against effects of associating the available variables with the imputed (knowingly wrong) values, and effects of *data leakage* have to be considered. Data imputation as part of the modelling process will be dealt with in Chapter \@ref(supervisedmli).
 
 In our example dataset, some values of `SWC_F_MDS_*` are given as `-9999`.
 
@@ -360,7 +360,7 @@ hhdf |>
   head()
 ```
 
-When reading the documentation of this specific dataset, we learn that `-9999` is the code for *missing data*. The *dplyr* functions help us to clarify these missing values by mutating across all numeric variables and overwrite entries with `NA` if they hold a `-9999`.
+When reading the documentation of this specific dataset, we learn that `-9999` is the code for *missing data*. The {dplyr} functions help us to clarify these missing values by mutating across all numeric variables and overwrite entries with `NA` if they hold a `-9999`.
 
 ```{r}
 hhdf <- hhdf |>  
@@ -371,7 +371,7 @@ hhdf |>
   head()
 ```
 
-This lets us visualise the data and its gaps with `vis_miss()` from the *visdat* package. Visualising missing data can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
+This lets us visualise the data and its gaps with `vis_miss()` from the {visdat} package. Visualising missing data can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).
 
 ```{r warning=FALSE, message=FALSE}
 visdat::vis_miss(
@@ -381,7 +381,7 @@ visdat::vis_miss(
   )
 ```
 
-For many applications, we want to filter the data so that the values of particular variables satisfy certain conditions. The *dplyr* function used for such tasks is `filter()`. As argument, it takes the expressions that specify the criterion for filtering using logical operators (`>, >=, <, ==, !-, ...`, see Chapter \@ref(getting_started)). Multiple filtering criteria can be combined with logical (boolean) operators:
+For many applications, we want to filter the data so that the values of particular variables satisfy certain conditions. The {dplyr} function used for such tasks is `filter()`. As argument, it takes the expressions that specify the criterion for filtering using logical operators (`>, >=, <, ==, !-, ...`, see Chapter \@ref(getting_started)). Multiple filtering criteria can be combined with logical (boolean) operators:
 
 -   `&`: logical AND
 -   `|`: logical OR
@@ -408,7 +408,7 @@ hhdf |>
     mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC %in% c(0,1), GPP_NT_VUT_REF, NA))
 ```
 
-If we decide to drop a row containing `NA` in any of the variables later during the workflow, we can do this, for example using the useful *tidyr* function `drop_na()`.
+If we decide to drop a row containing `NA` in any of the variables later during the workflow, we can do this, for example using the useful {tidyr} function `drop_na()`.
 
 ```{r eval=FALSE}
 hhdf |> 
@@ -438,7 +438,7 @@ df5
 bind_rows(df4, df5)
 ```
 
-..., or data frames have a corresponding set of rows (and in the same order) and we can "stack" them along columns
+..., or data frames have a corresponding set of rows (and in the same order) and we can "stack" them along columns.
 
 ```{r echo=FALSE}
 df6 <- df3[, c(1,2,3)]
@@ -464,7 +464,7 @@ Note that here, we first re-shuffled (permuted) the rows of `df6` for demonstrat
 
 Other variants of `*_join()` are available as described [here](https://r4ds.had.co.nz/relational-data.html).
 
-## Extra material
+## Extra material {#extramaterialwrangling}
 
 ### Functional programming I
 
@@ -486,13 +486,13 @@ for (ifil in vec_files){
 }
 ```
 
-Repeatedly applying a function (here `read_csv()`) over a list similar objects is facilitated by the `map*()` family of functions from the *purrr* package. An (almost) equivalent statement is:
+Repeatedly applying a function (here `read_csv()`) over a list similar objects is facilitated by the `map*()` family of functions from the {purrr} package. An (almost) equivalent statement is:
 
 ```{r message=FALSE}
 list_df <- map(as.list(vec_files), ~read_csv(.))
 ```
 
-Here, `map()` applies the function `read_csv()` to elements of a *list*. Hence, we first have to convert the vector `vec_files` to a list. A list is always the first argument within the `map()` function. Note two new symbols (`~` and `.`). The `~` always goes before the function that is repeatedly applied (or "mapped") to elements of the list. The `.` indicates where the elements of the list would go if spelled out (e.g., here, `read_csv(.)` would be `read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")` for the first iteration). The output of `map()` is again a list. There are many variants of the function `map()` that each have a specific use. A complete reference for all *purrr* functions is available [here](https://purrr.tidyverse.org/reference/index.html). A useful and more extensive tutorial on purrr is available [here](https://www.r-bloggers.com/one-stop-tutorial-on-purrr-package-in-r/).
+Here, `map()` applies the function `read_csv()` to elements of a *list*. Hence, we first have to convert the vector `vec_files` to a list. A list is always the first argument within the `map()` function. Note two new symbols (`~` and `.`). The `~` always goes before the function that is repeatedly applied (or "mapped") to elements of the list. The `.` indicates where the elements of the list would go if spelled out (e.g., here, `read_csv(.)` would be `read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")` for the first iteration). The output of `map()` is again a list. There are many variants of the function `map()` that each have a specific use. A complete reference for all {purrr} functions is available [here](https://purrr.tidyverse.org/reference/index.html). A useful and more extensive tutorial on purrr is available [here](https://www.r-bloggers.com/one-stop-tutorial-on-purrr-package-in-r/).
 
 The above `map()` call does not return a *named* list as our `for` loop created. But we can give each element of the returned list of data frames different names by:
 
@@ -550,7 +550,7 @@ visdat::vis_miss(
   )
 ```
 
-### Strings
+### Strings {#strings}
 
 The column `siteid` currently contains strings specifying the full paths of the files that were read in earlier. The next task is to extract the site name from these strings. The file names follow a clear pattern (this also highlights why naming files wisely can often make life a lot simpler).
 
@@ -560,7 +560,7 @@ ddf_allsites$siteid |> head()
 
 The paths each start with the subdirectory where they are located (`"./data/"`), then `"FLX_"`, followed by the site name (the first three entries of the table containing data from all sites are for the site `"CH-Dav"`), and then some more specifications, including the years that respective files' data cover.
 
-The [*stringr*](https://stringr.tidyverse.org/) package [@R-stringr] (part of tidyverse) offers a set of functions for working with strings. [Wikham (XXX)](https://r4ds.had.co.nz/strings.html) provide a more comprehensive introduction to working with strings. Here, we would like to extract the six characters, starting at position 12. The function `str_sub()` does that job.
+The [{stringr}](https://stringr.tidyverse.org/) package [@R-stringr] (part of tidyverse) offers a set of functions for working with strings. [Wikham (XXX)](https://r4ds.had.co.nz/strings.html) provide a more comprehensive introduction to working with strings. Here, we would like to extract the six characters, starting at position 12. The function `str_sub()` does that job.
 
 ```{r}
 vec_sites <- str_sub(vec_files, start = 12, end = 17)
@@ -618,7 +618,7 @@ tibble(
   )
 ```
 
-We can achieve the same result by directly nesting the flat data frame holding all sites' data (`ddf_allsites`). This is done by combining the `group_by()`, which we have encountered above when aggregating using `summarise()`, with the function `nest()` from the *tidyr* package.
+We can achieve the same result by directly nesting the flat data frame holding all sites' data (`ddf_allsites`). This is done by combining the `group_by()`, which we have encountered above when aggregating using `summarise()`, with the function `nest()` from the {tidyr} package.
 
 ```{r}
 ddf_allsites |>
@@ -653,7 +653,7 @@ ddf_allsites_nested <- ddf_allsites |>
 ddf_allsites_nested
 ```
 
-This code is a demonstration of the power of tidy and nested data frames and for the clarity of the *tidyverse* syntax.
+This code is a demonstration of the power of tidy and nested data frames and for the clarity of the {tidyverse} syntax.
 
 Nesting is useful also for avoiding value duplication when joining relational data objects. Above, we nested time series data objects (where time steps and sites are both organised along rows) by sites and got a data frame where only sites are organised along rows, while time steps are nested inside the column `"data"`. This now fits the structure of a relational data object (`siteinfo_fluxnet2015`) containing site-specific meta information (also with only sites along rows).
 
@@ -687,7 +687,7 @@ print(paste("Nested and joined:",
 write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rds")
 ```
 
-## Exercises
+## Exercises {#exerciseswrangling}
 
 -   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio): 
   -   a. How many pale characters come from the planets Ryloth and Naboo?

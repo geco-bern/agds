@@ -64,7 +64,7 @@ R](./figures/supervised_ml.png){width="13cm"}
 
 The type of modelling approach of supervised machine learning is very
 similar to fitting regression models as we did in Chapter
-\@ref{#regressionclassification}. In a sense, supervised machine
+\@ref(regressionclassification). In a sense, supervised machine
 learning is just another empirical (or statistical) modelling approach.
 However, you may not want to call linear regression a machine learning
 algorithm because there is no iterative learning involved. Furthermore,
@@ -292,7 +292,7 @@ introduced in this and the next Chapter. Depending on your application
 or research question, it may also be of interest to evaluate the
 relationships embodied in $f(X)$ or to quantify the *importance* of
 different predictors in our model. This is referred to as *model
-interpretation* and is introduced in Chapter \@ref(interpretable_ml).
+interpretation* and is introduced in a future chapter.
 
 Of course, a plethora of algorithms exist that do the job of $y = f(X)$.
 Each of them has its own strengths and limitations. It is beyond the
@@ -300,12 +300,12 @@ scope of this course to introduce a larger number of ML algorithms. For
 illustration purposes in this chapter, we will use and introduce the
 K-nearest-Neighbors (KNN) algorithm and compare its performance to a
 multivariate linear regression for illustration purposes. Chapter
-\@ref(supervised_ml_b) introduces Random Forest.
+\@ref(randomforest) introduces Random Forest.
 
 ### Data and the modelling challenge
 
 We're returning to ecosystem flux data that we've used Chapters
-\@ref(data_wrangling) and \@ref(data_vis). Here, we're using daily data
+\@ref(datawrangling) and \@ref(datavis). Here, we're using daily data
 from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects
 of seasonally varying foliage cover for which the data does not contain
 information. To address such additional effects, we would have to, for
@@ -360,7 +360,9 @@ ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>
 
 The steps above are considered data *wrangling* and are *not* part of
 the modelling process. After completing this tutorial, you will
-understand this distinction. (-\> exercise explain the distinction)
+understand this distinction. 
+
+<!-- (-\> exercise explain the distinction XXX) -->
 
 ### K-nearest neighbours
 
@@ -432,17 +434,17 @@ lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf)
 
 The way we formulate a model can be understood as being independent of
 the algorithm, or *engine*, that takes care of fitting $f(X)$. The R
-package [*caret*](https://topepo.github.io/caret/) provides a unified
+package [{caret}](https://topepo.github.io/caret/) provides a unified
 interface for using different ML algorithms implemented in separate
 packages. In other words, it acts as a *wrapper* for multiple different
 model fitting, or ML algorithms. This has the advantage that it unifies
 the interface - the way arguments are provided and outputs are returned.
-*caret* also provides implementations for a set of commonly used tools
-for data processing, model training, and evaluation. We'll use *caret*
+{caret} also provides implementations for a set of commonly used tools
+for data processing, model training, and evaluation. We'll use {caret}
 here for model training with the function `train()`. Note however, that
 using a specific algorithm, which is implemented in a specific package
-outside *caret*, also requires that the respective package be installed
-and loaded. Using *caret* for specifying the same linear regression
+outside {caret}, also requires that the respective package be installed
+and loaded. Using {caret} for specifying the same linear regression
 model as above, the base-R `lm()` function, can be done with caret in a
 generalized form as:
 
@@ -457,7 +459,7 @@ caret::train(
 
 Note the argument specified as
 `trControl = trainControl(method = "none")`. This suppresses the default
-approach to model fitting in *caret* - to *resample* using
+approach to model fitting in {caret} - to *resample* using
 *bootstrapping.* More on that below. Note also that we dropped all rows
 that contained at least one missing value - necessary to apply the least
 squares method for the linear regression model fitting. It's advisable
@@ -527,7 +529,7 @@ training on extreme conditions is to compensate by sampling overly
 proportional from such cases for the training data set.
 
 Several alternative functions for the data splitting step are available
-from different packages in R. We use the the *rsample* package here as
+from different packages in R. We use the {rsample} package here as
 it allows to additionally make sure that data from the full range of a
 given variable's values (`VPD_F` in the example below) are well covered
 in both training and testing sets.
@@ -576,14 +578,14 @@ from the test set.
 Often, multiple splits of the data are considered during model training.
 Hence, an even larger number of data transformation parameters
 ($\mu, \sigma$ in the example of normalization) have to be determined
-and transformations applied to the multiple splits of the data. *caret*
+and transformations applied to the multiple splits of the data. {caret}
 deals with this for you and the transformations do not have to be
 "manually" applied before applying the `train()` function call. Instead,
 the data pre-processing is considered an integral step of model training
 and instructions are specified as part of the `train()` function call
 and along with the un-transformed data.
 
-The [*recipes*](https://recipes.tidymodels.org/) package provides an
+The [{recipes}](https://recipes.tidymodels.org/) package provides an
 even more powerful way for specifying the *formula* and pre-processing
 steps in one go. It is compatible with the `train()` function of
 {caret}. For the same formula as above, and an example where the data
@@ -736,7 +738,7 @@ visdat::vis_miss(
   )
 ```
 
-Here, the variable `LW_IN_F` (longwave radiation) if affected by a lot
+Here, the variable `LW_IN_F` (longwave radiation) is affected by a lot
 of missing data. Note that we applied a data cleaning step along with
 the data read-in at the very top of this Chapter. There, we applied a
 filtering criterion where values are only retained if at least 80% of
