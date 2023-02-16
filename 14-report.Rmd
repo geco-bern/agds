@@ -32,9 +32,9 @@ At the end of the course (exact date to be determined), you will send us a link 
 
 -   Two repositories from the exercise in Chapter \@ref(codemgmt):
 
-    -   Your original repository that your friend cloned and where you accepted a pull request.
+    -   Your **original repository** that your friend cloned and where you accepted a pull request.
 
-    -   Your forked repository from a friend to which you opened a pull request.
+    -   Your **forked repository** from a friend to which you opened a pull request.
 
 ## How do we grade the report?
 
