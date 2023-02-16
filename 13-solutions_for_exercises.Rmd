@@ -1,4 +1,4 @@
-# Solutions
+# Solutions {#solutions}
 
 ## Chapter 01 - Getting Started
 
@@ -225,7 +225,7 @@ cat("\n Final vector col_sum: ", col_sum)
 ```
 
 
-## Chapter 03 - Data Wrangling
+## Chapter 03 - Data wrangling
 
 ```{r include=FALSE}
 # Load packages
@@ -323,7 +323,7 @@ hhdf |>
        y = "Count of quality flags")
 ```
 
-## Chapter 04 - Data Visualisation
+## Chapter 04 - Data visualisation
 
 ### Identifying Outliers
 
@@ -424,7 +424,7 @@ hhdf_meanseason |>
   scale_x_continuous(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
 ```
 
-## Chapter 05
+## Chapter 05 - Data variety
 
 ### Files and file formats
 
@@ -548,7 +548,7 @@ identical(unkown_netcdf, unkown_tif)
 
 1. Looks similar to the NetCDF data, however one pixel is different as shown by taking the difference between both datasets.
 
-## Chapter 06
+## Chapter 06 - Open Science
 
 ### External data
 
@@ -580,8 +580,11 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 
 
 
-## Chapter 07
-## Chapter 08
+## Chapter 07 - Code management
+
+There are no exercises that require solutions.
+
+## Chapter 08 - Regression and classification
 
 ### Warm-up Exercises
 #### Loops and Ifs
@@ -593,12 +596,29 @@ A <- matrix(c(6, 7, 3, NA, 15, 6, 7,
               7, 19, 6, NA, 15, 8, 10),
             nrow = 4, byrow = TRUE)
 B <- c(8, 4, 12, 9, 15, 6)
+
+summ <- data.frame()
+
+for (i in 1:nrow(A)){
+  
+  for (j in 1:ncol(A)){
+    
+    if (is.na(A[i,j])){
+      A[i,j] <- max(B)
+    }
+  }
+  
+  B <- B[-which(B == max(B))] # update the B vector removing the biggest values
+  summ <- bind_rows(summ, data.frame(row_number = i, avg = mean(B)))
+}
+  
+summ
 ```
 
 #### Finding best predictor
 
 ```{r}
-df <- read_csv("df_for_stepwise_regression.csv")
+df <- read_csv("data/df_for_stepwise_regression.csv")
 
 ## specify target variable
 target <- 'GPP_NT_VUT_REF'
@@ -643,3 +663,14 @@ df_rsq |>
   coord_flip()
 ```
 
+## Chapter 09 - Supervised ML I
+
+There are no exercises with solutions for this Chapter.
+
+## Chapter 10 - Supervised ML II
+
+### Implementing k-fold cross-validation by hand
+
+## Chapter 11 - Random Forests
+
+### Tuning hyperparameters of a Random Forest model

@@ -537,7 +537,7 @@ Interested readers can find more content on geospatial data visualisation here:
 <!-- -   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors. -->
 
 
-## Exercises for The Report
+## Report Exercises
 
 **Running mean of monthly CO2 concentrations:**
 
@@ -547,4 +547,4 @@ Interested readers can find more content on geospatial data visualisation here:
 
 **Data exploration:**
 
--   \*\*\*Tell a story about the `airquality` data (data is directly available, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
+-   Tell a story about the `airquality` data (data is directly available in R, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.

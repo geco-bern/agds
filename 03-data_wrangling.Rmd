@@ -689,11 +689,21 @@ write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rd
 
 ## Exercises {#exerciseswrangling}
 
--   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio): 
-  -   a. How many pale characters come from the planets Ryloth and Naboo?
-  -   b. Who is the oldest of the tallest 5 characters?
-  -   c. What is the name of the smallest character and their starship in “Return of the Jedi”
+-   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio):
+
+a.  How many pale characters come from the planets Ryloth and Naboo?
+b.  Who is the oldest of the tallest 5 characters?
+c.  What is the name of the smallest character and their starship in "Return of the Jedi"
+
 -   Reuse the code in the tutorial to aggregate the `hhdf` dataset to the daily scale and calculate the following metrics for `VPD_F` using R functions: maximum value, minimum value, median, and standard deviation.
 -   The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes not of high quality. Split your dataset into two - one with actually measured data (`NEE_VUT_REF_QC == 0`) and one with only gap-filled data. Compare the means of `GPP_NT_VUT_REF` of all three datasets and interpret your finding. Can you find a connect between the timepoint of an entry and its quality? What does the temporal pattern imply for the mean values that you calculated?
 
 <!-- -   The elevation data in `siteinfo_fluxnet2015` is a continuous numerical variable. Create one ore more variables that turns elevation into a categorical variable with three levels: < 0, 0-1000, 1001-2000, > 2000. Can you find a elegant way to add that this data is in units of `m`? -->
+
+## Report Exercise
+
+Great science is surely always easy to reproduce... right? Well, the truth is that not all journals require that authors upload their scripts and data in a coherent format and if you want to have a look at some data or reproduce findings, it is likely that you will have to go through data and code cleaning first. To exemplify this issue, conduct the following exercise:
+
+Download the .xlsx-file from the supplementary material of this paper: Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO 2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.
+
+Open the file and have a look - not quite tidy, right? Your task is to clean this file up so that it can easily be read into RStudio. Follow the principles that you learned in this tutorial and actually try to load the file into RStudio to see whether you've done a proper job. For your performance assessment, you have to upload your cleaned dataset to your report repository on GitHub and include a code-chunk in your report that loads the cleaned dataset and prints its first six rows.
