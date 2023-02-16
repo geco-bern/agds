@@ -547,4 +547,4 @@ Interested readers can find more content on geospatial data visualisation here:
 
 **Data exploration:**
 
--   \*\*\*Tell a story about the `airquality` data (data is directly available, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
+-   Tell a story about the `airquality` data (data is directly available in R, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
