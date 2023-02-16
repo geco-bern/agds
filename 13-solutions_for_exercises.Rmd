@@ -1,4 +1,4 @@
-# Solutions
+# Solutions {#solutions}
 
 ## Chapter 01 - Getting Started
 
@@ -427,7 +427,7 @@ hhdf_meanseason |>
 ## Chapter 05
 ## Chapter 06
 ## Chapter 07
-## Chapter 08
+## Chapter 08 - Regression and classification
 
 ### Warm-up Exercises
 #### Loops and Ifs
@@ -506,3 +506,14 @@ df_rsq |>
   coord_flip()
 ```
 
+## Chapter 09 - Supervised ML I
+
+There are no exercises with solutions for this Chapter.
+
+## Chapter 10 - Supervised ML II
+
+### Implementing k-fold cross-validation by hand
+
+## Chapter 11 - Random Forests
+
+### Tuning hyperparameters of a Random Forest model
