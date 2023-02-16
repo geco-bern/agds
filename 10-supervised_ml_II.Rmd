@@ -4,7 +4,7 @@
 
 ## Learning objectives
 
-In the Chapter \@ref(supervisedmli), you learned how the data are pre-processed, the model fitted, and how the model's generasbility to unseen data is tested. In the exercises of Chapter \@ref(supervised_ml_i), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model's performance on the training and the test sets. A "good" model generalises well. That is, it performs well on unseen data.
+In the Chapter \@ref(supervisedmli), you learned how the data are pre-processed, the model fitted, and how the model's generasbility to unseen data is tested. In the exercises of Chapter \@ref(supervisedmli), you learned how the bias-variance trade-off of a model, a KNN, can be controlled and that the choice of model complexity has different implications of the model's performance on the training and the test sets. A "good" model generalises well. That is, it performs well on unseen data.
 
 In this chapter, you will learn more about the process of model training, the concept of the *loss*, and how we can chose the right level of model complexity for optimal model generalisability as part of the model training step. This completes your set of skills for your first implementations a supervised machine learning workflow.
 
@@ -12,7 +12,7 @@ In this chapter, you will learn more about the process of model training, the co
 
 ### Data and the modelling challenge
 
-We're using the same data and address the same modelling challenge as in Chapter \@ref(supervisedmli). Let's load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter \@ref(supervised_ml_i).
+We're using the same data and address the same modelling challenge as in Chapter \@ref(supervisedmli). Let's load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter \@ref(supervisedmli).
 
 ```{r warning=FALSE, message=FALSE}
 ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
@@ -187,7 +187,7 @@ Let's look at the results as we did in Chapter \@ref(supervisedmli). The model o
 eval_model(mod = mod_cv, df_train = ddf_train, df_test = ddf_test)
 ```
 
-Remember that in Chapter \@ref(supervised_ml_ii), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set. 
+Remember that in Chapter \@ref(supervisedmli), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set. 
 
 <!-- XXX exercises: explain to your neighbor why XXX. -->
 
