@@ -6,69 +6,11 @@
 
 After you've gone over the lecture and solved the exercises, you should be able to:
 
--   Install and load libraries and packages
--   Read, inspect, visualise and write data frames
 -   Use loops, conditional statements and functions in your code
--   Organize your R project for data analysis
+-   Write clean, stylized and structured code
 -   Look for help
 
 ## Tutorial
-
-### Libraries
-
-*Packages*, sometimes called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including base R, utils, stats...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
-
-For example, the {tidyverse} package is used for data wrangling and will be covered in this course. This is a special package which loads many other packages in the background (like {readr}, {ggplot2}, etc.). You can install a new package as follows:
-
-```{r eval=FALSE}
-install.packages("tidyverse")
-```
-
-Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.
-
-```{r eval=FALSE}
-library(tidyverse)
-```
-
-You can now use the functions and features provided by the {tidyverse} package in your R scripts.
-
-At any time, you can see a list of your installed packages on the source panel with the following command:
-
-```{r eval=FALSE}
-library()
-```
-
-And a list of the packages currently loaded:
-
-```{r}
-search()
-```
-
-This information can also be found on the **Packages** panel in RStudio. The loaded packages are shown with a tick mark.
-
-Finally, let's install all the missing packages and load all required packages for this course:
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
-              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
-              "MODISTools", "forcats", "yardstick", "recipes", "caret",
-              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
-              "renv", "rsample", "modelr", "rmarkdown", "rpart",
-              "rpart.plot", "ranger", "sessioninfo")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
-
-#### Other libraries and applications
-
-For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
-
-For example, to work with *netcdf* files in R, you would need to install the {ncdf4} library and the `netCDF` command-line tools:
-
--   To install the {ncdf4} library, follow the same steps as above for installing an R library.
--   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
--   Once the {ncdf4} library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
 
 ### Programming basics
 
@@ -130,6 +72,8 @@ while (i <= 10){
 temp_sum
 ```
 
+> Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
+
 #### Functions
 
 Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new *function* and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
@@ -185,182 +129,65 @@ Functions become increasingly important the more experienced one gets at coding.
 
 Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
 
-Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `.R/convert_fahrenheit_to_celsius.R` and load it later by running `source(".R/convert_fahrenheit_to_celsius")`.
+Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/convert_fahrenheit_to_celsius.R` and load it later by running `source("./R/convert_fahrenheit_to_celsius")`.
 
-### Working with data frames
+### Style your code
 
-In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio.
+Nice code is clean, readable, consistent, and extensible (easily modified or adapted). Ugly code works, but is hard to work with. There is no right or wrong about coding style, but certain aspects make it easier to read and use code. Here are a few points to consider.
 
-We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
+#### Spaces and breaks
 
-The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
+Adding enough white spaces and line breaks in the right locations greatly helps the legibility of code. Cramming variables, operators, and brackets without spaces leaves an unintelligible sequence of characters and it will not be clear what parts go together. Therefore, consider the following points:
 
-#### Reading data
+-   Use spaces around operators (`=`, `+`, `-`, `<-`, `>`, etc.).
+-   Use `<-`, not `=`, for allocating a value to a variable.
+-   Code inside curly brackets should be *indented* (recommended: two white spaces at the beginning of each line for each indentation level - don't use tabs).
 
-To import the data into the R environment, we use the function `read_csv()` from the {tidyverse} package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
-
-```{r message=FALSE}
-df <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
-print(df)
-```
-
-The file is automatically machine-readable because we have:
-
--   Only one header row, containing the column (variable) names.
--   Variables organised by columns, and observations by rows.
--   Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (`<dbl>`).
--   One value per cell.
--   No merged cells. In short, the data frame is tidy. To understand the sort of object we work with, i.e. the *class*, we can do:
-
-```{r}
-class(df)
-```
-
-Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`"spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features.
-
-Other types of data inputs and how to read them will be covered in Chapter \@ref(datavariety).
-
-#### Understanding the data structure
-
-There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
-
--   Size
-    -   `dim()` - Returns the dimensions of an object (here: number of rows and columns).
-    -   `nrow()` - Returns the number of rows of an object.
-    -   `ncol()` - Returns the number of columns of an object.
--   Content
-    -   `head()` - Returns the first 6 rows.
-    -   `tail()` - Returns the last 6 rows.
-    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
--   Names
-    -   `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
-    -   `rownames()` - Returns the row names.
--   Summary
-    -   `class()` - Returns the classes of an object.
-    -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
-    -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
-
-For example, the data frame `df` has 4018 rows and 334 columns:
-
-```{r}
-dim(df)
-```
-
-It is important to know the meaning of the column names and content. A description of standardized FLUXNET data variables is available [here](https://fluxnet.org/data/aboutdata/data-variables/). A selection of available variables that we will use in subsequent chapters are:
-
--   `GPP` (gC m$^{−2}$ s$^{-1}$): Gross primary production
--   `WS` (m s$^{-1}$): Horizontal wind speed
--   `USTAR` (m s$^{-1}$): Friction velocity
--   `TA` ($^{o}$ C): Air temperature
--   `RH` (%): Relative humidity (range 0--100%)
--   `PA` (kPa): Atmospheric pressure
--   `G` (W m$^{−2}$): Ground heat flux, not mandatory, but needed for the energy balance closure calculations
--   `NETRAD` (W m$^{−2}$): Net radiation, not mandatory, but needed for the energy balance closure calculations
--   `SW_IN` (W m$^{−2}$): Incoming shortwave radiation
--   `SW_IN_POT` (W m$^−2$): Potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
--   `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): Incoming photosynthetic photon flux density
--   `P` (mm): Precipitation total of each 30 or 60 minute period
--   `LW_IN` (W m$^{−2}$): Incoming (down-welling) long-wave radiation
--   `SWC` (%): Soil water content (volumetric), range 0--100%
--   `TS` ($^{o}$ C): Soil temperature
--   `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon dioxide (CO$_2$) mole fraction in moist air
-
-#### Selecting data and entering the tidyverse
-
-`df` is a data frame. This is similar to a matrix and has two dimensions (rows and columns). If we want to extract specific data from it, we specify the indices, i.e. the "coordinates", of the data. For two-dimensional objects (data frames, matrices), the first index refers to rows and the second to columns. For example, to refer to the element on the third row in the first column, we write:
-
-```{r}
-df[3,1]
-```
-
-Reducing a data frame (tibble) to only the first columns can be done by:
-
-```{r}
-df[, 1]
-```
-
-The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g. `[1:3,]`, indicates we want to select the rows numbers starting at the first and ending with the second number. So here `[1:3,]` will give us rows one, two and three.
-
-```{r}
-df[1:3, 3] # reduces the data frame (tibble) to its first three rows and the 3rd column
-```
-
-To reduce the data frame (tibble) to several columns, the function `c()` is used. This outputs the data frame (tibble) reduced to the selected row or column numbers inside `c()`.
-
-```{r}
-df[, c(1,4,7)]
-```
-
-Another method is to select the columns by column names, i.e. giving as input a string vector with the name of each column we want to select (again, this is Base R notation). This is especially useful if the columns we want to select are not contiguous. For example:
-
-```{r}
-# Selecting data by name in base R
-df[, c("TIMESTAMP_START", "TA_F_MDS", "TA_F_MDS_QC")]
-```
-
-In Chapter \@ref(datawrangling), we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in a way that makes your workflow more clear and understandable. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
-
-```{r}
-select(df, 1) # reduces the data frame (tibble) to its first column
-select(df, TIMESTAMP_START, TA_F_MDS, TA_F_MDS_QC)  # reduces the data frame to columns specified by names
-```
-
-As a further shortcut in tidyverse, we can use the pipe `%>%` operator. The data frame is still reduced to its first column:
-
-```{r}
-df %>% select(1)
-```
-
-We *pipe* the object `df` into the `select()` function with argument `1`. Note that the pipe operator `%>%` can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument. A recent new version of {base} R also includes a pipe operator `|>` that you may encounter in code snippets online and in this course.
-
-For the remainder of the tutorial several variables will be required. The methods of data selection demonstrated above will be used below to get the desired variables.
-
-```{r}
-df_small <- df %>% 
-  select(TIMESTAMP_START, TA_F, PPFD_IN)
-```
-
-Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
-
-#### Renaming
-
-TIMESTAMP_START, TA_F and PPFD_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligible.
-
-```{r}
-df_small <- df_small %>% 
-  rename(time = TIMESTAMP_START, temp = TA_F, ppfd = PPFD_IN)
-```
-
-#### Writing data
-
-A data frame can be written to a CSV file by:
-
-```{r, eval = F}
-write_csv(df_small, file = "data/df_small.csv")
-```
-
-Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
-
-#### Intro to visualisation
-
-Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. Our data frame `fluxes_subset` contains three variables, one of which is `time`. In other words, we are dealing with a time series. Let's look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (`type = "l"`).
-
-```{r}
-plot(1:1440, df_small$temp[1:1440], type = "l") 
-```
-
-Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram. A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a 'bin'. Below you will see the temperature on the x-axis split into these 'bins' ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.
-
-```{r}
-hist(df_small$temp, xlab = "Temperature (°C)")
-```
-
-Plots can be saved as files, as long as the file size does not get too large. It will write vector graphics as outputs, i.e. PDF. In base R, this can be done by:
+For example:
 
 ```{r eval=F}
-pdf("./figures/filename.pdf")
-hist(df_small$temp)
+if (temp > 5.0){
+  growth_temp <- growth_temp + temp  
+}
 ```
+
+#### Variable naming
+
+It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (`_`) to separate words within a name (`_`). Avoid (`.`) as they are reserved for certain types of objects in R. Also, avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.
+
+For example, `df_daily` is a data frame with data at a daily resolution. Or `clean_daily` is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (`_`) is used to separate words.
+
+It is also recommendable to avoid variable names consisting of only one character. This makes it practically impossible to search for that variable.
+
+```{r eval=F}
+# Good
+day_01
+
+# Bad
+DayOne
+day.one
+first_day_of_the_month
+djm1
+
+# Very bad
+mean <- function(x) sum(x)/length(x) # mean() itself is already a function
+T <- FALSE # T is an abbreviation of TRUE
+c <- 10 # c() is used to create a vector (example <- c(1, 2, 3))
+```
+
+#### Script style
+
+Load libraries at the very beginning of a script, followed, by reading data from files. Functions should be defined in separate `.R` files, unless they are only a few lines long. Then, place the sequence of statements. The name of the script should be short and concise and indicate what the script does. 
+
+Use comments to describe in human-readable text what the code does. Comments are all that appears to the right of a `#` and are code parts that are not interpreted by R and not executed. Adding comments in the code greatly helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).
+
+To visually separate parts of a script, use commented lines (e.g., `#----`). The RStudio text editor automatically recognizes `----` added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (**Outline** button in the top right corner of the editor panel). 
+
+Avoid reading entire workspace environments (e.g., `load(old_environment.RData)`), deleting environments `rm(list=ls())`, loading hidden dependencies (e.g., `.Rprofile`), or changing the working directory (`setwd("~/other_dir/"`) as part of a script.
+
+Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter \@ref(codemgmt), we will learn about the code versioning control system *git*, which keeps track of all this as meta information associated with files.
+
+A good and comprehensive best practices guide is given by the [tidyverse style guide](https://style.tidyverse.org/).
 
 ### Where to find help
 
