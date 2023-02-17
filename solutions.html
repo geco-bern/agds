@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-16" />
+<meta name="date" content="2023-02-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="randomforest.html"/>
-<link rel="next" href="report-requirements.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -163,7 +163,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
 <li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#style-your-code"><i class="fa fa-check"></i><b>1.2.4</b> Style your code</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
 </ul></li>
@@ -378,16 +380,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.11.1" data-path="solutions.html"><a href="solutions.html#tuning-hyperparameters-of-a-random-forest-model"><i class="fa fa-check"></i><b>12.11.1</b> Tuning hyperparameters of a Random Forest model</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="report-requirements.html"><a href="report-requirements.html"><i class="fa fa-check"></i><b>13</b> Report requirements</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="report-requirements.html"><a href="report-requirements.html#what-is-part-of-the-report"><i class="fa fa-check"></i><b>13.1</b> What is part of the report?</a></li>
-<li class="chapter" data-level="13.2" data-path="report-requirements.html"><a href="report-requirements.html#how-do-you-hand-in-your-report"><i class="fa fa-check"></i><b>13.2</b> How do you hand in your report?</a></li>
-<li class="chapter" data-level="13.3" data-path="report-requirements.html"><a href="report-requirements.html#how-do-we-grade-the-report"><i class="fa fa-check"></i><b>13.3</b> How do we grade the report?</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i>Session info</a>
-<ul>
-<li class="chapter" data-level="13.4" data-path="session-info.html"><a href="session-info.html#data-prep"><i class="fa fa-check"></i><b>13.4</b> Data prep</a></li>
-</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -548,7 +540,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb439-35"><a href="solutions.html#cb439-35" aria-hidden="true" tabindex="-1"></a>     vec,</span>
 <span id="cb439-36"><a href="solutions.html#cb439-36" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
 <span id="cb439-37"><a href="solutions.html#cb439-37" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Interpolated vector using for-loop&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-224-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-223-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="solutions.html#cb440-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using a while-loop to identify first and last position of NA values</span></span>
 <span id="cb440-2"><a href="solutions.html#cb440-2" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>,<span class="fu">c</span>(<span class="dv">100</span>)) <span class="co"># Initiate vector of length 100 with NAs</span></span>
 <span id="cb440-3"><a href="solutions.html#cb440-3" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>] <span class="ot">&lt;-</span> <span class="dv">6</span> <span class="co"># Fill up first 25 elements of &#39;vec&#39; with value 6. </span></span>
@@ -587,7 +579,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb440-36"><a href="solutions.html#cb440-36" aria-hidden="true" tabindex="-1"></a>     vec,</span>
 <span id="cb440-37"><a href="solutions.html#cb440-37" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&quot;l&quot;</span>,</span>
 <span id="cb440-38"><a href="solutions.html#cb440-38" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Interpolated vector using while-loop&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-224-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-223-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="find-the-sum-of-the-values-per-column" class="section level3 hasAnchor" number="12.2.4">
 <h3><span class="header-section-number">12.2.4</span> Find the sum of the values per column<a href="solutions.html#find-the-sum-of-the-values-per-column" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -730,7 +722,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb461-22"><a href="solutions.html#cb461-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Gap-filled data applies more often to night-time measurements!&quot;</span>,</span>
 <span id="cb461-23"><a href="solutions.html#cb461-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Hour of Day&quot;</span>,</span>
 <span id="cb461-24"><a href="solutions.html#cb461-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Count of quality flags&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-229-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-228-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="chapter-04---data-visualisation" class="section level2 hasAnchor" number="12.4">
@@ -797,7 +789,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb464-39"><a href="solutions.html#cb464-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> GPP_NT_VUT_REF_clean), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># then overplot cleaned data in black so that remaining red points are outliers</span></span></code></pre></div>
 <pre><code>## Warning: Removed 265 rows containing missing values (`geom_point()`).</code></pre>
 <pre><code>## Warning: Removed 290 rows containing missing values (`geom_point()`).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-230-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-229-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="diurnal-and-seasonal-cycles" class="section level3 hasAnchor" number="12.4.2">
 <h3><span class="header-section-number">12.4.2</span> Diurnal and seasonal cycles<a href="solutions.html#diurnal-and-seasonal-cycles" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -814,7 +806,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb469-2"><a href="solutions.html#cb469-2" aria-hidden="true" tabindex="-1"></a>hhdf_meanseason <span class="sc">|&gt;</span> </span>
 <span id="cb469-3"><a href="solutions.html#cb469-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour_day, <span class="at">y =</span> day_year, <span class="at">fill =</span> gpp)) <span class="sc">+</span></span>
 <span id="cb469-4"><a href="solutions.html#cb469-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_raster</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-231-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-230-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb470-1"><a href="solutions.html#cb470-1" aria-hidden="true" tabindex="-1"></a><span class="do">## c. Make raster plot publishable - This is up to your judgement. Below is an example. </span></span>
 <span id="cb470-2"><a href="solutions.html#cb470-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridisLite)</span>
 <span id="cb470-3"><a href="solutions.html#cb470-3" aria-hidden="true" tabindex="-1"></a>hhdf_meanseason <span class="sc">|&gt;</span> </span>
@@ -839,7 +831,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb470-22"><a href="solutions.html#cb470-22" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb470-23"><a href="solutions.html#cb470-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># avoid adding distance from the lowest values to the axes</span></span>
 <span id="cb470-24"><a href="solutions.html#cb470-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-231-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-230-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="chapter-05---data-variety" class="section level2 hasAnchor" number="12.5">
@@ -1019,25 +1011,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 3          3 6.00
 ## 4          4 5.00</code></pre>
 </div>
-<div id="finding-best-predictor" class="section level4 hasAnchor" number="12.8.1.2">
-<h4><span class="header-section-number">12.8.1.2</span> Finding best predictor<a href="solutions.html#finding-best-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="solutions.html#cb484-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/df_for_stepwise_regression.csv&quot;</span>)</span></code></pre></div>
-<pre><code>## Rows: 9975 Columns: 17
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr   (1): siteid
-## dbl  (15): TA_F, SW_IN_F, LW_IN_F, VPD_F, PA_F, P_F, WS_F, TA_F_MDS, SW_IN_F...
-## date  (1): TIMESTAMP
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="solutions.html#cb486-1" aria-hidden="true" tabindex="-1"></a><span class="do">## specify target variable</span></span>
-<span id="cb486-2"><a href="solutions.html#cb486-2" aria-hidden="true" tabindex="-1"></a>target <span class="ot">&lt;-</span> <span class="st">&#39;GPP_NT_VUT_REF&#39;</span></span>
-<span id="cb486-3"><a href="solutions.html#cb486-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb486-4"><a href="solutions.html#cb486-4" aria-hidden="true" tabindex="-1"></a><span class="do">## determine predictors as all except site ID, timestamp, and the target (should be 14)</span></span>
-<span id="cb486-5"><a href="solutions.html#cb486-5" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
-<span id="cb486-6"><a href="solutions.html#cb486-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>target, <span class="sc">-</span>siteid, <span class="sc">-</span>TIMESTAMP) <span class="sc">|&gt;</span> </span>
-<span id="cb486-7"><a href="solutions.html#cb486-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code></pre></div>
+<div id="stepwise-regression" class="section level4 hasAnchor" number="12.8.1.2">
+<h4><span class="header-section-number">12.8.1.2</span> Stepwise regression<a href="solutions.html#stepwise-regression" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="solutions.html#cb484-1" aria-hidden="true" tabindex="-1"></a>vec_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;data&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;_FLUXNET2015_FULLSET_DD_&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb484-2"><a href="solutions.html#cb484-2" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> purrr<span class="sc">:::</span><span class="fu">map</span>(<span class="fu">as.list</span>(vec_files), <span class="sc">~</span>readr<span class="sc">::</span><span class="fu">read_csv</span>(.))</span>
+<span id="cb484-3"><a href="solutions.html#cb484-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(list_df) <span class="ot">&lt;-</span> vec_files</span>
+<span id="cb484-4"><a href="solutions.html#cb484-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb484-5"><a href="solutions.html#cb484-5" aria-hidden="true" tabindex="-1"></a>clean_fluxnet_dd <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
+<span id="cb484-6"><a href="solutions.html#cb484-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb484-7"><a href="solutions.html#cb484-7" aria-hidden="true" tabindex="-1"></a>    df <span class="sc">%&gt;%</span></span>
+<span id="cb484-8"><a href="solutions.html#cb484-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb484-9"><a href="solutions.html#cb484-9" aria-hidden="true" tabindex="-1"></a>        <span class="do">## select only the variables we&#39;re interested in</span></span>
+<span id="cb484-10"><a href="solutions.html#cb484-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP&quot;</span>),</span>
+<span id="cb484-11"><a href="solutions.html#cb484-11" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),</span>
+<span id="cb484-12"><a href="solutions.html#cb484-12" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ends_with</span>(<span class="st">&quot;_F_MDS&quot;</span>),</span>
+<span id="cb484-13"><a href="solutions.html#cb484-13" aria-hidden="true" tabindex="-1"></a>               <span class="co"># ends_with(&quot;_ERA&quot;),</span></span>
+<span id="cb484-14"><a href="solutions.html#cb484-14" aria-hidden="true" tabindex="-1"></a>               <span class="fu">starts_with</span>(<span class="st">&quot;_SWC_F_MDS&quot;</span>),</span>
+<span id="cb484-15"><a href="solutions.html#cb484-15" aria-hidden="true" tabindex="-1"></a>               CO2_F_MDS,</span>
+<span id="cb484-16"><a href="solutions.html#cb484-16" aria-hidden="true" tabindex="-1"></a>               PPFD_IN,</span>
+<span id="cb484-17"><a href="solutions.html#cb484-17" aria-hidden="true" tabindex="-1"></a>               GPP_NT_VUT_REF,</span>
+<span id="cb484-18"><a href="solutions.html#cb484-18" aria-hidden="true" tabindex="-1"></a>               NEE_VUT_REF_QC,</span>
+<span id="cb484-19"><a href="solutions.html#cb484-19" aria-hidden="true" tabindex="-1"></a>               USTAR,</span>
+<span id="cb484-20"><a href="solutions.html#cb484-20" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;G_&quot;</span>),</span>
+<span id="cb484-21"><a href="solutions.html#cb484-21" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;LE_&quot;</span>),</span>
+<span id="cb484-22"><a href="solutions.html#cb484-22" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">&quot;H_&quot;</span>),</span>
+<span id="cb484-23"><a href="solutions.html#cb484-23" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)</span>
+<span id="cb484-24"><a href="solutions.html#cb484-24" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span></span>
+<span id="cb484-25"><a href="solutions.html#cb484-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb484-26"><a href="solutions.html#cb484-26" aria-hidden="true" tabindex="-1"></a>        <span class="do">## convert to a nice date object</span></span>
+<span id="cb484-27"><a href="solutions.html#cb484-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">%&gt;%</span></span>
+<span id="cb484-28"><a href="solutions.html#cb484-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb484-29"><a href="solutions.html#cb484-29" aria-hidden="true" tabindex="-1"></a>        <span class="do">## not setting heavily gapfilled data to zero</span></span>
+<span id="cb484-30"><a href="solutions.html#cb484-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb484-31"><a href="solutions.html#cb484-31" aria-hidden="true" tabindex="-1"></a>        <span class="do">## set all -9999 to NA</span></span>
+<span id="cb484-32"><a href="solutions.html#cb484-32" aria-hidden="true" tabindex="-1"></a>        <span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb484-33"><a href="solutions.html#cb484-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb484-34"><a href="solutions.html#cb484-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># drop NAs</span></span>
+<span id="cb484-35"><a href="solutions.html#cb484-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb484-36"><a href="solutions.html#cb484-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb484-37"><a href="solutions.html#cb484-37" aria-hidden="true" tabindex="-1"></a>        <span class="do">## filter bad data (at least 80% must be measured or good quality gapfilled)</span></span>
+<span id="cb484-38"><a href="solutions.html#cb484-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF)) <span class="sc">%&gt;%</span> </span>
+<span id="cb484-39"><a href="solutions.html#cb484-39" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb484-40"><a href="solutions.html#cb484-40" aria-hidden="true" tabindex="-1"></a>        <span class="do">## drop QC variables (no longer needed), except NEE_VUT_REF_QC</span></span>
+<span id="cb484-41"><a href="solutions.html#cb484-41" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span>
+<span id="cb484-42"><a href="solutions.html#cb484-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb484-43"><a href="solutions.html#cb484-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb484-44"><a href="solutions.html#cb484-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb484-45"><a href="solutions.html#cb484-45" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(list_df, <span class="sc">~</span><span class="fu">clean_fluxnet_dd</span>(.)) <span class="sc">%&gt;%</span> </span>
+<span id="cb484-46"><a href="solutions.html#cb484-46" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">&quot;siteid&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb484-47"><a href="solutions.html#cb484-47" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">siteid =</span> <span class="fu">str_sub</span>(siteid, <span class="at">start =</span> <span class="dv">10</span>, <span class="at">end =</span> <span class="dv">15</span>))</span>
+<span id="cb484-48"><a href="solutions.html#cb484-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb484-49"><a href="solutions.html#cb484-49" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(df, <span class="st">&quot;data/df_for_stepwise_regression.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="solutions.html#cb485-1" aria-hidden="true" tabindex="-1"></a><span class="do">## specify target variable (as above)</span></span>
+<span id="cb485-2"><a href="solutions.html#cb485-2" aria-hidden="true" tabindex="-1"></a>target <span class="ot">&lt;-</span> <span class="st">&#39;GPP_NT_VUT_REF&#39;</span></span>
+<span id="cb485-3"><a href="solutions.html#cb485-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb485-4"><a href="solutions.html#cb485-4" aria-hidden="true" tabindex="-1"></a><span class="do">## determine predictors as all except date, siteid and target</span></span>
+<span id="cb485-5"><a href="solutions.html#cb485-5" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb485-6"><a href="solutions.html#cb485-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>target, <span class="sc">-</span>TIMESTAMP, <span class="sc">-</span>siteid) <span class="sc">%&gt;%</span> </span>
+<span id="cb485-7"><a href="solutions.html#cb485-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span></code></pre></div>
 <pre><code>## Warning: Using an external vector in selections was deprecated in tidyselect 1.1.0.
 ## ℹ Please use `all_of()` or `any_of()` instead.
 ##   # Was:
@@ -1047,29 +1078,292 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   data %&gt;% select(all_of(target))
 ## 
 ## See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</code></pre>
-<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="solutions.html#cb488-1" aria-hidden="true" tabindex="-1"></a><span class="do">## initialise an empty data frame (necessary, because otherwise we cannot use bind_rows() below)</span></span>
-<span id="cb488-2"><a href="solutions.html#cb488-2" aria-hidden="true" tabindex="-1"></a>df_rsq <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb488-3"><a href="solutions.html#cb488-3" aria-hidden="true" tabindex="-1"></a><span class="co"># rsq_list &lt;- c()  # alternative for vector</span></span>
-<span id="cb488-4"><a href="solutions.html#cb488-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb488-5"><a href="solutions.html#cb488-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (var <span class="cf">in</span> preds){</span>
-<span id="cb488-6"><a href="solutions.html#cb488-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb488-7"><a href="solutions.html#cb488-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## create formula dynamically</span></span>
-<span id="cb488-8"><a href="solutions.html#cb488-8" aria-hidden="true" tabindex="-1"></a>  forml <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(target, <span class="st">&quot;~&quot;</span>, var))</span>
-<span id="cb488-9"><a href="solutions.html#cb488-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb488-10"><a href="solutions.html#cb488-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## fit linear model</span></span>
-<span id="cb488-11"><a href="solutions.html#cb488-11" aria-hidden="true" tabindex="-1"></a>  fit_lin <span class="ot">&lt;-</span> <span class="fu">lm</span>(forml, <span class="at">data =</span> df)</span>
-<span id="cb488-12"><a href="solutions.html#cb488-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb488-13"><a href="solutions.html#cb488-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extract R2 from linear model</span></span>
-<span id="cb488-14"><a href="solutions.html#cb488-14" aria-hidden="true" tabindex="-1"></a>  rsq <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_lin)[[<span class="st">&quot;r.squared&quot;</span>]]</span>
-<span id="cb488-15"><a href="solutions.html#cb488-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb488-16"><a href="solutions.html#cb488-16" aria-hidden="true" tabindex="-1"></a>  <span class="do">## add a row to the data frame that holds the results</span></span>
-<span id="cb488-17"><a href="solutions.html#cb488-17" aria-hidden="true" tabindex="-1"></a>  df_rsq <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_rsq, <span class="fu">data.frame</span>(<span class="at">pred =</span> var, <span class="at">rsq =</span> rsq))</span>
-<span id="cb488-18"><a href="solutions.html#cb488-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb488-19"><a href="solutions.html#cb488-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rsq_list &lt;- c(rsq_list,rsq)  # alternative with vector</span></span>
-<span id="cb488-20"><a href="solutions.html#cb488-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb488-21"><a href="solutions.html#cb488-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb488-22"><a href="solutions.html#cb488-22" aria-hidden="true" tabindex="-1"></a><span class="do">## print a table arrange by best rsq at the top</span></span>
-<span id="cb488-23"><a href="solutions.html#cb488-23" aria-hidden="true" tabindex="-1"></a>df_rsq <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>rsq) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="solutions.html#cb487-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the vector of candidate predictors to be added in the model. To begin with, consider all as candidates.</span></span>
+<span id="cb487-2"><a href="solutions.html#cb487-2" aria-hidden="true" tabindex="-1"></a>preds_candidate <span class="ot">&lt;-</span> preds </span>
+<span id="cb487-3"><a href="solutions.html#cb487-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb487-4"><a href="solutions.html#cb487-4" aria-hidden="true" tabindex="-1"></a><span class="co"># predictors retained in the model from the previous step. To begin with, is empty.</span></span>
+<span id="cb487-5"><a href="solutions.html#cb487-5" aria-hidden="true" tabindex="-1"></a>preds_retained <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb487-6"><a href="solutions.html#cb487-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb487-7"><a href="solutions.html#cb487-7" aria-hidden="true" tabindex="-1"></a><span class="do">## work with lists as much as possible (more flexible!)</span></span>
+<span id="cb487-8"><a href="solutions.html#cb487-8" aria-hidden="true" tabindex="-1"></a>df_metrics <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb487-9"><a href="solutions.html#cb487-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb487-10"><a href="solutions.html#cb487-10" aria-hidden="true" tabindex="-1"></a><span class="do">## outer loop for k predictors</span></span>
+<span id="cb487-11"><a href="solutions.html#cb487-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(preds)){</span>
+<span id="cb487-12"><a href="solutions.html#cb487-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-13"><a href="solutions.html#cb487-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rsq_candidates &lt;- c()</span></span>
+<span id="cb487-14"><a href="solutions.html#cb487-14" aria-hidden="true" tabindex="-1"></a>  df_rsq_candidates <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb487-15"><a href="solutions.html#cb487-15" aria-hidden="true" tabindex="-1"></a>  linmod_candidates <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb487-16"><a href="solutions.html#cb487-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-17"><a href="solutions.html#cb487-17" aria-hidden="true" tabindex="-1"></a>  <span class="do">## inner loop for single additional predictor</span></span>
+<span id="cb487-18"><a href="solutions.html#cb487-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (ipred <span class="cf">in</span> preds_candidate){</span>
+<span id="cb487-19"><a href="solutions.html#cb487-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb487-20"><a href="solutions.html#cb487-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># variable vector (new variable + retained variables) used in regression</span></span>
+<span id="cb487-21"><a href="solutions.html#cb487-21" aria-hidden="true" tabindex="-1"></a>    pred_add <span class="ot">&lt;-</span> <span class="fu">c</span>(preds_retained, ipred)</span>
+<span id="cb487-22"><a href="solutions.html#cb487-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb487-23"><a href="solutions.html#cb487-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># define formulate with newly-added predictor</span></span>
+<span id="cb487-24"><a href="solutions.html#cb487-24" aria-hidden="true" tabindex="-1"></a>    forml  <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>( target, <span class="st">&#39;~&#39;</span>, <span class="fu">paste</span>(pred_add, <span class="at">collapse =</span> <span class="st">&#39;+&#39;</span>)))</span>
+<span id="cb487-25"><a href="solutions.html#cb487-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb487-26"><a href="solutions.html#cb487-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fit linear model</span></span>
+<span id="cb487-27"><a href="solutions.html#cb487-27" aria-hidden="true" tabindex="-1"></a>    fit_lin <span class="ot">&lt;-</span> <span class="fu">lm</span>(forml, <span class="at">data =</span> df)</span>
+<span id="cb487-28"><a href="solutions.html#cb487-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb487-29"><a href="solutions.html#cb487-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add model object to list, and name the element according to the added variable</span></span>
+<span id="cb487-30"><a href="solutions.html#cb487-30" aria-hidden="true" tabindex="-1"></a>    linmod_candidates[[ ipred ]] <span class="ot">&lt;-</span> fit_lin</span>
+<span id="cb487-31"><a href="solutions.html#cb487-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb487-32"><a href="solutions.html#cb487-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># record metrics for all candidates</span></span>
+<span id="cb487-33"><a href="solutions.html#cb487-33" aria-hidden="true" tabindex="-1"></a>    rsq <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_lin)[[<span class="st">&quot;r.squared&quot;</span>]]</span>
+<span id="cb487-34"><a href="solutions.html#cb487-34" aria-hidden="true" tabindex="-1"></a>    df_rsq_candidates <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_rsq_candidates, <span class="fu">data.frame</span>(<span class="at">pred =</span> ipred, <span class="at">rsq =</span> rsq))  <span class="co"># when storing R2 in a data frame</span></span>
+<span id="cb487-35"><a href="solutions.html#cb487-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rsq_candidates &lt;- c(rsq_candidates,  rsq)  # when storing R2 as a vector</span></span>
+<span id="cb487-36"><a href="solutions.html#cb487-36" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb487-37"><a href="solutions.html#cb487-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-38"><a href="solutions.html#cb487-38" aria-hidden="true" tabindex="-1"></a>  <span class="do">## get name of candidate predictor that achieved the highest R2.</span></span>
+<span id="cb487-39"><a href="solutions.html#cb487-39" aria-hidden="true" tabindex="-1"></a>  pred_add <span class="ot">&lt;-</span> </span>
+<span id="cb487-40"><a href="solutions.html#cb487-40" aria-hidden="true" tabindex="-1"></a>    df_rsq_candidates <span class="sc">%&gt;%</span>  <span class="co"># when storing R2 in a data frame</span></span>
+<span id="cb487-41"><a href="solutions.html#cb487-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(rsq)) <span class="sc">%&gt;%</span> </span>
+<span id="cb487-42"><a href="solutions.html#cb487-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb487-43"><a href="solutions.html#cb487-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(pred) <span class="sc">%&gt;%</span> </span>
+<span id="cb487-44"><a href="solutions.html#cb487-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.character</span>()</span>
+<span id="cb487-45"><a href="solutions.html#cb487-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-46"><a href="solutions.html#cb487-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pred_add &lt;- preds_candidate[ which.max(rsq_candidates) ]   # when storing R2 as a vector</span></span>
+<span id="cb487-47"><a href="solutions.html#cb487-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-48"><a href="solutions.html#cb487-48" aria-hidden="true" tabindex="-1"></a>  <span class="do">## add best predictors to retained predictors </span></span>
+<span id="cb487-49"><a href="solutions.html#cb487-49" aria-hidden="true" tabindex="-1"></a>  preds_retained <span class="ot">&lt;-</span> <span class="fu">c</span>(preds_retained, pred_add)</span>
+<span id="cb487-50"><a href="solutions.html#cb487-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-51"><a href="solutions.html#cb487-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># record AIC and BIC and adjusted-R2 of the respective model</span></span>
+<span id="cb487-52"><a href="solutions.html#cb487-52" aria-hidden="true" tabindex="-1"></a>  df_metrics <span class="ot">&lt;-</span> df_metrics <span class="sc">%&gt;%</span> </span>
+<span id="cb487-53"><a href="solutions.html#cb487-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_rows</span>(</span>
+<span id="cb487-54"><a href="solutions.html#cb487-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>( <span class="at">pred =</span> pred_add,</span>
+<span id="cb487-55"><a href="solutions.html#cb487-55" aria-hidden="true" tabindex="-1"></a>                  <span class="at">rsq =</span> <span class="fu">summary</span>(linmod_candidates[[ pred_add ]])[[<span class="st">&quot;r.squared&quot;</span>]],</span>
+<span id="cb487-56"><a href="solutions.html#cb487-56" aria-hidden="true" tabindex="-1"></a>                  <span class="at">adj_rsq =</span> <span class="fu">summary</span>(linmod_candidates[[ pred_add ]])[[<span class="st">&quot;adj.r.squared&quot;</span>]],</span>
+<span id="cb487-57"><a href="solutions.html#cb487-57" aria-hidden="true" tabindex="-1"></a>                  <span class="at">aic =</span> <span class="fu">AIC</span>(linmod_candidates[[ pred_add ]]),</span>
+<span id="cb487-58"><a href="solutions.html#cb487-58" aria-hidden="true" tabindex="-1"></a>                  <span class="at">bic =</span> <span class="fu">BIC</span>(linmod_candidates[[ pred_add ]])</span>
+<span id="cb487-59"><a href="solutions.html#cb487-59" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb487-60"><a href="solutions.html#cb487-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb487-61"><a href="solutions.html#cb487-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-62"><a href="solutions.html#cb487-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb487-63"><a href="solutions.html#cb487-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove the selected variable from the candidate variable list</span></span>
+<span id="cb487-64"><a href="solutions.html#cb487-64" aria-hidden="true" tabindex="-1"></a>  preds_candidate <span class="ot">&lt;-</span> preds_candidate[<span class="sc">-</span><span class="fu">which</span>(preds_candidate <span class="sc">==</span> pred_add)]</span>
+<span id="cb487-65"><a href="solutions.html#cb487-65" aria-hidden="true" tabindex="-1"></a>  <span class="co"># preds_candidate &lt;- setdiff(preds_candidate,pred_add)  # alternative</span></span>
+<span id="cb487-66"><a href="solutions.html#cb487-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb487-67"><a href="solutions.html#cb487-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Printing information on model development</span></span>
+<span id="cb487-68"><a href="solutions.html#cb487-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st"> Next Best Model: GPP_NT_VUT_REF ~ &quot;</span>, <span class="fu">paste</span>(preds_retained, <span class="at">collapse =</span> <span class="st">&quot; + &quot;</span>))</span>
+<span id="cb487-69"><a href="solutions.html#cb487-69" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## 
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F + CO2_F_MDS
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F + CO2_F_MDS + PA_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F + CO2_F_MDS + PA_F + LW_IN_F_MDS
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F + CO2_F_MDS + PA_F + LW_IN_F_MDS + TA_F
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F + CO2_F_MDS + PA_F + LW_IN_F_MDS + TA_F + VPD_F_MDS
+##  Next Best Model: GPP_NT_VUT_REF ~  PPFD_IN + LW_IN_F + VPD_F + TA_F_MDS + WS_F + USTAR + SW_IN_F + P_F + CO2_F_MDS + PA_F + LW_IN_F_MDS + TA_F + VPD_F_MDS + SW_IN_F_MDS</code></pre>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="solutions.html#cb489-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(df_metrics<span class="sc">$</span>pred) <span class="co"># order in which variables enter the model</span></span></code></pre></div>
+<pre><code>##    df_metrics.pred
+## 1          PPFD_IN
+## 2          LW_IN_F
+## 3            VPD_F
+## 4         TA_F_MDS
+## 5             WS_F
+## 6            USTAR
+## 7          SW_IN_F
+## 8              P_F
+## 9        CO2_F_MDS
+## 10            PA_F
+## 11     LW_IN_F_MDS
+## 12            TA_F
+## 13       VPD_F_MDS
+## 14     SW_IN_F_MDS</code></pre>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="solutions.html#cb491-1" aria-hidden="true" tabindex="-1"></a>df_metrics <span class="sc">%&gt;%</span> </span>
+<span id="cb491-2"><a href="solutions.html#cb491-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(rsq)) <span class="sc">%&gt;%</span> </span>
+<span id="cb491-3"><a href="solutions.html#cb491-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">pred</th>
+<th align="right">rsq</th>
+<th align="right">adj_rsq</th>
+<th align="right">aic</th>
+<th align="right">bic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SW_IN_F_MDS</td>
+<td align="right">0.5287706</td>
+<td align="right">0.5280746</td>
+<td align="right">42844.05</td>
+<td align="right">42958.58</td>
+</tr>
+<tr class="even">
+<td align="left">VPD_F_MDS</td>
+<td align="right">0.5287706</td>
+<td align="right">0.5281244</td>
+<td align="right">42842.05</td>
+<td align="right">42949.42</td>
+</tr>
+<tr class="odd">
+<td align="left">TA_F</td>
+<td align="right">0.5287514</td>
+<td align="right">0.5281550</td>
+<td align="right">42840.43</td>
+<td align="right">42940.65</td>
+</tr>
+<tr class="even">
+<td align="left">LW_IN_F_MDS</td>
+<td align="right">0.5287106</td>
+<td align="right">0.5281639</td>
+<td align="right">42839.25</td>
+<td align="right">42932.31</td>
+</tr>
+<tr class="odd">
+<td align="left">PA_F</td>
+<td align="right">0.5286660</td>
+<td align="right">0.5281690</td>
+<td align="right">42838.15</td>
+<td align="right">42924.05</td>
+</tr>
+<tr class="even">
+<td align="left">CO2_F_MDS</td>
+<td align="right">0.5276995</td>
+<td align="right">0.5272513</td>
+<td align="right">42855.60</td>
+<td align="right">42934.34</td>
+</tr>
+<tr class="odd">
+<td align="left">P_F</td>
+<td align="right">0.5267412</td>
+<td align="right">0.5263421</td>
+<td align="right">42872.84</td>
+<td align="right">42944.43</td>
+</tr>
+<tr class="even">
+<td align="left">SW_IN_F</td>
+<td align="right">0.5248973</td>
+<td align="right">0.5245468</td>
+<td align="right">42907.76</td>
+<td align="right">42972.19</td>
+</tr>
+<tr class="odd">
+<td align="left">USTAR</td>
+<td align="right">0.5212628</td>
+<td align="right">0.5209600</td>
+<td align="right">42978.11</td>
+<td align="right">43035.38</td>
+</tr>
+<tr class="even">
+<td align="left">WS_F</td>
+<td align="right">0.5061483</td>
+<td align="right">0.5058880</td>
+<td align="right">43271.22</td>
+<td align="right">43321.33</td>
+</tr>
+<tr class="odd">
+<td align="left">TA_F_MDS</td>
+<td align="right">0.5008611</td>
+<td align="right">0.5006507</td>
+<td align="right">43370.32</td>
+<td align="right">43413.27</td>
+</tr>
+<tr class="even">
+<td align="left">VPD_F</td>
+<td align="right">0.4909870</td>
+<td align="right">0.4908261</td>
+<td align="right">43554.30</td>
+<td align="right">43590.10</td>
+</tr>
+<tr class="odd">
+<td align="left">LW_IN_F</td>
+<td align="right">0.4374452</td>
+<td align="right">0.4373266</td>
+<td align="right">44501.85</td>
+<td align="right">44530.48</td>
+</tr>
+<tr class="even">
+<td align="left">PPFD_IN</td>
+<td align="right">0.3627837</td>
+<td align="right">0.3627166</td>
+<td align="right">45682.99</td>
+<td align="right">45704.47</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="solutions.html#cb492-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb492-2"><a href="solutions.html#cb492-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb492-3"><a href="solutions.html#cb492-3" aria-hidden="true" tabindex="-1"></a>df_metrics<span class="sc">$</span>pred <span class="ot">&lt;-</span>  <span class="fu">factor</span>(df_metrics<span class="sc">$</span>pred, <span class="at">levels =</span> df_metrics<span class="sc">$</span>pred)</span>
+<span id="cb492-4"><a href="solutions.html#cb492-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb492-5"><a href="solutions.html#cb492-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb492-6"><a href="solutions.html#cb492-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df_metrics, <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> rsq)) <span class="sc">+</span></span>
+<span id="cb492-7"><a href="solutions.html#cb492-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(df_metrics, rsq <span class="sc">==</span> <span class="fu">max</span>(rsq)), <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> rsq), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb492-8"><a href="solutions.html#cb492-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">expression</span>(<span class="fu">italic</span>(R)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">+</span> </span>
+<span id="cb492-9"><a href="solutions.html#cb492-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-240-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="solutions.html#cb493-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb493-2"><a href="solutions.html#cb493-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df_metrics, <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> adj_rsq)) <span class="sc">+</span></span>
+<span id="cb493-3"><a href="solutions.html#cb493-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(df_metrics, adj_rsq <span class="sc">==</span> <span class="fu">max</span>(adj_rsq)), <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> adj_rsq), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb493-4"><a href="solutions.html#cb493-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Adjusted-&quot;</span>, <span class="fu">italic</span>(R)<span class="sc">^</span><span class="dv">2</span>))) <span class="sc">+</span> </span>
+<span id="cb493-5"><a href="solutions.html#cb493-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-240-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="solutions.html#cb494-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb494-2"><a href="solutions.html#cb494-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df_metrics, <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> aic)) <span class="sc">+</span></span>
+<span id="cb494-3"><a href="solutions.html#cb494-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(df_metrics, aic <span class="sc">==</span> <span class="fu">min</span>(aic)), <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> aic), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb494-4"><a href="solutions.html#cb494-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;AIC&quot;</span>)<span class="sc">+</span> </span>
+<span id="cb494-5"><a href="solutions.html#cb494-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-240-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb495"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb495-1"><a href="solutions.html#cb495-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb495-2"><a href="solutions.html#cb495-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df_metrics, <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> bic)) <span class="sc">+</span></span>
+<span id="cb495-3"><a href="solutions.html#cb495-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">filter</span>(df_metrics, bic <span class="sc">==</span> <span class="fu">min</span>(bic)), <span class="fu">aes</span>(<span class="at">x =</span> pred, <span class="at">y =</span> bic), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb495-4"><a href="solutions.html#cb495-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;BIC&quot;</span>)<span class="sc">+</span> </span>
+<span id="cb495-5"><a href="solutions.html#cb495-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-240-4.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="finding-best-predictor" class="section level4 hasAnchor" number="12.8.1.3">
+<h4><span class="header-section-number">12.8.1.3</span> Finding best predictor<a href="solutions.html#finding-best-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb496-1"><a href="solutions.html#cb496-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/df_for_stepwise_regression.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Rows: 9975 Columns: 17
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (1): siteid
+## dbl  (15): TA_F, SW_IN_F, LW_IN_F, VPD_F, PA_F, P_F, WS_F, TA_F_MDS, SW_IN_F...
+## date  (1): TIMESTAMP
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb498-1"><a href="solutions.html#cb498-1" aria-hidden="true" tabindex="-1"></a><span class="do">## specify target variable</span></span>
+<span id="cb498-2"><a href="solutions.html#cb498-2" aria-hidden="true" tabindex="-1"></a>target <span class="ot">&lt;-</span> <span class="st">&#39;GPP_NT_VUT_REF&#39;</span></span>
+<span id="cb498-3"><a href="solutions.html#cb498-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb498-4"><a href="solutions.html#cb498-4" aria-hidden="true" tabindex="-1"></a><span class="do">## determine predictors as all except site ID, timestamp, and the target (should be 14)</span></span>
+<span id="cb498-5"><a href="solutions.html#cb498-5" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb498-6"><a href="solutions.html#cb498-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>target, <span class="sc">-</span>siteid, <span class="sc">-</span>TIMESTAMP) <span class="sc">|&gt;</span> </span>
+<span id="cb498-7"><a href="solutions.html#cb498-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>()</span>
+<span id="cb498-8"><a href="solutions.html#cb498-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb498-9"><a href="solutions.html#cb498-9" aria-hidden="true" tabindex="-1"></a><span class="do">## initialise an empty data frame (necessary, because otherwise we cannot use bind_rows() below)</span></span>
+<span id="cb498-10"><a href="solutions.html#cb498-10" aria-hidden="true" tabindex="-1"></a>df_rsq <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb498-11"><a href="solutions.html#cb498-11" aria-hidden="true" tabindex="-1"></a><span class="co"># rsq_list &lt;- c()  # alternative for vector</span></span>
+<span id="cb498-12"><a href="solutions.html#cb498-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb498-13"><a href="solutions.html#cb498-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (var <span class="cf">in</span> preds){</span>
+<span id="cb498-14"><a href="solutions.html#cb498-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb498-15"><a href="solutions.html#cb498-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">## create formula dynamically</span></span>
+<span id="cb498-16"><a href="solutions.html#cb498-16" aria-hidden="true" tabindex="-1"></a>  forml <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(target, <span class="st">&quot;~&quot;</span>, var))</span>
+<span id="cb498-17"><a href="solutions.html#cb498-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb498-18"><a href="solutions.html#cb498-18" aria-hidden="true" tabindex="-1"></a>  <span class="do">## fit linear model</span></span>
+<span id="cb498-19"><a href="solutions.html#cb498-19" aria-hidden="true" tabindex="-1"></a>  fit_lin <span class="ot">&lt;-</span> <span class="fu">lm</span>(forml, <span class="at">data =</span> df)</span>
+<span id="cb498-20"><a href="solutions.html#cb498-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb498-21"><a href="solutions.html#cb498-21" aria-hidden="true" tabindex="-1"></a>  <span class="do">## extract R2 from linear model</span></span>
+<span id="cb498-22"><a href="solutions.html#cb498-22" aria-hidden="true" tabindex="-1"></a>  rsq <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_lin)[[<span class="st">&quot;r.squared&quot;</span>]]</span>
+<span id="cb498-23"><a href="solutions.html#cb498-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb498-24"><a href="solutions.html#cb498-24" aria-hidden="true" tabindex="-1"></a>  <span class="do">## add a row to the data frame that holds the results</span></span>
+<span id="cb498-25"><a href="solutions.html#cb498-25" aria-hidden="true" tabindex="-1"></a>  df_rsq <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_rsq, <span class="fu">data.frame</span>(<span class="at">pred =</span> var, <span class="at">rsq =</span> rsq))</span>
+<span id="cb498-26"><a href="solutions.html#cb498-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb498-27"><a href="solutions.html#cb498-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rsq_list &lt;- c(rsq_list,rsq)  # alternative with vector</span></span>
+<span id="cb498-28"><a href="solutions.html#cb498-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb498-29"><a href="solutions.html#cb498-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb498-30"><a href="solutions.html#cb498-30" aria-hidden="true" tabindex="-1"></a><span class="do">## print a table arrange by best rsq at the top</span></span>
+<span id="cb498-31"><a href="solutions.html#cb498-31" aria-hidden="true" tabindex="-1"></a>df_rsq <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="sc">-</span>rsq) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1136,16 +1430,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="solutions.html#cb489-1" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative: determine the first variable to enter into our model</span></span>
-<span id="cb489-2"><a href="solutions.html#cb489-2" aria-hidden="true" tabindex="-1"></a><span class="co"># preds[which.max(rsq_list)]</span></span>
-<span id="cb489-3"><a href="solutions.html#cb489-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb489-4"><a href="solutions.html#cb489-4" aria-hidden="true" tabindex="-1"></a><span class="do">## use the data frame that holds the results for plotting</span></span>
-<span id="cb489-5"><a href="solutions.html#cb489-5" aria-hidden="true" tabindex="-1"></a>df_rsq <span class="sc">|&gt;</span> </span>
-<span id="cb489-6"><a href="solutions.html#cb489-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(pred, rsq), <span class="at">y =</span> rsq)) <span class="sc">+</span></span>
-<span id="cb489-7"><a href="solutions.html#cb489-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb489-8"><a href="solutions.html#cb489-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">italic</span>(R)<span class="sc">^</span><span class="dv">2</span>), <span class="at">x =</span> <span class="st">&quot;Variable&quot;</span>) <span class="sc">+</span></span>
-<span id="cb489-9"><a href="solutions.html#cb489-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-239-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb499"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb499-1"><a href="solutions.html#cb499-1" aria-hidden="true" tabindex="-1"></a><span class="do">## alternative: determine the first variable to enter into our model</span></span>
+<span id="cb499-2"><a href="solutions.html#cb499-2" aria-hidden="true" tabindex="-1"></a><span class="co"># preds[which.max(rsq_list)]</span></span>
+<span id="cb499-3"><a href="solutions.html#cb499-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb499-4"><a href="solutions.html#cb499-4" aria-hidden="true" tabindex="-1"></a><span class="do">## use the data frame that holds the results for plotting</span></span>
+<span id="cb499-5"><a href="solutions.html#cb499-5" aria-hidden="true" tabindex="-1"></a>df_rsq <span class="sc">|&gt;</span> </span>
+<span id="cb499-6"><a href="solutions.html#cb499-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(pred, rsq), <span class="at">y =</span> rsq)) <span class="sc">+</span></span>
+<span id="cb499-7"><a href="solutions.html#cb499-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb499-8"><a href="solutions.html#cb499-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">italic</span>(R)<span class="sc">^</span><span class="dv">2</span>), <span class="at">x =</span> <span class="st">&quot;Variable&quot;</span>) <span class="sc">+</span></span>
+<span id="cb499-9"><a href="solutions.html#cb499-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-241-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -1172,8 +1466,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="randomforest.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="report-requirements.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="randomforest.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -1204,7 +1498,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/13-solutions_for_exercises.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/13-solutions.Rmd",
 "text": "Edit"
 },
 "history": {

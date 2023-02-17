@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-16" />
+<meta name="date" content="2023-02-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -163,7 +163,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
 <li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#style-your-code"><i class="fa fa-check"></i><b>1.2.4</b> Style your code</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
 </ul></li>
@@ -378,16 +380,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.11.1" data-path="solutions.html"><a href="solutions.html#tuning-hyperparameters-of-a-random-forest-model"><i class="fa fa-check"></i><b>12.11.1</b> Tuning hyperparameters of a Random Forest model</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="report-requirements.html"><a href="report-requirements.html"><i class="fa fa-check"></i><b>13</b> Report requirements</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="report-requirements.html"><a href="report-requirements.html#what-is-part-of-the-report"><i class="fa fa-check"></i><b>13.1</b> What is part of the report?</a></li>
-<li class="chapter" data-level="13.2" data-path="report-requirements.html"><a href="report-requirements.html#how-do-you-hand-in-your-report"><i class="fa fa-check"></i><b>13.2</b> How do you hand in your report?</a></li>
-<li class="chapter" data-level="13.3" data-path="report-requirements.html"><a href="report-requirements.html#how-do-we-grade-the-report"><i class="fa fa-check"></i><b>13.3</b> How do we grade the report?</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i>Session info</a>
-<ul>
-<li class="chapter" data-level="13.4" data-path="session-info.html"><a href="session-info.html#data-prep"><i class="fa fa-check"></i><b>13.4</b> Data prep</a></li>
-</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -525,10 +517,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <p>The most basic classes are:</p>
 <ul>
-<li><code>numeric</code> (<code>num</code>) - any real number, e.g. 2.375</li>
-<li><code>integer</code> (<code>int</code>) - integer numbers, e.g. 2</li>
-<li><code>character</code> (<code>chr</code>) - any string, e.g., “fluxes”</li>
-<li><code>logical</code> (<code>logi</code>) - binary, i.e., <code>TRUE</code>/<code>FALSE</code> values</li>
+<li><code>numeric</code> (<code>num</code>) - any real number, e.g. <code>2.375</code></li>
+<li><code>integer</code> (<code>int</code>) - integer numbers, e.g. <code>2</code></li>
+<li><code>character</code> (<code>chr</code>) - any string, e.g., <code>"fluxes"</code></li>
+<li><code>logical</code> (<code>logi</code>) - binary, i.e., either <code>TRUE</code> or <code>FALSE</code>.</li>
 <li><code>factor</code> (<code>Factor</code>) - categorical data, the variable can only be one of a defined number of options, e.g., one of C3, C4, or CAM (the three pathways of photosynthesis). Factors may also be given an order.</li>
 <li><code>function</code> - a set of statements organized to perform a specific task, for example <code>mean()</code></li>
 </ul>
@@ -600,8 +592,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="data-frames" class="section level4 hasAnchor" number="1.2.2.5">
 <h4><span class="header-section-number">1.2.2.5</span> Data frames<a href="gettingstarted.html#data-frames" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>A <em>data frame</em> is an object of class <code>"data.frame"</code> is a tightly coupled collection of variables which share many of the properties of matrices and of lists, used as the fundamental data structure in R. You can think of a data frame as a table. The content of each data frame column is a vector. Columns need to be of the same length and all values in a column need to be of the same data type.</p>
-<p>A data frame can be created as follows:</p>
+<p>A <em>data frame</em>, an object of class <code>"data.frame"</code>, is essentially a table, consisting of named columns and rows. A data frame can be created as follows:</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="gettingstarted.html#cb47-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Maria&quot;</span>, <span class="st">&quot;Peter&quot;</span>, <span class="st">&quot;Alex&quot;</span>),</span>
 <span id="cb47-2"><a href="gettingstarted.html#cb47-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">56</span>, <span class="dv">30</span>))</span>
 <span id="cb47-3"><a href="gettingstarted.html#cb47-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
@@ -609,10 +600,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 1 Maria  13
 ## 2 Peter  56
 ## 3  Alex  30</code></pre>
-<p>The elements of a data frame can be accessed the same way that we treated lists, with each column being one element of the list. To get the vector of ages:</p>
+<p>A data frame can also be understood as a list of vectors of equal length, whereby each vector vector makes up a column and each of these vectors (columns) contains values of the same type. This notion makes it also evident that the elements of a data frame can be accessed the same way like we access elements of lists. To get the vector corresponding to the column named <code>age</code>, we can do:</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="gettingstarted.html#cb49-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>age</span></code></pre></div>
 <pre><code>## [1] 13 56 30</code></pre>
-<p>Furthermore, they can be treated as a <em>matrix</em>. Note that the first index refers to rows and the second to columns. For example:</p>
+<p>Data frames can be also be treated as a <em>matrix</em>. Note that the first index refers to rows and the second to columns. For example:</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="gettingstarted.html#cb51-1" aria-hidden="true" tabindex="-1"></a>df[, <span class="dv">1</span>]   <span class="co"># first column</span></span></code></pre></div>
 <pre><code>## [1] &quot;Maria&quot; &quot;Peter&quot; &quot;Alex&quot;</code></pre>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="gettingstarted.html#cb53-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>, ]   <span class="co"># second row</span></span></code></pre></div>
@@ -651,8 +642,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The <em>working directory</em> is the default location to which R writes to and reads files from. You can check what your current working directory is running <code>getwd()</code> in the command line.</p>
 <p>However, this workflow is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.</p>
 </div>
-<div id="read-and-save-data" class="section level4 hasAnchor" number="1.2.2.9">
-<h4><span class="header-section-number">1.2.2.9</span> Read and save data<a href="gettingstarted.html#read-and-save-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="read-and-save-objects" class="section level4 hasAnchor" number="1.2.2.9">
+<h4><span class="header-section-number">1.2.2.9</span> Read and save objects<a href="gettingstarted.html#read-and-save-objects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The function <code>save()</code> allows to save multiple R objects of any form as a single <code>.RData</code> file. This is how the environment of your R session is saved. This is how we would save several R objects:</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="gettingstarted.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(df, df_small, <span class="at">file =</span> <span class="st">&quot;data/data_frames.RData&quot;</span>)</span></code></pre></div>
 <p><code>.RData</code> files are read into your environment using the <code>load()</code> function. This function loads the objects with the name that they were saved with.</p>
@@ -671,81 +662,83 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To run a script, you can either use the <strong>Source</strong> button in the source editor or use the keyboard shortcut Ctrl + Shift + Enter (Windows) or Command + Shift + Enter (Mac). This will run all of the commands in the script file, in the order they are written, in the console. Alternatively, you can type into the console:</p>
 <pre><code>&gt; source(&quot;my_r_script.R&quot;)</code></pre>
 <p>Note that, to be able to run the code above, the file <code>my_r_script.R</code> must be in your current working directory.</p>
-<p>You can find more useful information about scripts and workflows in <a href="https://r4ds.had.co.nz/workflow-scripts.html">R for Data Science</a> <span class="citation">(<a href="#ref-Wickham2017R" role="doc-biblioref"><strong>Wickham2017R?</strong></a>)</span>.</p>
-<p>We should always strive to write nice scripts and good code. Good code is clean, readable, consistent, and extensible (easily modified or adapted). To achieve this, here are a few points to consider - inspired by <a href="https://www.r-bloggers.com/r-code-best-practices/">best practices for coding</a> and by the <a href="https://style.tidyverse.org/">Tidyverse style guide</a> <span class="citation">(<a href="#ref-wickham_welcome_nodate" role="doc-biblioref"><strong>wickham_welcome_nodate?</strong></a>)</span>.</p>
-<div id="structure-your-script" class="section level4 hasAnchor" number="1.2.3.1">
-<h4><span class="header-section-number">1.2.3.1</span> Structure your script<a href="gettingstarted.html#structure-your-script" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>A script should start with a brief and concise statment of what it does, followed by statements to load libraries and source functions that are saved in separate <code>.R</code> files. Then, start with statements that implement the purpose of the respective script.</p>
-<p>Statements, or groups of statements, should be preceeded by comments. Comments are all that appears to the right of a <code>#</code> and are code parts that are not interpreted by R and not executed. Adding comments in the code helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).</p>
-<p>To visually separate parts of a script, use commented lines (e.g., <code>----</code>). The RStudio text editor automatically recognizes <code>----</code> added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (<strong>Outline</strong> button in the top right corner of the editor panel).</p>
-<p>A script script could look like this:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="gettingstarted.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb69-2"><a href="gettingstarted.html#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a vector with random values</span></span>
-<span id="cb69-3"><a href="gettingstarted.html#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Save as file &quot;data/vec_randomvalues.rds&quot;</span></span>
-<span id="cb69-4"><a href="gettingstarted.html#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="co">#---------------------------------------</span></span>
-<span id="cb69-5"><a href="gettingstarted.html#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb69-6"><a href="gettingstarted.html#cb69-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-7"><a href="gettingstarted.html#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data----</span></span>
-<span id="cb69-8"><a href="gettingstarted.html#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Random 100 values are from a distribution </span></span>
-<span id="cb69-9"><a href="gettingstarted.html#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="co"># with mean 20 and standard deviation 5</span></span>
-<span id="cb69-10"><a href="gettingstarted.html#cb69-10" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">20</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
-<span id="cb69-11"><a href="gettingstarted.html#cb69-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-12"><a href="gettingstarted.html#cb69-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to file----</span></span>
-<span id="cb69-13"><a href="gettingstarted.html#cb69-13" aria-hidden="true" tabindex="-1"></a>filn <span class="ot">&lt;-</span> <span class="st">&quot;data/vec_randomvalues.rds&quot;</span></span>
-<span id="cb69-14"><a href="gettingstarted.html#cb69-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Writing file:&quot;</span>, filn, <span class="st">&quot;...&quot;</span>))</span>
-<span id="cb69-15"><a href="gettingstarted.html#cb69-15" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(vec, filn)</span></code></pre></div>
-<p>Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter <a href="codemgmt.html#codemgmt">7</a>, we will learn about the code versioning control system <em>git</em>, which keeps track of all this as meta information associated with files.</p>
 </div>
-<div id="spaces-and-breaks" class="section level4 hasAnchor" number="1.2.3.2">
-<h4><span class="header-section-number">1.2.3.2</span> Spaces and breaks<a href="gettingstarted.html#spaces-and-breaks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Adding enough white spaces and line breaks in the right locations greatly helps the legibility of any code. Cramping it up too much leads to an unintelligible sequence of characters and it will not be clear what parts go together (operators, variable names, brackets). Therefore, consider the following points:</p>
+<div id="style-your-code" class="section level3 hasAnchor" number="1.2.4">
+<h3><span class="header-section-number">1.2.4</span> Style your code<a href="gettingstarted.html#style-your-code" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Nice code is clean, readable, consistent, and extensible (easily modified or adapted). Ugly code works, but is hard to work with. There is no right or wrong about coding style, but certain aspects make it easier to read and use code. Here are a few points to consider.</p>
+<div id="spaces-and-breaks" class="section level4 hasAnchor" number="1.2.4.1">
+<h4><span class="header-section-number">1.2.4.1</span> Spaces and breaks<a href="gettingstarted.html#spaces-and-breaks" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Adding enough white spaces and line breaks in the right locations greatly helps the legibility of code. Cramming variables, operators, and brackets without spaces leaves an unintelligible sequence of characters and it will not be clear what parts go together. Therefore, consider the following points:</p>
 <ul>
 <li>Use spaces around operators (<code>=</code>, <code>+</code>, <code>-</code>, <code>&lt;-</code>, <code>&gt;</code>, etc.).</li>
 <li>Use <code>&lt;-</code>, not <code>=</code>, for allocating a value to a variable.</li>
-<li>An opening curly bracket (<code>{</code>) should be followed by a line break and never stand alone on a line. A closing curly bracket (<code>}</code>) should stand alone on a line unless followed by <code>else</code>.</li>
 <li>Code inside curly brackets should be <em>indented</em> (recommended: two white spaces at the beginning of each line for each indentation level - don’t use tabs).</li>
 </ul>
-<p>For example, well written code looks like this:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="gettingstarted.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="fl">5.0</span>){</span>
-<span id="cb70-2"><a href="gettingstarted.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  growth_temp <span class="ot">&lt;-</span> growth_temp <span class="sc">+</span> temp  </span>
-<span id="cb70-3"><a href="gettingstarted.html#cb70-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>For example:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="gettingstarted.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="fl">5.0</span>){</span>
+<span id="cb69-2"><a href="gettingstarted.html#cb69-2" aria-hidden="true" tabindex="-1"></a>  growth_temp <span class="ot">&lt;-</span> growth_temp <span class="sc">+</span> temp  </span>
+<span id="cb69-3"><a href="gettingstarted.html#cb69-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="variable-naming" class="section level4 hasAnchor" number="1.2.3.3">
-<h4><span class="header-section-number">1.2.3.3</span> Variable naming<a href="gettingstarted.html#variable-naming" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (<code>_</code>) to separate words within a name (<code>_</code>). Avoid (<code>.</code>) as they are reserved for S3 objects (base R). Also, you should avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.</p>
+<div id="variable-naming" class="section level4 hasAnchor" number="1.2.4.2">
+<h4><span class="header-section-number">1.2.4.2</span> Variable naming<a href="gettingstarted.html#variable-naming" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (<code>_</code>) to separate words within a name (<code>_</code>). Avoid (<code>.</code>) as they are reserved for certain types of objects in R. Also, avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.</p>
 <p>For example, <code>df_daily</code> is a data frame with data at a daily resolution. Or <code>clean_daily</code> is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (<code>_</code>) is used to separate words.</p>
 <p>It is also recommendable to avoid variable names consisting of only one character. This makes it practically impossible to search for that variable.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="gettingstarted.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb71-2"><a href="gettingstarted.html#cb71-2" aria-hidden="true" tabindex="-1"></a>day_01</span>
-<span id="cb71-3"><a href="gettingstarted.html#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-4"><a href="gettingstarted.html#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
-<span id="cb71-5"><a href="gettingstarted.html#cb71-5" aria-hidden="true" tabindex="-1"></a>DayOne</span>
-<span id="cb71-6"><a href="gettingstarted.html#cb71-6" aria-hidden="true" tabindex="-1"></a>day.one</span>
-<span id="cb71-7"><a href="gettingstarted.html#cb71-7" aria-hidden="true" tabindex="-1"></a>first_day_of_the_month</span>
-<span id="cb71-8"><a href="gettingstarted.html#cb71-8" aria-hidden="true" tabindex="-1"></a>djm1</span>
-<span id="cb71-9"><a href="gettingstarted.html#cb71-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-10"><a href="gettingstarted.html#cb71-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Very bad</span></span>
-<span id="cb71-11"><a href="gettingstarted.html#cb71-11" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x) <span class="co"># mean() itself is already a function</span></span>
-<span id="cb71-12"><a href="gettingstarted.html#cb71-12" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># T is an abbreviation of TRUE</span></span>
-<span id="cb71-13"><a href="gettingstarted.html#cb71-13" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># c() is used to create a vector (example &lt;- c(1, 2, 3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="gettingstarted.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb70-2"><a href="gettingstarted.html#cb70-2" aria-hidden="true" tabindex="-1"></a>day_01</span>
+<span id="cb70-3"><a href="gettingstarted.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="gettingstarted.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb70-5"><a href="gettingstarted.html#cb70-5" aria-hidden="true" tabindex="-1"></a>DayOne</span>
+<span id="cb70-6"><a href="gettingstarted.html#cb70-6" aria-hidden="true" tabindex="-1"></a>day.one</span>
+<span id="cb70-7"><a href="gettingstarted.html#cb70-7" aria-hidden="true" tabindex="-1"></a>first_day_of_the_month</span>
+<span id="cb70-8"><a href="gettingstarted.html#cb70-8" aria-hidden="true" tabindex="-1"></a>djm1</span>
+<span id="cb70-9"><a href="gettingstarted.html#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-10"><a href="gettingstarted.html#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Very bad</span></span>
+<span id="cb70-11"><a href="gettingstarted.html#cb70-11" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x) <span class="co"># mean() itself is already a function</span></span>
+<span id="cb70-12"><a href="gettingstarted.html#cb70-12" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># T is an abbreviation of TRUE</span></span>
+<span id="cb70-13"><a href="gettingstarted.html#cb70-13" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># c() is used to create a vector (example &lt;- c(1, 2, 3))</span></span></code></pre></div>
 </div>
-<div id="r-markdown" class="section level4 hasAnchor" number="1.2.3.4">
-<h4><span class="header-section-number">1.2.3.4</span> R Markdown<a href="gettingstarted.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (<em>knitted</em>) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Code chunks start with: <code>{r} (the {r} is very important because it's what makes it specifically an R chunk, as opposed to a different type of code chunk) They end with</code>. When run (not knitted), objects defined by the executed code are available in the environment.</p>
-<p>Text can be formatted using the <a href="https://rmarkdown.rstudio.com/authoring_pandoc_markdown.html">Markdown syntax</a>. For example, a top-level section title is specified by <code>#</code> and a title of a section one level lower by <code>##</code>.</p>
-<p>R Markdown documents are also the basis of this book, with each chapter written in a separate R Markdown file. This lets you use the book in an interactive fashion.</p>
-<p>When opened in RStudio, you can knit an R Markdown document by clicking the <strong>Knit</strong> button at the top of the source panel. To run the chunks of code in an R Markdown file, you can click on the <strong>Run</strong> button also on the source panel and select an option from the drop-down menu. For example, <strong>Run All</strong> runs all the chunks in the document. Alternatively, individual chunks can be executed by clicking the green right-pointing triangle in the upper right corner of each chunk.</p>
-<div class="figure">
-<img src="figures/RMarkdown.png" alt="" />
-<p class="caption">R Markdown document opened in the source panel.</p>
-</div>
+<div id="script-style" class="section level4 hasAnchor" number="1.2.4.3">
+<h4><span class="header-section-number">1.2.4.3</span> Script style<a href="gettingstarted.html#script-style" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Load libraries at the very beginning of a script, followed, by reading data from files. Functions should be defined in separate <code>.R</code> files, unless they are only a few lines long. Then, place the sequence of statements. The name of the script should be short and concise and indicate what the script does.</p>
+<p>Use comments to describe in human-readable text what the code does. Comments are all that appears to the right of a <code>#</code> and are code parts that are not interpreted by R and not executed. Adding comments in the code greatly helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).</p>
+<p>To visually separate parts of a script, use commented lines (e.g., <code>#----</code>). The RStudio text editor automatically recognizes <code>----</code> added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (<strong>Outline</strong> button in the top right corner of the editor panel).</p>
+<p>Avoid reading entire workspace environments (e.g., <code>load(old_environment.RData)</code>), deleting environments <code>rm(list=ls())</code>, loading hidden dependencies (e.g., <code>.Rprofile</code>), or changing the working directory (<code>setwd("~/other_dir/"</code>) as part of a script.</p>
+<p>Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter <a href="codemgmt.html#codemgmt">7</a>, we will learn about the code versioning control system <em>git</em>, which keeps track of all this as meta information associated with files.</p>
+<p>A good and comprehensive best practices guide is given by the <a href="https://style.tidyverse.org/">tidyverse style guide</a>.</p>
 </div>
 </div>
-<div id="workspace-management" class="section level3 hasAnchor" number="1.2.4">
-<h3><span class="header-section-number">1.2.4</span> Workspace management<a href="gettingstarted.html#workspace-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="r-markdown" class="section level3 hasAnchor" number="1.2.5">
+<h3><span class="header-section-number">1.2.5</span> R Markdown<a href="gettingstarted.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (<em>knitted</em>) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Rmarkdown is ideal for <strong>reporting</strong>, i.e., writing your final document presenting your analysis results. When opened in RStudio, RMarkdown files appear in the Editor like this:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rmarkdown"></span>
+<img src="figures/rmarkdown_editor.png" alt="R Markdown document opened in the source panel." width="75%" />
+<p class="caption">
+Figure 1.1: R Markdown document opened in the source panel.
+</p>
+</div>
+<p>As shown in Fig. <a href="gettingstarted.html#fig:rmarkdown">1.1</a>, an RMarkdown file consists of a header that specifies the document properties, such as how it should be rendered (as an html page, a docx file or a pdf).</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a href="gettingstarted.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb71-2"><a href="gettingstarted.html#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> <span class="st">&quot;Simple global map&quot;</span></span>
+<span id="cb71-3"><a href="gettingstarted.html#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> Alex Humboldt</span>
+<span id="cb71-4"><a href="gettingstarted.html#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
+<span id="cb71-5"><a href="gettingstarted.html#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
+<p>Below the header follow the contents as either text or code <em>chunks</em>. Text is formatted using the <a href="https://commonmark.org/help/">Markdown syntax</a>. For example, a top-level section title is specified by <code>#</code> and a title of a section one level lower by <code>##</code></p>
+<p>Code chunks that contain executable R code are opened by a line <code>```{r}</code>.</p>
+<p>The document can be rendered by calling <code>rmarkdown::render()</code> on the command line or hitting the <strong>Knit</strong> button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer). The RMarkdown source file shown in Fig. <a href="gettingstarted.html#fig:rmarkdown">1.1</a> is rendered to:</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rmarkdownrender"></span>
+<img src="figures/rmarkdown_render.png" alt="Rendered HTML output." width="75%" />
+<p class="caption">
+Figure 1.2: Rendered HTML output.
+</p>
+</div>
+<p>Note that the code chunk produced a figure as an output which was placed directly in the rendered html. This demonstrates the usefulness of RMarkdown as <em>notebooks</em> to document entire workflows and make their outputs reproducible.</p>
+</div>
+<div id="workspace-management" class="section level3 hasAnchor" number="1.2.6">
+<h3><span class="header-section-number">1.2.6</span> Workspace management<a href="gettingstarted.html#workspace-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Using <em>R projects</em> in combination with <em>Git</em> is the essence of efficient workspace management in R. All files that belong together are organised within one directory. This can be regarded as the project directory and is typically congruent with what belongs to the respective Git repository. By keeping an organized workspace, another person (or your future self) can find relevant files, run your code and reproduce your analysis workflow easily.</p>
-<div id="installing-git" class="section level4 hasAnchor" number="1.2.4.1">
-<h4><span class="header-section-number">1.2.4.1</span> Installing Git<a href="gettingstarted.html#installing-git" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="installing-git" class="section level4 hasAnchor" number="1.2.6.1">
+<h4><span class="header-section-number">1.2.6.1</span> Installing Git<a href="gettingstarted.html#installing-git" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><em>Git</em> is a version control system (covered in detail in Chapter <a href="codemgmt.html#codemgmt">7</a>) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in <a href="https://github.com/">GitHub</a>. To use it later in this course (and throughout your career), let’s set up these tools:</p>
 <ul>
 <li>First, follow the Git download and installation instructions for your OS outlined <a href="https://git-scm.com/downloads">here</a>.</li>
@@ -755,8 +748,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <p>Now you should be able to use Git in the <strong>Terminal</strong> panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.</p>
 </div>
-<div id="r-projects" class="section level4 hasAnchor" number="1.2.4.2">
-<h4><span class="header-section-number">1.2.4.2</span> R projects<a href="gettingstarted.html#r-projects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="r-projects" class="section level4 hasAnchor" number="1.2.6.2">
+<h4><span class="header-section-number">1.2.6.2</span> R projects<a href="gettingstarted.html#r-projects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>RStudio also allows you to work with R projects. An R project is a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.</p>
 <p>To create a new R project, go to the <strong>File</strong> menu and select <strong>New Project…</strong>. This will open the <em>New Project</em> dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.</p>
 <div class="figure">
@@ -766,8 +759,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>When starting a new project, a file <code>&lt;project_name.Rproj&gt;</code> is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.</p>
 <p>When you want to continue working on an existing R project, you can start a new session by clicking on your <code>&lt;project_name.Rproj&gt;</code> file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.</p>
 </div>
-<div id="folder-structure" class="section level4 hasAnchor" number="1.2.4.3">
-<h4><span class="header-section-number">1.2.4.3</span> Folder structure<a href="gettingstarted.html#folder-structure" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="folder-structure" class="section level4 hasAnchor" number="1.2.6.3">
+<h4><span class="header-section-number">1.2.6.3</span> Folder structure<a href="gettingstarted.html#folder-structure" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the <strong>files, plots, help, etc.</strong> panel.</p>
 <p>For example, keep source files where R functions are defined in <code>./R</code> (where . refers to the current project directory), data files in <code>./data</code> and visualizations in <code>./fig</code>. It’s advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project’s root directory), like any of the two equivalent following options:</p>
 <pre><code>&gt; source(&quot;./R/my_r_script.R&quot;)

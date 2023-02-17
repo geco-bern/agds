@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-16" />
+<meta name="date" content="2023-02-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -163,7 +163,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
 <li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#style-your-code"><i class="fa fa-check"></i><b>1.2.4</b> Style your code</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
 </ul></li>
@@ -378,16 +380,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.11.1" data-path="solutions.html"><a href="solutions.html#tuning-hyperparameters-of-a-random-forest-model"><i class="fa fa-check"></i><b>12.11.1</b> Tuning hyperparameters of a Random Forest model</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="report-requirements.html"><a href="report-requirements.html"><i class="fa fa-check"></i><b>13</b> Report requirements</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="report-requirements.html"><a href="report-requirements.html#what-is-part-of-the-report"><i class="fa fa-check"></i><b>13.1</b> What is part of the report?</a></li>
-<li class="chapter" data-level="13.2" data-path="report-requirements.html"><a href="report-requirements.html#how-do-you-hand-in-your-report"><i class="fa fa-check"></i><b>13.2</b> How do you hand in your report?</a></li>
-<li class="chapter" data-level="13.3" data-path="report-requirements.html"><a href="report-requirements.html#how-do-we-grade-the-report"><i class="fa fa-check"></i><b>13.3</b> How do we grade the report?</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i>Session info</a>
-<ul>
-<li class="chapter" data-level="13.4" data-path="session-info.html"><a href="session-info.html#data-prep"><i class="fa fa-check"></i><b>13.4</b> Data prep</a></li>
-</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -451,11 +443,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb79-7"><a href="programmingprimers.html#cb79-7" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
 <span id="cb79-8"><a href="programmingprimers.html#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span></code></pre></div>
 <pre><code>## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/MODISTools_1.1.4.tar.gz&#39; ...
-##  OK [downloaded 387.7 Kb in 1 secs]
+##  OK [downloaded 387.7 Kb in 1.1 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/sf_1.0-9.tar.gz&#39; ...
-##  OK [downloaded 3.3 Mb in 0.9 secs]
+##  OK [downloaded 3.3 Mb in 1 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/classInt_0.4-8.tar.gz&#39; ...
-##  OK [downloaded 487 Kb in 0.6 secs]
+##  OK [downloaded 487 Kb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/s2_1.1.2.tar.gz&#39; ...
 ##  OK [downloaded 2.1 Mb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/wk_0.7.1.tar.gz&#39; ...
@@ -465,9 +457,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/sp_1.6-0.tar.gz&#39; ...
 ##  OK [downloaded 1.7 Mb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/skimr_2.1.5.tar.gz&#39; ...
-##  OK [downloaded 1.2 Mb in 1.2 secs]
+##  OK [downloaded 1.2 Mb in 1.1 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/repr_1.1.6.tar.gz&#39; ...
-##  OK [downloaded 118.8 Kb in 0.9 secs]
+##  OK [downloaded 118.8 Kb in 1.2 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/hwsdr_1.0.tar.gz&#39; ...
 ##  OK [downloaded 21.9 Kb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/raster_3.6-14.tar.gz&#39; ...
@@ -477,105 +469,105 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gert_1.9.2.tar.gz&#39; ...
 ##  OK [downloaded 2.7 Mb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/credentials_1.3.2.tar.gz&#39; ...
-##  OK [downloaded 168 Kb in 0.9 secs]
+##  OK [downloaded 168 Kb in 0.8 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/zip_2.2.2.tar.gz&#39; ...
-##  OK [downloaded 606.7 Kb in 1 secs]
+##  OK [downloaded 606.7 Kb in 0.8 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gh_1.3.1.tar.gz&#39; ...
 ##  OK [downloaded 91.9 Kb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gitcreds_0.1.2.tar.gz&#39; ...
-##  OK [downloaded 93.3 Kb in 1 secs]
+##  OK [downloaded 93.3 Kb in 0.8 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/ini_0.3.1.tar.gz&#39; ...
-##  OK [downloaded 12.9 Kb in 1 secs]
+##  OK [downloaded 12.9 Kb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/whisker_0.4.1.tar.gz&#39; ...
-##  OK [downloaded 64.3 Kb in 0.8 secs]
+##  OK [downloaded 64.3 Kb in 0.9 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/ranger_0.14.1.tar.gz&#39; ...
-##  OK [downloaded 396 Kb in 0.9 secs]
+##  OK [downloaded 396 Kb in 1.1 secs]
 ## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/RcppEigen_0.3.3.9.3.tar.gz&#39; ...
-##  OK [downloaded 1.5 Mb in 0.9 secs]
+##  OK [downloaded 1.5 Mb in 1 secs]
 ## Installing classInt [0.4-8] ...
 ##  OK [installed binary]
 ## Moving classInt [0.4-8] into the cache ...
-##  OK [moved to cache in 7 milliseconds]
+##  OK [moved to cache in 15 milliseconds]
 ## Installing wk [0.7.1] ...
 ##  OK [installed binary]
 ## Moving wk [0.7.1] into the cache ...
-##  OK [moved to cache in 6.7 milliseconds]
+##  OK [moved to cache in 8.2 milliseconds]
 ## Installing s2 [1.1.2] ...
 ##  OK [installed binary]
 ## Moving s2 [1.1.2] into the cache ...
-##  OK [moved to cache in 6.6 milliseconds]
+##  OK [moved to cache in 9.1 milliseconds]
 ## Installing units [0.8-1] ...
 ##  OK [installed binary]
 ## Moving units [0.8-1] into the cache ...
-##  OK [moved to cache in 6.8 milliseconds]
+##  OK [moved to cache in 8.1 milliseconds]
 ## Installing sf [1.0-9] ...
 ##  OK [installed binary]
 ## Moving sf [1.0-9] into the cache ...
-##  OK [moved to cache in 7.8 milliseconds]
+##  OK [moved to cache in 9.8 milliseconds]
 ## Installing sp [1.6-0] ...
 ##  OK [installed binary]
 ## Moving sp [1.6-0] into the cache ...
-##  OK [moved to cache in 7 milliseconds]
+##  OK [moved to cache in 9.6 milliseconds]
 ## Installing MODISTools [1.1.4] ...
 ##  OK [installed binary]
 ## Moving MODISTools [1.1.4] into the cache ...
-##  OK [moved to cache in 6.7 milliseconds]
+##  OK [moved to cache in 8 milliseconds]
 ## Installing repr [1.1.6] ...
 ##  OK [installed binary]
 ## Moving repr [1.1.6] into the cache ...
-##  OK [moved to cache in 6.6 milliseconds]
+##  OK [moved to cache in 8 milliseconds]
 ## Installing skimr [2.1.5] ...
 ##  OK [installed binary]
 ## Moving skimr [2.1.5] into the cache ...
-##  OK [moved to cache in 6.9 milliseconds]
+##  OK [moved to cache in 9 milliseconds]
 ## Installing raster [3.6-14] ...
 ##  OK [installed binary]
 ## Moving raster [3.6-14] into the cache ...
-##  OK [moved to cache in 6.8 milliseconds]
+##  OK [moved to cache in 8.5 milliseconds]
 ## Installing hwsdr [1.0] ...
 ##  OK [built from source]
 ## Moving hwsdr [1.0] into the cache ...
-##  OK [moved to cache in 6.6 milliseconds]
+##  OK [moved to cache in 8.2 milliseconds]
 ## Installing credentials [1.3.2] ...
 ##  OK [installed binary]
 ## Moving credentials [1.3.2] into the cache ...
-##  OK [moved to cache in 6.7 milliseconds]
+##  OK [moved to cache in 10 milliseconds]
 ## Installing zip [2.2.2] ...
 ##  OK [installed binary]
 ## Moving zip [2.2.2] into the cache ...
-##  OK [moved to cache in 6.5 milliseconds]
+##  OK [moved to cache in 8 milliseconds]
 ## Installing gert [1.9.2] ...
 ##  OK [installed binary]
 ## Moving gert [1.9.2] into the cache ...
-##  OK [moved to cache in 6.7 milliseconds]
+##  OK [moved to cache in 9.1 milliseconds]
 ## Installing gitcreds [0.1.2] ...
 ##  OK [installed binary]
 ## Moving gitcreds [0.1.2] into the cache ...
-##  OK [moved to cache in 6.6 milliseconds]
+##  OK [moved to cache in 8.4 milliseconds]
 ## Installing ini [0.3.1] ...
 ##  OK [installed binary]
 ## Moving ini [0.3.1] into the cache ...
-##  OK [moved to cache in 6.5 milliseconds]
+##  OK [moved to cache in 7.8 milliseconds]
 ## Installing gh [1.3.1] ...
 ##  OK [installed binary]
 ## Moving gh [1.3.1] into the cache ...
-##  OK [moved to cache in 6.6 milliseconds]
+##  OK [moved to cache in 8 milliseconds]
 ## Installing whisker [0.4.1] ...
 ##  OK [installed binary]
 ## Moving whisker [0.4.1] into the cache ...
-##  OK [moved to cache in 7.1 milliseconds]
+##  OK [moved to cache in 8.4 milliseconds]
 ## Installing usethis [2.1.6] ...
 ##  OK [installed binary]
 ## Moving usethis [2.1.6] into the cache ...
-##  OK [moved to cache in 7.5 milliseconds]
+##  OK [moved to cache in 8.8 milliseconds]
 ## Installing RcppEigen [0.3.3.9.3] ...
 ##  OK [installed binary]
 ## Moving RcppEigen [0.3.3.9.3] into the cache ...
-##  OK [moved to cache in 13 milliseconds]
+##  OK [moved to cache in 15 milliseconds]
 ## Installing ranger [0.14.1] ...
 ##  OK [installed binary]
 ## Moving ranger [0.14.1] into the cache ...
-##  OK [moved to cache in 6.6 milliseconds]</code></pre>
+##  OK [moved to cache in 8.6 milliseconds]</code></pre>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="programmingprimers.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <div id="other-libraries-and-applications" class="section level4 hasAnchor" number="2.2.1.1">
 <h4><span class="header-section-number">2.2.1.1</span> Other libraries and applications<a href="programmingprimers.html#other-libraries-and-applications" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -897,10 +889,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4><span class="header-section-number">2.2.3.6</span> Intro to visualisation<a href="programmingprimers.html#intro-to-visualisation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In Chapter <a href="datavis.html#datavis">4</a>, you will get introduced to additional methods for visualising data. Our data frame <code>fluxes_subset</code> contains three variables, one of which is <code>time</code>. In other words, we are dealing with a time series. Let’s look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (<code>type = "l"</code>).</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="programmingprimers.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1440</span>, df_small<span class="sc">$</span>temp[<span class="dv">1</span><span class="sc">:</span><span class="dv">1440</span>], <span class="at">type =</span> <span class="st">&quot;l&quot;</span>) </span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-59-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram. A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a ‘bin’. Below you will see the temperature on the x-axis split into these ‘bins’ ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="programmingprimers.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(df_small<span class="sc">$</span>temp, <span class="at">xlab =</span> <span class="st">&quot;Temperature (°C)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-61-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Plots can be saved as files, as long as the file size does not get too large. It will write vector graphics as outputs, i.e. PDF. In base R, this can be done by:</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="programmingprimers.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&quot;./figures/filename.pdf&quot;</span>)</span>
 <span id="cb117-2"><a href="programmingprimers.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(df_small<span class="sc">$</span>temp)</span></code></pre></div>

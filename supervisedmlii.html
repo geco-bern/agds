@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-16" />
+<meta name="date" content="2023-02-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -163,7 +163,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
 <li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.3</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.4</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#style-your-code"><i class="fa fa-check"></i><b>1.2.4</b> Style your code</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
 </ul></li>
@@ -378,16 +380,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.11.1" data-path="solutions.html"><a href="solutions.html#tuning-hyperparameters-of-a-random-forest-model"><i class="fa fa-check"></i><b>12.11.1</b> Tuning hyperparameters of a Random Forest model</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="report-requirements.html"><a href="report-requirements.html"><i class="fa fa-check"></i><b>13</b> Report requirements</a>
-<ul>
-<li class="chapter" data-level="13.1" data-path="report-requirements.html"><a href="report-requirements.html#what-is-part-of-the-report"><i class="fa fa-check"></i><b>13.1</b> What is part of the report?</a></li>
-<li class="chapter" data-level="13.2" data-path="report-requirements.html"><a href="report-requirements.html#how-do-you-hand-in-your-report"><i class="fa fa-check"></i><b>13.2</b> How do you hand in your report?</a></li>
-<li class="chapter" data-level="13.3" data-path="report-requirements.html"><a href="report-requirements.html#how-do-we-grade-the-report"><i class="fa fa-check"></i><b>13.3</b> How do we grade the report?</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i>Session info</a>
-<ul>
-<li class="chapter" data-level="13.4" data-path="session-info.html"><a href="session-info.html#data-prep"><i class="fa fa-check"></i><b>13.4</b> Data prep</a></li>
-</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -534,7 +526,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb401-55"><a href="supervisedmlii.html#cb401-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> .estimate, <span class="at">color =</span> set)) <span class="sc">+</span></span>
 <span id="cb401-56"><a href="supervisedmlii.html#cb401-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb401-57"><a href="supervisedmlii.html#cb401-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-207-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-206-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The workflow implemented above should remind you of your the exercise in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller <span class="math inline">\(k\)</span>. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.</p>
 <p>Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?</p>
 </div>
@@ -560,7 +552,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb402-8"><a href="supervisedmlii.html#cb402-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb402-9"><a href="supervisedmlii.html#cb402-9" aria-hidden="true" tabindex="-1"></a><span class="co"># generic plot of the caret model object</span></span>
 <span id="cb402-10"><a href="supervisedmlii.html#cb402-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mod_cv)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-207-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="supervisedmlii.html#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
 <span id="cb403-2"><a href="supervisedmlii.html#cb403-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod_cv)</span></code></pre></div>
 <pre><code>## k-Nearest Neighbors 
@@ -601,7 +593,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="supervisedmlii.html#cb407-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_cv, <span class="at">df_train =</span> ddf_train, <span class="at">df_test =</span> ddf_test)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-209-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Remember that in Chapter <a href="supervisedmli.html#supervisedmli">9</a>, we used <span class="math inline">\(k=5\)</span> and got an <span class="math inline">\(R^2=0.74\)</span> on the training set and <span class="math inline">\(R^2=0.61\)</span> on the test set. The results with the optimal choice of <span class="math inline">\(k=25\)</span> yield an <span class="math inline">\(R^2=0.69\)</span> on the training set and <span class="math inline">\(R^2=0.65\)</span> on the test set - poorer than with <span class="math inline">\(k=5\)</span> on the training set but better on the test set.</p>
 <!-- XXX exercises: explain to your neighbor why XXX. -->
 </div>
