@@ -43,18 +43,20 @@ The tidyverse is a collection of R packages and functions that share a common de
 
 From this design principles, even the most convoluted code and implementation of data transformation steps fall into place and fast and error-free progression through exploratory data analysis is facilitated. Therefore, you will be introduced to the R tidyverse here and we heavily rely on this dialect of the R language throughout the remainder of this course.
 
-### Tabular data
+### Reading tabular data
 
 Tabular data is organised in rows and columns. Each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter \@ref(datavariety), you will be introduced to other types of data. The most common format for tabular data is CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
 
 Let's get started with working with our example data set and read it into R, as the variable `hhdf`. Note that the naming of variables can be important for keeping code legible. For example, it may indicate the type of the object it holds (`df` for data frame) and that the data is half-hourly (`hh`).
 
+To import the data into the R environment, we use the function `read_csv()` from the {readr} package (part of tidyverse). In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. For example, *tibbles* generate a nicely readable output when printing the object as is done below.
+
 ```{r}
-hhdf <- read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
+hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
 hhdf
 ```
 
-Since the file is properly formatted, with variable names given in the first line of the file, the function `read_csv()` identifies them correctly as column names and interprets values in each column as values of a consistent type. We used the function `read_csv()` from the {readr} package (part of tidyverse) here for reading the CSV since it is faster than the base-R `read.csv()` and generates a nicely readable output when printing the object as is done above.
+Since the file is properly formatted, with variable names given in the first line of the file, the function `read_csv()` identifies them correctly as column names and interprets values in each column as values of a consistent type (as numeric `<dbl>`). The file is also automatically machine-readable because it has no merged cells and only one value per cell (i.e. [tidy](#tidydata)).
 
 ### Variable selection
 
@@ -136,7 +138,9 @@ hhdf <- hhdf |>
   mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
 ```
 
-Here, the pipe operator `|>` is used. It "pipes" the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the first argument of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.
+Here, the **pipe** operator `|>` is used. It "pipes" the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the *first argument* of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.
+
+> Note: The pipe operator is so popular that has been recently included in the latest versions of base R. This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
 
 Mutating both our timestamp variables could be written as `mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START), TIMESTAMP_END = ymd_hm(TIMESTAMP_END))`. Sometimes, such multiple-variable mutate statements can get quite long. A handy short version of this can be implemented using `across()`:
 
@@ -146,6 +150,8 @@ hhdf <- hhdf |>
 ```
 
 We will encounter more ways to use mutate later in this tutorial. A complete reference to `mutate()` is available [here](https://r4ds.had.co.nz/transform.html#add-new-variables-with-mutate).
+
+If you only want to change the name of a variable, but not modify its values whatsoever, you can do so with the {dplyr} function `rename()`.
 
 ### Axes of variation
 
@@ -167,6 +173,8 @@ Our example data contains values recorded at each half-hourly time interval over
 plot(hhdf[1:(2*24),]$TIMESTAMP_START, hhdf[1:(2*24),]$SW_IN_F, type = "l")
 ```
 
+> Note: `plot()` is the very basic of plotting data. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. The argument `type = "l"` indicates that we want a line plot, rather than points.
+
 Over the course of an entire year, shortwave incoming radiation varies with the seasons, peaking in summer:
 
 ```{r}
@@ -184,7 +192,7 @@ hhdf |>
 
 Note that we used `mutate()` here to create a new variable (column) in the data frame, as opposed to above where we overwrote an existing variable with the same function.
 
-### Tidy data
+### Tidy data {#tidydata}
 
 Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in some remotely tabular form and merged cells as we will see in the [Exercises](#exerciseswrangling). A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.
 
@@ -417,11 +425,15 @@ hhdf |>
 
 An excellent source for a more comprehensive introduction to missing data handling is given in [Kuhn & Johnson](https://bookdown.org/max/FES/handling-missing-data.html).
 
+### Writing data to CSV
+
 After having applied some data reduction and cleaning steps above, let's save the data frame in the form of a CSV file for use in later chapters.
 
 ```{r}
 write_csv(hhdf, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 ```
+
+> Note: Making a file publicly available as a `.rds` or `.RData` file (explained in Chapter \@ref(gettingstarted)) violates the open science principles (introduced in Chapter \@ref(openscience)). These two formats make it very easy to save R objects related to your analysis project, but are not adequate to save *data*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` from {readr} whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
 
 ### Combining relational data
 
