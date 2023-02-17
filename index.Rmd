@@ -76,7 +76,7 @@ The overall learning objectives are:
 
 This course covers all steps along the data science workflow (see Fig. \@ref(fig:datascienceworkflow)) and introduces methods and tools to learn the most from data, to effectively communicate insights, and to make your workflow reproducible. By following this course, you will be well equipped for joining the Open Science movement.
 
-```{r label="datascienceworkflow", echo=FALSE, fig.cap="The data science workflow and keywords of contents covered in Applied Geodata Science I. Figure adapted from: [Wickham & Grolemund *R for Data Science*](https://r4ds.had.co.nz/index.html)"}
+```{r label="datascienceworkflow", echo=FALSE, fig.cap="The data science workflow and keywords of contents covered in Applied Geodata Science I. Figure adapted from: [Wickham and Grolemund *R for Data Science*](https://r4ds.had.co.nz/index.html)"}
 knitr::include_graphics("./figures/data_science_workflow_keywords.png")
 ```
 
@@ -128,7 +128,7 @@ This course is also supposed to teach you how to stay out of the â€œdanger zoneâ
 
 The red thread of this course is the *data science workflow* (Fig. \@ref(fig:datascienceworkflowslim)). Applied (geo-) data science projects typically start with research questions and hypotheses, and some data at hand, and (ideally) end with an answer to the research questions and the communication of results in textual, visual, and reproducible forms. What lies in between is not a linear process, but a cycle. One has to "understand" the data in order to identify appropriate analyses for answering the research questions. Before we've visualized the data, we don't know how to transform it. And before we've modeled it, we don't know the most appropriate visualization. In practice, we approach answers to our research questions gradually, through repeated cycles of *exploratory data analysis* - repeated cycles of transforming the data, visualizing it, and modelling relationships. More often than not, the exploratory data analysis generates insights about missing pieces in the data puzzle that we're trying to solve. In such cases, the data collection and modelling task may have to be re-defined (dashed line in Fig. \@ref(fig:datascienceworkflowslim)), and the exploratory data analysis cycle re-initiated.
 
-```{r label="datascienceworkflowslim", echo=FALSE, fig.cap="The data science workflow. Figure adapted from: [Wickham & Grolemund *R for Data Science*](https://r4ds.had.co.nz/index.html)"}
+```{r label="datascienceworkflowslim", echo=FALSE, fig.cap="The data science workflow. Figure adapted from: [Wickham and Grolemund *R for Data Science*](https://r4ds.had.co.nz/index.html)"}
 knitr::include_graphics("./figures/data_science_workflow_simpl.png")
 ```
 
@@ -174,7 +174,7 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
 - Claus O. Wilke: "Fundamentals of Data Visualization", https://clauswilke.com/dataviz/
 
-    - A comprehensive resource for data visualisation - not specific to any programming language, but specific about the *grammar of graphics*. Covers concepts of Chapter \@ref(datavis) - but in more depth. The go-to resource for the *implementation* of data visualisation using the {ggplot2} R library is Wickham & Grolemund (see above).
+    - A comprehensive resource for data visualisation - not specific to any programming language, but specific about the *grammar of graphics*. Covers concepts of Chapter \@ref(datavis) - but in more depth. The go-to resource for the *implementation* of data visualisation using the {ggplot2} R library is Wickham and Grolemund (see above).
 
 **Machine learning**
 
@@ -182,6 +182,6 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
     - A great entry point for machine learning in R. It demonstrates concepts and a range of algorithms of varying complexity - from linear regression to Random Forest - with examples in R. This book served as an inspiration and starting point for the (in some ways reduced) contents of this course, covered in Chapters \@ref(regressionclassification)-\@ref(randomforest).
 
--   Chollet & Allaire "Deep learning with R"
+-   Chollet & Allaire "Deep learning with R", Manning Publications, Accessed February 17, 2023. https://www.manning.com/books/deep-learning-with-r.
 
     - This is the next step after you've studied *Applied Geodata Science I*. It introduces machine learning with deep neural networks using the {keras} machine learning library (with its wrapper in R).

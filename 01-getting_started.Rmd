@@ -194,6 +194,29 @@ Operations on vectors are performed element-wise. For example, if we ask what nu
 x > 2
 ```
 
+Vectors that contain sequences of numbers are often needed in programming. They are easily created in R, e.g., by:
+```{r}
+1:10
+```
+
+More flexibility is offered by the `seq()` function:
+```{r}
+seq(from = 0, to = 10, by = 2)
+```
+
+Often, we need to evaluate multiple elements in a vector. We've learned that the operator `>` tests whether the value left to it is greater than the value on its right and returns a logical. We can subset a vector based on a vector of equal length that contains logicals.
+```{r}
+x > 1
+x
+x[x > 1]
+```
+
+We can also determine the *indices* (positions of elements in the vector) that evaluate to `TRUE`, or that have the lowest value:
+```{r}
+which(x > 1)
+which.min(x)
+```
+
 #### Lists
 
 *Lists* are R objects, of class `"list"`. They are a bit like vectors, but more flexible. They allow us to store different types of data, even if they are of different lengths or of different classes. They are created with the function `list()` and can be named or not. Here is an example where each element of the list is named.
@@ -464,7 +487,7 @@ output: html_document
 ---
 ```
 
-Below the header follow the contents as either text or code *chunks*. Text is formatted using the [Markdown syntax](https://commonmark.org/help/). For example, a top-level section title is specified by `#` and a title of a section one level lower by `##`
+Below the header follow the contents as either text or code *chunks*. Text is formatted using the [Markdown syntax](https://www.markdownguide.org/). Nice brief guides are provided [here](https://commonmark.org/help/) or [here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). For example, a top-level section title is specified by `#` and a title of a section one level lower by `##`.
 
 Code chunks that contain executable R code are opened by a line ` ```{r} `. 
 
@@ -475,6 +498,11 @@ knitr::include_graphics("./figures/rmarkdown_render.png")
 ```
 
 Note that the code chunk produced a figure as an output which was placed directly in the rendered html. This demonstrates the usefulness of RMarkdown as *notebooks* to document entire workflows and make their outputs reproducible. 
+
+To create a new RMarkdown file, select from the drop-down menu in the top-left corner of RStudio as shown below:
+```{r label="newrmarkdown", echo=FALSE, fig.cap="Create a new RMarkdown file", out.width="25%", fig.align='center'}
+knitr::include_graphics("./figures/newrmarkdown.png")
+```
 
 ### Workspace management
 
@@ -520,34 +548,59 @@ You can find an [R project template](https://github.com/geco-bern/R_proj_templat
 
 ## Exercises
 
-Alright, let's get started with the first exercise! First, set up a new R project dedicated to this course:
+### Dimensions of a circle {-}
 
--   Choose the location in your computer for your project and create a folder with an appropriate name. Then open RStudio and follow the instructions from the tutorial to create a new R Project.
+- Given the radius of a circle `r`, write a few lines of code that calculates its area and its circumference. Run your code with different values assigned to `r`. 
+- Print the solution as text.
 
--   The first file in your new R project will be an R Markdown (`.Rmd`) file which you can use to copy text and code from the different chapters of this book and try running the code yourself. Create such a file by clicking on the "new file" menu at the top left of RStudio and selecting **R Markdown ...**, give it a title and save.
+> *Hint*: Enter `pi` in your console.
 
-Let's go over the basics of working with R Markdown (inspired by [this exercise](https://github.com/EcoForecast/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)).
+> *Hint*: Entering `print("agds")` in your console returns `"agds"`. Combining (concatenating) multiple strings into a single one can be done using `paste()`.
 
--   To render a `.Rmd` file into an HTML file that reads like this book, you have to *knit* the document. To do this, you will need the {knitr} package. Install is by running `install.packages("knitr")` in the R console. Restart your R session and when it's ready, you should see a blue yarn icon above the source panel saying **Knit**. Knit your `.Rmd` document and check out the result. A new file with the same name but `.html` extension has been created and opened by RStudio for preview.
--   Feel free to delete the example text and code from your file to start with a clean slate. But don't delete the header delimited by `---`. You can modify the `.Rmd` file but not the `.html` file. To update the content of the nicely readable `.html` you will need to knit again. Knitting is also a very good way to check that all your code runs.
--   All your code should be placed into what we call "R chunks". When you run a chunk (on the green arrow) you will see the output of the code below it.
--   You can take notes or write answers in normal text outside those chunks. This [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) can help you use its formatting capabilities, like titles, highlighting, mathematical formulas...
+### Sequence of numbers {-}
 
-Now that you are set up, here are few exercises to get you started - remind yourself often of the guidelines on proper coding to make your life easier! Create a new `.R` file inside the project folder for solving the exercises.
+Generate a sequence of numbers from 0 and $\pi$ as a vector with length 5.
 
--   Perform a little magic trick: Start with any number between 1 and 20 and do the calculations below. Create three variables: The original value, the value that is overwritten in every calculation, and a final value. Calculations: Add 1, double the number, add 4, divide by 2, subtract the original number.
+> *Hint*: Consult the manual of the function `seq()` by entering `?seq` in your terminal.
 
--   Play around with different values, what do you find?
+### Gauss sum {-}
 
--   Advanced: Can you turn the little magic trick into a function that checks if the original value is an integer ([hint](https://statisticsglobe.com/check-if-number-is-integer-in-r)) between 1 and 20 and prints the final value at the end?
+Rumors have it that young Carl Friedrich Gauss was asked in primary school to calculate the sum of all natural numbers between 1 and 100. He did it in his head in no time. We're very likely not as intelligent as young Gauss. But we have R. What's the solution?
 
--   Clean up the code chunk below following the {tidyverse} style guide. Run the statements in your console - do they work? If not, why?
+Gauss calculated the sum with a trick. The sum of 100 and 1 is 101. The sum of 99 and 2 is 101. You do this 50 times, and you get $50 \times 101$. Demonstrate Gauss' trick with vectors in R.
 
-```{r eval=FALSE}
-anothervariable = c(1)
-seq <- vector(1,2 3 ,4)
-is_true <- T
-list(a=1, b = This is some really bad code}
-var <- 7
-my_new_function(this_is_a_very_long_argument = "value 1", and_this_is_another_very_long_argument = "value 2", short_but_still_long_argument = NA )
-```
+### Magic trick algorithm {-}
+
+Define a variable named `x` that contains an integer value and perform the following operations in sequence:
+
+- Redefine `x` by adding 1.
+- Double the resulting number, over-writing `x`.
+- Add 4 to `x` and save the result as `x`.
+- Redefine `x` as half of the previous value of `x`.
+- Subtract the originally chosen arbitrary number from `x`.
+
+Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number.
+
+### Vectors {-}
+
+Print the object `datasets::rivers` and consult the manual of this object.
+
+- What is the class of the object? 
+- What is the length of the object?
+- Calculate the mean, median, minimum, maximum, and the 33%-quantile across all values. 
+
+> *Hint*: If you don't know how to solve a problem, help yourself on the internet.
+
+### Data frames {-}
+
+Print the object `datasets::quakes` and consult the manual of this object.
+
+- Determine the dimensions of the data frame using the respective function in R.
+- Extract the vector of values in the data frame that contain information about the Richter Magnitude.
+- Determine the value largest value in the vector of event magnitudes.
+- Determine the geographic position of the epicenter of the largest event.
+
+### RMarkdown {-}
+
+Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
+
