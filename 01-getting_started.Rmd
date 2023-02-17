@@ -4,20 +4,21 @@
 
 ## Learning objectives
 
-After you've gone over the lecture and solved the exercises, you should be able to:
+This chapter provides a start at the very beginning of your journey in R with two main aims. First, it introduces the very basics for readers with no experience using R. You will be able to:
 
--   Work with R and RStudio on your computer
--   Know some R objects and basic classes
--   Understand how R interacts with files in your computer
--   Install and load R packages
--   Organize your work using R projects, scripts and R Markdown
--   Have installed and set up all the tools used throughout the book
+-   Work with R and RStudio.
+-   Know basic R objects and classes.
+-   Understand how R interacts with files in your computer.
+
+Second, the tutorial of this chapter prepares you for your work on the remainder of this course by setting up all the necessary infrastructure. Also experienced R users should follow respective tutorial sections: Sec. \@ref(rmarkdown), \@ref(wspmgmt), and \@ref(setup)). You will:
+
+-   Organize your work using R projects, scripts and RMarkdown.
+-   Have installed *git* and all R packages used throughout the book.
+
+These points are essential before we go deeper into project management topics in Chapters \@ref(openscience) and \@ref(codemgmt). Chapter \@ref(programmingprimers) will focus on how to code.
 
 ## Tutorial
 
-This very first chapter will give you a high level overview of the tools used throughout this book. We explain the most basic concepts for working with R (the interface, running code, relationship between code and files, R objects...), while Chapter \@ref(programmingprimers) will focus on how to code, i.e. the programming itself.
-
-We give instructions to install R, RStudio, R packages and git, to create your GitHub account and link it to your computer, and to make these tools work with each other. The aim is not to introduce how all of them work in detail (which is done in future chapters) but to set up all the necessary infrastructure for this course at the start. We will also give some rough guidelines to organize yourself (code, files, etc) such that you can start working on exercises and save your progress efficiently, before we go deep into project management topics in Chapters \@ref(openscience) and \@ref(codemgmt).
 
 ### Working with R and RStudio
 
@@ -369,16 +370,6 @@ is.na(c(1, 2, NA))
 
 By contrast, `NULL` is the R null object or empty space. You can also assign `NULL` to a variable, which will then have length zero because it is empty. Functions may return `NULL` when no output was defined, or if an error occurred.
 
-#### R environment
-
-The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel in R Studio, grouped as Data, Values and Functions.
-
-After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the **Session** menu and select **Save Workspace As...**. This will save all your objects in a `.RData` file in your working directory. 
-
-The *working directory* is the default location to which R writes to and reads files from. You can check what your current working directory is running `getwd()` in the command line.
-
-However, this workflow is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.
-
 #### Read and save objects
 
 The function `save()` allows to save multiple R objects of any form as a single `.RData` file. This is how the environment of your R session is saved. This is how we would save several R objects:
@@ -387,7 +378,7 @@ The function `save()` allows to save multiple R objects of any form as a single 
 save(df, df_small, file = "./data/data_frames.RData")
 ```
 
-To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility. To determine your current working directory, run `getwd()`.
 
 `.RData` files are read into your environment using the `load()` function. This function loads the objects with the name that they were saved with.
 
@@ -395,20 +386,24 @@ To tell the function where the data is located, pass the data's path as an argum
 load("./data/data_frames.RData")
 ```
 
-Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()` and gives the user more control.
+Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into R with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()` and gives the user more control.
 
 ```{r, eval=F}
 saveRDS(df_small, file = "./data/df_small.rds")
 df_small_2 <- readRDS("./data/df_small.rds")
 ```
 
-`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R (and not to the human eye). Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, follow Open Science principles (Chapter \@ref(openscience)) and avoid file formats that are not readable across different platforms and programming languages. 
+`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R (and not to the human eye or another program). Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, follow Open Science principles (Chapter \@ref(openscience)) and avoid file formats that are not readable across different platforms and programming languages. We will learn more about human-readable tabular data files like CSV in Chapter \@ref(datawrangling) and other open source binary file formats in Chapter \@ref(datavariety).
 
-We will learn more about human-readable tabular data files like CSV in Chapter \@ref(datawrangling) and other open source binary file formats in Chapter \@ref(datavariety).
+### R environment
+
+The set of objects (variables, data frames, etc.) defined during an R session are referred to as the *environment*. You can view the objects in RStudio in the **environment** panel in R Studio, grouped as Data, Values and Functions.
+
+After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will not be available in your next R session. You should avoid saving your entire environment. Rather, save individual objects into files and read them in explicitly in the next R session, as described above. This gives you control, transparency, and ensures better reproducibility.
 
 ### Libraries
 
-*Packages*, sometimes called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including {base} R, {utils}, {stats}...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
+*Packages*, also called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including {base} R, {utils}, {stats}...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
 
 For example, the {tidyverse} package is used for data wrangling and will be covered in this course. This is a special package which loads many other packages in the background (like {readr}, {ggplot2}, etc.). You can install a new package as follows:
 
@@ -438,32 +433,6 @@ search()
 
 This information can also be found on the **Packages** panel in RStudio. The loaded packages are shown with a tick mark.
 
-#### Installation of required packages
-
-Finally, let's install all the missing packages and load all required packages for this course:
-
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
-              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
-              "MODISTools", "forcats", "yardstick", "recipes", "caret",
-              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
-              "renv", "rsample", "modelr", "rmarkdown", "rpart",
-              "rpart.plot", "ranger", "sessioninfo")
-new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
-if (length(new_pkgs) > 0) install.packages(new_pkgs)
-invisible(lapply(use_pkgs, require, character.only = TRUE))
-```
-
-#### Other libraries and applications
-
-For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
-
-For example, to work with *netcdf* files in R, you would need to install the {ncdf4} library and the `netCDF` command-line tools:
-
--   To install the {ncdf4} library, follow the same steps as above for installing an R library.
--   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
--   Once the {ncdf4} library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
-
 
 ### R scripts
 
@@ -479,7 +448,7 @@ To run a script, you can either use the **Source** button in the source editor o
 
 Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory. You must always specify the path to the file, also when sourcing code.
 
-### R Markdown
+### R Markdown {#rmarkdown}
 
 [R Markdown](https://rmarkdown.rstudio.com/) files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (*knitted*) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Rmarkdown is ideal for **reporting**, i.e., writing your final document presenting your analysis results. When opened in RStudio, RMarkdown files appear in the Editor like this:
 
@@ -514,13 +483,77 @@ To create a new RMarkdown file, select from the drop-down menu in the top-left c
 knitr::include_graphics("./figures/newrmarkdown.png")
 ```
 
-### Workspace management
+### Workspace management {#wspmgmt}
 
-Using *R projects* in combination with *Git* is the essence of efficient workspace management in R. All files that belong together are organised within one directory. This can be regarded as the project directory and is typically congruent with what belongs to the respective Git repository. By keeping an organized workspace, another person (or your future self) can find relevant files, run your code and reproduce your analysis workflow easily.
+Workspace management is crucial for efficient data science projects. Two aspects are essential for workspace management: The structure of directories and the types of files they contain; and code management and version control. To address these two points, we will briefly introduce you to *R projects* and *git*.
 
-#### Installing Git
+#### R projects {#rprojects}
 
-*Git* is a version control system (covered in detail in Chapter \@ref(codemgmt)) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in [GitHub](https://github.com/). To use it later in this course (and throughout your career), let's set up these tools:
+Think of all files that are linked to a certain data science workflow as belonging together into one project. A project is therefore a directory that contains the code and the files it produces. Different types of files go in different sub-directories. To keep an order and make your code useful also for others, always keep files of the same type in sub-directories that are always named the same way across projects. When creating a new project, you will find the same overall structure. A common structure is:
+
+- Keep `.R` files that implement a user-defined function (see Chapter \@ref(programmingprimers)) in a sub-directory `./R/`, and `.R` files that implement a workflow in a sub-directory `./analysis/`. Workflow implementations with a view to communication should be implemented in RMarkdown files.
+- RMarkdown files are commonly kept in a sub-directory `./vignettes/` or in the main (top-level) project directory.
+- Keep figures produced by your code in a sub-directory `./fig/`
+- Keep data files produced by your code in a sub-directory `./data/`
+- Data obtained from external sources (e.g., published datasets, data shared by collaborators) and potentially used across multiple projects should be kept outside a project directory. Set up your own directory of data obtained from external sources, for example in your home as `~/data/`
+
+To read and write from/to files you should use relative paths (relative to the project's top-level directory), like any of the two equivalent following options:
+
+    > source("./R/my_r_script.R")
+    > source("R/my_r_script.R")
+    
+... and not:    
+    
+    > source("~/my_project/my_r_script.R")
+    
+R sessions in RStudio that are connected to such project directories are *R projects*. To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
+
+```{r label="projectmenu", echo=FALSE, fig.cap="R project menu.", out.width="30%", fig.align='center'}
+knitr::include_graphics("./figures/RStudio_RProject_screenshot.png")
+```
+
+When starting a new project, named `project_name`, a file `project_name.Rproj` is created in the top-level project directory. It stores information about your the session (settings, open files, etc.), automatically enables useful features in RStudio for easy package, website, or book building, lets you manage code version control (see next sub-section), and optionally (not recommended) stores the environment of your current session. It is not recommended to save and restore entire environments. Instead read and write objects from and into files to guarantee control, transparency, and reproducibility. When you want to continue working on an existing R project, you can start a new session by clicking on your `project_name.Rproj` file. This restores
+
+In Chapters \@ref(openscience) and \@ref(codemgmt), we will learn more about efficient code management.
+
+#### git
+
+*git* is a version control system that keeps track of all changes on your code, who made it, and when. It allows you to go back to previous changes, and lets you control when to iterate from one state of the code to the next. The basic unit of *git* is a git repository - all the code contained in a project directory. That's why *R projects* work well with *git*. *git* can also keep track of changes in data, so long as the data is small and in text format (see \@ref(datavariety)). 
+
+*git* also lets you sync your local copy of a *git repository* with git service in the cloud, for example [GitHub](https://github.com/). This allows you to manage the same repository across computers and collaborate with multiple partners on the same repository.
+
+We will learn more about *git* in Chapter \@ref(codemgmt). For now, follow instructions in Section \@ref(setup) to set yourself up with installing *git* and other required stuff on your computer and with a GitHub account. You will use this later in this course (and maybe throughout your career).
+
+
+### Setup {#setup}
+
+#### Packages
+
+Let's install all the required packages for this course and load them.
+
+```{r message=FALSE, warning=FALSE}
+use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
+              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
+              "MODISTools", "forcats", "yardstick", "recipes", "caret",
+              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
+              "renv", "rsample", "modelr", "rmarkdown", "rpart",
+              "rpart.plot", "ranger", "sessioninfo")
+new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
+if (length(new_pkgs) > 0) install.packages(new_pkgs)
+invisible(lapply(use_pkgs, require, character.only = TRUE))
+```
+
+#### Other libraries and applications
+
+For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
+
+For example, to work with *netcdf* files in R, you would need to install the {ncdf4} library and the `netCDF` command-line tools:
+
+-   To install the {ncdf4} library, follow the same steps as above for installing an R library.
+-   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
+-   Once the {ncdf4} library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
+
+#### git
 
 -   First, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
 -   Once Git is installed, set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". You can check that the path to your Git installation is correct.
@@ -529,28 +562,6 @@ Using *R projects* in combination with *Git* is the essence of efficient workspa
 
 Now you should be able to use Git in the **Terminal** panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.
 
-#### R projects
-
-RStudio also allows you to work with R projects. An *R project* is basically a folder, containing a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work. 
-
-To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
-
-```{r label="projectmenu", echo=FALSE, fig.cap="R project menu.", out.width="25%", fig.align='center'}
-knitr::include_graphics("./figures/RStudio_RProject_screenshot.png")
-```
-
-When starting a new project, named `project_name`, a file `<project_name.Rproj>` is created. It sits in the project directory (folder) and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
-
-When you want to continue working on an existing R project, you can start a new session by clicking on your `project_name.Rproj` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
-
-Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the **files, plots, help, etc.** panel.
-
-For example, you can keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project's root directory), like any of the two equivalent following options:
-
-    > source("./R/my_r_script.R")
-    > source("R/my_r_script.R")
-
-A project directory should only contain code, data and outputs that belong to this one project. We'll talk about using R Projects in Chapters \@ref{openscience} and \@ref{codemgmt}, as well as other methods to keep your workflow well structured and reproducible.
 
 ## Exercises
 

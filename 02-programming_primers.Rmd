@@ -81,7 +81,7 @@ Often, analyses require many steps and your scripts may get excessively long. Ov
 For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
 
 ```{r eval=FALSE}
-## NOT ADVISABLE
+# NOT ADVISABLE
 temp_soil <- (temp_soil - 32) * 5 / 9
 temp_air  <- (temp_air  - 32) * 5 / 9
 temp_leaf <- (temp_leaf - 32) * 5 / 9
@@ -94,42 +94,25 @@ Functions are a set of instructions encapsulated within curly brackets (`{}`) th
 -   enclosed by curly brackets `function(x){ ... }` the code making up the *body* of the function,
 -   and lastly, within the body, a *return* statement indicting the output of the function.
 
-Below we define our own function `convert_fahrenheit_to_celsius()`:
+Below we define our own function `f2c()`:
 
 ```{r eval=FALSE}
-## ADVISABLE
-convert_fahrenheit_to_celsius <- function(temp_f){
-  # Convert values
+# ADVISABLE
+f2c <- function(temp_f){
   temp_c <- (temp_f - 32) * 5 / 9
-  # Return statement
-  temp_c
+  return(temp_c)
 }
 
-temp_soil <- convert_fahrenheit_to_celsius(temp_soil)
-temp_air  <- convert_fahrenheit_to_celsius(temp_air)
-temp_leaf <- convert_fahrenheit_to_celsius(temp_leaf)
-```
-
-A good practice when writing a function is to document what the function does, the meaning and structure of every input (arguments) and the output (value) of the function. This helps you and others to reuse that function, without having to read and understand what the function does internally. For example, you can write it as a header in the body of the function, or as a header of the script where you define it. Furthermore, one should use the `return()` statement only for early returns (e.g. inside an `if` statement) and otherwise, R returns the result of the last evaluated expression. Note that, without the last line of the function's body, our function wouldn't return anything.
-
-```{r eval=FALSE}
-convert_fahrenheit_to_celsius <- function(temp_f){
-  # This function converts temperature values in Fahrenheit to Celsius
-  # Arguments:
-  #   temp_f:   numerical vector of temperature values in Fahrenheit
-  # Value:
-  #   temp_c:   numerical vector of temperatures in Celsius
-  
-  temp_c <- (temp_f - 32) * 5 / 9
-  temp_c
-}
+temp_soil <- f2c(temp_soil)
+temp_air  <- f2c(temp_air)
+temp_leaf <- f2c(temp_leaf)
 ```
 
 Functions become increasingly important the more experienced one gets at coding. Using them minimises the amount of code being re-written, decreases accidental errors when retyping code and are key to keeping a clean workspace. Functions have their own environment, which means variables within the function are only 'live' or used when the function is running but are not saved to the global environment unless they are part of the output of the function. A good moment to think about using a function is when sections of code are being repeated again and again.
 
 Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
 
-Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/convert_fahrenheit_to_celsius.R` and load it later by running `source("./R/convert_fahrenheit_to_celsius")`.
+Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/f2c.R` and load it later by running `source("./R/f2c")`.
 
 ### Style your code
 
