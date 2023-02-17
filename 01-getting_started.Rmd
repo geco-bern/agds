@@ -444,65 +444,7 @@ To run a script, you can either use the **Source** button in the source editor o
 
     > source("my_r_script.R")
 
-Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory.
-
-### Style your code
-
-Nice code is clean, readable, consistent, and extensible (easily modified or adapted). Ugly code works, but is hard to work with. There is no right or wrong about coding style, but certain aspects make it easier to read and use code. Here are a few points to consider.
-
-#### Spaces and breaks
-
-Adding enough white spaces and line breaks in the right locations greatly helps the legibility of code. Cramming variables, operators, and brackets without spaces leaves an unintelligible sequence of characters and it will not be clear what parts go together. Therefore, consider the following points:
-
--   Use spaces around operators (`=`, `+`, `-`, `<-`, `>`, etc.).
--   Use `<-`, not `=`, for allocating a value to a variable.
--   Code inside curly brackets should be *indented* (recommended: two white spaces at the beginning of each line for each indentation level - don't use tabs).
-
-For example:
-
-```{r eval=F}
-if (temp > 5.0){
-  growth_temp <- growth_temp + temp  
-}
-```
-
-#### Variable naming
-
-It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (`_`) to separate words within a name (`_`). Avoid (`.`) as they are reserved for certain types of objects in R. Also, avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.
-
-For example, `df_daily` is a data frame with data at a daily resolution. Or `clean_daily` is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (`_`) is used to separate words.
-
-It is also recommendable to avoid variable names consisting of only one character. This makes it practically impossible to search for that variable.
-
-```{r eval=F}
-# Good
-day_01
-
-# Bad
-DayOne
-day.one
-first_day_of_the_month
-djm1
-
-# Very bad
-mean <- function(x) sum(x)/length(x) # mean() itself is already a function
-T <- FALSE # T is an abbreviation of TRUE
-c <- 10 # c() is used to create a vector (example <- c(1, 2, 3))
-```
-
-#### Script style
-
-Load libraries at the very beginning of a script, followed, by reading data from files. Functions should be defined in separate `.R` files, unless they are only a few lines long. Then, place the sequence of statements. The name of the script should be short and concise and indicate what the script does. 
-
-Use comments to describe in human-readable text what the code does. Comments are all that appears to the right of a `#` and are code parts that are not interpreted by R and not executed. Adding comments in the code greatly helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).
-
-To visually separate parts of a script, use commented lines (e.g., `#----`). The RStudio text editor automatically recognizes `----` added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (**Outline** button in the top right corner of the editor panel). 
-
-Avoid reading entire workspace environments (e.g., `load(old_environment.RData)`), deleting environments `rm(list=ls())`, loading hidden dependencies (e.g., `.Rprofile`), or changing the working directory (`setwd("~/other_dir/"`) as part of a script.
-
-Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter \@ref(codemgmt), we will learn about the code versioning control system *git*, which keeps track of all this as meta information associated with files.
-
-A good and comprehensive best practices guide is given by the [tidyverse style guide](https://style.tidyverse.org/).
+Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory. You must always specify the path to the file, also when sourcing code.
 
 ### R Markdown
 
@@ -533,7 +475,6 @@ knitr::include_graphics("./figures/rmarkdown_render.png")
 ```
 
 Note that the code chunk produced a figure as an output which was placed directly in the rendered html. This demonstrates the usefulness of RMarkdown as *notebooks* to document entire workflows and make their outputs reproducible. 
-
 
 ### Workspace management
 
