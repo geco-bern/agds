@@ -403,6 +403,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Rumors have it that young Carl Friedrich Gauss was asked in primary school to calculate the sum of all natural numbers between 1 and 100. He did it in his head in no time. We’re very likely not as intelligent as young Gauss. But we have R. What’s the solution?</p>
 <div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="solutions.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span></code></pre></div>
 <pre><code>## [1] 5050</code></pre>
+<p>Gauss calculated the sum with a trick. The sum of 100 and 1 is 101. The sum of 99 and 2 is 101. You do this 50 times, and you get <span class="math inline">\(50 \times 101\)</span>. Demonstrate Gauss’ trick with vectors in R.</p>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="solutions.html#cb437-1" aria-hidden="true" tabindex="-1"></a>vec_a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb437-2"><a href="solutions.html#cb437-2" aria-hidden="true" tabindex="-1"></a>vec_b <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">51</span></span>
+<span id="cb437-3"><a href="solutions.html#cb437-3" aria-hidden="true" tabindex="-1"></a>vec_c <span class="ot">&lt;-</span> vec_a <span class="sc">+</span> vec_b</span>
+<span id="cb437-4"><a href="solutions.html#cb437-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb437-5"><a href="solutions.html#cb437-5" aria-hidden="true" tabindex="-1"></a><span class="co"># each element is 101</span></span>
+<span id="cb437-6"><a href="solutions.html#cb437-6" aria-hidden="true" tabindex="-1"></a>vec_c</span></code></pre></div>
+<pre><code>##  [1] 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101
+## [20] 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101
+## [39] 101 101 101 101 101 101 101 101 101 101 101 101</code></pre>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="solutions.html#cb439-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the length of vectors is fifty. 50 * 101</span></span>
+<span id="cb439-2"><a href="solutions.html#cb439-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec_c)</span></code></pre></div>
+<pre><code>## [1] 5050</code></pre>
 </div>
 <div id="magic-trick-algorithm-1" class="section level3 unnumbered hasAnchor">
 <h3>Magic trick algorithm<a href="solutions.html#magic-trick-algorithm-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -414,14 +427,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Redefine <code>x</code> as half of the previous value of <code>x</code>.</li>
 <li>Subtract the originally chosen arbitrary number from <code>x</code>.</li>
 </ul>
-<p>Print <code>x</code>. Restart the algorithm defined above by choosing a new arbitrary natural number between 1 and 20.</p>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="solutions.html#cb437-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">999</span>  <span class="co"># arbitrary number between 1 and 20</span></span>
-<span id="cb437-2"><a href="solutions.html#cb437-2" aria-hidden="true" tabindex="-1"></a>x_save <span class="ot">&lt;-</span> x  <span class="co"># save for the last step</span></span>
-<span id="cb437-3"><a href="solutions.html#cb437-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb437-4"><a href="solutions.html#cb437-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb437-5"><a href="solutions.html#cb437-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">4</span></span>
-<span id="cb437-6"><a href="solutions.html#cb437-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb437-7"><a href="solutions.html#cb437-7" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> x_save</span></code></pre></div>
+<p>Print <code>x</code>. Restart the algorithm defined above by choosing a new arbitrary natural number.</p>
+<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="solutions.html#cb441-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">999</span>  <span class="co"># arbitrary number between 1 and 20</span></span>
+<span id="cb441-2"><a href="solutions.html#cb441-2" aria-hidden="true" tabindex="-1"></a>x_save <span class="ot">&lt;-</span> x  <span class="co"># save for the last step</span></span>
+<span id="cb441-3"><a href="solutions.html#cb441-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb441-4"><a href="solutions.html#cb441-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb441-5"><a href="solutions.html#cb441-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">4</span></span>
+<span id="cb441-6"><a href="solutions.html#cb441-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb441-7"><a href="solutions.html#cb441-7" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> x_save</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
 </div>
 <div id="vectors-2" class="section level3 unnumbered hasAnchor">
@@ -432,13 +445,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>What is the length of the object?</li>
 <li>Calculate the mean, median, minimum, maximum, and the 33%-quantile across all values.</li>
 </ul>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="solutions.html#cb439-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="solutions.html#cb443-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb441-1"><a href="solutions.html#cb441-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="solutions.html#cb445-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
 <pre><code>## [1] 141</code></pre>
-<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="solutions.html#cb443-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="solutions.html#cb447-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
 <pre><code>## [1] 591.1844</code></pre>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="solutions.html#cb445-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other functions can easily be found on the internet ;-)</span></span></code></pre></div>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="solutions.html#cb449-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other functions can easily be found on the internet ;-)</span></span></code></pre></div>
 </div>
 <div id="data-frames-2" class="section level3 unnumbered hasAnchor">
 <h3>Data frames<a href="solutions.html#data-frames-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -449,17 +462,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Determine the value largest value in the vector of event magnitudes.</li>
 <li>Determine the geographic position of the epicenter of the largest event.</li>
 </ul>
-<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="solutions.html#cb446-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(datasets<span class="sc">::</span>quakes)</span></code></pre></div>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="solutions.html#cb450-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(datasets<span class="sc">::</span>quakes)</span></code></pre></div>
 <pre><code>## [1] 1000    5</code></pre>
-<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="solutions.html#cb448-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> datasets<span class="sc">::</span>quakes<span class="sc">$</span>mag</span>
-<span id="cb448-2"><a href="solutions.html#cb448-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(vec)</span></code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="solutions.html#cb452-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> datasets<span class="sc">::</span>quakes<span class="sc">$</span>mag</span>
+<span id="cb452-2"><a href="solutions.html#cb452-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(vec)</span></code></pre></div>
 <pre><code>## [1] 6.4</code></pre>
-<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="solutions.html#cb450-1" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which.max</span>(vec)  <span class="co"># index of largest value</span></span>
-<span id="cb450-2"><a href="solutions.html#cb450-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb450-3"><a href="solutions.html#cb450-3" aria-hidden="true" tabindex="-1"></a><span class="co"># geographic positions defined by longitude and latitude (columns long and lat)</span></span>
-<span id="cb450-4"><a href="solutions.html#cb450-4" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>long[idx]</span></code></pre></div>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="solutions.html#cb454-1" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which.max</span>(vec)  <span class="co"># index of largest value</span></span>
+<span id="cb454-2"><a href="solutions.html#cb454-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb454-3"><a href="solutions.html#cb454-3" aria-hidden="true" tabindex="-1"></a><span class="co"># geographic positions defined by longitude and latitude (columns long and lat)</span></span>
+<span id="cb454-4"><a href="solutions.html#cb454-4" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>long[idx]</span></code></pre></div>
 <pre><code>## [1] 167.62</code></pre>
-<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="solutions.html#cb452-1" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>lat[idx]</span></code></pre></div>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="solutions.html#cb456-1" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>lat[idx]</span></code></pre></div>
 <pre><code>## [1] -15.56</code></pre>
 </div>
 <div id="rmarkdown-1" class="section level3 unnumbered hasAnchor">
