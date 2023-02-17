@@ -404,7 +404,7 @@ A good and comprehensive best practices guide is given by the [tidyverse style g
 [R Markdown](https://rmarkdown.rstudio.com/) files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (*knitted*) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Rmarkdown is ideal for **reporting**, i.e., writing your final document presenting your analysis results. When opened in RStudio, RMarkdown files appear in the Editor like this:
 
 ```{r label="rmarkdown", echo=FALSE, out.width="75%", fig.cap="R Markdown document opened in the source panel.", fig.align='center'}
-knitr::include_graphics("./figures/rmarkdown.png")
+knitr::include_graphics("./figures/rmarkdown.png") 
 ```
 
 As shown in Fig. \@ref(fig:rmarkdown), an RMarkdown file consists of a header that specifies the document properties, such as how it should be rendered (as an html page, a docx file or a pdf).
