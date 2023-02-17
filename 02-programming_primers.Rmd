@@ -6,10 +6,8 @@
 
 After you've gone over the lecture and solved the exercises, you should be able to:
 
--   Install and load libraries and packages
--   Read, inspect, visualise and write data frames
 -   Use loops, conditional statements and functions in your code
--   Organize your R project for data analysis
+-   Write clean, stylized and structured code
 -   Look for help
 
 ## Tutorial
