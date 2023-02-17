@@ -260,6 +260,30 @@ df[2, ]   # second row
 df[2,2]   # age of Peter
 ```
 
+There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
+
+-   Size
+    -   `dim()` - Returns the dimensions of an object (here: number of rows and columns).
+    -   `nrow()` - Returns the number of rows of an object.
+    -   `ncol()` - Returns the number of columns of an object.
+-   Content
+    -   `head()` - Returns the first 6 rows.
+    -   `tail()` - Returns the last 6 rows.
+    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
+-   Names
+    -   `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
+    -   `rownames()` - Returns the row names.
+-   Summary
+    -   `class()` - Returns the classes of an object.
+    -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
+    -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
+
+For example, the data frame `df` has 3 rows and 2 columns:
+
+```{r}
+dim(df)
+```
+
 There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Chapter \@ref(programmingprimers) and have dedicated all of Chapter \@ref(datawrangling) to teach you how to work with data frames in a tidy way.
 
 #### Functions

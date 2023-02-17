@@ -195,51 +195,6 @@ We are going to work with data from ecosystem flux measurements, taken by the ed
 
 The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
 
-#### Understanding the data structure
-
-There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
-
--   Size
-    -   `dim()` - Returns the dimensions of an object (here: number of rows and columns).
-    -   `nrow()` - Returns the number of rows of an object.
-    -   `ncol()` - Returns the number of columns of an object.
--   Content
-    -   `head()` - Returns the first 6 rows.
-    -   `tail()` - Returns the last 6 rows.
-    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
--   Names
-    -   `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
-    -   `rownames()` - Returns the row names.
--   Summary
-    -   `class()` - Returns the classes of an object.
-    -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
-    -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
-
-For example, the data frame `df` has 4018 rows and 334 columns:
-
-```{r}
-dim(df)
-```
-
-It is important to know the meaning of the column names and content. A description of standardized FLUXNET data variables is available [here](https://fluxnet.org/data/aboutdata/data-variables/). A selection of available variables that we will use in subsequent chapters are:
-
--   `GPP` (gC m$^{−2}$ s$^{-1}$): Gross primary production
--   `WS` (m s$^{-1}$): Horizontal wind speed
--   `USTAR` (m s$^{-1}$): Friction velocity
--   `TA` ($^{o}$ C): Air temperature
--   `RH` (%): Relative humidity (range 0--100%)
--   `PA` (kPa): Atmospheric pressure
--   `G` (W m$^{−2}$): Ground heat flux, not mandatory, but needed for the energy balance closure calculations
--   `NETRAD` (W m$^{−2}$): Net radiation, not mandatory, but needed for the energy balance closure calculations
--   `SW_IN` (W m$^{−2}$): Incoming shortwave radiation
--   `SW_IN_POT` (W m$^−2$): Potential incoming shortwave radiation (top of atmosphere theoretical maximum radiation)
--   `PPFD_IN` ($\mu$mol photons m$^{−2}$ s$^{-1}$): Incoming photosynthetic photon flux density
--   `P` (mm): Precipitation total of each 30 or 60 minute period
--   `LW_IN` (W m$^{−2}$): Incoming (down-welling) long-wave radiation
--   `SWC` (%): Soil water content (volumetric), range 0--100%
--   `TS` ($^{o}$ C): Soil temperature
--   `CO2` ($\mu$molCO~2~ mol$^{-1}$): Carbon dioxide (CO$_2$) mole fraction in moist air
-
 #### Selecting data and entering the tidyverse
 
 `df` is a data frame. This is similar to a matrix and has two dimensions (rows and columns). If we want to extract specific data from it, we specify the indices, i.e. the "coordinates", of the data. For two-dimensional objects (data frames, matrices), the first index refers to rows and the second to columns. For example, to refer to the element on the third row in the first column, we write:
