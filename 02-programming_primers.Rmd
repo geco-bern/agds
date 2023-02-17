@@ -195,31 +195,6 @@ We are going to work with data from ecosystem flux measurements, taken by the ed
 
 The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
 
-#### Reading data
-
-To import the data into the R environment, we use the function `read_csv()` from the {tidyverse} package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame.
-
-```{r message=FALSE}
-df <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
-print(df)
-```
-
-The file is automatically machine-readable because we have:
-
--   Only one header row, containing the column (variable) names.
--   Variables organised by columns, and observations by rows.
--   Each column consists of a single data type (e.g., character, numeric, logical; see below for more info). Here, all columns are interpreted as numeric (`<dbl>`).
--   One value per cell.
--   No merged cells. In short, the data frame is tidy. To understand the sort of object we work with, i.e. the *class*, we can do:
-
-```{r}
-class(df)
-```
-
-Fundamentally, `df` is a `data.frame`. In addition, it is also of some other classes (`"spec_tbl_df", "tbl_df", "tbl"`) which gives it additional features.
-
-Other types of data inputs and how to read them will be covered in Chapter \@ref(datavariety).
-
 #### Understanding the data structure
 
 There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
