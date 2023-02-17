@@ -3,6 +3,7 @@ fig:datasciencevenn
 fig:datascienceworkflowslim
 fig:rmarkdown
 fig:rmarkdownrender
+fig:newrmarkdown
 fig:common-aesthetics
 fig:repromatrix
 fig:targets
@@ -229,3 +230,4 @@ bagging
 from-trees-to-a-forest
 exercises-6
 solutions
+getting-started
