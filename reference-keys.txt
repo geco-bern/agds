@@ -229,3 +229,4 @@ from-trees-to-a-forest
 exercises-6
 solutions
 getting-started
+programming-primers

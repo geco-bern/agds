@@ -187,7 +187,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.2" data-path="programmingprimers.html"><a href="programmingprimers.html#style-your-code"><i class="fa fa-check"></i><b>2.2.2</b> Style your code</a></li>
 <li class="chapter" data-level="2.2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#where-to-find-help"><i class="fa fa-check"></i><b>2.2.3</b> Where to find help</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+<li class="chapter" data-level="2.3" data-path="programmingprimers.html"><a href="programmingprimers.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="" data-path="programmingprimers.html"><a href="programmingprimers.html#gauss-variations"><i class="fa fa-check"></i>Gauss variations</a></li>
+<li class="chapter" data-level="" data-path="programmingprimers.html"><a href="programmingprimers.html#nested-loops"><i class="fa fa-check"></i>Nested loops</a></li>
+<li class="chapter" data-level="" data-path="programmingprimers.html"><a href="programmingprimers.html#interpolation"><i class="fa fa-check"></i>Interpolation</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="datawrangling.html"><a href="datawrangling.html"><i class="fa fa-check"></i><b>3</b> Data wrangling</a>
 <ul>
@@ -351,6 +356,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#data-frames-2"><i class="fa fa-check"></i>Data frames</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#rmarkdown-1"><i class="fa fa-check"></i>RMarkdown</a></li>
 </ul></li>
+<li class="chapter" data-level="A.2" data-path="solutions.html"><a href="solutions.html#programming-primers"><i class="fa fa-check"></i><b>A.2</b> Programming primers</a>
+<ul>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#gauss-variations-1"><i class="fa fa-check"></i>Gauss variations</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#nested-loops-1"><i class="fa fa-check"></i>Nested loops</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#interpolation-1"><i class="fa fa-check"></i>Interpolation</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -382,38 +393,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>Given the radius of a circle write a few lines of code that calculates its area and its circumference. Run your code with different values assigned of the radius.</li>
 </ul>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="solutions.html#cb413-1" aria-hidden="true" tabindex="-1"></a>radius <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb413-2"><a href="solutions.html#cb413-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> pi <span class="sc">*</span> radius<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb413-3"><a href="solutions.html#cb413-3" aria-hidden="true" tabindex="-1"></a>circum <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> radius</span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="solutions.html#cb418-1" aria-hidden="true" tabindex="-1"></a>radius <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb418-2"><a href="solutions.html#cb418-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> pi <span class="sc">*</span> radius<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb418-3"><a href="solutions.html#cb418-3" aria-hidden="true" tabindex="-1"></a>circum <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> radius</span></code></pre></div>
 <ul>
 <li>Print the solution as text.</li>
 </ul>
-<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="solutions.html#cb414-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Radius:&quot;</span>, radius, <span class="st">&quot;   Circumference:&quot;</span>, circum))</span></code></pre></div>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="solutions.html#cb419-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Radius:&quot;</span>, radius, <span class="st">&quot;   Circumference:&quot;</span>, circum))</span></code></pre></div>
 <pre><code>## [1] &quot;Radius: 1    Circumference: 6.28318530717959&quot;</code></pre>
 </div>
 <div id="sequence-of-numbers-1" class="section level3 unnumbered hasAnchor">
 <h3>Sequence of numbers<a href="solutions.html#sequence-of-numbers-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Generate a sequence of numbers from 0 and <span class="math inline">\(\pi\)</span> as a vector with length 5.</p>
-<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="solutions.html#cb416-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, pi, <span class="at">length.out =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="solutions.html#cb421-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, pi, <span class="at">length.out =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## [1] 0.0000000 0.7853982 1.5707963 2.3561945 3.1415927</code></pre>
 </div>
 <div id="gauss-sum-1" class="section level3 unnumbered hasAnchor">
 <h3>Gauss sum<a href="solutions.html#gauss-sum-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Rumors have it that young Carl Friedrich Gauss was asked in primary school to calculate the sum of all natural numbers between 1 and 100. He did it in his head in no time. We’re very likely not as intelligent as young Gauss. But we have R. What’s the solution?</p>
-<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="solutions.html#cb418-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="solutions.html#cb423-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span></code></pre></div>
 <pre><code>## [1] 5050</code></pre>
 <p>Gauss calculated the sum with a trick. The sum of 100 and 1 is 101. The sum of 99 and 2 is 101. You do this 50 times, and you get <span class="math inline">\(50 \times 101\)</span>. Demonstrate Gauss’ trick with vectors in R.</p>
-<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="solutions.html#cb420-1" aria-hidden="true" tabindex="-1"></a>vec_a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span></span>
-<span id="cb420-2"><a href="solutions.html#cb420-2" aria-hidden="true" tabindex="-1"></a>vec_b <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">51</span></span>
-<span id="cb420-3"><a href="solutions.html#cb420-3" aria-hidden="true" tabindex="-1"></a>vec_c <span class="ot">&lt;-</span> vec_a <span class="sc">+</span> vec_b</span>
-<span id="cb420-4"><a href="solutions.html#cb420-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb420-5"><a href="solutions.html#cb420-5" aria-hidden="true" tabindex="-1"></a><span class="co"># each element is 101</span></span>
-<span id="cb420-6"><a href="solutions.html#cb420-6" aria-hidden="true" tabindex="-1"></a>vec_c</span></code></pre></div>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="solutions.html#cb425-1" aria-hidden="true" tabindex="-1"></a>vec_a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span></span>
+<span id="cb425-2"><a href="solutions.html#cb425-2" aria-hidden="true" tabindex="-1"></a>vec_b <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">51</span></span>
+<span id="cb425-3"><a href="solutions.html#cb425-3" aria-hidden="true" tabindex="-1"></a>vec_c <span class="ot">&lt;-</span> vec_a <span class="sc">+</span> vec_b</span>
+<span id="cb425-4"><a href="solutions.html#cb425-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb425-5"><a href="solutions.html#cb425-5" aria-hidden="true" tabindex="-1"></a><span class="co"># each element is 101</span></span>
+<span id="cb425-6"><a href="solutions.html#cb425-6" aria-hidden="true" tabindex="-1"></a>vec_c</span></code></pre></div>
 <pre><code>##  [1] 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101
 ## [20] 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101 101
 ## [39] 101 101 101 101 101 101 101 101 101 101 101 101</code></pre>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="solutions.html#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the length of vectors is fifty. 50 * 101</span></span>
-<span id="cb422-2"><a href="solutions.html#cb422-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec_c)</span></code></pre></div>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="solutions.html#cb427-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the length of vectors is fifty. 50 * 101</span></span>
+<span id="cb427-2"><a href="solutions.html#cb427-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec_c)</span></code></pre></div>
 <pre><code>## [1] 5050</code></pre>
 </div>
 <div id="magic-trick-algorithm-1" class="section level3 unnumbered hasAnchor">
@@ -427,13 +438,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Subtract the originally chosen arbitrary number from <code>x</code>.</li>
 </ul>
 <p>Print <code>x</code>. Restart the algorithm defined above by choosing a new arbitrary natural number.</p>
-<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb424-1"><a href="solutions.html#cb424-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">999</span>  <span class="co"># arbitrary integer</span></span>
-<span id="cb424-2"><a href="solutions.html#cb424-2" aria-hidden="true" tabindex="-1"></a>x_save <span class="ot">&lt;-</span> x  <span class="co"># save for the last step</span></span>
-<span id="cb424-3"><a href="solutions.html#cb424-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb424-4"><a href="solutions.html#cb424-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb424-5"><a href="solutions.html#cb424-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">4</span></span>
-<span id="cb424-6"><a href="solutions.html#cb424-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb424-7"><a href="solutions.html#cb424-7" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> x_save</span></code></pre></div>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="solutions.html#cb429-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">999</span>  <span class="co"># arbitrary integer</span></span>
+<span id="cb429-2"><a href="solutions.html#cb429-2" aria-hidden="true" tabindex="-1"></a>x_save <span class="ot">&lt;-</span> x  <span class="co"># save for the last step</span></span>
+<span id="cb429-3"><a href="solutions.html#cb429-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb429-4"><a href="solutions.html#cb429-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb429-5"><a href="solutions.html#cb429-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">4</span></span>
+<span id="cb429-6"><a href="solutions.html#cb429-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb429-7"><a href="solutions.html#cb429-7" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> x_save</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
 </div>
 <div id="vectors-2" class="section level3 unnumbered hasAnchor">
@@ -444,13 +455,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>What is the length of the object?</li>
 <li>Calculate the mean, median, minimum, maximum, and the 33%-quantile across all values.</li>
 </ul>
-<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="solutions.html#cb426-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="solutions.html#cb431-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="solutions.html#cb428-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="solutions.html#cb433-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
 <pre><code>## [1] 141</code></pre>
-<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="solutions.html#cb430-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="solutions.html#cb435-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(datasets<span class="sc">::</span>rivers)</span></code></pre></div>
 <pre><code>## [1] 591.1844</code></pre>
-<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="solutions.html#cb432-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other functions can easily be found on the internet ;-)</span></span></code></pre></div>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="solutions.html#cb437-1" aria-hidden="true" tabindex="-1"></a><span class="co"># other functions can easily be found on the internet ;-)</span></span></code></pre></div>
 </div>
 <div id="data-frames-2" class="section level3 unnumbered hasAnchor">
 <h3>Data frames<a href="solutions.html#data-frames-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -461,22 +472,124 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Determine the value largest value in the vector of event magnitudes.</li>
 <li>Determine the geographic position of the epicenter of the largest event.</li>
 </ul>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="solutions.html#cb433-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(datasets<span class="sc">::</span>quakes)</span></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="solutions.html#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(datasets<span class="sc">::</span>quakes)</span></code></pre></div>
 <pre><code>## [1] 1000    5</code></pre>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="solutions.html#cb435-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> datasets<span class="sc">::</span>quakes<span class="sc">$</span>mag</span>
-<span id="cb435-2"><a href="solutions.html#cb435-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(vec)</span></code></pre></div>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="solutions.html#cb440-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> datasets<span class="sc">::</span>quakes<span class="sc">$</span>mag</span>
+<span id="cb440-2"><a href="solutions.html#cb440-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(vec)</span></code></pre></div>
 <pre><code>## [1] 6.4</code></pre>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="solutions.html#cb437-1" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which.max</span>(vec)  <span class="co"># index of largest value</span></span>
-<span id="cb437-2"><a href="solutions.html#cb437-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb437-3"><a href="solutions.html#cb437-3" aria-hidden="true" tabindex="-1"></a><span class="co"># geographic positions defined by longitude and latitude (columns long and lat)</span></span>
-<span id="cb437-4"><a href="solutions.html#cb437-4" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>long[idx]</span></code></pre></div>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="solutions.html#cb442-1" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">&lt;-</span> <span class="fu">which.max</span>(vec)  <span class="co"># index of largest value</span></span>
+<span id="cb442-2"><a href="solutions.html#cb442-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb442-3"><a href="solutions.html#cb442-3" aria-hidden="true" tabindex="-1"></a><span class="co"># geographic positions defined by longitude and latitude (columns long and lat)</span></span>
+<span id="cb442-4"><a href="solutions.html#cb442-4" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>long[idx]</span></code></pre></div>
 <pre><code>## [1] 167.62</code></pre>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="solutions.html#cb439-1" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>lat[idx]</span></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="solutions.html#cb444-1" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>lat[idx]</span></code></pre></div>
 <pre><code>## [1] -15.56</code></pre>
 </div>
 <div id="rmarkdown-1" class="section level3 unnumbered hasAnchor">
 <h3>RMarkdown<a href="solutions.html#rmarkdown-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.</p>
+</div>
+</div>
+<div id="programming-primers" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">A.2</span> Programming primers<a href="solutions.html#programming-primers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="gauss-variations-1" class="section level3 unnumbered hasAnchor">
+<h3>Gauss variations<a href="solutions.html#gauss-variations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Use a <code>for</code> loop to compute the sum of all natural numbers from 1 to 100. Print the result to the screen. Repeat this exercise but use a <code>while</code> loop.</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="solutions.html#cb446-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1a. for-loop to compute sum from 1 - 100</span></span>
+<span id="cb446-2"><a href="solutions.html#cb446-2" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb446-3"><a href="solutions.html#cb446-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>){</span>
+<span id="cb446-4"><a href="solutions.html#cb446-4" aria-hidden="true" tabindex="-1"></a>  sum <span class="ot">&lt;-</span> sum <span class="sc">+</span> i <span class="co"># for-loop iterating from 1 to 100 </span></span>
+<span id="cb446-5"><a href="solutions.html#cb446-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb446-6"><a href="solutions.html#cb446-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sum)</span></code></pre></div>
+<pre><code>## [1] 5050</code></pre>
+<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb448-1"><a href="solutions.html#cb448-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1b. while-loop to compute sum from 1 - 100</span></span>
+<span id="cb448-2"><a href="solutions.html#cb448-2" aria-hidden="true" tabindex="-1"></a>loop_status <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb448-3"><a href="solutions.html#cb448-3" aria-hidden="true" tabindex="-1"></a>counter <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb448-4"><a href="solutions.html#cb448-4" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb448-5"><a href="solutions.html#cb448-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (loop_status) { <span class="co"># while-loop is repeated as long as loop_status is true</span></span>
+<span id="cb448-6"><a href="solutions.html#cb448-6" aria-hidden="true" tabindex="-1"></a>  counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb448-7"><a href="solutions.html#cb448-7" aria-hidden="true" tabindex="-1"></a>  sum <span class="ot">&lt;-</span> sum <span class="sc">+</span> counter</span>
+<span id="cb448-8"><a href="solutions.html#cb448-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (counter <span class="sc">==</span> <span class="dv">100</span>) loop_status <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb448-9"><a href="solutions.html#cb448-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb448-10"><a href="solutions.html#cb448-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sum)</span></code></pre></div>
+<pre><code>## [1] 5050</code></pre>
+<p>Add up all numbers between 1 and 100 that are at the same time a multiple of 3 and a multiple of 7. Print the result to the screen in the form of: <code>The sum of multiples of 3 and 7 within 1-100 is: {your result}</code>.</p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="solutions.html#cb450-1" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb450-2"><a href="solutions.html#cb450-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">100</span>)) {</span>
+<span id="cb450-3"><a href="solutions.html#cb450-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">==</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> i <span class="sc">%%</span> <span class="dv">7</span> <span class="sc">==</span> <span class="dv">0</span> ) {</span>
+<span id="cb450-4"><a href="solutions.html#cb450-4" aria-hidden="true" tabindex="-1"></a>        sum <span class="ot">&lt;-</span> sum <span class="sc">+</span> i</span>
+<span id="cb450-5"><a href="solutions.html#cb450-5" aria-hidden="true" tabindex="-1"></a>    }   </span>
+<span id="cb450-6"><a href="solutions.html#cb450-6" aria-hidden="true" tabindex="-1"></a>}   </span>
+<span id="cb450-7"><a href="solutions.html#cb450-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;The sum of multiples of 3 and 7 within 1-100 is: &quot;</span>, sum))</span></code></pre></div>
+<pre><code>## [1] &quot;The sum of multiples of 3 and 7 within 1-100 is: 210&quot;</code></pre>
+</div>
+<div id="nested-loops-1" class="section level3 unnumbered hasAnchor">
+<h3>Nested loops<a href="solutions.html#nested-loops-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Given a matrix <code>A</code> and a vector <code>B</code> (see below), implement the following algorithm:</p>
+<ol style="list-style-type: decimal">
+<li>Start with the first row in <code>A</code>.</li>
+<li>Fill all missing values in the current row of <code>A</code> with the maximum value in <code>B</code>.</li>
+<li>Drop the maximum value from <code>B</code>.</li>
+<li>Proceed to the next row of <code>A</code> and repeat steps 2-4.</li>
+</ol>
+<p><code>A</code> and <code>B</code> are defined as:</p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="solutions.html#cb452-1" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">15</span>, <span class="dv">6</span>, <span class="dv">7</span>, </span>
+<span id="cb452-2"><a href="solutions.html#cb452-2" aria-hidden="true" tabindex="-1"></a>              <span class="cn">NA</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">6</span>, <span class="dv">11</span>, <span class="cn">NA</span>, <span class="dv">3</span>, </span>
+<span id="cb452-3"><a href="solutions.html#cb452-3" aria-hidden="true" tabindex="-1"></a>              <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">21</span>, <span class="cn">NA</span>, <span class="dv">6</span>, </span>
+<span id="cb452-4"><a href="solutions.html#cb452-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">7</span>)),</span>
+<span id="cb452-5"><a href="solutions.html#cb452-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb452-6"><a href="solutions.html#cb452-6" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">9</span>, <span class="dv">15</span>, <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="solutions.html#cb453-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(A)){</span>
+<span id="cb453-2"><a href="solutions.html#cb453-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(A)){</span>
+<span id="cb453-3"><a href="solutions.html#cb453-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(A[i,j])){</span>
+<span id="cb453-4"><a href="solutions.html#cb453-4" aria-hidden="true" tabindex="-1"></a>      A[i,j] <span class="ot">&lt;-</span> <span class="fu">max</span>(B)</span>
+<span id="cb453-5"><a href="solutions.html#cb453-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb453-6"><a href="solutions.html#cb453-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb453-7"><a href="solutions.html#cb453-7" aria-hidden="true" tabindex="-1"></a>  B <span class="ot">&lt;-</span> B[<span class="sc">-</span><span class="fu">which.max</span>(B)] <span class="co"># update the B vector removing the maximum value</span></span>
+<span id="cb453-8"><a href="solutions.html#cb453-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb453-9"><a href="solutions.html#cb453-9" aria-hidden="true" tabindex="-1"></a>A</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+## [1,]    6    7    3   15   15    6    7
+## [2,]   12    9   12    6   11   12    3
+## [3,]    9    4    7    3   21    9    6
+## [4,]    8    8    8    8    8    8    8</code></pre>
+</div>
+<div id="interpolation-1" class="section level3 unnumbered hasAnchor">
+<h3>Interpolation<a href="solutions.html#interpolation-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Define a vector <span class="math inline">\(\vec{v}\)</span> of length 100. Define the vector so that <span class="math inline">\(v_i = 6\)</span>, for <span class="math inline">\(i = 1 : 25\)</span> and <span class="math inline">\(v_i = -20\)</span>, for <span class="math inline">\(i = 66 : 100\)</span>. Remaining elements are to be defined as ‘missing’. Linearly interpolate missing values that are not defined. Plot the values of <span class="math inline">\(\vec{v}\)</span> using <code>plot(vec)</code>.</p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="solutions.html#cb455-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">100</span>) <span class="co"># initialize vector of length 100 with NA</span></span>
+<span id="cb455-2"><a href="solutions.html#cb455-2" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>] <span class="ot">&lt;-</span> <span class="dv">6</span>      <span class="co"># populate first 25 elements of &#39;vec&#39; with 6. </span></span>
+<span id="cb455-3"><a href="solutions.html#cb455-3" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">66</span><span class="sc">:</span><span class="dv">100</span>] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">20</span>  <span class="co"># populate elements 66:100 with -20.</span></span>
+<span id="cb455-4"><a href="solutions.html#cb455-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb455-5"><a href="solutions.html#cb455-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine index of last non-missing value before gap</span></span>
+<span id="cb455-6"><a href="solutions.html#cb455-6" aria-hidden="true" tabindex="-1"></a>last_non_na <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb455-7"><a href="solutions.html#cb455-7" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="sc">!</span><span class="fu">is.na</span>(vec[last_non_na<span class="sc">+</span><span class="dv">1</span>])) last_non_na <span class="ot">&lt;-</span> last_non_na <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb455-8"><a href="solutions.html#cb455-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb455-9"><a href="solutions.html#cb455-9" aria-hidden="true" tabindex="-1"></a><span class="co"># determine index of first non-missing value after gap</span></span>
+<span id="cb455-10"><a href="solutions.html#cb455-10" aria-hidden="true" tabindex="-1"></a>first_non_na <span class="ot">&lt;-</span> last_non_na <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb455-11"><a href="solutions.html#cb455-11" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">is.na</span>(vec[first_non_na])) first_non_na <span class="ot">&lt;-</span> first_non_na <span class="sc">+</span> <span class="dv">1</span>   </span>
+<span id="cb455-12"><a href="solutions.html#cb455-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb455-13"><a href="solutions.html#cb455-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the increment that is needed for interpolation</span></span>
+<span id="cb455-14"><a href="solutions.html#cb455-14" aria-hidden="true" tabindex="-1"></a>last_value  <span class="ot">&lt;-</span> vec[last_non_na]  <span class="co"># Last non-NA value</span></span>
+<span id="cb455-15"><a href="solutions.html#cb455-15" aria-hidden="true" tabindex="-1"></a>first_value <span class="ot">&lt;-</span> vec[first_non_na] <span class="co"># First non-NA value</span></span>
+<span id="cb455-16"><a href="solutions.html#cb455-16" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> (last_value <span class="sc">-</span> first_value) <span class="sc">/</span> (last_non_na <span class="sc">-</span> first_non_na) <span class="co"># Change in y over change in x</span></span>
+<span id="cb455-17"><a href="solutions.html#cb455-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb455-18"><a href="solutions.html#cb455-18" aria-hidden="true" tabindex="-1"></a><span class="co"># fill missing values incrementally</span></span>
+<span id="cb455-19"><a href="solutions.html#cb455-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(vec)){</span>
+<span id="cb455-20"><a href="solutions.html#cb455-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(vec[i])) vec[i] <span class="ot">&lt;-</span> vec[i<span class="dv">-1</span>] <span class="sc">+</span> delta</span>
+<span id="cb455-21"><a href="solutions.html#cb455-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb455-22"><a href="solutions.html#cb455-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb455-23"><a href="solutions.html#cb455-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-222-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="solutions.html#cb456-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or short using the approx() function</span></span>
+<span id="cb456-2"><a href="solutions.html#cb456-2" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">100</span>) <span class="co"># initialize vector of length 100 with NA</span></span>
+<span id="cb456-3"><a href="solutions.html#cb456-3" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>] <span class="ot">&lt;-</span> <span class="dv">6</span>      <span class="co"># populate first 25 elements of &#39;vec&#39; with 6. </span></span>
+<span id="cb456-4"><a href="solutions.html#cb456-4" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">66</span><span class="sc">:</span><span class="dv">100</span>] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">20</span>  <span class="co"># populate elements 66:100 with -20.</span></span>
+<span id="cb456-5"><a href="solutions.html#cb456-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb456-6"><a href="solutions.html#cb456-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb456-7"><a href="solutions.html#cb456-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">approx</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, vec, <span class="at">xout =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span>
+<span id="cb456-8"><a href="solutions.html#cb456-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-222-2.png" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
