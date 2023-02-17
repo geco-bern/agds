@@ -58,7 +58,7 @@ Define a variable named `x` that contains an integer value and perform the follo
 Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number.
 
 ```{r}
-x <- -999  # arbitrary number between 1 and 20
+x <- -999  # arbitrary integer
 x_save <- x  # save for the last step
 x <- x + 1
 x <- x * 2

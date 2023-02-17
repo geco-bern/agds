@@ -15,9 +15,9 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 ## Tutorial
 
-This very first chapter will give you a high level overview of the tools used throughout this book. We explain the most basic concepts for working with R (the interface, running code, relationship between code and files, R objects...), while Chapter \@ref{programmingprimers} will focus on how to code, i.e. the programming itself.
+This very first chapter will give you a high level overview of the tools used throughout this book. We explain the most basic concepts for working with R (the interface, running code, relationship between code and files, R objects...), while Chapter \@ref(programmingprimers) will focus on how to code, i.e. the programming itself.
 
-We give instructions to install R, RStudio, R packages and git, to create your GitHub account and link it to your computer, and to make these tools work with each other. The aim is not to introduce how all of them work in detail (which is done in future chapters) but to set up all the necessary infrastructure for this course at the start. We will also give some rough guidelines to organize yourself (code, files, etc) such that you can start working on exercises and save your progress efficiently, before we go deep into project management topics in Chapters \@ref{openscience} and \@ref{codemgmt}.
+We give instructions to install R, RStudio, R packages and git, to create your GitHub account and link it to your computer, and to make these tools work with each other. The aim is not to introduce how all of them work in detail (which is done in future chapters) but to set up all the necessary infrastructure for this course at the start. We will also give some rough guidelines to organize yourself (code, files, etc) such that you can start working on exercises and save your progress efficiently, before we go deep into project management topics in Chapters \@ref(openscience) and \@ref(codemgmt).
 
 ### Working with R and RStudio
 
@@ -25,7 +25,7 @@ R is a free, open-source programming language and software environment for stati
 
 #### Installing R and RStudio
 
-To use R and RStudio, you will first need to download and install them on your computer.
+To use R and RStudio, you will first need to download and install them on your computer. 
 
 -   To install R, go to the [CRAN website](https://cran.r-project.org/) and download the latest version of R for your operating system. Once the download is complete, follow the on-screen installation instructions for your operating system to install R.
 
@@ -35,7 +35,9 @@ To use R and RStudio, you will first need to download and install them on your c
 
 RStudio provides a user-friendly interface for writing, running, and debugging R code. When you open RStudio, you will see the following:
 
-![RStudio interface.](figures/RStudio_interface_screenshot.png)
+```{r label="rstudio", echo=FALSE, fig.cap="RStudio interface.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/RStudio_interface_screenshot.png")
+```
 
 The interface is divided into four main panels:
 
@@ -307,14 +309,10 @@ There are several base R functions to help you understand the structure of a dat
 -   Content
     -   `head()` - Returns the first 6 rows.
     -   `tail()` - Returns the last 6 rows.
-    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
+    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table.
 -   Names
     -   `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
     -   `rownames()` - Returns the row names.
--   Summary
-    -   `class()` - Returns the classes of an object.
-    -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
-    -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
 
 For example, the data frame `df` has 4 rows and 3 columns:
 
@@ -332,7 +330,7 @@ R *functions* can be applied to an object (or several objects) and return anothe
 mean(df$age)
 ```
 
-Functions are also R objects and have class `"function"`. They are covered in more detail in Chapter \@ref(programmingprimers).
+Functions are also R objects and have class `"function"`. Writing your own functions is an essential part of good programming and will be introduced in Chapter \@ref(programmingprimers).
 
 #### Missing values
 
@@ -526,11 +524,13 @@ RStudio also allows you to work with R projects. An *R project* is basically a f
 
 To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
 
-![R Project menu.](figures/RStudio_RProject_screenshot.png)
+```{r label="projectmenu", echo=FALSE, fig.cap="R project menu.", out.width="25%", fig.align='center'}
+knitr::include_graphics("./figures/RStudio_RProject_screenshot.png")
+```
 
-When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory (folder) and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
+When starting a new project, named `project_name`, a file `<project_name.Rproj>` is created. It sits in the project directory (folder) and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
 
-When you want to continue working on an existing R project, you can start a new session by clicking on your `<project_name.Rproj>` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
+When you want to continue working on an existing R project, you can start a new session by clicking on your `project_name.Rproj` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
 
 Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the **files, plots, help, etc.** panel.
 
