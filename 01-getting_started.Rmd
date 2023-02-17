@@ -8,9 +8,10 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 -   Work with R and RStudio on your computer
 -   Know some R objects and basic classes
--   Follow basic good coding practices
--   Organize your workspace using R projects
--   Save your code and progress in an organized way
+-   Understand how R interacts with files in your computer
+-   Install and load R packages
+-   Organize your work using R projects, scripts and R Markdown
+-   Have installed and set up all the tools used throughout the book
 
 ## Tutorial
 
@@ -521,30 +522,24 @@ Now you should be able to use Git in the **Terminal** panel in RStudio, whenever
 
 #### R projects
 
-RStudio also allows you to work with R projects. An R project is a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.
+RStudio also allows you to work with R projects. An *R project* is basically a folder, containing a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work. 
 
 To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
 
 ![R Project menu.](figures/RStudio_RProject_screenshot.png)
 
-When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
+When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory (folder) and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
 
 When you want to continue working on an existing R project, you can start a new session by clicking on your `<project_name.Rproj>` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
 
-#### Folder structure
-
 Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the **files, plots, help, etc.** panel.
 
-For example, keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project's root directory), like any of the two equivalent following options:
+For example, you can keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project's root directory), like any of the two equivalent following options:
 
     > source("./R/my_r_script.R")
     > source("R/my_r_script.R")
 
-A project directory should only contain code, data and outputs that belong to this one project. Stuff that may belong to multiple projects should be kept somewhere else. For example, keep original data (e.g., the raw data files that you created when collecting the data in the field, or data files you downloaded from the web) outside the project directory. Exceptions are small data files, which you can keep in `./data_raw`.
-
-It is advisable to create a separate data directory outside the project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
-
-You can find an [R project template](https://github.com/geco-bern/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
+A project directory should only contain code, data and outputs that belong to this one project. We'll talk about using R Projects in Chapters \@ref{openscience} and \@ref{codemgmt}, as well as other methods to keep your workflow well structured and reproducible.
 
 ## Exercises
 
