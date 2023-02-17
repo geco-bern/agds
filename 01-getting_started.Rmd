@@ -241,8 +241,9 @@ This was a very condensed introduction to vectors and lists. A more complete int
 A *data frame*, an object of class `"data.frame"`, is essentially a table, consisting of named columns and rows. A data frame can be created as follows:
 
 ```{r}
-df <- data.frame(name = c("Maria", "Peter", "Alex"),
-                 age = c(13, 56, 30))
+df <- data.frame(name = c("Maria", "Peter", "Alex", "Charlie"),
+                 age = c(13, 56, 30, 42),
+                 is_married = c(FALSE, TRUE, TRUE, FALSE))
 df
 ```
 
@@ -255,9 +256,22 @@ df$age
 Data frames can be also be treated as a *matrix*. Note that the first index refers to rows and the second to columns. For example:
 
 ```{r}
-df[, 1]   # first column
-df[2, ]   # second row
-df[2,2]   # age of Peter
+df[, 1]   # first column (returns a vector)
+df[2, ]   # second row (returns a data frame)
+df[2,2]   # age of Peter (returns a scalar)
+```
+
+The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g. `[1:3,]`, indicates we want to select the rows numbers starting at the first and ending with the second number. So here `[1:3,]` will give us rows one, two and three. This can be combined with subsetting for the other dimension as well:
+
+```{r}
+df[1:3, 3]
+```
+
+To reduce the data frame to fewer columns/rows that are not contiguous, the function `c()` is used. This outputs the data frame reduced to the selected row or column numbers inside `c()`. Another method is to select the columns by column names, i.e. giving as input a string vector with the name of each column we want to select. For example, the following commands give the same output:
+
+```{r}
+df[, c(1,3)]                   # select by column index
+df[, c("name", "is_married")]  # select by column name
 ```
 
 There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
@@ -278,13 +292,13 @@ There are several base R functions to help you understand the structure of a dat
     -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
     -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
 
-For example, the data frame `df` has 3 rows and 2 columns:
+For example, the data frame `df` has 4 rows and 3 columns:
 
 ```{r}
 dim(df)
 ```
 
-There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Chapter \@ref(programmingprimers) and have dedicated all of Chapter \@ref(datawrangling) to teach you how to work with data frames in a tidy way.
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we have dedicated all of Chapter \@ref(datawrangling) to teach you how to work with data frames in a tidy way with the [{tidyverse}](https://www.tidyverse.org/) collection of packages.
 
 #### Functions
 

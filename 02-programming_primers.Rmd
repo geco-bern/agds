@@ -130,6 +130,8 @@ while (i <= 10){
 temp_sum
 ```
 
+> Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
+
 #### Functions
 
 Often, analyses require many steps and your scripts may get excessively long. Over 2000 lines of code in one file are hard to digest. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly to different objects, then it is usually advisable to bundle them into a new *function* and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.
@@ -194,63 +196,6 @@ In the first tutorial, we introduced data frames as an R object. Now, let's get 
 We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
 
 The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
-
-#### Selecting data and entering the tidyverse
-
-`df` is a data frame. This is similar to a matrix and has two dimensions (rows and columns). If we want to extract specific data from it, we specify the indices, i.e. the "coordinates", of the data. For two-dimensional objects (data frames, matrices), the first index refers to rows and the second to columns. For example, to refer to the element on the third row in the first column, we write:
-
-```{r}
-df[3,1]
-```
-
-Reducing a data frame (tibble) to only the first columns can be done by:
-
-```{r}
-df[, 1]
-```
-
-The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g. `[1:3,]`, indicates we want to select the rows numbers starting at the first and ending with the second number. So here `[1:3,]` will give us rows one, two and three.
-
-```{r}
-df[1:3, 3] # reduces the data frame (tibble) to its first three rows and the 3rd column
-```
-
-To reduce the data frame (tibble) to several columns, the function `c()` is used. This outputs the data frame (tibble) reduced to the selected row or column numbers inside `c()`.
-
-```{r}
-df[, c(1,4,7)]
-```
-
-Another method is to select the columns by column names, i.e. giving as input a string vector with the name of each column we want to select (again, this is Base R notation). This is especially useful if the columns we want to select are not contiguous. For example:
-
-```{r}
-# Selecting data by name in base R
-df[, c("TIMESTAMP_START", "TA_F_MDS", "TA_F_MDS_QC")]
-```
-
-In Chapter \@ref(datawrangling), we will use the [tidyverse](https://www.tidyverse.org/), which is a set of R packages designed for working with tidy data and writing code in a way that makes your workflow more clear and understandable. A code chunk which does the same as above, but is written for the tidyverse can read as follows.
-
-```{r}
-select(df, 1) # reduces the data frame (tibble) to its first column
-select(df, TIMESTAMP_START, TA_F_MDS, TA_F_MDS_QC)  # reduces the data frame to columns specified by names
-```
-
-As a further shortcut in tidyverse, we can use the pipe `%>%` operator. The data frame is still reduced to its first column:
-
-```{r}
-df %>% select(1)
-```
-
-We *pipe* the object `df` into the `select()` function with argument `1`. Note that the pipe operator `%>%` can be used on any function. It tells the function to interpret what's coming from the left of `%>%` as its **first** argument. A recent new version of {base} R also includes a pipe operator `|>` that you may encounter in code snippets online and in this course.
-
-For the remainder of the tutorial several variables will be required. The methods of data selection demonstrated above will be used below to get the desired variables.
-
-```{r}
-df_small <- df %>% 
-  select(TIMESTAMP_START, TA_F, PPFD_IN)
-```
-
-Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
 
 #### Writing data
 
