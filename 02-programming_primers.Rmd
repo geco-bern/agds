@@ -207,27 +207,6 @@ write_csv(df_small, file = "data/df_small.csv")
 
 Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
 
-#### Intro to visualisation
-
-Visualising data is an integral part of any data science workflow. In this section, we introduce just the very basics. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. Our data frame `fluxes_subset` contains three variables, one of which is `time`. In other words, we are dealing with a time series. Let's look at the temporal course of temperature in the first 1440 time steps (corresponding to 30 days) as a line plot (`type = "l"`).
-
-```{r}
-plot(1:1440, df_small$temp[1:1440], type = "l") 
-```
-
-Another useful way of looking, not at a temporal course, but rather at the distribution of your data, is to display a histogram. A histogram visualises the frequency or proportion of data that has a metric value that falls within a certain interval known as a 'bin'. Below you will see the temperature on the x-axis split into these 'bins' ranging across 2°. The number of times a data point falls between say 2° to 4° is then tallied and displayed as the frequency on the y-axis. Here there are around 1500 temperature values between 2° and 4°.
-
-```{r}
-hist(df_small$temp, xlab = "Temperature (°C)")
-```
-
-Plots can be saved as files, as long as the file size does not get too large. It will write vector graphics as outputs, i.e. PDF. In base R, this can be done by:
-
-```{r eval=F}
-pdf("./figures/filename.pdf")
-hist(df_small$temp)
-```
-
 ### Where to find help
 
 The material covered in this course will give you a solid basis for your future projects. Even more so, it provides you with code examples that you can adapt to your own purposes. Naturally, you will face problems we did not cover in the course and you will need to learn more as you go. The good news is, you do not have to. Many people make their code available online and often others have faced similar problems. Modifying existing code might make it easier for you to get started.
