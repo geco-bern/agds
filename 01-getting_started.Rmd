@@ -30,7 +30,9 @@ To use R and RStudio, you will first need to download and install them on your c
 
 RStudio provides a user-friendly interface for writing, running, and debugging R code. When you open RStudio, you will see the following:
 
-![RStudio interface.](figures/RStudio_interface_screenshot.png)
+```{r label="rstudio", echo=FALSE, fig.cap="RStudio interface.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/RStudio_interface_screenshot.png")
+```
 
 The interface is divided into four main panels:
 
@@ -478,11 +480,13 @@ RStudio also allows you to work with R projects. An R project is a collection of
 
 To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
 
-![R Project menu.](figures/RStudio_RProject_screenshot.png)
+```{r label="projectmenu", echo=FALSE, fig.cap="R project menu.", out.width="25%", fig.align='center'}
+knitr::include_graphics("./figures/RStudio_RProject_screenshot.png")
+```
 
-When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
+When starting a new project, named `project_name`, a file `project_name.Rproj` is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
 
-When you want to continue working on an existing R project, you can start a new session by clicking on your `<project_name.Rproj>` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
+When you want to continue working on an existing R project, you can start a new session by clicking on your `project_name.Rproj` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
 
 #### Folder structure
 
