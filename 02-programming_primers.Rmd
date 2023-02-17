@@ -197,16 +197,6 @@ We are going to work with data from ecosystem flux measurements, taken by the ed
 
 The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
 
-#### Writing data
-
-A data frame can be written to a CSV file by:
-
-```{r, eval = F}
-write_csv(df_small, file = "data/df_small.csv")
-```
-
-Note that making a file publicly available as a `.rds` or `.RData` file violates the open science principles. It is not *interoperable*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
-
 ### Where to find help
 
 The material covered in this course will give you a solid basis for your future projects. Even more so, it provides you with code examples that you can adapt to your own purposes. Naturally, you will face problems we did not cover in the course and you will need to learn more as you go. The good news is, you do not have to. Many people make their code available online and often others have faced similar problems. Modifying existing code might make it easier for you to get started.

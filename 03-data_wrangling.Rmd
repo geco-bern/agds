@@ -425,11 +425,15 @@ hhdf |>
 
 An excellent source for a more comprehensive introduction to missing data handling is given in [Kuhn & Johnson](https://bookdown.org/max/FES/handling-missing-data.html).
 
+### Writing data to CSV
+
 After having applied some data reduction and cleaning steps above, let's save the data frame in the form of a CSV file for use in later chapters.
 
 ```{r}
 write_csv(hhdf, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 ```
+
+> Note: Making a file publicly available as a `.rds` or `.RData` file (explained in Chapter \@ref(gettingstarted)) violates the open science principles (introduced in Chapter \@ref(openscience)). These two formats make it very easy to save R objects related to your analysis project, but are not adequate to save *data*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` from {readr} whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
 
 ### Combining relational data
 

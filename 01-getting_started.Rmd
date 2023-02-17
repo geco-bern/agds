@@ -354,6 +354,8 @@ The function `save()` allows to save multiple R objects of any form as a single 
 save(df, df_small, file = "./data/data_frames.RData")
 ```
 
+To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+
 `.RData` files are read into your environment using the `load()` function. This function loads the objects with the name that they were saved with.
 
 ```{r eval=FALSE}
@@ -367,9 +369,9 @@ saveRDS(df_small, file = "./data/df_small.rds")
 df_small_2 <- readRDS("./data/df_small.rds")
 ```
 
-`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, avoid file formats that are not readable across different platforms and programming languages. We will learn more about open source binary file formats in Chapter \@ref(datavariety).
+`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, follow Open Science principles (Chapter \@ref(openscience)) and avoid file formats that are not readable across different platforms and programming languages. 
 
-To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+We will learn more about human-readable tabular data files like CSV in Chapter \@ref(datawrangling) and other open source binary file formats in Chapter \@ref(datavariety).
 
 ### R scripts
 
