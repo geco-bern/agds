@@ -14,6 +14,10 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 ## Tutorial
 
+This very first chapter will give you a high level overview of the tools used throughout this book. We explain the most basic concepts for working with R (the interface, running code, relationship between code and files, R objects...), while Chapter \@ref{programmingprimers} will focus on how to code, i.e. the programming itself.
+
+We give instructions to install R, RStudio, R packages and git, to create your GitHub account and link it to your computer, and to make these tools work with each other. The aim is not to introduce how all of them work in detail (which is done in future chapters) but to set up all the necessary infrastructure for this course at the start. We will also give some rough guidelines to organize yourself (code, files, etc) such that you can start working on exercises and save your progress efficiently, before we go deep into project management topics in Chapters \@ref{openscience} and \@ref{codemgmt}.
+
 ### Working with R and RStudio
 
 R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used, not only among statisticians and data miners for developing statistical software, but also by scientist in various domains for data analysis, visualisation, and modelling. RStudio is an integrated development environment (IDE) that provides a user-friendly "center stage" for your work in R (and Python, see [here](https://posit.co/blog/three-ways-to-program-in-python-with-rstudio/)).
@@ -309,23 +313,25 @@ However, this workflow is not recommended. Next, we will go over some more sophi
 The function `save()` allows to save multiple R objects of any form as a single `.RData` file. This is how the environment of your R session is saved. This is how we would save several R objects:
 
 ```{r eval=FALSE}
-save(df, df_small, file = "data/data_frames.RData")
+save(df, df_small, file = "./data/data_frames.RData")
 ```
 
 `.RData` files are read into your environment using the `load()` function. This function loads the objects with the name that they were saved with.
 
 ```{r eval=FALSE}
-load("data/data_frames.RData")
+load("./data/data_frames.RData")
 ```
 
 Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()` and gives the user more control.
 
 ```{r, eval=F}
-saveRDS(df_small, file = "data/df_small.rds")
-df_small_2 <- readRDS("data/df_small.rds")
+saveRDS(df_small, file = "./data/df_small.rds")
+df_small_2 <- readRDS("./data/df_small.rds")
 ```
 
 `save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, avoid file formats that are not readable across different platforms and programming languages. We will learn more about open source binary file formats in Chapter \@ref(datavariety).
+
+To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
 
 ### R scripts
 

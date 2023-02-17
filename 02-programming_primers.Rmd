@@ -197,7 +197,7 @@ The data is stored as a Comma Separated Values file (`.csv`). This is a plain-te
 
 #### Reading data
 
-To import the data into the R environment, we use the function `read_csv()` from the {tidyverse} package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+To import the data into the R environment, we use the function `read_csv()` from the {tidyverse} package. In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame.
 
 ```{r message=FALSE}
 df <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
