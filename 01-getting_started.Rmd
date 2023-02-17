@@ -520,9 +520,11 @@ Generate a sequence of numbers from 0 and $\pi$ as a vector with length 5.
 
 Rumors have it that young Carl Friedrich Gauss was asked in primary school to calculate the sum of all natural numbers between 1 and 100. He did it in his head in no time. We're very likely not as intelligent as young Gauss. But we have R. What's the solution?
 
+Gauss calculated the sum with a trick. The sum of 100 and 1 is 101. The sum of 99 and 2 is 101. You do this 50 times, and you get $50 \times 101$. Demonstrate Gauss' trick with vectors in R.
+
 ### Magic trick algorithm {-}
 
-Define a variable named `x` that contains an arbitrary natural number between 1 and 20 and perform the following operations in sequence:
+Define a variable named `x` that contains an integer value and perform the following operations in sequence:
 
 - Redefine `x` by adding 1.
 - Double the resulting number, over-writing `x`.
@@ -530,7 +532,7 @@ Define a variable named `x` that contains an arbitrary natural number between 1 
 - Redefine `x` as half of the previous value of `x`.
 - Subtract the originally chosen arbitrary number from `x`.
 
-Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number between 1 and 20.
+Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number.
 
 ### Vectors {-}
 

@@ -32,6 +32,19 @@ Rumors have it that young Carl Friedrich Gauss was asked in primary school to ca
 sum(1:100)
 ```
 
+Gauss calculated the sum with a trick. The sum of 100 and 1 is 101. The sum of 99 and 2 is 101. You do this 50 times, and you get $50 \times 101$. Demonstrate Gauss' trick with vectors in R.
+```{r}
+vec_a <- 1:50
+vec_b <- 100:51
+vec_c <- vec_a + vec_b
+
+# each element is 101
+vec_c
+
+# the length of vectors is fifty. 50 * 101
+sum(vec_c)
+```
+
 ### Magic trick algorithm {-}
 
 Define a variable named `x` that contains an integer value and perform the following operations in sequence:
@@ -42,7 +55,7 @@ Define a variable named `x` that contains an integer value and perform the follo
 - Redefine `x` as half of the previous value of `x`.
 - Subtract the originally chosen arbitrary number from `x`.
 
-Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number between 1 and 20.
+Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number.
 
 ```{r}
 x <- -999  # arbitrary number between 1 and 20
