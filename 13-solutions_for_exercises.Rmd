@@ -72,10 +72,16 @@ magic_trick(20)
 
 ```{r eval=FALSE}
 variable <- 1
+
 vector   <- c(1, 2, 3, 4)
+
 is_true <- TRUE
-list(a = 1 , 
-     b = "This is some really bad code")
+
+list(
+  a = 1 , 
+  b = "This is some really bad code"
+)
+
 my_new_function(
   argument_1 = "value 1", 
   argument_2 = "value 2", 
@@ -126,7 +132,10 @@ print(paste0("The sum is of multiples of 3 and 7 within 1-100 is: ", sum))
 vec <- array(NA,c(100)) # Initiate vector of length 100 with NAs
 vec[1:25] <- 6          # Fill up first 25 elements of 'vec' with value 6. 
 vec[66:100] <- -20      # Fill up elements 66:100 with value -20.
-for (i in 2:99) {       # for-loop iterating from 2 to 99
+
+# for-loop iterating from 2 to 99
+for (i in 2:99) {
+  
   # NOTE: The reason we loop between 2 and 99 is because we need to compare
   # neighboring positions to find the transition from entries with number to 
   # entries with NA (i-1, i, i + 1). Positions 0 and 101 are not defined 
@@ -155,11 +164,12 @@ for (i in 2:length(vec)) { # If loop iterating from 2 to length of vec
 # Intrinsic function 'plot' requires the following arguments:
 # 1st argument: vecor of x-values
 # 2nd argument: vecor of y-values (must be of same length as x-value vector)
-plot(seq(length(vec)), 
-     vec,
-     type = "l",
-     main = "Interpolated vector using for-loop")
-
+plot(
+  seq(length(vec)), 
+  vec,
+  type = "l",
+  main = "Interpolated vector using for-loop"
+)
 
 # Using a while-loop to identify first and last position of NA values
 vec <- array(NA,c(100)) # Initiate vector of length 100 with NAs
@@ -195,10 +205,12 @@ for (i in 2:length(vec)) { # If loop iterating from 2 to length of vec
 }
 
 # Create plot
-plot(seq(length(vec)), 
-     vec,
-     type = "l",
-     main = "Interpolated vector using while-loop")
+plot(
+  seq(length(vec)), 
+  vec,
+  type = "l",
+  main = "Interpolated vector using while-loop"
+)
 ```
 
 ### Find the sum of the values per column
@@ -246,12 +258,32 @@ library(lubridate)  # not part of the automatic load of tidyverse
 ### Tidyverse exercises
 ```{r message=FALSE}
 # a.
-dplyr::starwars |> dplyr::filter(skin_color == "pale", homeworld == "Naboo" | homeworld == "Ryloth") |> nrow()   
+dplyr::starwars |>
+  dplyr::filter(
+    skin_color == "pale",
+    homeworld == "Naboo" | homeworld == "Ryloth"
+    ) |>
+  nrow()   
+
 # b.
-dplyr::starwars |> unnest_wider(starships) |> filter_at(vars(contains("...")), all_vars(!is.na(.)))  
+dplyr::starwars |>
+  unnest_wider(starships) |>
+  filter_at(
+    vars(contains("...")),
+    all_vars(!is.na(.))
+    )  
 
 # c.
-dplyr::starwars |> unnest(starships) |> filter(films == "Return of the Jedi") |> top_n(-1, height) |> select(name, starships) 
+dplyr::starwars |>
+  unnest(starships) |>
+  filter(
+    films == "Return of the Jedi"
+    ) |>
+  top_n(-1, height) |>
+  select(
+    name,
+    starships
+    ) 
 ```
 
 ### Aggregation of data in tidy style
