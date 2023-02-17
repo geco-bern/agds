@@ -199,7 +199,7 @@ More so than human readable data, the file format (extension) determines how to 
 Environmental sciences have particular file formats which dominate the field. Some of these file formats relate to the content of the data, some of these formats are legacy formats due to the history of the field itself. Here we will list some of the most common formats you will encounter.
 
 | File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
-|-------------|--------------|---------------------------------|-------------|
+|---------------|---------------|----------------------------|---------------|
 | \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
 | \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
@@ -419,11 +419,26 @@ status <- httr::POST(
 )
 ```
 
+### Example environmental data repositories
+
+Below you find a list of common environmental data repositories which provide manual or automated download access to their data. Note that this list are some example and is far from extensive.
+
+| Data type                                                                 | Website                             | Description                                                                                   | Download                          |
+|----------------------|---------------|-------------------------------|---------------|
+| Copernicus climate data store                                             | <https://cds.climate.copernicus.eu> | Freely available climate data (reanalysis as well as future projections)                      | API                               |
+| Oak Ridge National Laboratories Digital Active Archive Center (ORNL DAAC) | <https://daac.ornl.gov/>            | Environmental data of varying sources, either remote sensing, field work and or re-analysis.  | multiple APIs or manual downloads |
+| Land Processes Digital Active Archive Center (LP DAAC)                    | <https://lpdaac.usgs.gov/>          | Remote sensing (analysis ready) data products.                                                | Login walled automated downloads  |
+| Environmental Data Initiative                                             | <https://edirepository.org/>        | Generalist data repository for study data, with a strong focus on biology.                    | Manual download                   |
+| Dryad                                                                     | <https://datadryad.org>             | Generalist data repository for study data, with a strong focus on biology.                    | Manual downloads                  |
+| Zenodo                                                                    | <https://zenodo.org/>               | Generalist data repository for study data.                                                    | Manual downloads                  |
+| Eurostat                                                                  | <https://ec.europa.eu/eurostat>     | Generalist data repository for EU wide (demographic) data.                                    | Manual downloads                  |
+| Swiss Open Government data                                                | <https://opendata.swiss/en/>        | Generalist data repository from the Swiss Federal statistics office.                          | API or manual downloads           |
+
 ## Exercises
 
 ### Files and file formats
 
-#### Reading and writing human readable files {-}
+#### Reading and writing human readable files {.unnumbered}
 
 While **not leaving your R session**, download and open the files at the following locations:
 
@@ -439,13 +454,14 @@ Once loaded into your R environment, combine and save all data as a **temporary*
 # Your solution script
 ```
 
-#### Reading and writing binary files {-}
+#### Reading and writing binary files {.unnumbered}
 
 Download and open the following file:
 
 ``` r
 https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc
 ```
+
 1.  What file format are we dealing with?
 2.  What library would you use to read this kind of data?
 3.  What does this file contain?
@@ -460,6 +476,7 @@ Download and open the following file:
 ``` r
 https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tiff
 ```
+
 1.  Does this data seem familiar, and how can you tell? What are your conclusions?
 
 ``` r
@@ -468,12 +485,12 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tiff
 
 ### API use
 
-### GET
+#### GET
 
 1.  Download the HWSD total sand content data for the extent of Switzerland following the tutorial example. Visualize the data as a simple map.
 2.  Download the HWSD topsoil silt content for the extent of Switzerland.
 
-### Dedicated library
+#### Dedicated library
 
 1.  Use the {hwsdr} library (a dedicated package for the API) to download the same data. How does this compare to the previous code written?
 2.  List how many data products there are on the ORNL MODIS data repository.
