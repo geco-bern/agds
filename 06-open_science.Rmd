@@ -140,10 +140,8 @@ The remainder of the document shows a code chunk outlined by \`\`\` quotes and t
 ``` {r}
 x <- 5  # radius of a circle
 ```
-
 For a circle with the radius `r x`,
 its area is `r pi * x^2`.
-
 ````
 
 The document can be rendered by calling `rmarkdown::render()` on the command line or hitting the "Knit" button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).
@@ -214,7 +212,7 @@ Coding practices and documenting all moving parts in a coding workflow is only o
 
 For code online collaboration tools, such as [github](https://github.com), [gitlab](https://gitlab.com) or [codeberg](https://codeberg.org), provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly \~2GB). For small projects data can be included in the repository itself, for larger projects this won't be possible.
 
-To ensure long term storage of code and data, outside of commercial for profit services, it is best to rely on for example [Zenodo](https://zenodo.org/). Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](https://datadryad.org/stash) and the [Center for Open Science](https://osf.io/).
+To ensure long term storage of code and data, outside of commercial for profit services (e.g. Dropbox, Google Drive etc), it is best to rely on for example [Zenodo](https://zenodo.org/). Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](https://datadryad.org/stash) and the [Center for Open Science](https://osf.io/).
 
 ## Exercises
 

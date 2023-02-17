@@ -69,7 +69,6 @@ knitr::include_graphics("./figures/git_unstaged_files.png")
 
 You select the file tick boxes to the left to stage all files for inclusion into the git repository. Once staged, the next step will be to finally commit these staged files to be included in git tracking.
 
-
 ```{r label="stagedfiles", echo=FALSE, fig.cap="Staged files in a git enabled R project"}
 knitr::include_graphics("./figures/git_staged_files.png")
 ```
@@ -135,7 +134,7 @@ Next we'll setup an R project which is associated with the repository. Use: File
 knitr::include_graphics("./figures/git_project_wizard.png")
 ```
 
-In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". A window will pop up, asking for your github username and a password. This password is _not_ your github login password but the PAT described above. After entering your credential, RStudio creates a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
+In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". A window will pop up, asking for your github username and a password. This password is *not* your github login password but the PAT described above. After entering your credential, RStudio creates a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
 
 #### git push
 
@@ -225,7 +224,7 @@ You can now clone the project to your local computer and continue to populate it
 
 ## Exercises
 
-#### Location based code management
+### Location based code management
 
 Create a new R project using the git R project template.
 
@@ -235,22 +234,26 @@ Create a new R project using the git R project template.
 
 -   Make sure that both local and remote repositories (projects) are synced
 
-#### Github
+## Report Exercises
 
-This is a team exercise: team up with someone else in the classroom.
+### Github
 
-1.  Person 1 - clone the github project of the previous step of Person 2
+This is a team exercise, so team up with someone else in the classroom! You will learn about how to collaborate online using git and Github. **Note** that this is part of your final performance assessment! You will hand in a link to your GitHub account and we will check your repositories' commit histories to see whether this pair-coding exercise was done correctly. Therefore, follow these steps precisely:
 
-2.  Person 1 - create a new file in this project
+1.  Person 1 - Create a new repository (can be the same as you created following the tutorial but should no be the same as the one where you hand in your report)
 
-3.  Person 1 - with changes made on github create a **pull request**
+2.  Person 2 - Fork the github project that Person 1 created in Step 1.
 
-4.  Person 2 - review the pull request, provide some comments and accept the pull request integrating new code in the project of Person 2
+3.  Person 2 - Create a new file in this project
 
-5.  Person 2 - add a new file to your own project, and update the github project
+4.  Person 2 - Commit and push these changes to this project. Create a **pull request** to the original project of Person 1.
 
-6.  Person 1 - integrate these changes in your project
+5.  Person 1 - Review the pull request from Person 2. Provide some comments, accept the pull request, letting it the new code by Person 2 be integrated into the project.
 
-7.  Can you create a merge conflict and resolve the merge conflict?
+6.  Person 1 - Add a new file to your own project, and update the github project.
+
+7.  Person 2 - Sync your forked project to integrate the changes made by Person 1 into your own repository.
+
+8.  *Voluntary:* Can you force a merge conflict, for example by editing the same file at once, and resolve?
 
 To complete the exercise, reverse rolls between Person 1 and Person 2!
