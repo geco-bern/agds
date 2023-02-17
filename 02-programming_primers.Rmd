@@ -233,22 +233,40 @@ Finally, many packages have a mailing list or allow you to open a query on the c
 
 ## Exercises
 
-1.  Use a `for` loop to compute the sum of all natural numbers from 1 to 100. Print the result to the screen. Repeat this exercise but use a `while` loop.
+### Gauss variations {-}
 
-2.  Add up all numbers between 1 and 100 that are at the same time a multiple of 3 and a multiple of 7. Print the result to the screen in the form of: `The sum is of multiples of 3 and 7 within 1-100 is: {your result}`.
+Use a `for` loop to compute the sum of all natural numbers from 1 to 100. Print the result to the screen. Repeat this exercise but use a `while` loop.
 
-3.  Define a vector $\vec{v}$ of length 100. Define the vector so that $v_i = 6$, for $i = 1 : 25$ and $v_i = -20$, for $i = 66 : 100$. Linearly interpolate the remaining elements that are not defined. Plot the values of $\vec{v}$.
+Add up all numbers between 1 and 100 that are at the same time a multiple of 3 and a multiple of 7. Print the result to the screen in the form of: `The sum of multiples of 3 and 7 within 1-100 is: {your result}`.
 
-4.  A powerful capability of loops is that you can nest them! Let's try this out. Define a dataframe with the code `matrix(c(1,2,3,4,5,6), nrow = 2 ,ncol = 3)`, write an outer loop that iterates over the numbers of columns and an inner loop that iterates over the number of rows. Write the code so that the sum of each column is printed to the screen.
+### Nested loops {-}
 
-**Hints**
+Given a matrix `A` and a vector `B` (see below), implement the following algorithm:
 
--   Useful functions (find out more with `?function_name`: `print()`, `paste()`, `seq()`, `plot()`, `ncol()`, `nrow()`, `read.table()`, `hear()`
+1. Start with the first row in `A`.
+2. Fill all missing values in the current row of `A` with the maximum value in `B`.
+3. Drop the maximum value from `B`.
+4. Proceed to the next row of `A` and repeat steps 2-4.
 
--   Logical operators are covered in the previous tutorial.
+`A` and `B` are defined as:
+```{r}
+A <- matrix(c(6, 7, 3, NA, 15, 6, 7, 
+              NA, 9, 12, 6, 11, NA, 3, 
+              9, 4, 7, 3, 21, NA, 6, 
+              rep(NA, 7)),
+            nrow = 4, byrow = TRUE)
+B <- c(8, 4, 12, 9, 15, 6)
+```
 
--   If you started an endlessly running loop, pres `Esc` on your keyboard or click the little red "stop" pictogram in the RStudio console.
+### Interpolation {-}
 
--   To find out whether any number is another number's multiple, use conditional statements in combination with the modulo-operator `%%`. The modulo operator returns the remainder of a division, for example `8 %% 3 = 2`.
+Define a vector $\vec{v}$ of length 100. Define the vector so that $v_i = 6$, for $i = 1 : 25$ and $v_i = -20$, for $i = 66 : 100$. Remaining elements are to be defined as 'missing'. Linearly interpolate missing values that are not defined. Plot the values of $\vec{v}$ using `plot(vec)`.
 
--   For the linear interpolation, find and sequentially add the increment that you need to to add to each previous value to get from the first undefined position to the last defined position.
+
+
+
+
+
+
+
+

@@ -78,6 +78,7 @@ Arithmetic operators:
 -   `*` multiplication
 -   `/` division
 -   `^` or `**` exponentiation
+-   `%%` modulo operator (returns remainder of a division)
 
 Logical operators:
 
@@ -220,6 +221,11 @@ which(x > 1)
 which.min(x)
 ```
 
+Elements can be dropped from vectors by referring to indices:
+```{r}
+y[-2]
+```
+
 #### Lists
 
 *Lists* are R objects, of class `"list"`. They are a bit like vectors, but more flexible. They allow us to store different types of data, even if they are of different lengths or of different classes. They are created with the function `list()` and can be named or not. Here is an example where each element of the list is named.
@@ -355,6 +361,11 @@ mean(c(1, 2, NA), na.rm = TRUE)
 ```
 
 Furthermore, `NA` counts as an element in vectors. A variable assigned just `NA` would have length 1 (of class `"logical"`) and the vector above has length 3, as can be determined using the `length()` function, and has class `"numeric"`.
+
+Whether a value is missing can be tested by:
+```{r}
+is.na(c(1, 2, NA))
+```
 
 By contrast, `NULL` is the R null object or empty space. You can also assign `NULL` to a variable, which will then have length zero because it is empty. Functions may return `NULL` when no output was defined, or if an error occurred.
 

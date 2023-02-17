@@ -106,3 +106,109 @@ datasets::quakes$lat[idx]
 
 Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
 
+
+## Programming primers
+
+### Gauss variations {-}
+
+Use a `for` loop to compute the sum of all natural numbers from 1 to 100. Print the result to the screen. Repeat this exercise but use a `while` loop.
+```{r}
+# 1a. for-loop to compute sum from 1 - 100
+sum <- 0
+for (i in 1:100){
+  sum <- sum + i # for-loop iterating from 1 to 100 
+}
+print(sum)
+
+# 1b. while-loop to compute sum from 1 - 100
+loop_status <- TRUE
+counter <- 0
+sum <- 0
+while (loop_status) { # while-loop is repeated as long as loop_status is true
+  counter <- counter + 1
+  sum <- sum + counter
+  if (counter == 100) loop_status <- FALSE
+}
+print(sum)
+```
+
+Add up all numbers between 1 and 100 that are at the same time a multiple of 3 and a multiple of 7. Print the result to the screen in the form of: `The sum of multiples of 3 and 7 within 1-100 is: {your result}`.
+```{r}
+sum <- 0
+for (i in seq(100)) {
+	if (i %% 3 == 0 && i %% 7 == 0 ) {
+		sum <- sum + i
+	}	
+}	
+print(paste0("The sum of multiples of 3 and 7 within 1-100 is: ", sum))
+```
+
+### Nested loops {-}
+
+Given a matrix `A` and a vector `B` (see below), implement the following algorithm:
+
+1. Start with the first row in `A`.
+2. Fill all missing values in the current row of `A` with the maximum value in `B`.
+3. Drop the maximum value from `B`.
+4. Proceed to the next row of `A` and repeat steps 2-4.
+
+`A` and `B` are defined as:
+```{r}
+A <- matrix(c(6, 7, 3, NA, 15, 6, 7, 
+              NA, 9, 12, 6, 11, NA, 3, 
+              9, 4, 7, 3, 21, NA, 6, 
+              rep(NA, 7)),
+            nrow = 4, byrow = TRUE)
+B <- c(8, 4, 12, 9, 15, 6)
+```
+
+```{r message=FALSE}
+for (i in 1:nrow(A)){
+  for (j in 1:ncol(A)){
+    if (is.na(A[i,j])){
+      A[i,j] <- max(B)
+    }
+  }
+  B <- B[-which.max(B)] # update the B vector removing the maximum value
+}
+A
+```
+
+### Interpolation {-}
+
+Define a vector $\vec{v}$ of length 100. Define the vector so that $v_i = 6$, for $i = 1 : 25$ and $v_i = -20$, for $i = 66 : 100$. Remaining elements are to be defined as 'missing'. Linearly interpolate missing values that are not defined. Plot the values of $\vec{v}$ using `plot(vec)`.
+
+```{r}
+vec <- rep(NA, 100) # initialize vector of length 100 with NA
+vec[1:25] <- 6      # populate first 25 elements of 'vec' with 6. 
+vec[66:100] <- -20  # populate elements 66:100 with -20.
+
+# Determine index of last non-missing value before gap
+last_non_na <- 1
+while (!is.na(vec[last_non_na+1])) last_non_na <- last_non_na + 1
+
+# determine index of first non-missing value after gap
+first_non_na <- last_non_na + 1
+while (is.na(vec[first_non_na])) first_non_na <- first_non_na + 1	
+
+# Get the increment that is needed for interpolation
+last_value  <- vec[last_non_na]  # Last non-NA value
+first_value <- vec[first_non_na] # First non-NA value
+delta <- (last_value - first_value) / (last_non_na - first_non_na) # Change in y over change in x
+
+# fill missing values incrementally
+for (i in 2:length(vec)){
+  if (is.na(vec[i])) vec[i] <- vec[i-1] + delta
+}
+
+plot(vec)
+
+# or short using the approx() function
+vec <- rep(NA, 100) # initialize vector of length 100 with NA
+vec[1:25] <- 6      # populate first 25 elements of 'vec' with 6. 
+vec[66:100] <- -20  # populate elements 66:100 with -20.
+
+plot(
+  approx(1:100, vec, xout = 1:100)
+  )
+```
