@@ -36,11 +36,13 @@ The basics of open science coding and data practices rely on a number of simple 
 
 ### Project structure
 
-Reproducible science relies on a number of key components. Data and code management and the tracking of required meta-data is the first step in an open science workflow. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Here files need a precise, structured, location. This structure allows you to determine both the function and or order of a workflow.
+Reproducible science relies on a number of key components. Data and code management and the tracking of required meta-data is the first step in an open science workflow. 
+
+In Chapter \@ref(gettingstarted) you learned how to setup an R project. This R project gatheres all components of your analysis in a single directory. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Projects grow quickly, and often the number of files will flood the this single directory. Therefore, files need a precise and structured location. This structure allows you to determine both the function and or order of a workflow without reading any code.
 
 It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
 
-An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the next section (\@ref(version-control)).
+An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the Chapter \@ref(codemgmt).
 
 ``` bash
 data-raw/
