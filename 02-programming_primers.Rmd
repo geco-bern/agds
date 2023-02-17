@@ -185,11 +185,11 @@ Functions become increasingly important the more experienced one gets at coding.
 
 Whenever possible, we should combine multiple processing steps that naturally belong together. Specifically, when the same sequence of steps must be applied to multiple datasets that have the same structure (variable names, etc.). Once such a function is created, we can apply it to the data in one go, instead of repeating the successive steps.
 
-Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `.R/convert_fahrenheit_to_celsius.R` and load it later by running `source(".R/convert_fahrenheit_to_celsius")`.
+Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/convert_fahrenheit_to_celsius.R` and load it later by running `source("./R/convert_fahrenheit_to_celsius")`.
 
 ### Working with data frames
 
-In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by opening the the book's R project in RStudio.
+In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by copying the code to R chunks in your .Rmd document.
 
 We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
 
@@ -321,15 +321,6 @@ df_small <- df %>%
 ```
 
 Note: In the code above, an indentation was used to highlight which parts go together, which makes the code easy to understand. Indentations and line breaks have no meaning or function in R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.
-
-#### Renaming
-
-TIMESTAMP_START, TA_F and PPFD_IN as variable names may be hard to remember and in this section you will have to type them a lot. Therefore we change their names to something more intelligible.
-
-```{r}
-df_small <- df_small %>% 
-  rename(time = TIMESTAMP_START, temp = TA_F, ppfd = PPFD_IN)
-```
 
 #### Writing data
 

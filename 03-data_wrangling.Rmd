@@ -147,6 +147,8 @@ hhdf <- hhdf |>
 
 We will encounter more ways to use mutate later in this tutorial. A complete reference to `mutate()` is available [here](https://r4ds.had.co.nz/transform.html#add-new-variables-with-mutate).
 
+If you only want to change the name of a variable, but not modify its values whatsoever, you can do so with the {dplyr} function `rename()`.
+
 ### Axes of variation
 
 Tabular data is two-dimensional (rows $\times$ columns), but not all two-dimensional data is tabular. For example, raster data is a two-dimensional array of data (a matrix) representing variables on an evenly spaced grid, for example pixels in remotely sensed imagery. For example the `volcano` data (provided as an example dataset in R) is a 2-dimensional array, each column contains the same variable, and no variable names are provided.
