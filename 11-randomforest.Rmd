@@ -210,6 +210,3 @@ For random forests from the {ranger} package, hyperparameters are:
 -   `min.node.size`: the number of data points at the "bottom" of each decision tree
 -   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision
 
-
-## Solutions
-

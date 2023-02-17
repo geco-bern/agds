@@ -2,3 +2,94 @@
 
 # Solutions {#solutions}
 
+## Getting Started
+
+### Dimensions of a circle {-}
+
+- Given the radius of a circle write a few lines of code that calculates its area and its circumference. Run your code with different values assigned of the radius. 
+```{r}
+radius <- 1
+area <- pi * radius^2
+circum <- 2 * pi * radius
+```
+- Print the solution as text.
+```{r}
+print(paste("Radius:", radius, "   Circumference:", circum))
+```
+
+### Sequence of numbers {-}
+
+Generate a sequence of numbers from 0 and $\pi$ as a vector with length 5.
+```{r}
+seq(0, pi, length.out = 5)
+```
+
+### Gauss sum {-}
+
+Rumors have it that young Carl Friedrich Gauss was asked in primary school to calculate the sum of all natural numbers between 1 and 100. He did it in his head in no time. We're very likely not as intelligent as young Gauss. But we have R. What's the solution?
+
+```{r}
+sum(1:100)
+```
+
+### Magic trick algorithm {-}
+
+Define a variable named `x` that contains an integer value and perform the following operations in sequence:
+
+- Redefine `x` by adding 1.
+- Double the resulting number, over-writing `x`.
+- Add 4 to `x` and save the result as `x`.
+- Redefine `x` as half of the previous value of `x`.
+- Subtract the originally chosen arbitrary number from `x`.
+
+Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number between 1 and 20.
+
+```{r}
+x <- -999  # arbitrary number between 1 and 20
+x_save <- x  # save for the last step
+x <- x + 1
+x <- x * 2
+x <- x + 4
+x <- x / 2
+x - x_save
+```
+
+### Vectors {-}
+
+Print the object `datasets::rivers` and consult the manual of this object.
+
+- What is the class of the object? 
+- What is the length of the object?
+- Calculate the mean, median, minimum, maximum, and the 33%-quantile across all values. 
+
+```{r}
+class(datasets::rivers)
+length(datasets::rivers)
+mean(datasets::rivers)
+# other functions can easily be found on the internet ;-)
+```
+
+### Data frames {-}
+
+Print the object `datasets::quakes` and consult the manual of this object.
+
+- Determine the dimensions of the data frame using the respective function in R.
+- Extract the vector of values in the data frame that contain information about the Richter Magnitude.
+- Determine the value largest value in the vector of event magnitudes.
+- Determine the geographic position of the epicenter of the largest event.
+
+```{r}
+dim(datasets::quakes)
+vec <- datasets::quakes$mag
+max(vec)
+idx <- which.max(vec)  # index of largest value
+
+# geographic positions defined by longitude and latitude (columns long and lat)
+datasets::quakes$long[idx]
+datasets::quakes$lat[idx]
+```
+
+### RMarkdown {-}
+
+Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
+
