@@ -173,6 +173,8 @@ Our example data contains values recorded at each half-hourly time interval over
 plot(hhdf[1:(2*24),]$TIMESTAMP_START, hhdf[1:(2*24),]$SW_IN_F, type = "l")
 ```
 
+> Note: `plot()` is the very basic of plotting data. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. The argument `type = "l"` indicates that we want a line plot, rather than points.
+
 Over the course of an entire year, shortwave incoming radiation varies with the seasons, peaking in summer:
 
 ```{r}
