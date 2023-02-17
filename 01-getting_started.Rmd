@@ -4,7 +4,7 @@
 
 ## Learning objectives
 
-This chapter provides a start at the very beginning of your journey in R with two main aims. First, it introduces the very basics for readers with no experience using R. You will be able to:
+This chapter provides a start at the very beginning of your journey in Applied Geodata Science with two main aims. First, it introduces the very basics for readers with no experience using R. You will be able to:
 
 -   Work with R and RStudio.
 -   Know basic R objects and classes.
@@ -12,10 +12,10 @@ This chapter provides a start at the very beginning of your journey in R with tw
 
 Second, the tutorial of this chapter prepares you for your work on the remainder of this course by setting up all the necessary infrastructure. Also experienced R users should follow respective tutorial sections: Sec. \@ref(rmarkdown), \@ref(wspmgmt), and \@ref(setup)). You will:
 
--   Organize your work using R projects, scripts and RMarkdown.
+-   Organize your workspace for efficient data science projects.
 -   Have installed *git* and all R packages used throughout the book.
 
-These points are essential before we go deeper into project management topics in Chapters \@ref(openscience) and \@ref(codemgmt). Chapter \@ref(programmingprimers) will focus on how to code.
+Completing these points are essential before we go deeper into project management topics in Chapters \@ref(openscience) and \@ref(codemgmt). Chapter \@ref(programmingprimers) will focus on how to code.
 
 ## Tutorial
 
@@ -617,7 +617,7 @@ Print the object `datasets::quakes` and consult the manual of this object.
 - Determine the value largest value in the vector of event magnitudes.
 - Determine the geographic position of the epicenter of the largest event.
 
-### RMarkdown {-}
+### Workspace {-}
 
-Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
+Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
 

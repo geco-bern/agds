@@ -102,10 +102,11 @@ datasets::quakes$long[idx]
 datasets::quakes$lat[idx]
 ```
 
-### RMarkdown {-}
+### Workspace {-}
 
-Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
+Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
 
+*No solutions provided.*
 
 ## Programming primers
 
