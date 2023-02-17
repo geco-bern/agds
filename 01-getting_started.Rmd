@@ -8,11 +8,16 @@ After you've gone over the lecture and solved the exercises, you should be able 
 
 -   Work with R and RStudio on your computer
 -   Know some R objects and basic classes
--   Follow basic good coding practices
--   Organize your workspace using R projects
--   Save your code and progress in an organized way
+-   Understand how R interacts with files in your computer
+-   Install and load R packages
+-   Organize your work using R projects, scripts and R Markdown
+-   Have installed and set up all the tools used throughout the book
 
 ## Tutorial
+
+This very first chapter will give you a high level overview of the tools used throughout this book. We explain the most basic concepts for working with R (the interface, running code, relationship between code and files, R objects...), while Chapter \@ref{programmingprimers} will focus on how to code, i.e. the programming itself.
+
+We give instructions to install R, RStudio, R packages and git, to create your GitHub account and link it to your computer, and to make these tools work with each other. The aim is not to introduce how all of them work in detail (which is done in future chapters) but to set up all the necessary infrastructure for this course at the start. We will also give some rough guidelines to organize yourself (code, files, etc) such that you can start working on exercises and save your progress efficiently, before we go deep into project management topics in Chapters \@ref{openscience} and \@ref{codemgmt}.
 
 ### Working with R and RStudio
 
@@ -190,6 +195,29 @@ Operations on vectors are performed element-wise. For example, if we ask what nu
 x > 2
 ```
 
+Vectors that contain sequences of numbers are often needed in programming. They are easily created in R, e.g., by:
+```{r}
+1:10
+```
+
+More flexibility is offered by the `seq()` function:
+```{r}
+seq(from = 0, to = 10, by = 2)
+```
+
+Often, we need to evaluate multiple elements in a vector. We've learned that the operator `>` tests whether the value left to it is greater than the value on its right and returns a logical. We can subset a vector based on a vector of equal length that contains logicals.
+```{r}
+x > 1
+x
+x[x > 1]
+```
+
+We can also determine the *indices* (positions of elements in the vector) that evaluate to `TRUE`, or that have the lowest value:
+```{r}
+which(x > 1)
+which.min(x)
+```
+
 #### Lists
 
 *Lists* are R objects, of class `"list"`. They are a bit like vectors, but more flexible. They allow us to store different types of data, even if they are of different lengths or of different classes. They are created with the function `list()` and can be named or not. Here is an example where each element of the list is named.
@@ -237,8 +265,9 @@ This was a very condensed introduction to vectors and lists. A more complete int
 A *data frame*, an object of class `"data.frame"`, is essentially a table, consisting of named columns and rows. A data frame can be created as follows:
 
 ```{r}
-df <- data.frame(name = c("Maria", "Peter", "Alex"),
-                 age = c(13, 56, 30))
+df <- data.frame(name = c("Maria", "Peter", "Alex", "Charlie"),
+                 age = c(13, 56, 30, 42),
+                 is_married = c(FALSE, TRUE, TRUE, FALSE))
 df
 ```
 
@@ -251,12 +280,49 @@ df$age
 Data frames can be also be treated as a *matrix*. Note that the first index refers to rows and the second to columns. For example:
 
 ```{r}
-df[, 1]   # first column
-df[2, ]   # second row
-df[2,2]   # age of Peter
+df[, 1]   # first column (returns a vector)
+df[2, ]   # second row (returns a data frame)
+df[2,2]   # age of Peter (returns a scalar)
 ```
 
-There are many more things you can do with data frames. Since they are central to analyzing data with R, we go into more detail in Chapter \@ref(programmingprimers) and have dedicated all of Chapter \@ref(datawrangling) to teach you how to work with data frames in a tidy way.
+The method of selecting parts of a data frame by index is quite flexible. For example, we may require the information in the third column for the first three rows. Putting a colon between two numbers, e.g. `[1:3,]`, indicates we want to select the rows numbers starting at the first and ending with the second number. So here `[1:3,]` will give us rows one, two and three. This can be combined with subsetting for the other dimension as well:
+
+```{r}
+df[1:3, 3]
+```
+
+To reduce the data frame to fewer columns/rows that are not contiguous, the function `c()` is used. This outputs the data frame reduced to the selected row or column numbers inside `c()`. Another method is to select the columns by column names, i.e. giving as input a string vector with the name of each column we want to select. For example, the following commands give the same output:
+
+```{r}
+df[, c(1,3)]                   # select by column index
+df[, c("name", "is_married")]  # select by column name
+```
+
+There are several base R functions to help you understand the structure of a data frame. Here is a non-exhaustive list of of them:
+
+-   Size
+    -   `dim()` - Returns the dimensions of an object (here: number of rows and columns).
+    -   `nrow()` - Returns the number of rows of an object.
+    -   `ncol()` - Returns the number of columns of an object.
+-   Content
+    -   `head()` - Returns the first 6 rows.
+    -   `tail()` - Returns the last 6 rows.
+    -   `View()` - Opens a window in the source panel in RStudio where you can look at the entire data set in the form of a table (It is not supported by the Jupyter environment).
+-   Names
+    -   `names()` - Returns the column names (for `data.frame` objects it is synonymous to `colnames()`).
+    -   `rownames()` - Returns the row names.
+-   Summary
+    -   `class()` - Returns the classes of an object.
+    -   `str()` - Returns the structure of an object and information about the class, length and content of each column.
+    -   `summary()` - Returns generic statistics information, depending on the class of the object. For categorical variables it will show how common each class is, missing values, etc, and for numerical variables, the mean, quantiles, maximum and minimum values, etc.
+
+For example, the data frame `df` has 4 rows and 3 columns:
+
+```{r}
+dim(df)
+```
+
+There are many more things you can do with data frames. Since they are central to analyzing data with R, we have dedicated all of Chapter \@ref(datawrangling) to teach you how to work with data frames in a tidy way with the [{tidyverse}](https://www.tidyverse.org/) collection of packages.
 
 #### Functions
 
@@ -309,23 +375,86 @@ However, this workflow is not recommended. Next, we will go over some more sophi
 The function `save()` allows to save multiple R objects of any form as a single `.RData` file. This is how the environment of your R session is saved. This is how we would save several R objects:
 
 ```{r eval=FALSE}
-save(df, df_small, file = "data/data_frames.RData")
+save(df, df_small, file = "./data/data_frames.RData")
 ```
+
+To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
 
 `.RData` files are read into your environment using the `load()` function. This function loads the objects with the name that they were saved with.
 
 ```{r eval=FALSE}
-load("data/data_frames.RData")
+load("./data/data_frames.RData")
 ```
 
 Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()` and gives the user more control.
 
 ```{r, eval=F}
-saveRDS(df_small, file = "data/df_small.rds")
-df_small_2 <- readRDS("data/df_small.rds")
+saveRDS(df_small, file = "./data/df_small.rds")
+df_small_2 <- readRDS("./data/df_small.rds")
 ```
 
-`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R. Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, avoid file formats that are not readable across different platforms and programming languages. We will learn more about open source binary file formats in Chapter \@ref(datavariety).
+`save()` and `saveRDS()` create *binary* files that are fast to write and read, but only intelligible to R (and not to the human eye). Such files are commonly identified by the suffix `.rds`. It is recommended to name the `.rds` files according to the single object they contain. When publishing and sharing data, follow Open Science principles (Chapter \@ref(openscience)) and avoid file formats that are not readable across different platforms and programming languages. 
+
+We will learn more about human-readable tabular data files like CSV in Chapter \@ref(datawrangling) and other open source binary file formats in Chapter \@ref(datavariety).
+
+### Libraries
+
+*Packages*, sometimes called *libraries*, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including {base} R, {utils}, {stats}...) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.
+
+For example, the {tidyverse} package is used for data wrangling and will be covered in this course. This is a special package which loads many other packages in the background (like {readr}, {ggplot2}, etc.). You can install a new package as follows:
+
+```{r eval=FALSE}
+install.packages("tidyverse")
+```
+
+Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.
+
+```{r eval=FALSE}
+library(tidyverse)
+```
+
+You can now use the functions and features provided by the {tidyverse} package in your R scripts.
+
+At any time, you can see a list of your installed packages on the source panel with the following command:
+
+```{r eval=FALSE}
+library()
+```
+
+And a list of the packages currently loaded:
+
+```{r}
+search()
+```
+
+This information can also be found on the **Packages** panel in RStudio. The loaded packages are shown with a tick mark.
+
+#### Installation of required packages
+
+Finally, let's install all the missing packages and load all required packages for this course:
+
+```{r message=FALSE, warning=FALSE}
+use_pkgs <- c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
+              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
+              "MODISTools", "forcats", "yardstick", "recipes", "caret",
+              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
+              "renv", "rsample", "modelr", "rmarkdown", "rpart",
+              "rpart.plot", "ranger", "sessioninfo")
+new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
+if (length(new_pkgs) > 0) install.packages(new_pkgs)
+invisible(lapply(use_pkgs, require, character.only = TRUE))
+```
+
+#### Other libraries and applications
+
+For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
+
+For example, to work with *netcdf* files in R, you would need to install the {ncdf4} library and the `netCDF` command-line tools:
+
+-   To install the {ncdf4} library, follow the same steps as above for installing an R library.
+-   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
+-   Once the {ncdf4} library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
+
 
 ### R scripts
 
@@ -339,65 +468,7 @@ To run a script, you can either use the **Source** button in the source editor o
 
     > source("my_r_script.R")
 
-Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory.
-
-### Style your code
-
-Nice code is clean, readable, consistent, and extensible (easily modified or adapted). Ugly code works, but is hard to work with. There is no right or wrong about coding style, but certain aspects make it easier to read and use code. Here are a few points to consider.
-
-#### Spaces and breaks
-
-Adding enough white spaces and line breaks in the right locations greatly helps the legibility of code. Cramming variables, operators, and brackets without spaces leaves an unintelligible sequence of characters and it will not be clear what parts go together. Therefore, consider the following points:
-
--   Use spaces around operators (`=`, `+`, `-`, `<-`, `>`, etc.).
--   Use `<-`, not `=`, for allocating a value to a variable.
--   Code inside curly brackets should be *indented* (recommended: two white spaces at the beginning of each line for each indentation level - don't use tabs).
-
-For example:
-
-```{r eval=F}
-if (temp > 5.0){
-  growth_temp <- growth_temp + temp  
-}
-```
-
-#### Variable naming
-
-It is preferable to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (`_`) to separate words within a name (`_`). Avoid (`.`) as they are reserved for certain types of objects in R. Also, avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.
-
-For example, `df_daily` is a data frame with data at a daily resolution. Or `clean_daily` is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (`_`) is used to separate words.
-
-It is also recommendable to avoid variable names consisting of only one character. This makes it practically impossible to search for that variable.
-
-```{r eval=F}
-# Good
-day_01
-
-# Bad
-DayOne
-day.one
-first_day_of_the_month
-djm1
-
-# Very bad
-mean <- function(x) sum(x)/length(x) # mean() itself is already a function
-T <- FALSE # T is an abbreviation of TRUE
-c <- 10 # c() is used to create a vector (example <- c(1, 2, 3))
-```
-
-#### Script style
-
-Load libraries at the very beginning of a script, followed, by reading data from files. Functions should be defined in separate `.R` files, unless they are only a few lines long. Then, place the sequence of statements. The name of the script should be short and concise and indicate what the script does. 
-
-Use comments to describe in human-readable text what the code does. Comments are all that appears to the right of a `#` and are code parts that are not interpreted by R and not executed. Adding comments in the code greatly helps you and others to read your code, understand what it does, modify it, and resolve errors (bugs).
-
-To visually separate parts of a script, use commented lines (e.g., `#----`). The RStudio text editor automatically recognizes `----` added to the right end of a commented line and interprets it as a block of content which can be navigated by using the document (**Outline** button in the top right corner of the editor panel). 
-
-Avoid reading entire workspace environments (e.g., `load(old_environment.RData)`), deleting environments `rm(list=ls())`, loading hidden dependencies (e.g., `.Rprofile`), or changing the working directory (`setwd("~/other_dir/"`) as part of a script.
-
-Note that information about the author of the script, its creation date, and modifications, etc. should not be added as commented text in the file. In Chapter \@ref(codemgmt), we will learn about the code versioning control system *git*, which keeps track of all this as meta information associated with files.
-
-A good and comprehensive best practices guide is given by the [tidyverse style guide](https://style.tidyverse.org/).
+Note that, to be able to run the code above, the file `my_r_script.R` must be in your current working directory. You must always specify the path to the file, also when sourcing code.
 
 ### R Markdown
 
@@ -417,7 +488,7 @@ output: html_document
 ---
 ```
 
-Below the header follow the contents as either text or code *chunks*. Text is formatted using the [Markdown syntax](https://commonmark.org/help/). For example, a top-level section title is specified by `#` and a title of a section one level lower by `##`
+Below the header follow the contents as either text or code *chunks*. Text is formatted using the [Markdown syntax](https://www.markdownguide.org/). Nice brief guides are provided [here](https://commonmark.org/help/) or [here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). For example, a top-level section title is specified by `#` and a title of a section one level lower by `##`.
 
 Code chunks that contain executable R code are opened by a line ` ```{r} `. 
 
@@ -429,6 +500,10 @@ knitr::include_graphics("./figures/rmarkdown_render.png")
 
 Note that the code chunk produced a figure as an output which was placed directly in the rendered html. This demonstrates the usefulness of RMarkdown as *notebooks* to document entire workflows and make their outputs reproducible. 
 
+To create a new RMarkdown file, select from the drop-down menu in the top-left corner of RStudio as shown below:
+```{r label="newrmarkdown", echo=FALSE, fig.cap="Create a new RMarkdown file", out.width="25%", fig.align='center'}
+knitr::include_graphics("./figures/newrmarkdown.png")
+```
 
 ### Workspace management
 
@@ -447,61 +522,80 @@ Now you should be able to use Git in the **Terminal** panel in RStudio, whenever
 
 #### R projects
 
-RStudio also allows you to work with R projects. An R project is a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.
+RStudio also allows you to work with R projects. An *R project* is basically a folder, containing a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work. 
 
 To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
 
 ![R Project menu.](figures/RStudio_RProject_screenshot.png)
 
-When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
+When starting a new project, a file `<project_name.Rproj>` is created. It sits in the project directory (folder) and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.
 
 When you want to continue working on an existing R project, you can start a new session by clicking on your `<project_name.Rproj>` file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.
 
-#### Folder structure
-
 Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the **files, plots, help, etc.** panel.
 
-For example, keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project's root directory), like any of the two equivalent following options:
+For example, you can keep source files where R functions are defined in `./R` (where . refers to the current project directory), data files in `./data` and visualizations in `./fig`. It's advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project's root directory), like any of the two equivalent following options:
 
     > source("./R/my_r_script.R")
     > source("R/my_r_script.R")
 
-A project directory should only contain code, data and outputs that belong to this one project. Stuff that may belong to multiple projects should be kept somewhere else. For example, keep original data (e.g., the raw data files that you created when collecting the data in the field, or data files you downloaded from the web) outside the project directory. Exceptions are small data files, which you can keep in `./data_raw`.
-
-It is advisable to create a separate data directory outside the project (e.g., `~/data/`, where \~ refers to your home directory) that holds all the original data you ever downloaded, or obtained from peers, or gathered yourself. Within such a data directory, you can put files from different sources into separate sub-directories and add a description file (e.g., `~/data/some_data_source/README`) defining by whom, from where and when the data was obtained and defining data use policy.
-
-You can find an [R project template](https://github.com/geco-bern/R_proj_template) in the GECO GitHub page. It shows an example of how you can organize your files into folders. Using such a template removes the overhead of designing a structure for each new project and can help you keep your work organized and make it easier to reuse and share your code.
+A project directory should only contain code, data and outputs that belong to this one project. We'll talk about using R Projects in Chapters \@ref{openscience} and \@ref{codemgmt}, as well as other methods to keep your workflow well structured and reproducible.
 
 ## Exercises
 
-Alright, let's get started with the first exercise! First, set up a new R project dedicated to this course:
+### Dimensions of a circle {-}
 
--   Choose the location in your computer for your project and create a folder with an appropriate name. Then open RStudio and follow the instructions from the tutorial to create a new R Project.
+- Given the radius of a circle `r`, write a few lines of code that calculates its area and its circumference. Run your code with different values assigned to `r`. 
+- Print the solution as text.
 
--   The first file in your new R project will be an R Markdown (`.Rmd`) file which you can use to copy text and code from the different chapters of this book and try running the code yourself. Create such a file by clicking on the "new file" menu at the top left of RStudio and selecting **R Markdown ...**, give it a title and save.
+> *Hint*: Enter `pi` in your console.
 
-Let's go over the basics of working with R Markdown (inspired by [this exercise](https://github.com/EcoForecast/EF_Activities/blob/master/Exercise_01_RPrimer.Rmd)).
+> *Hint*: Entering `print("agds")` in your console returns `"agds"`. Combining (concatenating) multiple strings into a single one can be done using `paste()`.
 
--   To render a `.Rmd` file into an HTML file that reads like this book, you have to *knit* the document. To do this, you will need the {knitr} package. Install is by running `install.packages("knitr")` in the R console. Restart your R session and when it's ready, you should see a blue yarn icon above the source panel saying **Knit**. Knit your `.Rmd` document and check out the result. A new file with the same name but `.html` extension has been created and opened by RStudio for preview.
--   Feel free to delete the example text and code from your file to start with a clean slate. But don't delete the header delimited by `---`. You can modify the `.Rmd` file but not the `.html` file. To update the content of the nicely readable `.html` you will need to knit again. Knitting is also a very good way to check that all your code runs.
--   All your code should be placed into what we call "R chunks". When you run a chunk (on the green arrow) you will see the output of the code below it.
--   You can take notes or write answers in normal text outside those chunks. This [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) can help you use its formatting capabilities, like titles, highlighting, mathematical formulas...
+### Sequence of numbers {-}
 
-Now that you are set up, here are few exercises to get you started - remind yourself often of the guidelines on proper coding to make your life easier! Create a new `.R` file inside the project folder for solving the exercises.
+Generate a sequence of numbers from 0 and $\pi$ as a vector with length 5.
 
--   Perform a little magic trick: Start with any number between 1 and 20 and do the calculations below. Create three variables: The original value, the value that is overwritten in every calculation, and a final value. Calculations: Add 1, double the number, add 4, divide by 2, subtract the original number.
+> *Hint*: Consult the manual of the function `seq()` by entering `?seq` in your terminal.
 
--   Play around with different values, what do you find?
+### Gauss sum {-}
 
--   Advanced: Can you turn the little magic trick into a function that checks if the original value is an integer ([hint](https://statisticsglobe.com/check-if-number-is-integer-in-r)) between 1 and 20 and prints the final value at the end?
+Rumors have it that young Carl Friedrich Gauss was asked in primary school to calculate the sum of all natural numbers between 1 and 100. He did it in his head in no time. We're very likely not as intelligent as young Gauss. But we have R. What's the solution?
 
--   Clean up the code chunk below following the {tidyverse} style guide. Run the statements in your console - do they work? If not, why?
+Gauss calculated the sum with a trick. The sum of 100 and 1 is 101. The sum of 99 and 2 is 101. You do this 50 times, and you get $50 \times 101$. Demonstrate Gauss' trick with vectors in R.
 
-```{r eval=FALSE}
-anothervariable = c(1)
-seq <- vector(1,2 3 ,4)
-is_true <- T
-list(a=1, b = This is some really bad code}
-var <- 7
-my_new_function(this_is_a_very_long_argument = "value 1", and_this_is_another_very_long_argument = "value 2", short_but_still_long_argument = NA )
-```
+### Magic trick algorithm {-}
+
+Define a variable named `x` that contains an integer value and perform the following operations in sequence:
+
+- Redefine `x` by adding 1.
+- Double the resulting number, over-writing `x`.
+- Add 4 to `x` and save the result as `x`.
+- Redefine `x` as half of the previous value of `x`.
+- Subtract the originally chosen arbitrary number from `x`.
+
+Print `x`. Restart the algorithm defined above by choosing a new arbitrary natural number.
+
+### Vectors {-}
+
+Print the object `datasets::rivers` and consult the manual of this object.
+
+- What is the class of the object? 
+- What is the length of the object?
+- Calculate the mean, median, minimum, maximum, and the 33%-quantile across all values. 
+
+> *Hint*: If you don't know how to solve a problem, help yourself on the internet.
+
+### Data frames {-}
+
+Print the object `datasets::quakes` and consult the manual of this object.
+
+- Determine the dimensions of the data frame using the respective function in R.
+- Extract the vector of values in the data frame that contain information about the Richter Magnitude.
+- Determine the value largest value in the vector of event magnitudes.
+- Determine the geographic position of the epicenter of the largest event.
+
+### RMarkdown {-}
+
+Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
+
