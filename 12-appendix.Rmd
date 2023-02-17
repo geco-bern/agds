@@ -146,33 +146,33 @@ print(paste0("The sum of multiples of 3 and 7 within 1-100 is: ", sum))
 
 ### Nested loops {-}
 
-Given a matrix `A` and a vector `B` (see below), implement the following algorithm:
+Given a matrix `mymat` and a vector `myvec` (see below), implement the following algorithm:
 
-1. Start with the first row in `A`.
-2. Fill all missing values in the current row of `A` with the maximum value in `B`.
-3. Drop the maximum value from `B`.
-4. Proceed to the next row of `A` and repeat steps 2-4.
+1. Start with the first row in `mymat`.
+2. Fill all missing values in the current row of `mymat` with the maximum value in `myvec`.
+3. Drop the maximum value from `myvec`.
+4. Proceed to the next row of `mymat` and repeat steps 2-4.
 
-`A` and `B` are defined as:
+`mymat` and `myvec` are defined as:
 ```{r}
-A <- matrix(c(6, 7, 3, NA, 15, 6, 7, 
+mymat <- matrix(c(6, 7, 3, NA, 15, 6, 7, 
               NA, 9, 12, 6, 11, NA, 3, 
               9, 4, 7, 3, 21, NA, 6, 
               rep(NA, 7)),
             nrow = 4, byrow = TRUE)
-B <- c(8, 4, 12, 9, 15, 6)
+myvec <- c(8, 4, 12, 9, 15, 6)
 ```
 
 ```{r message=FALSE}
-for (i in 1:nrow(A)){
-  for (j in 1:ncol(A)){
-    if (is.na(A[i,j])){
-      A[i,j] <- max(B)
+for (i in 1:nrow(mymat)){
+  for (j in 1:ncol(mymat)){
+    if (is.na(mymat[i,j])){
+      mymat[i,j] <- max(myvec)
     }
   }
-  B <- B[-which.max(B)] # update the B vector removing the maximum value
+  myvec <- myvec[-which.max(myvec)] # update the B vector removing the maximum value
 }
-A
+mymat
 ```
 
 ### Interpolation {-}
@@ -204,12 +204,12 @@ for (i in 2:length(vec)){
 
 plot(vec)
 
-# or short using the approx() function
+# or short using the approx() function:
 vec <- rep(NA, 100) # initialize vector of length 100 with NA
 vec[1:25] <- 6      # populate first 25 elements of 'vec' with 6. 
 vec[66:100] <- -20  # populate elements 66:100 with -20.
 
-plot(
-  approx(1:100, vec, xout = 1:100)
-  )
+vec <- approx(1:100, vec, xout = 1:100)
+
+plot(vec)
 ```
