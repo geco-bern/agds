@@ -189,14 +189,6 @@ Whenever possible, we should combine multiple processing steps that naturally be
 
 Functions (particularly long ones) can be written to separate source files. These R scripts containing only function definitions can be saved in your `./R` directory, to keep your workspace organized. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/convert_fahrenheit_to_celsius.R` and load it later by running `source("./R/convert_fahrenheit_to_celsius")`.
 
-### Working with data frames
-
-In the first tutorial, we introduced data frames as an R object. Now, let's get our hands on actual data for demonstrating how data is read, manipulated and written. As most of the code displayed in this book, the code chunks below are executable. You can try it out by copying the code to R chunks in your .Rmd document.
-
-We are going to work with data from ecosystem flux measurements, taken by the eddy covariance technique, and provided as part of the FLUXNET2015 dataset [@Pastorello2020], which you can [see here](https://www.nature.com/articles/s41597-020-0534-3). The data we're using below comes from a flux tower near Zürich ([CH-Lae](https://gl.ethz.ch/research/bage/fluxnet-ch.html), located on the Laegern mountain between Regensberg and Baden and run by our colleagues at ETH).
-
-The data is stored as a Comma Separated Values file (`.csv`). This is a plain-text, and therefore a non-proprietary format. To follow the open science principles for data, distribute your data in a format that is non-proprietary and readable across platforms and applications. For example, avoid distributing your data as an Excel spreadsheat (`.xlsx`), or a Matlab data object (`.mat`), or an R data object (`.RData`, or `.rds`).
-
 ### Where to find help
 
 The material covered in this course will give you a solid basis for your future projects. Even more so, it provides you with code examples that you can adapt to your own purposes. Naturally, you will face problems we did not cover in the course and you will need to learn more as you go. The good news is, you do not have to. Many people make their code available online and often others have faced similar problems. Modifying existing code might make it easier for you to get started.
