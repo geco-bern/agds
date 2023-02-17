@@ -162,10 +162,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
-<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.3</b> Libraries</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.4</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
-<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-environment"><i class="fa fa-check"></i><b>1.2.3</b> R environment</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.4</b> Libraries</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.5</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i><b>1.2.6</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.7" data-path="gettingstarted.html"><a href="gettingstarted.html#wspmgmt"><i class="fa fa-check"></i><b>1.2.7</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.8" data-path="gettingstarted.html"><a href="gettingstarted.html#setup"><i class="fa fa-check"></i><b>1.2.8</b> Setup</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a>
 <ul>
@@ -175,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick-algorithm"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#vectors-1"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#data-frames-1"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
@@ -354,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#magic-trick-algorithm-1"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#vectors-2"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#data-frames-2"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#rmarkdown-1"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#workspace-1"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 <li class="chapter" data-level="A.2" data-path="solutions.html"><a href="solutions.html#programming-primers"><i class="fa fa-check"></i><b>A.2</b> Programming primers</a>
 <ul>
@@ -485,9 +487,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="solutions.html#cb444-1" aria-hidden="true" tabindex="-1"></a>datasets<span class="sc">::</span>quakes<span class="sc">$</span>lat[idx]</span></code></pre></div>
 <pre><code>## [1] -15.56</code></pre>
 </div>
-<div id="rmarkdown-1" class="section level3 unnumbered hasAnchor">
-<h3>RMarkdown<a href="solutions.html#rmarkdown-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.</p>
+<div id="workspace-1" class="section level3 unnumbered hasAnchor">
+<h3>Workspace<a href="solutions.html#workspace-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Create a new <em>R project</em> and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.</p>
+<p><em>No solutions provided.</em></p>
 </div>
 </div>
 <div id="programming-primers" class="section level2 hasAnchor" number="12.2">
@@ -580,7 +583,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb455-21"><a href="solutions.html#cb455-21" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb455-22"><a href="solutions.html#cb455-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb455-23"><a href="solutions.html#cb455-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-222-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-221-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="solutions.html#cb456-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or short using the approx() function</span></span>
 <span id="cb456-2"><a href="solutions.html#cb456-2" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">100</span>) <span class="co"># initialize vector of length 100 with NA</span></span>
 <span id="cb456-3"><a href="solutions.html#cb456-3" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>] <span class="ot">&lt;-</span> <span class="dv">6</span>      <span class="co"># populate first 25 elements of &#39;vec&#39; with 6. </span></span>
@@ -589,7 +592,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb456-6"><a href="solutions.html#cb456-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
 <span id="cb456-7"><a href="solutions.html#cb456-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">approx</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, vec, <span class="at">xout =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span>
 <span id="cb456-8"><a href="solutions.html#cb456-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-222-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-221-2.png" width="672" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>

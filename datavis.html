@@ -162,10 +162,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
-<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.3</b> Libraries</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.4</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
-<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-environment"><i class="fa fa-check"></i><b>1.2.3</b> R environment</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.4</b> Libraries</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.5</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i><b>1.2.6</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.7" data-path="gettingstarted.html"><a href="gettingstarted.html#wspmgmt"><i class="fa fa-check"></i><b>1.2.7</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.8" data-path="gettingstarted.html"><a href="gettingstarted.html#setup"><i class="fa fa-check"></i><b>1.2.8</b> Setup</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a>
 <ul>
@@ -175,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick-algorithm"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#vectors-1"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#data-frames-1"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
@@ -354,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#magic-trick-algorithm-1"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#vectors-2"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#data-frames-2"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#rmarkdown-1"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#workspace-1"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 <li class="chapter" data-level="A.2" data-path="solutions.html"><a href="solutions.html#programming-primers"><i class="fa fa-check"></i><b>A.2</b> Programming primers</a>
 <ul>
@@ -409,7 +411,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="datavis.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(hhdf<span class="sc">$</span>TIMESTAMP_START, hhdf<span class="sc">$</span>GPP_NT_VUT_REF, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-116-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-115-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>You may notice the spurious-looking values on the left, in the first third of year 2004. We’ll revisit this point later in this Chapter.</p>
 <p>From <a href="https://clauswilke.com/dataviz/">(Wilke)</a>:</p>
 <p>“All data visualizations map data values into quantifiable features of the resulting graphic. We refer to these features as <em>aesthetics</em>.”</p>
@@ -417,7 +419,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The notion of mapping data onto aesthetics and using objects whose geometry is defined by the aesthetics gives rise to the <em>grammar of graphics</em> and to the {ggplot2} R package for data visualisation (which we will use throughout the remainder of this course). The equivalent {ggplot2} code that follows the philosophy of the grammar of graphics is:</p>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="datavis.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> hhdf, <span class="fu">aes</span>(<span class="at">x =</span> TIMESTAMP_START, <span class="at">y =</span> GPP_NT_VUT_REF)) <span class="sc">+</span></span>
 <span id="cb227-2"><a href="datavis.html#cb227-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-117-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-116-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The argument provided by the <code>aes()</code> statement specifies the aesthetics (<code>x</code>, and <code>y</code>) and which variables in <code>data</code> are mapped onto them. Once this is specified, we can use any suitable geometrical object that is defined by these aesthetics. Here, we used a line plot specified by <code>+ geom_line()</code>.</p>
 <p>The data visualisation above is a dense plot and we cannot distinguish patterns because variations in GPP happen at time scales that are too narrow for displaying three years of half-hourly data in one plot. GPP varies throughout a day just as much as it varies throughout a season. To see this, we can focus on a narrower time span (selecting rows by index using <code>dplyr::slice()</code> in the code below). Visual clarity is also facilitated by an appropriate labeling (title and axes labels using <code>labs()</code>) and by a reduction of displayed elements to a minimum (therefore, the changing of the formatting theme by <code>theme_classic()</code>):</p>
 <div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="datavis.html#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare plot data</span></span>
@@ -434,7 +436,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb228-12"><a href="datavis.html#cb228-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Time&quot;</span>, </span>
 <span id="cb228-13"><a href="datavis.html#cb228-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb228-14"><a href="datavis.html#cb228-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-118-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-117-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Find a complete reference to {ggplot2} <a href="https://ggplot2.tidyverse.org/">here</a>. The grammar of graphics has found its way also into Python and you can use ggplot using the <em>plotnine</em> Python package (see <a href="https://realpython.com/ggplot-python/">here</a>).</p>
 </div>
 <div id="every-data-has-its-representation" class="section level3 hasAnchor" number="4.2.2">
@@ -503,7 +505,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 ## ℹ Please use `linewidth` instead.</code></pre>
 <div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="datavis.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="co"># combine plots</span></span>
 <span id="cb233-2"><a href="datavis.html#cb233-2" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-119-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-118-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Above, we created two objects, <code>gg1</code> and <code>gg2</code>, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used <code>cowplot::plot_grid()</code> from the {cowplot} library.</p>
 <p>Note also the <code>stat = "identity"</code> specification within the <code>geom_bar()</code> function call. This is required when the bar height is specified by a single value within each category (<code>month</code> in the example above). To visualize not a value <em>per se</em> but the <em>count</em> of values within categories, use <code>stat = "count"</code> to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the function <code>dplyr::summarise()</code>. This equivalency is demonstrated below.</p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="datavis.html#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subset plot data and count occurences of bad data (NEE_VUT_REF_QC == 0)</span></span>
@@ -534,7 +536,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb234-26"><a href="datavis.html#cb234-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb234-27"><a href="datavis.html#cb234-27" aria-hidden="true" tabindex="-1"></a><span class="co"># combine plots</span></span>
 <span id="cb234-28"><a href="datavis.html#cb234-28" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-120-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-119-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="distribution-of-one-variable" class="section level4 hasAnchor" number="4.2.2.2">
 <h4><span class="header-section-number">4.2.2.2</span> Distribution of one variable<a href="datavis.html#distribution-of-one-variable" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -549,7 +551,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb235-8"><a href="datavis.html#cb235-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb235-9"><a href="datavis.html#cb235-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-121-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-120-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Note that the red line plotted by <code>geom_density()</code> on top of the density histogram visualises the <em>density distribution</em> in continuous (not discrete, or binned) form. Note also that both “geoms” share the same aesthetics with <code>aes()</code> specified in the <code>ggplot()</code> function call.</p>
 </div>
 <div id="distributions-within-categories" class="section level4 hasAnchor" number="4.2.2.3">
@@ -592,7 +594,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb237-34"><a href="datavis.html#cb237-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb237-35"><a href="datavis.html#cb237-35" aria-hidden="true" tabindex="-1"></a><span class="co"># combine plots</span></span>
 <span id="cb237-36"><a href="datavis.html#cb237-36" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2, gg3, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-122-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-121-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="regression-of-two-continuous-variables" class="section level4 hasAnchor" number="4.2.2.4">
 <h4><span class="header-section-number">4.2.2.4</span> Regression of two continuous variables<a href="datavis.html#regression-of-two-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -641,7 +643,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb238-41"><a href="datavis.html#cb238-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb238-42"><a href="datavis.html#cb238-42" aria-hidden="true" tabindex="-1"></a><span class="co"># combine plots</span></span>
 <span id="cb238-43"><a href="datavis.html#cb238-43" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2, gg3, gg4, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">labels =</span> <span class="st">&quot;auto&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-123-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-122-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="use-of-colors" class="section level4 hasAnchor" number="4.2.2.5">
 <h4><span class="header-section-number">4.2.2.5</span> Use of colors<a href="datavis.html#use-of-colors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -685,7 +687,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb239-11"><a href="datavis.html#cb239-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>)) ) <span class="sc">+</span></span>
 <span id="cb239-12"><a href="datavis.html#cb239-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
 <span id="cb239-13"><a href="datavis.html#cb239-13" aria-hidden="true" tabindex="-1"></a>  scico<span class="sc">::</span><span class="fu">scale_color_scico_d</span>(<span class="at">palette =</span> <span class="st">&quot;romaO&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-124-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-123-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Note three aspects here. First, the color-mapping is specified within <code>aes()</code> in the <code>ggplot()</code> function call and then adopted for all subsequent additions of geoms. Hence, also the <code>geom_smooth()</code> thus takes the color information, and not by a “hard-coded” specification of <code>color =</code> inside the <code>geom_smooth()</code> call as done in Fig. XXX.</p>
 <p>Second, we specified a formula for the linear regression “smooting curve” to force the lines through the origin (<code>y ~ x + 0</code>). This is motivated by our a priori understanding of the process generating the data: when solar radiation is zero, photosynthesis (and hence GPP) should be zero.</p>
 <p>Third, we chose a color palette that reflects the cyclic (or periodic) nature of the categories (months). January is closer to December than it is to April. Therefore, their respective colors should also be closer in the <em>color space</em>. An appropriate palette for this is <code>"romaO"</code> from the {scico} package.</p>
@@ -699,7 +701,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb240-6"><a href="datavis.html#cb240-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;PPFD (&quot;</span>, mu, <span class="st">&quot;mol m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>)), </span>
 <span id="cb240-7"><a href="datavis.html#cb240-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>)) ) <span class="sc">+</span></span>
 <span id="cb240-8"><a href="datavis.html#cb240-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>month)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-125-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-124-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>You may object here that a linear regression is not a good model for our data. Instead, the relationship looks saturating, as indicated for example by the data in August. But we’ll get to modelling in later chapters. Nevertheless, the two visualizations above confirm our suspicion that the light-GPP relationship varies between months - a demonstration for why data visualization is an integral part of the scientific process.</p>
 </div>
 <div id="time-series" class="section level4 hasAnchor" number="4.2.2.7">
@@ -713,7 +715,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb241-6"><a href="datavis.html#cb241-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Time&quot;</span>, </span>
 <span id="cb241-7"><a href="datavis.html#cb241-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb241-8"><a href="datavis.html#cb241-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-126-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-125-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter <a href="datawrangling.html#datawrangling">3</a>, we aggregated the half-hourly <code>hhdf</code> data frame to a daily data frame <code>ddf</code> from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (<code>f_measured</code>). This yields a “data quality axis”. Is there a pattern between <code>f_measured</code> and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?</p>
 <p>A solution is to “map” <code>f_measured</code> to the color axis. When adding such an additional mapping to visualisation dimensions (“aesthetics”), we have to specify it using <code>aes()</code>. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write <code>aes(x = date, y = GPP_NT_VUT_REF)</code> in the <code>ggplot()</code> function call (indicating that all subsequent additions of <code>geom_</code> layers share this x-y mapping); while <code>aes(color = f_measured)</code> is specified only in the <code>geom_point()</code> layer.</p>
 <div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="datavis.html#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
@@ -725,7 +727,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb242-7"><a href="datavis.html#cb242-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb242-8"><a href="datavis.html#cb242-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co"># inverse color scale is more intuitive here</span></span>
 <span id="cb242-9"><a href="datavis.html#cb242-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-127-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-126-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We observe the presumably bad data appear in yellow, and are therefore indeed characterised with a particularly low fraction of actually measured data from which their values are derived. This is an insight we would never have reached by just looking at the naked values in our data frames. Data visualizations are essential for guiding analyses and data processing throughout all steps. Having learned this, we now have a justification for applying further data filtering criteria.</p>
 </div>
 <div id="periodic-data" class="section level4 hasAnchor" number="4.2.2.8">
@@ -774,7 +776,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb243-40"><a href="datavis.html#cb243-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb243-41"><a href="datavis.html#cb243-41" aria-hidden="true" tabindex="-1"></a><span class="co"># combine plots</span></span>
 <span id="cb243-42"><a href="datavis.html#cb243-42" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gg1, gg2, gg3, gg4, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">labels =</span> <span class="st">&quot;auto&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-128-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-127-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="density-along-two-continuous-variables" class="section level4 hasAnchor" number="4.2.2.9">
 <h4><span class="header-section-number">4.2.2.9</span> Density along two continuous variables<a href="datavis.html#density-along-two-continuous-variables" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -786,7 +788,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb244-5"><a href="datavis.html#cb244-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Shortwave radiation (W m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;)&quot;</span>)),</span>
 <span id="cb244-6"><a href="datavis.html#cb244-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb244-7"><a href="datavis.html#cb244-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-129-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-128-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To avoid obscuring important details about the data, we may want to visualise the <em>density</em> of points. We want to plot how many points fall within bins of a certain range values in GPP and shortwave radiation, or, in other words, within grid cells in the GPP-radiation space. We can visualize the data, for example, with a raster plot that measures the density using <code>stat_density_2d()</code> or with a binning into hexagonal cells using the simple <code>geom_hex()</code> layer.</p>
 <div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="datavis.html#cb245-1" aria-hidden="true" tabindex="-1"></a><span class="co"># density raster</span></span>
 <span id="cb245-2"><a href="datavis.html#cb245-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
@@ -803,7 +805,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb245-13"><a href="datavis.html#cb245-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
 <span id="cb245-14"><a href="datavis.html#cb245-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span>  <span class="co"># avoid gap between plotting ara and axis</span></span>
 <span id="cb245-15"><a href="datavis.html#cb245-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-130-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-129-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="datavis.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="co"># density hexagonal bins</span></span>
 <span id="cb246-2"><a href="datavis.html#cb246-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
 <span id="cb246-3"><a href="datavis.html#cb246-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> ddf,</span>
@@ -815,7 +817,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb246-9"><a href="datavis.html#cb246-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> </span>
 <span id="cb246-10"><a href="datavis.html#cb246-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
 <span id="cb246-11"><a href="datavis.html#cb246-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-130-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-129-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>An alternative solution to “overplotting” points is described in <a href="https://geco-group.org/post/lsd/">this blog post</a>.</p>
 </div>
 <div id="raster-data" class="section level4 hasAnchor" number="4.2.2.10">
@@ -823,7 +825,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <p>In the figure above, the density of points in a grid of equally spaced bins along two axes, one for each variable, was shown. Often, data is organised along a grid of equally spaced bins by nature - think a matrix or raster data. Examples of such data are climate model outputs (which often span more than two dimensions), remote sensing images (again, just one “layer” of an image or one “band”), or images in general. In these cases, two (often spatial) axes span the space of a cartesian coordinate system and the value within each pixel is mapped onto the <code>color</code> aesthetic.</p>
 <p>The base-R function <code>image()</code> can be used to visualize such spatial data as images.</p>
 <div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="datavis.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(volcano)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-131-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-130-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>{ggplot2} forces us to the data frame paradigm and therefore doesn’t lend itself naturally to raster data. We can, however, convert raster data into a data frame in a separate step.</p>
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="datavis.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="co"># example from https://github.com/thomasp85/scico</span></span>
 <span id="cb248-2"><a href="datavis.html#cb248-2" aria-hidden="true" tabindex="-1"></a>df_volcano <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
@@ -839,7 +841,7 @@ Figure 4.1: Common aesthetics to display different variable types. Figure from <
 <span id="cb248-12"><a href="datavis.html#cb248-12" aria-hidden="true" tabindex="-1"></a>  scico<span class="sc">::</span><span class="fu">scale_fill_scico</span>(<span class="at">palette =</span> <span class="st">&#39;bukavu&#39;</span>, <span class="at">midpoint =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
 <span id="cb248-13"><a href="datavis.html#cb248-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
 <span id="cb248-14"><a href="datavis.html#cb248-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-132-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-131-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In this example, we used the <em>multisequential</em> <code>"bukavu"</code> color scale from the {scico} package to reflect values above 0 (e.g., elevation above the sea level) and below 0 (ocean depth).</p>
 </div>
 <div id="geospatial-data" class="section level4 hasAnchor" number="4.2.2.11">

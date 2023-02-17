@@ -162,10 +162,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
-<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.3</b> Libraries</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.4</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
-<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-environment"><i class="fa fa-check"></i><b>1.2.3</b> R environment</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.4</b> Libraries</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.5</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i><b>1.2.6</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.7" data-path="gettingstarted.html"><a href="gettingstarted.html#wspmgmt"><i class="fa fa-check"></i><b>1.2.7</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.8" data-path="gettingstarted.html"><a href="gettingstarted.html#setup"><i class="fa fa-check"></i><b>1.2.8</b> Setup</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a>
 <ul>
@@ -175,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick-algorithm"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#vectors-1"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#data-frames-1"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
@@ -354,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#magic-trick-algorithm-1"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#vectors-2"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#data-frames-2"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#rmarkdown-1"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#workspace-1"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 <li class="chapter" data-level="A.2" data-path="solutions.html"><a href="solutions.html#programming-primers"><i class="fa fa-check"></i><b>A.2</b> Programming primers</a>
 <ul>
@@ -389,20 +391,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Chapter lead author: Pepa Arán</strong></p>
 <div id="learning-objectives-1" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Learning objectives<a href="gettingstarted.html#learning-objectives-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>After you’ve gone over the lecture and solved the exercises, you should be able to:</p>
+<p>This chapter provides a start at the very beginning of your journey in Applied Geodata Science with two main aims. First, it introduces the very basics for readers with no experience using R. You will be able to:</p>
 <ul>
-<li>Work with R and RStudio on your computer</li>
-<li>Know some R objects and basic classes</li>
-<li>Understand how R interacts with files in your computer</li>
-<li>Install and load R packages</li>
-<li>Organize your work using R projects, scripts and R Markdown</li>
-<li>Have installed and set up all the tools used throughout the book</li>
+<li>Work with R and RStudio.</li>
+<li>Know basic R objects and classes.</li>
+<li>Understand how R interacts with files in your computer.</li>
 </ul>
+<p>Second, the tutorial of this chapter prepares you for your work on the remainder of this course by setting up all the necessary infrastructure. Also experienced R users should follow respective tutorial sections: Sec. <a href="gettingstarted.html#rmarkdown">1.2.6</a>, <a href="gettingstarted.html#wspmgmt">1.2.7</a>, and <a href="gettingstarted.html#setup">1.2.8</a>). You will:</p>
+<ul>
+<li>Organize your workspace for efficient data science projects.</li>
+<li>Have installed <em>git</em> and all R packages used throughout the book.</li>
+</ul>
+<p>Completing these points are essential before we go deeper into project management topics in Chapters <a href="openscience.html#openscience">6</a> and <a href="codemgmt.html#codemgmt">7</a>. Chapter <a href="programmingprimers.html#programmingprimers">2</a> will focus on how to code.</p>
 </div>
 <div id="tutorial" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Tutorial<a href="gettingstarted.html#tutorial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This very first chapter will give you a high level overview of the tools used throughout this book. We explain the most basic concepts for working with R (the interface, running code, relationship between code and files, R objects…), while Chapter <a href="programmingprimers.html#programmingprimers">2</a> will focus on how to code, i.e. the programming itself.</p>
-<p>We give instructions to install R, RStudio, R packages and git, to create your GitHub account and link it to your computer, and to make these tools work with each other. The aim is not to introduce how all of them work in detail (which is done in future chapters) but to set up all the necessary infrastructure for this course at the start. We will also give some rough guidelines to organize yourself (code, files, etc) such that you can start working on exercises and save your progress efficiently, before we go deep into project management topics in Chapters <a href="openscience.html#openscience">6</a> and <a href="codemgmt.html#codemgmt">7</a>.</p>
 <div id="working-with-r-and-rstudio" class="section level3 hasAnchor" number="1.2.1">
 <h3><span class="header-section-number">1.2.1</span> Working with R and RStudio<a href="gettingstarted.html#working-with-r-and-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>R is a free, open-source programming language and software environment for statistical computing and graphics. It is widely used, not only among statisticians and data miners for developing statistical software, but also by scientist in various domains for data analysis, visualisation, and modelling. RStudio is an integrated development environment (IDE) that provides a user-friendly “center stage” for your work in R (and Python, see <a href="https://posit.co/blog/three-ways-to-program-in-python-with-rstudio/">here</a>).</p>
@@ -690,30 +693,27 @@ Figure 1.1: RStudio interface.
 <pre><code>## [1] FALSE FALSE  TRUE</code></pre>
 <p>By contrast, <code>NULL</code> is the R null object or empty space. You can also assign <code>NULL</code> to a variable, which will then have length zero because it is empty. Functions may return <code>NULL</code> when no output was defined, or if an error occurred.</p>
 </div>
-<div id="r-environment" class="section level4 hasAnchor" number="1.2.2.8">
-<h4><span class="header-section-number">1.2.2.8</span> R environment<a href="gettingstarted.html#r-environment" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>The set of objects (variables, data frames, etc.) defined during an R session are referred to as the <em>environment</em>. You can view the objects in RStudio in the <strong>environment</strong> panel in R Studio, grouped as Data, Values and Functions.</p>
-<p>After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will be lost. To save your environment, go to the <strong>Session</strong> menu and select <strong>Save Workspace As…</strong>. This will save all your objects in a <code>.RData</code> file in your working directory.</p>
-<p>The <em>working directory</em> is the default location to which R writes to and reads files from. You can check what your current working directory is running <code>getwd()</code> in the command line.</p>
-<p>However, this workflow is not recommended. Next, we will go over some more sophisticated ways of writing code and saving your progress.</p>
-</div>
-<div id="read-and-save-objects" class="section level4 hasAnchor" number="1.2.2.9">
-<h4><span class="header-section-number">1.2.2.9</span> Read and save objects<a href="gettingstarted.html#read-and-save-objects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="read-and-save-objects" class="section level4 hasAnchor" number="1.2.2.8">
+<h4><span class="header-section-number">1.2.2.8</span> Read and save objects<a href="gettingstarted.html#read-and-save-objects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The function <code>save()</code> allows to save multiple R objects of any form as a single <code>.RData</code> file. This is how the environment of your R session is saved. This is how we would save several R objects:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="gettingstarted.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(df, df_small, <span class="at">file =</span> <span class="st">&quot;./data/data_frames.RData&quot;</span>)</span></code></pre></div>
-<p>To tell the function where the data is located, pass the data’s path as an argument. You can either use an <em>absolute path</em>, starting from <code>C:/</code> on a Windows computer or <code>~/</code> on a Mac or Linux. Or, alternatively, you can provide a <em>relative path</em>, where <code>./</code> points to the present working directory (like above) and <code>../</code> is one level up, or <code>../../</code> is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person’s computer, helping with reproducibility.</p>
+<p>To tell the function where the data is located, pass the data’s path as an argument. You can either use an <em>absolute path</em>, starting from <code>C:/</code> on a Windows computer or <code>~/</code> on a Mac or Linux. Or, alternatively, you can provide a <em>relative path</em>, where <code>./</code> points to the present working directory (like above) and <code>../</code> is one level up, or <code>../../</code> is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person’s computer, helping with reproducibility. To determine your current working directory, run <code>getwd()</code>.</p>
 <p><code>.RData</code> files are read into your environment using the <code>load()</code> function. This function loads the objects with the name that they were saved with.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="gettingstarted.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;./data/data_frames.RData&quot;</span>)</span></code></pre></div>
-<p>Alternatively, the function <code>saveRDS()</code> allows you save single R objects that can then be read into with a specific (potentially new) variable name. This is more transparent than using <code>save()</code> and <code>load()</code> and gives the user more control.</p>
+<p>Alternatively, the function <code>saveRDS()</code> allows you save single R objects that can then be read into R with a specific (potentially new) variable name. This is more transparent than using <code>save()</code> and <code>load()</code> and gives the user more control.</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="gettingstarted.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(df_small, <span class="at">file =</span> <span class="st">&quot;./data/df_small.rds&quot;</span>)</span>
 <span id="cb93-2"><a href="gettingstarted.html#cb93-2" aria-hidden="true" tabindex="-1"></a>df_small_2 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./data/df_small.rds&quot;</span>)</span></code></pre></div>
-<p><code>save()</code> and <code>saveRDS()</code> create <em>binary</em> files that are fast to write and read, but only intelligible to R (and not to the human eye). Such files are commonly identified by the suffix <code>.rds</code>. It is recommended to name the <code>.rds</code> files according to the single object they contain. When publishing and sharing data, follow Open Science principles (Chapter <a href="openscience.html#openscience">6</a>) and avoid file formats that are not readable across different platforms and programming languages.</p>
-<p>We will learn more about human-readable tabular data files like CSV in Chapter <a href="datawrangling.html#datawrangling">3</a> and other open source binary file formats in Chapter <a href="datavariety.html#datavariety">5</a>.</p>
+<p><code>save()</code> and <code>saveRDS()</code> create <em>binary</em> files that are fast to write and read, but only intelligible to R (and not to the human eye or another program). Such files are commonly identified by the suffix <code>.rds</code>. It is recommended to name the <code>.rds</code> files according to the single object they contain. When publishing and sharing data, follow Open Science principles (Chapter <a href="openscience.html#openscience">6</a>) and avoid file formats that are not readable across different platforms and programming languages. We will learn more about human-readable tabular data files like CSV in Chapter <a href="datawrangling.html#datawrangling">3</a> and other open source binary file formats in Chapter <a href="datavariety.html#datavariety">5</a>.</p>
 </div>
 </div>
-<div id="libraries" class="section level3 hasAnchor" number="1.2.3">
-<h3><span class="header-section-number">1.2.3</span> Libraries<a href="gettingstarted.html#libraries" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><em>Packages</em>, sometimes called <em>libraries</em>, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including {base} R, {utils}, {stats}…) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.</p>
+<div id="r-environment" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> R environment<a href="gettingstarted.html#r-environment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The set of objects (variables, data frames, etc.) defined during an R session are referred to as the <em>environment</em>. You can view the objects in RStudio in the <strong>environment</strong> panel in R Studio, grouped as Data, Values and Functions.</p>
+<p>After closing an existing R session (e.g., after quitting RStudio), the environment defined by the used during that session will not be saved automatically and will not be available in your next R session. You should avoid saving your entire environment. Rather, save individual objects into files and read them in explicitly in the next R session, as described above. This gives you control, transparency, and ensures better reproducibility.</p>
+</div>
+<div id="libraries" class="section level3 hasAnchor" number="1.2.4">
+<h3><span class="header-section-number">1.2.4</span> Libraries<a href="gettingstarted.html#libraries" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><em>Packages</em>, also called <em>libraries</em>, are collections of R functions, data, and complied code in a well-defined format. R comes with a standard set of packages (including {base} R, {utils}, {stats}…) and other packages targeted for specific applications are available for download and installation. Once installed, you need to load them each time you start a new R session to use them.</p>
 <p>For example, the {tidyverse} package is used for data wrangling and will be covered in this course. This is a special package which loads many other packages in the background (like {readr}, {ggplot2}, etc.). You can install a new package as follows:</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="gettingstarted.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code></pre></div>
 <p>Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.</p>
@@ -728,158 +728,9 @@ Figure 1.1: RStudio interface.
 ##  [7] &quot;package:utils&quot;     &quot;package:methods&quot;   &quot;Autoloads&quot;        
 ## [10] &quot;package:base&quot;</code></pre>
 <p>This information can also be found on the <strong>Packages</strong> panel in RStudio. The loaded packages are shown with a tick mark.</p>
-<div id="installation-of-required-packages" class="section level4 hasAnchor" number="1.2.3.1">
-<h4><span class="header-section-number">1.2.3.1</span> Installation of required packages<a href="gettingstarted.html#installation-of-required-packages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Finally, let’s install all the missing packages and load all required packages for this course:</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="gettingstarted.html#cb99-1" aria-hidden="true" tabindex="-1"></a>use_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;readr&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;stringr&quot;</span>, <span class="st">&quot;purrr&quot;</span>,</span>
-<span id="cb99-2"><a href="gettingstarted.html#cb99-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;visdat&quot;</span>, <span class="st">&quot;terra&quot;</span>, <span class="st">&quot;hexbin&quot;</span>, <span class="st">&quot;jsonlite&quot;</span>,</span>
-<span id="cb99-3"><a href="gettingstarted.html#cb99-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;MODISTools&quot;</span>, <span class="st">&quot;forcats&quot;</span>, <span class="st">&quot;yardstick&quot;</span>, <span class="st">&quot;recipes&quot;</span>, <span class="st">&quot;caret&quot;</span>,</span>
-<span id="cb99-4"><a href="gettingstarted.html#cb99-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;broom&quot;</span>, <span class="st">&quot;skimr&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;scico&quot;</span>, <span class="st">&quot;hwsdr&quot;</span>, <span class="st">&quot;usethis&quot;</span>,</span>
-<span id="cb99-5"><a href="gettingstarted.html#cb99-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;renv&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;modelr&quot;</span>, <span class="st">&quot;rmarkdown&quot;</span>, <span class="st">&quot;rpart&quot;</span>,</span>
-<span id="cb99-6"><a href="gettingstarted.html#cb99-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;rpart.plot&quot;</span>, <span class="st">&quot;ranger&quot;</span>, <span class="st">&quot;sessioninfo&quot;</span>)</span>
-<span id="cb99-7"><a href="gettingstarted.html#cb99-7" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
-<span id="cb99-8"><a href="gettingstarted.html#cb99-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span></code></pre></div>
-<pre><code>## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/MODISTools_1.1.4.tar.gz&#39; ...
-##  OK [downloaded 387.7 Kb in 1.2 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/sf_1.0-9.tar.gz&#39; ...
-##  OK [downloaded 3.3 Mb in 1.2 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/classInt_0.4-8.tar.gz&#39; ...
-##  OK [downloaded 487 Kb in 1.3 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/s2_1.1.2.tar.gz&#39; ...
-##  OK [downloaded 2.1 Mb in 1.1 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/wk_0.7.1.tar.gz&#39; ...
-##  OK [downloaded 1.6 Mb in 1.2 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/units_0.8-1.tar.gz&#39; ...
-##  OK [downloaded 928.4 Kb in 1.1 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/sp_1.6-0.tar.gz&#39; ...
-##  OK [downloaded 1.7 Mb in 1.2 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/skimr_2.1.5.tar.gz&#39; ...
-##  OK [downloaded 1.2 Mb in 1.3 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/repr_1.1.6.tar.gz&#39; ...
-##  OK [downloaded 118.8 Kb in 1.3 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/hwsdr_1.0.tar.gz&#39; ...
-##  OK [downloaded 21.9 Kb in 1 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/raster_3.6-14.tar.gz&#39; ...
-##  OK [downloaded 3.1 Mb in 1.3 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/usethis_2.1.6.tar.gz&#39; ...
-##  OK [downloaded 772.2 Kb in 0.9 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gert_1.9.2.tar.gz&#39; ...
-##  OK [downloaded 2.7 Mb in 0.9 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/credentials_1.3.2.tar.gz&#39; ...
-##  OK [downloaded 168 Kb in 1.2 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/zip_2.2.2.tar.gz&#39; ...
-##  OK [downloaded 606.7 Kb in 0.9 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gh_1.3.1.tar.gz&#39; ...
-##  OK [downloaded 91.9 Kb in 0.9 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gitcreds_0.1.2.tar.gz&#39; ...
-##  OK [downloaded 93.3 Kb in 0.8 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/ini_0.3.1.tar.gz&#39; ...
-##  OK [downloaded 12.9 Kb in 1 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/whisker_0.4.1.tar.gz&#39; ...
-##  OK [downloaded 64.3 Kb in 0.9 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/ranger_0.14.1.tar.gz&#39; ...
-##  OK [downloaded 396 Kb in 1.1 secs]
-## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/RcppEigen_0.3.3.9.3.tar.gz&#39; ...
-##  OK [downloaded 1.5 Mb in 0.9 secs]
-## Installing classInt [0.4-8] ...
-##  OK [installed binary]
-## Moving classInt [0.4-8] into the cache ...
-##  OK [moved to cache in 8.5 milliseconds]
-## Installing wk [0.7.1] ...
-##  OK [installed binary]
-## Moving wk [0.7.1] into the cache ...
-##  OK [moved to cache in 7.9 milliseconds]
-## Installing s2 [1.1.2] ...
-##  OK [installed binary]
-## Moving s2 [1.1.2] into the cache ...
-##  OK [moved to cache in 7.5 milliseconds]
-## Installing units [0.8-1] ...
-##  OK [installed binary]
-## Moving units [0.8-1] into the cache ...
-##  OK [moved to cache in 7.1 milliseconds]
-## Installing sf [1.0-9] ...
-##  OK [installed binary]
-## Moving sf [1.0-9] into the cache ...
-##  OK [moved to cache in 9.4 milliseconds]
-## Installing sp [1.6-0] ...
-##  OK [installed binary]
-## Moving sp [1.6-0] into the cache ...
-##  OK [moved to cache in 7.6 milliseconds]
-## Installing MODISTools [1.1.4] ...
-##  OK [installed binary]
-## Moving MODISTools [1.1.4] into the cache ...
-##  OK [moved to cache in 7 milliseconds]
-## Installing repr [1.1.6] ...
-##  OK [installed binary]
-## Moving repr [1.1.6] into the cache ...
-##  OK [moved to cache in 8.2 milliseconds]
-## Installing skimr [2.1.5] ...
-##  OK [installed binary]
-## Moving skimr [2.1.5] into the cache ...
-##  OK [moved to cache in 8 milliseconds]
-## Installing raster [3.6-14] ...
-##  OK [installed binary]
-## Moving raster [3.6-14] into the cache ...
-##  OK [moved to cache in 7.7 milliseconds]
-## Installing hwsdr [1.0] ...
-##  OK [built from source]
-## Moving hwsdr [1.0] into the cache ...
-##  OK [moved to cache in 7.1 milliseconds]
-## Installing credentials [1.3.2] ...
-##  OK [installed binary]
-## Moving credentials [1.3.2] into the cache ...
-##  OK [moved to cache in 7.2 milliseconds]
-## Installing zip [2.2.2] ...
-##  OK [installed binary]
-## Moving zip [2.2.2] into the cache ...
-##  OK [moved to cache in 7.2 milliseconds]
-## Installing gert [1.9.2] ...
-##  OK [installed binary]
-## Moving gert [1.9.2] into the cache ...
-##  OK [moved to cache in 7 milliseconds]
-## Installing gitcreds [0.1.2] ...
-##  OK [installed binary]
-## Moving gitcreds [0.1.2] into the cache ...
-##  OK [moved to cache in 7.5 milliseconds]
-## Installing ini [0.3.1] ...
-##  OK [installed binary]
-## Moving ini [0.3.1] into the cache ...
-##  OK [moved to cache in 7.8 milliseconds]
-## Installing gh [1.3.1] ...
-##  OK [installed binary]
-## Moving gh [1.3.1] into the cache ...
-##  OK [moved to cache in 7.3 milliseconds]
-## Installing whisker [0.4.1] ...
-##  OK [installed binary]
-## Moving whisker [0.4.1] into the cache ...
-##  OK [moved to cache in 8.1 milliseconds]
-## Installing usethis [2.1.6] ...
-##  OK [installed binary]
-## Moving usethis [2.1.6] into the cache ...
-##  OK [moved to cache in 8.1 milliseconds]
-## Installing RcppEigen [0.3.3.9.3] ...
-##  OK [installed binary]
-## Moving RcppEigen [0.3.3.9.3] into the cache ...
-##  OK [moved to cache in 16 milliseconds]
-## Installing ranger [0.14.1] ...
-##  OK [installed binary]
-## Moving ranger [0.14.1] into the cache ...
-##  OK [moved to cache in 8.1 milliseconds]</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="gettingstarted.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 </div>
-<div id="other-libraries-and-applications" class="section level4 hasAnchor" number="1.2.3.2">
-<h4><span class="header-section-number">1.2.3.2</span> Other libraries and applications<a href="gettingstarted.html#other-libraries-and-applications" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.</p>
-<p>For example, to work with <em>netcdf</em> files in R, you would need to install the {ncdf4} library and the <code>netCDF</code> command-line tools:</p>
-<ul>
-<li>To install the {ncdf4} library, follow the same steps as above for installing an R library.</li>
-<li>To install the <code>netCDF</code> command-line tools, follow the instructions on the <a href="https://www.unidata.ucar.edu/downloads/netcdf/index.jsp">netCDF website</a>.</li>
-<li>Once the {ncdf4} library and the <code>netCDF</code> command-line tools are installed, you can use them to work with <code>.nc</code> files in R. For example, you could use the <code>nc_open()</code> function from the <code>"ncdf4"</code> library to open a file.</li>
-</ul>
-</div>
-</div>
-<div id="r-scripts" class="section level3 hasAnchor" number="1.2.4">
-<h3><span class="header-section-number">1.2.4</span> R scripts<a href="gettingstarted.html#r-scripts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="r-scripts" class="section level3 hasAnchor" number="1.2.5">
+<h3><span class="header-section-number">1.2.5</span> R scripts<a href="gettingstarted.html#r-scripts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Usually, multiple statements are needed to get, e.g., from reading data into R to final numbers and figures that make up a further analysis. Together, these multiple statements constitute a <em>workflow</em>. It is essential that all workflows that underlie results of publications are <em>reproducible</em>, that is, that another person can replicate your results using your code and certain data.</p>
 <p>To make a workflow reproducible, the sequence of statements that you needed to carry out your analysis and produce outputs can be saved as an R <em>script</em>. A script is a text file named with the suffix <code>.R</code> to indicate that it is executable by R. It contains a sequence of R commands, which you can be executed, line by line, starting from the top.</p>
 <p>To create a new script in RStudio, go to the <strong>File</strong> menu and select <strong>New File &gt; R Script</strong>. This will open a new script file in the source editor. You can then type your R code in the script file and save it to your computer.</p>
@@ -887,8 +738,8 @@ Figure 1.1: RStudio interface.
 <pre><code>&gt; source(&quot;my_r_script.R&quot;)</code></pre>
 <p>Note that, to be able to run the code above, the file <code>my_r_script.R</code> must be in your current working directory. You must always specify the path to the file, also when sourcing code.</p>
 </div>
-<div id="r-markdown" class="section level3 hasAnchor" number="1.2.5">
-<h3><span class="header-section-number">1.2.5</span> R Markdown<a href="gettingstarted.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="rmarkdown" class="section level3 hasAnchor" number="1.2.6">
+<h3><span class="header-section-number">1.2.6</span> R Markdown<a href="gettingstarted.html#rmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><a href="https://rmarkdown.rstudio.com/">R Markdown</a> files are an enhanced version of scripts. They combine formatted text and executable code chunks. They can either be compiled (<em>knitted</em>) into an HTML or PDF output, where code chunks are executed upon compilation and visualization outputs are directly placed into the output, or they can be run like a script entirely or each code chunk separately. Rmarkdown is ideal for <strong>reporting</strong>, i.e., writing your final document presenting your analysis results. When opened in RStudio, RMarkdown files appear in the Editor like this:</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rmarkdown"></span>
 <img src="figures/rmarkdown_editor.png" alt="R Markdown document opened in the source panel." width="75%" />
@@ -897,11 +748,11 @@ Figure 1.2: R Markdown document opened in the source panel.
 </p>
 </div>
 <p>As shown in Fig. <a href="gettingstarted.html#fig:rmarkdown">1.2</a>, an RMarkdown file consists of a header that specifies the document properties, such as how it should be rendered (as an html page, a docx file or a pdf).</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb103-1"><a href="gettingstarted.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
-<span id="cb103-2"><a href="gettingstarted.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> <span class="st">&quot;Simple global map&quot;</span></span>
-<span id="cb103-3"><a href="gettingstarted.html#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> Alex Humboldt</span>
-<span id="cb103-4"><a href="gettingstarted.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
-<span id="cb103-5"><a href="gettingstarted.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb100-1"><a href="gettingstarted.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb100-2"><a href="gettingstarted.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> <span class="st">&quot;Simple global map&quot;</span></span>
+<span id="cb100-3"><a href="gettingstarted.html#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> Alex Humboldt</span>
+<span id="cb100-4"><a href="gettingstarted.html#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
+<span id="cb100-5"><a href="gettingstarted.html#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
 <p>Below the header follow the contents as either text or code <em>chunks</em>. Text is formatted using the <a href="https://www.markdownguide.org/">Markdown syntax</a>. Nice brief guides are provided <a href="https://commonmark.org/help/">here</a> or <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">here</a>. For example, a top-level section title is specified by <code>#</code> and a title of a section one level lower by <code>##</code>.</p>
 <p>Code chunks that contain executable R code are opened by a line <code>```{r}</code>.</p>
 <p>The document can be rendered by calling <code>rmarkdown::render()</code> on the command line or hitting the <strong>Knit</strong> button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer). The RMarkdown source file shown in Fig. <a href="gettingstarted.html#fig:rmarkdown">1.2</a> is rendered to:</p>
@@ -920,12 +771,194 @@ Figure 1.4: Create a new RMarkdown file
 </p>
 </div>
 </div>
-<div id="workspace-management" class="section level3 hasAnchor" number="1.2.6">
-<h3><span class="header-section-number">1.2.6</span> Workspace management<a href="gettingstarted.html#workspace-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Using <em>R projects</em> in combination with <em>Git</em> is the essence of efficient workspace management in R. All files that belong together are organised within one directory. This can be regarded as the project directory and is typically congruent with what belongs to the respective Git repository. By keeping an organized workspace, another person (or your future self) can find relevant files, run your code and reproduce your analysis workflow easily.</p>
-<div id="installing-git" class="section level4 hasAnchor" number="1.2.6.1">
-<h4><span class="header-section-number">1.2.6.1</span> Installing Git<a href="gettingstarted.html#installing-git" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p><em>Git</em> is a version control system (covered in detail in Chapter <a href="codemgmt.html#codemgmt">7</a>) which is integrated in RStudio. Code repositories can then be hosted in the cloud, for example in <a href="https://github.com/">GitHub</a>. To use it later in this course (and throughout your career), let’s set up these tools:</p>
+<div id="wspmgmt" class="section level3 hasAnchor" number="1.2.7">
+<h3><span class="header-section-number">1.2.7</span> Workspace management<a href="gettingstarted.html#wspmgmt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Workspace management is crucial for efficient data science projects. Two aspects are essential for workspace management: The structure of directories and the types of files they contain; and code management and version control. To address these two points, we will briefly introduce you to <em>R projects</em> and <em>git</em>.</p>
+<div id="rprojects" class="section level4 hasAnchor" number="1.2.7.1">
+<h4><span class="header-section-number">1.2.7.1</span> R projects<a href="gettingstarted.html#rprojects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Think of all files that are linked to a certain data science workflow as belonging together into one project. A project is therefore a directory that contains the code and the files it produces. Different types of files go in different sub-directories. To keep an order and make your code useful also for others, always keep files of the same type in sub-directories that are always named the same way across projects. When creating a new project, you will find the same overall structure. A common structure is:</p>
+<ul>
+<li>Keep <code>.R</code> files that implement a user-defined function (see Chapter <a href="programmingprimers.html#programmingprimers">2</a>) in a sub-directory <code>./R/</code>, and <code>.R</code> files that implement a workflow in a sub-directory <code>./analysis/</code>. Workflow implementations with a view to communication should be implemented in RMarkdown files.</li>
+<li>RMarkdown files are commonly kept in a sub-directory <code>./vignettes/</code> or in the main (top-level) project directory.</li>
+<li>Keep figures produced by your code in a sub-directory <code>./fig/</code></li>
+<li>Keep data files produced by your code in a sub-directory <code>./data/</code></li>
+<li>Data obtained from external sources (e.g., published datasets, data shared by collaborators) and potentially used across multiple projects should be kept outside a project directory. Set up your own directory of data obtained from external sources, for example in your home as <code>~/data/</code></li>
+</ul>
+<p>To read and write from/to files you should use relative paths (relative to the project’s top-level directory), like any of the two equivalent following options:</p>
+<pre><code>&gt; source(&quot;./R/my_r_script.R&quot;)
+&gt; source(&quot;R/my_r_script.R&quot;)</code></pre>
+<p>… and not:</p>
+<pre><code>&gt; source(&quot;~/my_project/my_r_script.R&quot;)</code></pre>
+<p>R sessions in RStudio that are connected to such project directories are <em>R projects</em>. To create a new R project, go to the <strong>File</strong> menu and select <strong>New Project…</strong>. This will open the <em>New Project</em> dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:projectmenu"></span>
+<img src="figures/RStudio_RProject_screenshot.png" alt="R project menu." width="30%" />
+<p class="caption">
+Figure 1.5: R project menu.
+</p>
+</div>
+<p>When starting a new project, named <code>project_name</code>, a file <code>project_name.Rproj</code> is created in the top-level project directory. It stores information about your the session (settings, open files, etc.), automatically enables useful features in RStudio for easy package, website, or book building, lets you manage code version control (see next sub-section), and optionally (not recommended) stores the environment of your current session. It is not recommended to save and restore entire environments. Instead read and write objects from and into files to guarantee control, transparency, and reproducibility. When you want to continue working on an existing R project, you can start a new session by clicking on your <code>project_name.Rproj</code> file. This restores</p>
+<p>In Chapters <a href="openscience.html#openscience">6</a> and <a href="codemgmt.html#codemgmt">7</a>, we will learn more about efficient code management.</p>
+</div>
+<div id="git" class="section level4 hasAnchor" number="1.2.7.2">
+<h4><span class="header-section-number">1.2.7.2</span> git<a href="gettingstarted.html#git" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><em>git</em> is a version control system that keeps track of all changes on your code, who made it, and when. It allows you to go back to previous changes, and lets you control when to iterate from one state of the code to the next. The basic unit of <em>git</em> is a git repository - all the code contained in a project directory. That’s why <em>R projects</em> work well with <em>git</em>. <em>git</em> can also keep track of changes in data, so long as the data is small and in text format (see <a href="datavariety.html#datavariety">5</a>).</p>
+<p><em>git</em> also lets you sync your local copy of a <em>git repository</em> with git service in the cloud, for example <a href="https://github.com/">GitHub</a>. This allows you to manage the same repository across computers and collaborate with multiple partners on the same repository.</p>
+<p>We will learn more about <em>git</em> in Chapter <a href="codemgmt.html#codemgmt">7</a>. For now, follow instructions in Section <a href="gettingstarted.html#setup">1.2.8</a> to set yourself up with installing <em>git</em> and other required stuff on your computer and with a GitHub account. You will use this later in this course (and maybe throughout your career).</p>
+</div>
+</div>
+<div id="setup" class="section level3 hasAnchor" number="1.2.8">
+<h3><span class="header-section-number">1.2.8</span> Setup<a href="gettingstarted.html#setup" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="packages" class="section level4 hasAnchor" number="1.2.8.1">
+<h4><span class="header-section-number">1.2.8.1</span> Packages<a href="gettingstarted.html#packages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let’s install all the required packages for this course and load them.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="gettingstarted.html#cb103-1" aria-hidden="true" tabindex="-1"></a>use_pkgs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;readr&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;stringr&quot;</span>, <span class="st">&quot;purrr&quot;</span>,</span>
+<span id="cb103-2"><a href="gettingstarted.html#cb103-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;visdat&quot;</span>, <span class="st">&quot;terra&quot;</span>, <span class="st">&quot;hexbin&quot;</span>, <span class="st">&quot;jsonlite&quot;</span>,</span>
+<span id="cb103-3"><a href="gettingstarted.html#cb103-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;MODISTools&quot;</span>, <span class="st">&quot;forcats&quot;</span>, <span class="st">&quot;yardstick&quot;</span>, <span class="st">&quot;recipes&quot;</span>, <span class="st">&quot;caret&quot;</span>,</span>
+<span id="cb103-4"><a href="gettingstarted.html#cb103-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;broom&quot;</span>, <span class="st">&quot;skimr&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;scico&quot;</span>, <span class="st">&quot;hwsdr&quot;</span>, <span class="st">&quot;usethis&quot;</span>,</span>
+<span id="cb103-5"><a href="gettingstarted.html#cb103-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;renv&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;modelr&quot;</span>, <span class="st">&quot;rmarkdown&quot;</span>, <span class="st">&quot;rpart&quot;</span>,</span>
+<span id="cb103-6"><a href="gettingstarted.html#cb103-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;rpart.plot&quot;</span>, <span class="st">&quot;ranger&quot;</span>, <span class="st">&quot;sessioninfo&quot;</span>)</span>
+<span id="cb103-7"><a href="gettingstarted.html#cb103-7" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb103-8"><a href="gettingstarted.html#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span></code></pre></div>
+<pre><code>## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/MODISTools_1.1.4.tar.gz&#39; ...
+##  OK [downloaded 387.7 Kb in 0.6 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/sf_1.0-9.tar.gz&#39; ...
+##  OK [downloaded 3.3 Mb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/classInt_0.4-8.tar.gz&#39; ...
+##  OK [downloaded 487 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/s2_1.1.2.tar.gz&#39; ...
+##  OK [downloaded 2.1 Mb in 0.3 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/wk_0.7.1.tar.gz&#39; ...
+##  OK [downloaded 1.6 Mb in 0.3 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/units_0.8-1.tar.gz&#39; ...
+##  OK [downloaded 928.4 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/sp_1.6-0.tar.gz&#39; ...
+##  OK [downloaded 1.7 Mb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/skimr_2.1.5.tar.gz&#39; ...
+##  OK [downloaded 1.2 Mb in 0.7 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/repr_1.1.6.tar.gz&#39; ...
+##  OK [downloaded 118.8 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/hwsdr_1.0.tar.gz&#39; ...
+##  OK [downloaded 21.9 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/raster_3.6-14.tar.gz&#39; ...
+##  OK [downloaded 3.1 Mb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/usethis_2.1.6.tar.gz&#39; ...
+##  OK [downloaded 772.2 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gert_1.9.2.tar.gz&#39; ...
+##  OK [downloaded 2.7 Mb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/credentials_1.3.2.tar.gz&#39; ...
+##  OK [downloaded 168 Kb in 0.3 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/zip_2.2.2.tar.gz&#39; ...
+##  OK [downloaded 606.7 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gh_1.3.1.tar.gz&#39; ...
+##  OK [downloaded 91.9 Kb in 0.4 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/gitcreds_0.1.2.tar.gz&#39; ...
+##  OK [downloaded 93.3 Kb in 0.3 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/ini_0.3.1.tar.gz&#39; ...
+##  OK [downloaded 12.9 Kb in 0.3 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/whisker_0.4.1.tar.gz&#39; ...
+##  OK [downloaded 64.3 Kb in 0.3 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/ranger_0.14.1.tar.gz&#39; ...
+##  OK [downloaded 396 Kb in 0.7 secs]
+## Retrieving &#39;https://packagemanager.rstudio.com/cran/__linux__/jammy/latest/src/contrib/RcppEigen_0.3.3.9.3.tar.gz&#39; ...
+##  OK [downloaded 1.5 Mb in 0.3 secs]
+## Installing classInt [0.4-8] ...
+##  OK [installed binary]
+## Moving classInt [0.4-8] into the cache ...
+##  OK [moved to cache in 7.5 milliseconds]
+## Installing wk [0.7.1] ...
+##  OK [installed binary]
+## Moving wk [0.7.1] into the cache ...
+##  OK [moved to cache in 7 milliseconds]
+## Installing s2 [1.1.2] ...
+##  OK [installed binary]
+## Moving s2 [1.1.2] into the cache ...
+##  OK [moved to cache in 7 milliseconds]
+## Installing units [0.8-1] ...
+##  OK [installed binary]
+## Moving units [0.8-1] into the cache ...
+##  OK [moved to cache in 7.8 milliseconds]
+## Installing sf [1.0-9] ...
+##  OK [installed binary]
+## Moving sf [1.0-9] into the cache ...
+##  OK [moved to cache in 8.3 milliseconds]
+## Installing sp [1.6-0] ...
+##  OK [installed binary]
+## Moving sp [1.6-0] into the cache ...
+##  OK [moved to cache in 8 milliseconds]
+## Installing MODISTools [1.1.4] ...
+##  OK [installed binary]
+## Moving MODISTools [1.1.4] into the cache ...
+##  OK [moved to cache in 6.9 milliseconds]
+## Installing repr [1.1.6] ...
+##  OK [installed binary]
+## Moving repr [1.1.6] into the cache ...
+##  OK [moved to cache in 6.7 milliseconds]
+## Installing skimr [2.1.5] ...
+##  OK [installed binary]
+## Moving skimr [2.1.5] into the cache ...
+##  OK [moved to cache in 7.2 milliseconds]
+## Installing raster [3.6-14] ...
+##  OK [installed binary]
+## Moving raster [3.6-14] into the cache ...
+##  OK [moved to cache in 7 milliseconds]
+## Installing hwsdr [1.0] ...
+##  OK [built from source]
+## Moving hwsdr [1.0] into the cache ...
+##  OK [moved to cache in 7 milliseconds]
+## Installing credentials [1.3.2] ...
+##  OK [installed binary]
+## Moving credentials [1.3.2] into the cache ...
+##  OK [moved to cache in 6.8 milliseconds]
+## Installing zip [2.2.2] ...
+##  OK [installed binary]
+## Moving zip [2.2.2] into the cache ...
+##  OK [moved to cache in 6.8 milliseconds]
+## Installing gert [1.9.2] ...
+##  OK [installed binary]
+## Moving gert [1.9.2] into the cache ...
+##  OK [moved to cache in 7.1 milliseconds]
+## Installing gitcreds [0.1.2] ...
+##  OK [installed binary]
+## Moving gitcreds [0.1.2] into the cache ...
+##  OK [moved to cache in 6.8 milliseconds]
+## Installing ini [0.3.1] ...
+##  OK [installed binary]
+## Moving ini [0.3.1] into the cache ...
+##  OK [moved to cache in 7.8 milliseconds]
+## Installing gh [1.3.1] ...
+##  OK [installed binary]
+## Moving gh [1.3.1] into the cache ...
+##  OK [moved to cache in 6.7 milliseconds]
+## Installing whisker [0.4.1] ...
+##  OK [installed binary]
+## Moving whisker [0.4.1] into the cache ...
+##  OK [moved to cache in 7 milliseconds]
+## Installing usethis [2.1.6] ...
+##  OK [installed binary]
+## Moving usethis [2.1.6] into the cache ...
+##  OK [moved to cache in 7.4 milliseconds]
+## Installing RcppEigen [0.3.3.9.3] ...
+##  OK [installed binary]
+## Moving RcppEigen [0.3.3.9.3] into the cache ...
+##  OK [moved to cache in 13 milliseconds]
+## Installing ranger [0.14.1] ...
+##  OK [installed binary]
+## Moving ranger [0.14.1] into the cache ...
+##  OK [moved to cache in 7.4 milliseconds]</code></pre>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="gettingstarted.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+</div>
+<div id="other-libraries-and-applications" class="section level4 hasAnchor" number="1.2.8.2">
+<h4><span class="header-section-number">1.2.8.2</span> Other libraries and applications<a href="gettingstarted.html#other-libraries-and-applications" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.</p>
+<p>For example, to work with <em>netcdf</em> files in R, you would need to install the {ncdf4} library and the <code>netCDF</code> command-line tools:</p>
+<ul>
+<li>To install the {ncdf4} library, follow the same steps as above for installing an R library.</li>
+<li>To install the <code>netCDF</code> command-line tools, follow the instructions on the <a href="https://www.unidata.ucar.edu/downloads/netcdf/index.jsp">netCDF website</a>.</li>
+<li>Once the {ncdf4} library and the <code>netCDF</code> command-line tools are installed, you can use them to work with <code>.nc</code> files in R. For example, you could use the <code>nc_open()</code> function from the <code>"ncdf4"</code> library to open a file.</li>
+</ul>
+</div>
+<div id="git-1" class="section level4 hasAnchor" number="1.2.8.3">
+<h4><span class="header-section-number">1.2.8.3</span> git<a href="gettingstarted.html#git-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
 <li>First, follow the Git download and installation instructions for your OS outlined <a href="https://git-scm.com/downloads">here</a>.</li>
 <li>Once Git is installed, set up RStudio for version control by going to <strong>Tools &gt; Global Options &gt; Git/SVN</strong> and tick “Enable version control interface…”. You can check that the path to your Git installation is correct.</li>
@@ -933,24 +966,6 @@ Figure 1.4: Create a new RMarkdown file
 <li>Connect your GitHub account with Git locally, using SSH keys. You should sequentially follow the instructions to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys">check for existing SSH keys</a>, <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate a new SSH key</a>, <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">add a new SSH key to your GitHub account</a> and finally <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection">test your SSH connection</a>. Note that, at the top of these websites, there’s an option to choose your OS because the steps vary depending on the type of computer your work with.</li>
 </ul>
 <p>Now you should be able to use Git in the <strong>Terminal</strong> panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.</p>
-</div>
-<div id="r-projects" class="section level4 hasAnchor" number="1.2.6.2">
-<h4><span class="header-section-number">1.2.6.2</span> R projects<a href="gettingstarted.html#r-projects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>RStudio also allows you to work with R projects. An <em>R project</em> is basically a folder, containing a collection of files and folders that you use for a specific analysis or data project. An R project makes it easier to organize and manage your files and keep track of your work.</p>
-<p>To create a new R project, go to the <strong>File</strong> menu and select <strong>New Project…</strong>. This will open the <em>New Project</em> dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:projectmenu"></span>
-<img src="figures/RStudio_RProject_screenshot.png" alt="R project menu." width="25%" />
-<p class="caption">
-Figure 1.5: R project menu.
-</p>
-</div>
-<p>When starting a new project, named <code>project_name</code>, a file <code>&lt;project_name.Rproj&gt;</code> is created. It sits in the project directory (folder) and stores information about your last session (settings, open files, etc.) and optionally (not recommended) the environment of that session. The use of R projects also automatically enables useful features in RStudio for easy package, website, or book building and lets you manage Git for the repository corresponding to the project.</p>
-<p>When you want to continue working on an existing R project, you can start a new session by clicking on your <code>project_name.Rproj</code> file. This restores settings from your last R session, including the variables in your environment, and sets your working directory to the project directory. Nevertheless, we recommend to start by emptying your environment and loading your data and variables using the code you previously wrote. That way, you ensure that your results are reproducible.</p>
-<p>Once you have created an R project, you can create new scripts and other files within the project. These files will be organized in a folder structure, which you can view and manage in the <strong>files, plots, help, etc.</strong> panel.</p>
-<p>For example, you can keep source files where R functions are defined in <code>./R</code> (where . refers to the current project directory), data files in <code>./data</code> and visualizations in <code>./fig</code>. It’s advisable to write output files, created by the code of your project, to sub-directories within the project directory. To read and write from/to files you should use relative paths (relative to the project’s root directory), like any of the two equivalent following options:</p>
-<pre><code>&gt; source(&quot;./R/my_r_script.R&quot;)
-&gt; source(&quot;R/my_r_script.R&quot;)</code></pre>
-<p>A project directory should only contain code, data and outputs that belong to this one project. We’ll talk about using R Projects in Chapters @ref{openscience} and @ref{codemgmt}, as well as other methods to keep your workflow well structured and reproducible.</p>
 </div>
 </div>
 </div>
@@ -1015,9 +1030,9 @@ Figure 1.5: R project menu.
 <li>Determine the geographic position of the epicenter of the largest event.</li>
 </ul>
 </div>
-<div id="rmarkdown" class="section level3 unnumbered hasAnchor">
-<h3>RMarkdown<a href="gettingstarted.html#rmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Create an RMarkdown file and implement your solutions to above exercises in it. Give the file a title, implement some structure in the document, and write some text explaining what your code does.</p>
+<div id="workspace" class="section level3 unnumbered hasAnchor">
+<h3>Workspace<a href="gettingstarted.html#workspace" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Create a new <em>R project</em> and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.</p>
 
 </div>
 </div>

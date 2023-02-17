@@ -162,10 +162,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="gettingstarted.html"><a href="gettingstarted.html#working-with-r-and-rstudio"><i class="fa fa-check"></i><b>1.2.1</b> Working with R and RStudio</a></li>
 <li class="chapter" data-level="1.2.2" data-path="gettingstarted.html"><a href="gettingstarted.html#r-objects"><i class="fa fa-check"></i><b>1.2.2</b> R objects</a></li>
-<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.3</b> Libraries</a></li>
-<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.4</b> R scripts</a></li>
-<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-markdown"><i class="fa fa-check"></i><b>1.2.5</b> R Markdown</a></li>
-<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace-management"><i class="fa fa-check"></i><b>1.2.6</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.3" data-path="gettingstarted.html"><a href="gettingstarted.html#r-environment"><i class="fa fa-check"></i><b>1.2.3</b> R environment</a></li>
+<li class="chapter" data-level="1.2.4" data-path="gettingstarted.html"><a href="gettingstarted.html#libraries"><i class="fa fa-check"></i><b>1.2.4</b> Libraries</a></li>
+<li class="chapter" data-level="1.2.5" data-path="gettingstarted.html"><a href="gettingstarted.html#r-scripts"><i class="fa fa-check"></i><b>1.2.5</b> R scripts</a></li>
+<li class="chapter" data-level="1.2.6" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i><b>1.2.6</b> R Markdown</a></li>
+<li class="chapter" data-level="1.2.7" data-path="gettingstarted.html"><a href="gettingstarted.html#wspmgmt"><i class="fa fa-check"></i><b>1.2.7</b> Workspace management</a></li>
+<li class="chapter" data-level="1.2.8" data-path="gettingstarted.html"><a href="gettingstarted.html#setup"><i class="fa fa-check"></i><b>1.2.8</b> Setup</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="gettingstarted.html"><a href="gettingstarted.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a>
 <ul>
@@ -175,7 +177,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#magic-trick-algorithm"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#vectors-1"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#data-frames-1"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#rmarkdown"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
@@ -354,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#magic-trick-algorithm-1"><i class="fa fa-check"></i>Magic trick algorithm</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#vectors-2"><i class="fa fa-check"></i>Vectors</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#data-frames-2"><i class="fa fa-check"></i>Data frames</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#rmarkdown-1"><i class="fa fa-check"></i>RMarkdown</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#workspace-1"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
 <li class="chapter" data-level="A.2" data-path="solutions.html"><a href="solutions.html#programming-primers"><i class="fa fa-check"></i><b>A.2</b> Programming primers</a>
 <ul>
@@ -780,7 +782,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb261-31"><a href="datavariety.html#cb261-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;terra&quot;</span>)</span>
 <span id="cb261-32"><a href="datavariety.html#cb261-32" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span>
 <span id="cb261-33"><a href="datavariety.html#cb261-33" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-133-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-132-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="authentication" class="section level5 unnumbered hasAnchor">
 <h5>Authentication<a href="datavariety.html#authentication" class="anchor-section" aria-label="Anchor link to header"></a></h5>
