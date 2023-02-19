@@ -40,7 +40,7 @@ Let's assume that there is some true underlying relationship between a single pr
 y = \sum_{n=0}^N a_n x^n
 $$ $a_n$ are the coefficients, i.e., model parameters. The goal of the training is to find the coefficients $a_n$ so that the predicted $\hat{Y}$ fits observed $Y$ best. From the above definition, the polynomial of degree 15 has 16 parameters, while the polynomial of degree 1 has two parameters (and corresponds to a simple bivariate linear regression). You can imagine that the polynomial of degree 15 is much more flexible and should thus yield the closest fit to the training data. This is indeed the case.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 true_fun <- function(x){
   cos(1.5 * pi * x)
 }
@@ -132,16 +132,15 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
   return(gg)
 }
 
-# gg <- eval_fits(df_train, polyfit_1, polyfit_4, polyfit_15, justdata = TRUE)
-# gg + labs(title = "The data")
-
 gg <- eval_fits(df_train, polyfit_1, polyfit_4, polyfit_15)
-gg + labs(title = "Training")
+gg + 
+  labs(title = "Training") +
+  theme_classic()
 ```
 
 We can use the same fitted models on data that was *not* used for model fitting - the *test data*. This is what's done below. Again, the same true underlying relationship is used, but we sample a new set of data points $X$ and add a new sample of errors on top of the true relationship.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 set.seed(1)
 
 # create testing data
@@ -150,7 +149,9 @@ df_test <- tibble( x = runif(n_samples, min = 0, max = 1)) |>
   dplyr::arrange(x)
 
 gg <- eval_fits(df_test, polyfit_1, polyfit_4, polyfit_15)
-gg + labs(title = "Validation")
+gg + 
+  labs(title = "Validation") +
+  theme_classic()
 ```
 
 You see that, using the test set, we find that "poly4" actually performs the best - it has a much lower RMSE than "poly15". Apparently, "poly15" was overfitted. Apparently, it used its flexibility to fit not only the shape of the true underlying relationship, but also the observation errors on top of it. This has the implication that, when this model is used for making predictions for data that was not used for training (modl calibration, model fitting), it will yield misguided predictions that are affected by the errors in the training set. This is the reason why "poly15" performed worse on the test set than the other models.
@@ -159,7 +160,7 @@ From the figures above, we can also conclude that "poly1" was underfitted - it p
 
 The *out-of-sample performance* of "poly15" gets even worse when applying the fitted polynomial models to data that extends beyond the range in $X$ that was used for model training. Here, we're extending just 20% to the right.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 set.seed(1)
 
 # create testing data
@@ -168,9 +169,9 @@ df_test <- tibble( x = runif(n_samples, min = 0, max = 1.2)) |>
   dplyr::arrange(x)
 
 gg <- eval_fits(df_test, polyfit_1, polyfit_4, polyfit_15)
-gg + labs(title = "Validation (with extrapolation)")
-
-# ggsave("fig/overfitting_demo_polynomial.pdf", width = 6, height = 4)
+gg + 
+  labs(title = "Validation (with extrapolation)") +
+  theme_classic()
 ```
 
 You see that the RMSE for "poly15" literally explodes. The model is hopelessly overfitted and completely useless for prediction, although it looked like it fitted the data best when we considered only the training results. This is a fundamental challenge in machine learning - finding the model with the best *generalisability*. That is, a model that not only fits the training data well, but also performs well on unseen data.

@@ -19,7 +19,7 @@ In Chapter \@ref(datawrangling), we learned about axes of variation in the data.
 In this chapter, we will be working mainly with the same half-hourly time series data of ecosystem-atmosphere fluxes and parallel measurements of meteorological variables - as in Chapters \@ref(gettingstarted) and \@ref(datawrangling). For time series data, the entry point of the exploratory data analysis cycle may be a visualization of some variable of interest (here `GPP_NT_VUT_REF`) against time:
 
 ```{r}
-hhdf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+hhdf <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 plot(hhdf$TIMESTAMP_START, hhdf$GPP_NT_VUT_REF, type = "l")
 ```
 
@@ -55,11 +55,11 @@ ggplot(
   labs(title = "Gross primary productivity", 
        subtitle = "Site: CH-Lae",
        x = "Time", 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 ```
 
-Find a complete reference to {ggplot2} [here](https://ggplot2.tidyverse.org/) [@R-ggplot2]. The grammar of graphics has found its way also into Python and you can use ggplot using the *plotnine* Python package (see [here](https://realpython.com/ggplot-python/)).
+Find a complete reference to {ggplot2} [here](https://ggplot2.tidyverse.org/). The grammar of graphics has found its way also into Python and you can use ggplot using the *plotnine* Python package (see [here](https://realpython.com/ggplot-python/)).
 
 ### Every data has its representation
 
@@ -72,7 +72,7 @@ In the above example, we mapped two continuous variables (`TIMESTAMP_START` and 
 
 <!-- ![test](./figures/common-aesthetics-1.png){#fig:test} \@ref(fig:test -->
 
-```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types."}
+```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types. Figure from [Wilke](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)", fig.align='center'}
 knitr::include_graphics("./figures/common-aesthetics-1.png")
 ```
 
@@ -87,8 +87,8 @@ Probably the simplest case of data visualization is where a single value is show
 # as saved in the previous chapter
 ddf <- read_csv("data/ddf.csv")
 
-# Bar plot
-plot_data <- ddf |> 
+# Aggregate to monthly
+mdf <- ddf |> 
   dplyr::mutate(month = month(date, label = TRUE)) |> 
   dplyr::group_by(month) |> 
   dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
@@ -96,17 +96,17 @@ plot_data <- ddf |>
 
 # Bar plot
 gg1 <- ggplot(
-  data = plot_data,
+  data = mdf,
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_bar(stat = "identity") +
   theme_classic() +
   labs(title = "Bar plot",
        x = "Month", 
-       y = expression(paste("Mean GPP (gC m"^-2, "s"^-1, ")")))
+       y =expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")))
 
 # Custom plot
 gg2 <- ggplot(
-  data = plot_data,
+  data = mdf,
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_segment(aes(x = month, xend = month, y = 0, yend = GPP_NT_VUT_REF), 
                size = 3, color = "grey40") +
@@ -116,7 +116,7 @@ gg2 <- ggplot(
   theme_classic() +
   labs(title = "Custom plot",
        x = "Month", 
-       y = expression(paste("Mean GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   scale_y_continuous(limits = c(0, 8.75), expand = c(0, 0)) +
   coord_flip()
 
@@ -129,27 +129,27 @@ Above, we created two objects, `gg1` and `gg2`, that contain the instructions fo
 Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the function `dplyr::summarise()`. This equivalency is demonstrated below.
 
 ```{r}
-# subset plot data and count occurences
-plot_data_counted <- hhdf |> 
+# subset plot data and count occurences of bad data (NEE_VUT_REF_QC == 0)
+df_count <- hhdf |> 
   dplyr::filter(NEE_VUT_REF_QC == 0) |> 
   dplyr::group_by(NIGHT) |> 
   dplyr::summarise(count = n())
 
 # separate aggregation  
 gg1 <-ggplot(
-  data = plot_data_counted,
+  data = df_count,
   aes(x = NIGHT, y = count)) +
   geom_bar(stat = "identity") +
   labs(subtitle = "Count via 'summarise' and 'stat = identiy'") +
   theme_classic()
 
 # prepare data (not summarizing counts)
-plot_data_uncounted <- hhdf |> 
+hhdf_bad <- hhdf |> 
   dplyr::filter(NEE_VUT_REF_QC == 0)
 
 # implicit aggregation by 'stat'
 gg2 <- ggplot(
-  data = plot_data_uncounted,
+  data = hhdf_bad,
   aes(x = NIGHT)) +
   geom_bar(stat = "count") +
   labs(subtitle = "Count directly via 'stat = count'") +
@@ -170,7 +170,8 @@ ggplot(
     ) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = "red") +  # we can overlay multiple plot layers!
-  labs(title = "Histogram and density", x = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  labs(title = "Histogram and density", 
+       x = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 ```
 
@@ -225,56 +226,53 @@ cowplot::plot_grid(gg1, gg2, gg3, ncol = 3)
 
 Scatter plots visualize how two variables co-vary. The position of each point in a scatter plot is given by the simultaneously recorded value of two variables, provided in two columns along the same row in a data frame, and mapped onto two dimensions in a cartesian coordinate system. We can also say that two variables are *regressed* against each other.
 
-In the figure below, we start with a simple scatter plot (a), regressing GPP against shortwave radiation. A visualization is supposed to tell a story with data. The positive and largely linear relationship between shortwave radiation and GPP is expected from theory (Monteith, 1972) and our process understanding of the dominant controls on photosynthesis - it's mainly solar (shortwave) radiation. The linear regression line, added by `geom_smooth(method = "lm")` in (a), indicates that relationship.
+In the figure below, we start with a simple scatter plot (a), regressing GPP against shortwave radiation. Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). (d) is an example for using a continuous color scheme, as explained in the next section.
 
 ```{r}
 # prepare plot data
-plot_data <- hhdf |>
+hhdf_sub <- hhdf |>
   sample_n(1000)
 
 # a
 gg1 <- ggplot(
-  data = plot_data,
+  data = hhdf_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
-  geom_smooth(method = "lm", color = "red") +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 
 # b
 gg2 <- ggplot(
-  data = plot_data,
+  data = hhdf_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = NIGHT)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 
 # c
 gg3 <- ggplot(
-  data = plot_data,
+  data = hhdf_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 
 # d
 gg4 <- ggplot(
-  data = plot_data,
+  data = hhdf_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = TA_F)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic() +
   scale_color_viridis_c()
 
 # combine plots
 cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
 ```
-
-Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). (d) is an example for using a continuous color scheme, as explained in the next section.
 
 #### Use of colors
 
@@ -311,16 +309,16 @@ Hence, let's consider months as the categories to be used for separating the dat
 
 ```{r}
 # prepare data
-plot_data <-ddf |>
+ddf_plot <- ddf |>
   dplyr::mutate(month = month(date, label = TRUE))
 
 ggplot(
-  data = plot_data,
+  data = ddf_plot,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = month)) +
   geom_point(alpha = 0.5) +
   geom_smooth(formula = y ~ x + 0, method = "lm", se = FALSE) +
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   theme_classic() +
   scico::scale_color_scico_d(palette = "romaO")
 ```
@@ -337,12 +335,12 @@ Yet another "mapping" is available with `facet_wrap()`. It separates the visuali
 
 ```{r}
 ggplot(
-  data = plot_data, # reusing the previously subset data (see above)
+  data = ddf_plot, # reusing the previously subset data (see above)
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
   geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   facet_wrap(~month)
 ```
 
@@ -357,7 +355,9 @@ ggplot(
   data = ddf,
   aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
-  labs(title = "Line plot", x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  labs(title = "Line plot", 
+       x = "Time", 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 ```
 
@@ -371,7 +371,8 @@ ggplot(
     aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
   geom_point(aes(color = f_measured), size = 0.9) +
-  labs(x = "Time", y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  labs(x = "Time", 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   scale_color_viridis_c(direction = -1) + # inverse color scale is more intuitive here
   theme_classic()
 ```
@@ -386,26 +387,26 @@ Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b
 
 ```{r}
 # prepare plot data
-plot_data <- ddf |>
+doydf <- ddf |>
   mutate(doy = yday(date)) |> 
   group_by(doy) |> 
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # seasonal cycle, cartesian
 gg1 <- ggplot(
-  data = plot_data,
+  data = doydf,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # seasonal cycle, polar
 gg2 <- ggplot(
-  data = plot_data,
+  data = doydf,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()
 
 # prepare plot data (diurnal step)
-plot_data_diurnal <- hhdf |>
+daydf <- hhdf |>
   mutate(month = month(TIMESTAMP_START)) |> 
   filter(month == 6) |>  # taking only June data
   mutate(hour = hour(TIMESTAMP_START)) |> 
@@ -414,13 +415,13 @@ plot_data_diurnal <- hhdf |>
 
 # diurnal cycle, cartesian
 gg3 <-ggplot(
-    data = plot_data_diurnal,
+    data = daydf,
     aes(hour, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # diurnal cycle, polar
 gg4 <-ggplot(
-  data = plot_data_diurnal,
+  data = daydf,
   aes(hour, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()
@@ -439,7 +440,7 @@ ggplot(
     aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point() +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
 ```
 
@@ -457,7 +458,7 @@ ggplot(
     ) +
   scale_fill_viridis_c() +
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
+       y =expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   theme_classic() + 
   scale_x_continuous(expand = c(0, 0)) +  # avoid gap between plotting ara and axis
   scale_y_continuous(expand = c(0, 0))
@@ -469,7 +470,7 @@ ggplot(
   geom_hex() +
   scale_fill_viridis_c() +
   labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")) ) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   theme_classic() + 
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
