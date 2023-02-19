@@ -623,3 +623,13 @@ Print the object `datasets::quakes` and consult the manual of this object.
 
 Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
 
+## Report Exercise
+
+Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. The first task is to set up the project, including a proper folder structure for data, scripts and R Markdown files, and the connection to Git for version control. Follow these steps:
+
+- Log into GitHub in your browser and create a **new repository**. Name it *agds_report_yourname*, give it a short description and set it to be public, so we can read it for the evaluation. Include a README file (it's a sort of menu which you'll edit later), a `.gitignore` template for R (select in the drop-down menu) and a Creative Commons license (for code sharing rights, etc).
+- Now that you have a GitHub repository, open it and you should see a green button saying **Code**. Go to **SSH** and copy that url. You will use it to *clone* the repository.
+- Open RStudio. Create a new R project from a GitHub repository. Paste the repository's url, git it a name (by default the same as the repository) and select in which folder you want to keep it locally (for example the base directory `~`). This will clone all the files from GitHub onto the project directory in your computer.
+- With this, you're set up. You should be able to see the README.md file in your file browser. To test things out, open it and write something, like a description of the repository (it's a markdown file!). 
+- Now those changes are only local. To keep track of changes, go to the **Git** panel in RStudio. Tick the files you want to update and click **Commit**, write a short description of the changes you've made (for example, "description project") and *commit*. And to upload changes to GitHub, click **Push**. 
+- You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, keep adding the report content to this R project and regularly commit your changes to keep track of the versions of your work.
