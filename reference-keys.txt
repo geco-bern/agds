@@ -57,6 +57,7 @@ packages
 other-libraries-and-applications
 git-1
 exercises
+report-exercise
 programmingprimers
 learning-objectives-2
 tutorial-1
@@ -97,7 +98,7 @@ functional-programming-i
 strings
 functional-programming-ii
 exerciseswrangling
-report-exercise
+report-exercise-1
 datavis
 learning-objectives-4
 tutorial-3
@@ -187,7 +188,7 @@ model-evaluation
 model-comparison
 variable-selection-1
 outlier-detection
-report-exercise-1
+report-exercise-2
 task-statement
 warm-up-exercises
 nested-loops-and-if-statements
