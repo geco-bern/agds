@@ -28,6 +28,11 @@ fig:projecttemplate
 fig:newtemplaterepository
 fig:newtemplaterepositoryname
 fig:correlationplots
+fig:roccurve
+fig:mlingredients
+fig:lossfunction
+fig:kfoldcv
+fig:trainvaltest
 gettingstarted
 learning-objectives-1
 tutorial
@@ -229,7 +234,6 @@ tutorial-10
 decision-trees
 bagging
 from-trees-to-a-forest
-exercises-6
 solutions
 getting-started
 programming-primers

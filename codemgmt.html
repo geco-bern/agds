@@ -145,7 +145,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
 <ul>
@@ -344,7 +343,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.2</b> Bagging</a></li>
 <li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.3</b> From trees to a forest</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-6"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>A</b> Solutions</a>
@@ -366,7 +364,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#interpolation-1"><i class="fa fa-check"></i>Interpolation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -426,16 +427,16 @@ Figure 7.2: The github remote workflow- by Paola Corrales and Elio Campitelli
 <div id="git-and-local-version-control" class="section level3 hasAnchor" number="7.2.1">
 <h3><span class="header-section-number">7.2.1</span> Git and local version control<a href="codemgmt.html#git-and-local-version-control" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Git allows for the tracking of changes in code (or any file) within a git project. A git project is defined by the topmost directory in which a git project is created. For example the following project is not tracked for changes using git.</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb285-1"><a href="codemgmt.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="ex">project/</span></span>
-<span id="cb285-2"><a href="codemgmt.html#cb285-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> YOUR_PROJECT.Rproj</span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb283-1"><a href="codemgmt.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="ex">project/</span></span>
+<span id="cb283-2"><a href="codemgmt.html#cb283-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> YOUR_PROJECT.Rproj</span></code></pre></div>
 <p>You can start tracking a project by initiating a local git repository using the following code in R. We’ll use the {usethis} package to make some of the setup a project easier.</p>
-<div class="sourceCode" id="cb286"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb286-1"><a href="codemgmt.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initiate a github repository</span></span>
-<span id="cb286-2"><a href="codemgmt.html#cb286-2" aria-hidden="true" tabindex="-1"></a><span class="fu">usethis::use_git()</span></span></code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb284-1"><a href="codemgmt.html#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initiate a github repository</span></span>
+<span id="cb284-2"><a href="codemgmt.html#cb284-2" aria-hidden="true" tabindex="-1"></a><span class="fu">usethis::use_git()</span></span></code></pre></div>
 <p>This will create a github repository in your project. It will also create a <code>.gitignore</code> file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.</p>
 <div id="git-add" class="section level4 hasAnchor" number="7.2.1.1">
 <h4><span class="header-section-number">7.2.1.1</span> git add<a href="codemgmt.html#git-add" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Before we can track anything we need to tell git which files to track. We therefore have to add them to an index of tracked files. You can either do this on the command line using:</p>
-<div class="sourceCode" id="cb287"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb287-1"><a href="codemgmt.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add your_file.csv</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb285-1"><a href="codemgmt.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add your_file.csv</span></code></pre></div>
 <p>Or using the RStudio git panel. In this panel you will see all un-tracked files or directories highlighted with a yellow question mark.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unstagedfiles"></span>
 <img src="figures/git_unstaged_files.png" alt="Unstaged files in a git enabled R project"  />
@@ -469,17 +470,17 @@ Figure 7.6: A completed commit
 </div>
 <p>With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked, this is a manual step. As with normal documents you are advised to save (commit) your changes to your project frequently. More so, if you create a new file you will need to add it before you can commit it.</p>
 <p>You can commit changes of staged files using the command line as well using the following command.</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb288-1"><a href="codemgmt.html#cb288-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;A message&quot;&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb286-1"><a href="codemgmt.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;A message&quot;&quot;</span></span></code></pre></div>
 </div>
 </div>
 <div id="remote-version-control" class="section level3 hasAnchor" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Remote version control<a href="codemgmt.html#remote-version-control" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as <a href="https://github.com">github</a>, <a href="https://gitlab.com">gitlab</a> and <a href="https://codeberg.org">codeberg</a> come in. They provide a cloud based git repository which you can associate with your local project (see figure above).</p>
 <p>To create a remote project and successfully associate it with an R project we first have to specify some details, such as the username and email you used is singing up for <a href="https://github.com">github</a>. To not leave your R session you can use the {usethis} package for this.</p>
-<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="codemgmt.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure your project</span></span>
-<span id="cb289-2"><a href="codemgmt.html#cb289-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usethis)</span>
-<span id="cb289-3"><a href="codemgmt.html#cb289-3" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_git_config</span>(<span class="at">user.name =</span> <span class="st">&quot;Jane Doe&quot;</span>,</span>
-<span id="cb289-4"><a href="codemgmt.html#cb289-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">user.email =</span> <span class="st">&quot;jane@example.org&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="codemgmt.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure your project</span></span>
+<span id="cb287-2"><a href="codemgmt.html#cb287-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usethis)</span>
+<span id="cb287-3"><a href="codemgmt.html#cb287-3" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_git_config</span>(<span class="at">user.name =</span> <span class="st">&quot;Jane Doe&quot;</span>,</span>
+<span id="cb287-4"><a href="codemgmt.html#cb287-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">user.email =</span> <span class="st">&quot;jane@example.org&quot;</span>)</span></code></pre></div>
 <p>For security reasons the use of your github password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed first generate a github PAT using <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic">these instructions</a>.</p>
 <p>To create a new project on github hit the “+” sign top left on the github main page (once logged in), and select the “new repository” from the dropdown menu.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:newgithubrepo"></span>
@@ -537,8 +538,8 @@ Changing the contents of text file from new branch
 <div id="git-clone" class="section level4 hasAnchor" number="7.2.2.3">
 <h4><span class="header-section-number">7.2.2.3</span> git clone<a href="codemgmt.html#git-clone" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>You can create a new copy of your project on github using the <code>git clone</code> command. For example, on the command line, you can use:</p>
-<div class="sourceCode" id="cb291"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb291-1"><a href="codemgmt.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a local copy of the remote github repository</span></span>
-<span id="cb291-2"><a href="codemgmt.html#cb291-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/khufkens/YOUR_PROJECT.git</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb289-1"><a href="codemgmt.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a local copy of the remote github repository</span></span>
+<span id="cb289-2"><a href="codemgmt.html#cb289-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/khufkens/YOUR_PROJECT.git</span></code></pre></div>
 <p>to create a local copy of your remote repositories. You can then start working on this repository by using the modify -&gt; staged -&gt; commit -&gt; push workflow.</p>
 </div>
 <div id="git-fork-and-pull-request" class="section level4 hasAnchor" number="7.2.2.4">

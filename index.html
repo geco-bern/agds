@@ -145,7 +145,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
 <ul>
@@ -344,7 +343,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.2</b> Bagging</a></li>
 <li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.3</b> From trees to a forest</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-6"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>A</b> Solutions</a>
@@ -366,7 +364,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#interpolation-1"><i class="fa fa-check"></i>Interpolation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -456,60 +457,6 @@ Figure 0.1: The data science workflow and keywords of contents covered in Applie
 <p>Chapters <a href="gettingstarted.html#gettingstarted">1</a>-<a href="randomforest.html#randomforest">11</a> serve as lecture notes for <em>Applied Geodata Science I</em> and as learning material for students and scientists in any data-intensive research domain. These chapters are not explicitly dealing with geospatial data and modelling. Modelling with geospatial and temporal data is the subject of the course <em>Applied Geodata Science II</em> and will be introduced with a focus on typical applications and modelling tasks in Geography and Environmental Sciences. Respective materials are not currently contained in this book but will be added here later.</p>
 <p>All tutorials use the R programming language.</p>
 </div>
-</div>
-<div id="system-information-and-package-list" class="section level2 unnumbered hasAnchor">
-<h2>System information and package list<a href="index.html#system-information-and-package-list" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This book was compiled with the following environment:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div>
-<pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
-##  setting  value
-##  version  R version 4.2.2 (2022-10-31)
-##  os       Ubuntu 22.04.1 LTS
-##  system   x86_64, linux-gnu
-##  ui       X11
-##  language (EN)
-##  collate  C.UTF-8
-##  ctype    C.UTF-8
-##  tz       UTC
-##  date     2023-02-20
-##  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)
-## 
-## ─ Packages ───────────────────────────────────────────────────────────────────
-##  ! package     * version date (UTC) lib source
-##  P bookdown      0.31    2022-12-13 [?] RSPM (R 4.2.0)
-##    bslib         0.4.2   2022-12-16 [1] RSPM (R 4.2.0)
-##    cachem        1.0.6   2021-08-19 [1] RSPM (R 4.2.0)
-##    cli           3.6.0   2023-01-09 [1] RSPM (R 4.2.0)
-##    digest        0.6.31  2022-12-11 [1] RSPM (R 4.2.0)
-##  P evaluate      0.19    2022-12-13 [?] RSPM (R 4.2.0)
-##    fastmap       1.1.0   2021-01-25 [1] RSPM (R 4.2.0)
-##    glue          1.6.2   2022-02-24 [1] RSPM (R 4.2.0)
-##    highr         0.10    2022-12-22 [1] RSPM (R 4.2.0)
-##    htmltools     0.5.4   2022-12-07 [1] RSPM (R 4.2.0)
-##    jquerylib     0.1.4   2021-04-26 [1] RSPM (R 4.2.0)
-##    jsonlite      1.8.4   2022-12-06 [1] RSPM (R 4.2.0)
-##  P knitr         1.41    2022-11-18 [?] RSPM (R 4.2.0)
-##    lifecycle     1.0.3   2022-10-07 [1] RSPM (R 4.2.0)
-##    magrittr      2.0.3   2022-03-30 [1] RSPM (R 4.2.0)
-##    R6            2.5.1   2021-08-19 [1] RSPM (R 4.2.0)
-##  P renv          0.16.0  2022-09-29 [?] RSPM (R 4.2.0)
-##    rlang         1.0.6   2022-09-24 [1] RSPM (R 4.2.0)
-##  P rmarkdown     2.19    2022-12-15 [?] RSPM (R 4.2.0)
-##    rstudioapi    0.14    2022-08-22 [1] RSPM (R 4.2.0)
-##  P sass          0.4.4   2022-11-24 [?] RSPM (R 4.2.0)
-##  P sessioninfo   1.2.2   2021-12-06 [?] RSPM (R 4.2.0)
-##    stringi       1.7.12  2023-01-11 [1] RSPM (R 4.2.0)
-##    stringr       1.5.0   2022-12-02 [1] RSPM (R 4.2.0)
-##  P vctrs         0.5.1   2022-11-16 [?] RSPM (R 4.2.0)
-##  P xfun          0.36    2022-12-21 [?] RSPM (R 4.2.0)
-##  P yaml          2.3.6   2022-10-18 [?] RSPM (R 4.2.0)
-## 
-##  [1] /home/runner/work/agds/agds/renv/library/R-4.2/x86_64-pc-linux-gnu
-##  [2] /home/runner/work/agds/agds/renv/sandbox/R-4.2/x86_64-pc-linux-gnu/99f2a2ef
-## 
-##  P ── Loaded and on-disk path mismatch.
-## 
-## ──────────────────────────────────────────────────────────────────────────────</code></pre>
 </div>
 </div>
             </section>

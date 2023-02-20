@@ -145,7 +145,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning Objectives</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#course-contents"><i class="fa fa-check"></i>Course contents</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a>
 <ul>
@@ -344,7 +343,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.2</b> Bagging</a></li>
 <li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.3</b> From trees to a forest</a></li>
 </ul></li>
-<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-6"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>A</b> Solutions</a>
@@ -366,7 +364,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#interpolation-1"><i class="fa fa-check"></i>Interpolation</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a>
+<ul>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html#system-information-and-package-list"><i class="fa fa-check"></i>System information and package list</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -407,25 +408,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="conditional-statements" class="section level4 hasAnchor" number="2.2.1.1">
 <h4><span class="header-section-number">2.2.1.1</span> Conditional statements<a href="programmingprimers.html#conditional-statements" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In cases where we want certain statements to be executed or not, depending on a criterion, we can use <em>conditional statements</em> <code>if</code>, <code>else if</code>, and <code>else</code>. Conditionals are an essential feature of programming and available in all languages. The R syntax for conditional statements looks like this:</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="programmingprimers.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="fl">0.0</span>){</span>
-<span id="cb106-2"><a href="programmingprimers.html#cb106-2" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb106-3"><a href="programmingprimers.html#cb106-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="programmingprimers.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="fl">0.0</span>){</span>
+<span id="cb104-2"><a href="programmingprimers.html#cb104-2" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb104-3"><a href="programmingprimers.html#cb104-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>The evaluation of the criterion inside the round brackets (here <code>(temp &lt; 0.0)</code>) has to return either <code>TRUE</code> or <code>FALSE</code>. Whenever the statement between brackets is <code>TRUE</code>, the chunk of code between the subsequent curly brackets is executed. You can also write a conditional that covers all possibilities, like this:</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="programmingprimers.html#cb107-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.5</span></span>
-<span id="cb107-2"><a href="programmingprimers.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="fl">0.0</span>){</span>
-<span id="cb107-3"><a href="programmingprimers.html#cb107-3" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb107-4"><a href="programmingprimers.html#cb107-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb107-5"><a href="programmingprimers.html#cb107-5" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb107-6"><a href="programmingprimers.html#cb107-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="programmingprimers.html#cb105-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.5</span></span>
+<span id="cb105-2"><a href="programmingprimers.html#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="fl">0.0</span>){</span>
+<span id="cb105-3"><a href="programmingprimers.html#cb105-3" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb105-4"><a href="programmingprimers.html#cb105-4" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb105-5"><a href="programmingprimers.html#cb105-5" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb105-6"><a href="programmingprimers.html#cb105-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>When the temperature is below 0, the first chunk of code is executed. Whenever it is greater or equal that 0 (i.e. the condition returns <code>FALSE</code>) the second chunk of code is evaluated.</p>
 <p>You can also write more than two conditions, covering several cases:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="programmingprimers.html#cb108-1" aria-hidden="true" tabindex="-1"></a>is_frozen <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb108-2"><a href="programmingprimers.html#cb108-2" aria-hidden="true" tabindex="-1"></a>just_cold <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb108-3"><a href="programmingprimers.html#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="fl">0.0</span>){</span>
-<span id="cb108-4"><a href="programmingprimers.html#cb108-4" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb108-5"><a href="programmingprimers.html#cb108-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="dv">10</span>){</span>
-<span id="cb108-6"><a href="programmingprimers.html#cb108-6" aria-hidden="true" tabindex="-1"></a>  just_cold <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb108-7"><a href="programmingprimers.html#cb108-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="programmingprimers.html#cb106-1" aria-hidden="true" tabindex="-1"></a>is_frozen <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb106-2"><a href="programmingprimers.html#cb106-2" aria-hidden="true" tabindex="-1"></a>just_cold <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb106-3"><a href="programmingprimers.html#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="fl">0.0</span>){</span>
+<span id="cb106-4"><a href="programmingprimers.html#cb106-4" aria-hidden="true" tabindex="-1"></a>  is_frozen <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb106-5"><a href="programmingprimers.html#cb106-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="dv">10</span>){</span>
+<span id="cb106-6"><a href="programmingprimers.html#cb106-6" aria-hidden="true" tabindex="-1"></a>  just_cold <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb106-7"><a href="programmingprimers.html#cb106-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <blockquote>
 <p>Note: In the code chunks above, an <em>indentation</em> was used to highlight which parts go together, which makes the code easy to understand. Indentations are not evaluated by R per se (unlike in other programming languages, e.g., Matlab, Python), but help to make the code easier to read.</p>
 </blockquote>
@@ -433,32 +434,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="loops" class="section level4 hasAnchor" number="2.2.1.2">
 <h4><span class="header-section-number">2.2.1.2</span> Loops<a href="programmingprimers.html#loops" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><em>Loops</em> are essential for solving many common tasks. <code>for</code> and <code>while</code> loops let us repeatedly execute the same set of commands, while changing an <em>index</em> or <em>counter variable</em> to take a sequence of different values. The following example calculates the sum of elements in the vector <code>vec_temp</code> by iteratively adding them together.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="programmingprimers.html#cb109-1" aria-hidden="true" tabindex="-1"></a>vec_temp <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>)  <span class="co"># equivalent to 1:10</span></span>
-<span id="cb109-2"><a href="programmingprimers.html#cb109-2" aria-hidden="true" tabindex="-1"></a>temp_sum <span class="ot">&lt;-</span> <span class="dv">0</span>        <span class="co"># initialize sum</span></span>
-<span id="cb109-3"><a href="programmingprimers.html#cb109-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">length</span>(vec_temp))){</span>
-<span id="cb109-4"><a href="programmingprimers.html#cb109-4" aria-hidden="true" tabindex="-1"></a>  temp_sum <span class="ot">&lt;-</span> temp_sum <span class="sc">+</span> vec_temp[idx]</span>
-<span id="cb109-5"><a href="programmingprimers.html#cb109-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb109-6"><a href="programmingprimers.html#cb109-6" aria-hidden="true" tabindex="-1"></a>temp_sum</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="programmingprimers.html#cb107-1" aria-hidden="true" tabindex="-1"></a>vec_temp <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>)  <span class="co"># equivalent to 1:10</span></span>
+<span id="cb107-2"><a href="programmingprimers.html#cb107-2" aria-hidden="true" tabindex="-1"></a>temp_sum <span class="ot">&lt;-</span> <span class="dv">0</span>        <span class="co"># initialize sum</span></span>
+<span id="cb107-3"><a href="programmingprimers.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (idx <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">length</span>(vec_temp))){</span>
+<span id="cb107-4"><a href="programmingprimers.html#cb107-4" aria-hidden="true" tabindex="-1"></a>  temp_sum <span class="ot">&lt;-</span> temp_sum <span class="sc">+</span> vec_temp[idx]</span>
+<span id="cb107-5"><a href="programmingprimers.html#cb107-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb107-6"><a href="programmingprimers.html#cb107-6" aria-hidden="true" tabindex="-1"></a>temp_sum</span></code></pre></div>
 <pre><code>## [1] 55</code></pre>
 <p>Of course, this is equivalent to just using the <code>sum()</code> function.</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="programmingprimers.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec_temp)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="programmingprimers.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vec_temp)</span></code></pre></div>
 <p>Instead of directly telling R how many iterations it should do we can also define a condition and use a <code>while</code>-loop. As long as the condition is <code>TRUE</code>, R will continue iterating. As soon as it is <code>FALSE</code>, R stops the loop. The following lines of code do the same operation as the <code>for</code> loop above. What is different? What is the same?</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="programmingprimers.html#cb112-1" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">=</span> <span class="dv">1</span>           <span class="co"># initialize counter</span></span>
-<span id="cb112-2"><a href="programmingprimers.html#cb112-2" aria-hidden="true" tabindex="-1"></a>temp_sum <span class="ot">&lt;-</span> <span class="dv">0</span>     <span class="co"># initialize sum</span></span>
-<span id="cb112-3"><a href="programmingprimers.html#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (idx <span class="sc">&lt;=</span> <span class="dv">10</span>){</span>
-<span id="cb112-4"><a href="programmingprimers.html#cb112-4" aria-hidden="true" tabindex="-1"></a>  temp_sum <span class="ot">&lt;-</span> temp_sum <span class="sc">+</span> vec_temp[idx]</span>
-<span id="cb112-5"><a href="programmingprimers.html#cb112-5" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">=</span> idx <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb112-6"><a href="programmingprimers.html#cb112-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb112-7"><a href="programmingprimers.html#cb112-7" aria-hidden="true" tabindex="-1"></a>temp_sum</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="programmingprimers.html#cb110-1" aria-hidden="true" tabindex="-1"></a>idx <span class="ot">=</span> <span class="dv">1</span>           <span class="co"># initialize counter</span></span>
+<span id="cb110-2"><a href="programmingprimers.html#cb110-2" aria-hidden="true" tabindex="-1"></a>temp_sum <span class="ot">&lt;-</span> <span class="dv">0</span>     <span class="co"># initialize sum</span></span>
+<span id="cb110-3"><a href="programmingprimers.html#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (idx <span class="sc">&lt;=</span> <span class="dv">10</span>){</span>
+<span id="cb110-4"><a href="programmingprimers.html#cb110-4" aria-hidden="true" tabindex="-1"></a>  temp_sum <span class="ot">&lt;-</span> temp_sum <span class="sc">+</span> vec_temp[idx]</span>
+<span id="cb110-5"><a href="programmingprimers.html#cb110-5" aria-hidden="true" tabindex="-1"></a>  idx <span class="ot">=</span> idx <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb110-6"><a href="programmingprimers.html#cb110-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb110-7"><a href="programmingprimers.html#cb110-7" aria-hidden="true" tabindex="-1"></a>temp_sum</span></code></pre></div>
 </div>
 <div id="functions-1" class="section level4 hasAnchor" number="2.2.1.3">
 <h4><span class="header-section-number">2.2.1.3</span> Functions<a href="programmingprimers.html#functions-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Often, analyses require many steps and your scripts may get excessively long. An important aspect of good programming is to avoid duplicating code. If the same sequence of multiple statements or functions are to be applied repeatedly, then it is usually advisable to bundle them into a new <em>function</em> and apply this single function to each object. This also has the advantage that if some requirement or variable name changes, it has to be edited only in one place. A further advantage of writing functions is that you can give the function an intuitively understandable name, so that your code reads like a sequence of orders given to a human.</p>
 <p>For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="programmingprimers.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NOT ADVISABLE</span></span>
-<span id="cb113-2"><a href="programmingprimers.html#cb113-2" aria-hidden="true" tabindex="-1"></a>temp_soil <span class="ot">&lt;-</span> (temp_soil <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span>
-<span id="cb113-3"><a href="programmingprimers.html#cb113-3" aria-hidden="true" tabindex="-1"></a>temp_air  <span class="ot">&lt;-</span> (temp_air  <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span>
-<span id="cb113-4"><a href="programmingprimers.html#cb113-4" aria-hidden="true" tabindex="-1"></a>temp_leaf <span class="ot">&lt;-</span> (temp_leaf <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="programmingprimers.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NOT ADVISABLE</span></span>
+<span id="cb111-2"><a href="programmingprimers.html#cb111-2" aria-hidden="true" tabindex="-1"></a>temp_soil <span class="ot">&lt;-</span> (temp_soil <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span>
+<span id="cb111-3"><a href="programmingprimers.html#cb111-3" aria-hidden="true" tabindex="-1"></a>temp_air  <span class="ot">&lt;-</span> (temp_air  <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span>
+<span id="cb111-4"><a href="programmingprimers.html#cb111-4" aria-hidden="true" tabindex="-1"></a>temp_leaf <span class="ot">&lt;-</span> (temp_leaf <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span></code></pre></div>
 <p>Functions are a set of instructions encapsulated within curly brackets (<code>{}</code>) that generate a desired outcome. Functions contain four main elements:</p>
 <ul>
 <li>They start with a <em>name</em> to describe their purpose,</li>
@@ -467,15 +468,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>and lastly, within the body, a <em>return</em> statement indicating the output of the function.</li>
 </ul>
 <p>Below, we define our own function <code>f2c()</code>:</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="programmingprimers.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ADVISABLE</span></span>
-<span id="cb114-2"><a href="programmingprimers.html#cb114-2" aria-hidden="true" tabindex="-1"></a>f2c <span class="ot">&lt;-</span> <span class="cf">function</span>(temp_f){</span>
-<span id="cb114-3"><a href="programmingprimers.html#cb114-3" aria-hidden="true" tabindex="-1"></a>  temp_c <span class="ot">&lt;-</span> (temp_f <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span>
-<span id="cb114-4"><a href="programmingprimers.html#cb114-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(temp_c)</span>
-<span id="cb114-5"><a href="programmingprimers.html#cb114-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb114-6"><a href="programmingprimers.html#cb114-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-7"><a href="programmingprimers.html#cb114-7" aria-hidden="true" tabindex="-1"></a>temp_soil <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_soil)</span>
-<span id="cb114-8"><a href="programmingprimers.html#cb114-8" aria-hidden="true" tabindex="-1"></a>temp_air  <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_air)</span>
-<span id="cb114-9"><a href="programmingprimers.html#cb114-9" aria-hidden="true" tabindex="-1"></a>temp_leaf <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_leaf)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="programmingprimers.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ADVISABLE</span></span>
+<span id="cb112-2"><a href="programmingprimers.html#cb112-2" aria-hidden="true" tabindex="-1"></a>f2c <span class="ot">&lt;-</span> <span class="cf">function</span>(temp_f){</span>
+<span id="cb112-3"><a href="programmingprimers.html#cb112-3" aria-hidden="true" tabindex="-1"></a>  temp_c <span class="ot">&lt;-</span> (temp_f <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span> <span class="sc">/</span> <span class="dv">9</span></span>
+<span id="cb112-4"><a href="programmingprimers.html#cb112-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(temp_c)</span>
+<span id="cb112-5"><a href="programmingprimers.html#cb112-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb112-6"><a href="programmingprimers.html#cb112-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-7"><a href="programmingprimers.html#cb112-7" aria-hidden="true" tabindex="-1"></a>temp_soil <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_soil)</span>
+<span id="cb112-8"><a href="programmingprimers.html#cb112-8" aria-hidden="true" tabindex="-1"></a>temp_air  <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_air)</span>
+<span id="cb112-9"><a href="programmingprimers.html#cb112-9" aria-hidden="true" tabindex="-1"></a>temp_leaf <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_leaf)</span></code></pre></div>
 <p>Functions are essential for efficient programming. Functions have their own environment, which means that variables inside functions are only defined and usable within that function and are not saved to the global environment. Functions restrict the scope of the domain in which variables are defined. Information flows inside the function only through its arguments, and flows out of the function only through its returned variable.</p>
 <p>Functions (particularly long ones) can be written to separate source files with a suffix <code>.R</code> and saved in your <code>./R</code> directory. Preferably, the file has the same name as the function. We can save the previous function in a script <code>./R/f2c.R</code> and load it later by running <code>source("./R/f2c")</code>.</p>
 </div>
@@ -492,28 +493,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Code inside curly brackets should be <em>indented</em> (recommended: two white spaces at the beginning of each line for each indentation level - don’t use tabs).</li>
 </ul>
 <p>For example:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="programmingprimers.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="fl">5.0</span>){</span>
-<span id="cb115-2"><a href="programmingprimers.html#cb115-2" aria-hidden="true" tabindex="-1"></a>  growth_temp <span class="ot">&lt;-</span> growth_temp <span class="sc">+</span> temp  </span>
-<span id="cb115-3"><a href="programmingprimers.html#cb115-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="programmingprimers.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="fl">5.0</span>){</span>
+<span id="cb113-2"><a href="programmingprimers.html#cb113-2" aria-hidden="true" tabindex="-1"></a>  growth_temp <span class="ot">&lt;-</span> growth_temp <span class="sc">+</span> temp  </span>
+<span id="cb113-3"><a href="programmingprimers.html#cb113-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="variable-naming" class="section level4 hasAnchor" number="2.2.2.2">
 <h4><span class="header-section-number">2.2.2.2</span> Variable naming<a href="programmingprimers.html#variable-naming" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>It is recommended to use concise and descriptive variable names. Different variable naming styles are being used. In this course, we use lowercase letters, and underscores (<code>_</code>) to separate words within a variable name (<code>_</code>). Avoid (<code>.</code>) as they are reserved for certain types of objects in R. Also, avoid naming your objects with names of common functions and variables since your re-definition will mask already defined object names.</p>
 <p>For example, <code>df_daily</code> is a data frame with data at a daily resolution. Or <code>clean_daily</code> is a function that cleans daily data. Note that a verb is used as a name for a function and an underscore (<code>_</code>) is used to separate words.</p>
 <p>It is also recommended to avoid variable names consisting of only one character. Single-letter names make it practically impossible to search for that variable.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="programmingprimers.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
-<span id="cb116-2"><a href="programmingprimers.html#cb116-2" aria-hidden="true" tabindex="-1"></a>day_01</span>
-<span id="cb116-3"><a href="programmingprimers.html#cb116-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-4"><a href="programmingprimers.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
-<span id="cb116-5"><a href="programmingprimers.html#cb116-5" aria-hidden="true" tabindex="-1"></a>DayOne</span>
-<span id="cb116-6"><a href="programmingprimers.html#cb116-6" aria-hidden="true" tabindex="-1"></a>day.one</span>
-<span id="cb116-7"><a href="programmingprimers.html#cb116-7" aria-hidden="true" tabindex="-1"></a>first_day_of_the_month</span>
-<span id="cb116-8"><a href="programmingprimers.html#cb116-8" aria-hidden="true" tabindex="-1"></a>djm1</span>
-<span id="cb116-9"><a href="programmingprimers.html#cb116-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb116-10"><a href="programmingprimers.html#cb116-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Very bad</span></span>
-<span id="cb116-11"><a href="programmingprimers.html#cb116-11" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x) <span class="co"># mean() itself is already a function</span></span>
-<span id="cb116-12"><a href="programmingprimers.html#cb116-12" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># T is an abbreviation of TRUE</span></span>
-<span id="cb116-13"><a href="programmingprimers.html#cb116-13" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># c() is used to create a vector (example &lt;- c(1, 2, 3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="programmingprimers.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Good</span></span>
+<span id="cb114-2"><a href="programmingprimers.html#cb114-2" aria-hidden="true" tabindex="-1"></a>day_01</span>
+<span id="cb114-3"><a href="programmingprimers.html#cb114-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="programmingprimers.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bad</span></span>
+<span id="cb114-5"><a href="programmingprimers.html#cb114-5" aria-hidden="true" tabindex="-1"></a>DayOne</span>
+<span id="cb114-6"><a href="programmingprimers.html#cb114-6" aria-hidden="true" tabindex="-1"></a>day.one</span>
+<span id="cb114-7"><a href="programmingprimers.html#cb114-7" aria-hidden="true" tabindex="-1"></a>first_day_of_the_month</span>
+<span id="cb114-8"><a href="programmingprimers.html#cb114-8" aria-hidden="true" tabindex="-1"></a>djm1</span>
+<span id="cb114-9"><a href="programmingprimers.html#cb114-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-10"><a href="programmingprimers.html#cb114-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Very bad</span></span>
+<span id="cb114-11"><a href="programmingprimers.html#cb114-11" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(x)<span class="sc">/</span><span class="fu">length</span>(x) <span class="co"># mean() itself is already a function</span></span>
+<span id="cb114-12"><a href="programmingprimers.html#cb114-12" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># T is an abbreviation of TRUE</span></span>
+<span id="cb114-13"><a href="programmingprimers.html#cb114-13" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># c() is used to create a vector (example &lt;- c(1, 2, 3))</span></span></code></pre></div>
 </div>
 <div id="script-style" class="section level4 hasAnchor" number="2.2.2.3">
 <h4><span class="header-section-number">2.2.2.3</span> Script style<a href="programmingprimers.html#script-style" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -531,12 +532,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="within-r" class="section level4 hasAnchor" number="2.2.3.1">
 <h4><span class="header-section-number">2.2.3.1</span> Within R<a href="programmingprimers.html#within-r" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>“<em>I know the name of a function that might help solve the problem but I do not know how to use it.</em>” Typing a <code>?</code> in front of the function will open the documentation of the function, giving lots of information on the uses and options a function has. You have learned a few things about plots but you may not know how to make a boxplot:</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="programmingprimers.html#cb117-1" aria-hidden="true" tabindex="-1"></a>?boxplot</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="programmingprimers.html#cb115-1" aria-hidden="true" tabindex="-1"></a>?boxplot</span></code></pre></div>
 <p>Running the above code will open the information on making boxplots in R.</p>
 <p>If you do know how a function works but need to be reminded of the arguments it takes, simply type:</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="programmingprimers.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(boxplot)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="programmingprimers.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(boxplot)</span></code></pre></div>
 <p>“<em>There must be a function that does task X but I do not know which one.</em>” Typing <code>??</code> will call the function <code>help.search()</code>. Maybe you want to save a plot as a JPEG but you do not know how:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="programmingprimers.html#cb119-1" aria-hidden="true" tabindex="-1"></a>??jpeg</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="programmingprimers.html#cb117-1" aria-hidden="true" tabindex="-1"></a>??jpeg</span></code></pre></div>
 <p>Note that it only looks through your <em>installed</em> packages.</p>
 </div>
 <div id="online" class="section level4 hasAnchor" number="2.2.3.2">
@@ -571,12 +572,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Proceed to the next row of <code>mymat</code> and repeat steps 2-4.</li>
 </ol>
 <p><code>mymat</code> and <code>myvec</code> are defined as:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="programmingprimers.html#cb120-1" aria-hidden="true" tabindex="-1"></a>mymat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">15</span>, <span class="dv">6</span>, <span class="dv">7</span>, </span>
-<span id="cb120-2"><a href="programmingprimers.html#cb120-2" aria-hidden="true" tabindex="-1"></a>              <span class="cn">NA</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">6</span>, <span class="dv">11</span>, <span class="cn">NA</span>, <span class="dv">3</span>, </span>
-<span id="cb120-3"><a href="programmingprimers.html#cb120-3" aria-hidden="true" tabindex="-1"></a>              <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">21</span>, <span class="cn">NA</span>, <span class="dv">6</span>, </span>
-<span id="cb120-4"><a href="programmingprimers.html#cb120-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">7</span>)),</span>
-<span id="cb120-5"><a href="programmingprimers.html#cb120-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb120-6"><a href="programmingprimers.html#cb120-6" aria-hidden="true" tabindex="-1"></a>myvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">9</span>, <span class="dv">15</span>, <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="programmingprimers.html#cb118-1" aria-hidden="true" tabindex="-1"></a>mymat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">15</span>, <span class="dv">6</span>, <span class="dv">7</span>, </span>
+<span id="cb118-2"><a href="programmingprimers.html#cb118-2" aria-hidden="true" tabindex="-1"></a>              <span class="cn">NA</span>, <span class="dv">9</span>, <span class="dv">12</span>, <span class="dv">6</span>, <span class="dv">11</span>, <span class="cn">NA</span>, <span class="dv">3</span>, </span>
+<span id="cb118-3"><a href="programmingprimers.html#cb118-3" aria-hidden="true" tabindex="-1"></a>              <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">21</span>, <span class="cn">NA</span>, <span class="dv">6</span>, </span>
+<span id="cb118-4"><a href="programmingprimers.html#cb118-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">7</span>)),</span>
+<span id="cb118-5"><a href="programmingprimers.html#cb118-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb118-6"><a href="programmingprimers.html#cb118-6" aria-hidden="true" tabindex="-1"></a>myvec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">9</span>, <span class="dv">15</span>, <span class="dv">6</span>)</span></code></pre></div>
 </div>
 <div id="interpolation" class="section level3 unnumbered hasAnchor">
 <h3>Interpolation<a href="programmingprimers.html#interpolation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
