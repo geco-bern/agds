@@ -26,7 +26,9 @@ From above definitions, we can note a few key ingredients of supervised machine 
 -   A metric measuring how good the match between $Y$ and $\hat{Y}$ is - the *loss* function
 -   An algorithm (the *optimiser*) to find the best set of parameters that minimize the loss
 
-![Supervised machine learning ingredients, adopted from Chollet & Allaire (2018) Deep Learning with R](./figures/supervised_ml.png){width="13cm"}
+```{r mlingredients, echo = FALSE, fig.cap="Supervised machine learning ingredients, adopted from Chollet & Allaire (2018) Deep Learning with R"}
+knitr::include_graphics("figures/supervised_ml.png")
+```
 
 The type of modelling approach of supervised machine learning is very similar to fitting regression models as we did in Chapter \@ref{#regressionclassification}. In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Furthermore, machine learning differs from traditional statistical modelling methods in that it makes no assumptions regarding the data generation process and underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)).
 
