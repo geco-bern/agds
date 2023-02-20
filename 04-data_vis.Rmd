@@ -68,10 +68,6 @@ In the above example, we mapped two continuous variables (`TIMESTAMP_START` and 
 -   Continuous variables: position, size, color (a color gradient), line width, etc.
 -   Categorical variables: shape, color (a discrete set of colors), line type, etc.
 
-<!-- https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png -->
-
-<!-- ![test](./figures/common-aesthetics-1.png){#fig:test} \@ref(fig:test -->
-
 ```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types. Figure from [Wilke](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)", fig.align='center'}
 knitr::include_graphics("./figures/common-aesthetics-1.png")
 ```
@@ -537,14 +533,13 @@ Interested readers can find more content on geospatial data visualisation here:
 
 <!-- -   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors. -->
 
-
-## Report Exercises
-
 **Running mean of monthly CO2 concentrations:**
 
 -   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
 
 -   Define a function to compute a 12-month running mean of the monthly CO2 time series. Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken (in this case 12). Plot the running mean on top of the monthly data. Use a different color for the running mean graph.
+
+## Report Exercises
 
 **Data exploration:**
 
