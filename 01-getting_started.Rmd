@@ -625,10 +625,10 @@ Create a new *R project* and create sub-directories in a meaningful way (as desc
 
 ## Report Exercise
 
-Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. The first task is to set up the project, including a proper folder structure for data, scripts and R Markdown files, and the connection to Git for version control. Follow these steps:
+Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. The first task is to set up an R project as a *git* repository, and create an R Markdown file for your report. Follow these steps:
 
 - Log into GitHub in your browser and create a **new repository**. Name it *agds_report_yourname*, give it a short description and set it to be public, so we can read it for the evaluation. Include a README file (it's a sort of menu which you'll edit later), a `.gitignore` template for R (select in the drop-down menu) and a Creative Commons license (for code sharing rights, etc).
 - Now that you have a GitHub repository, open it and you should see a green button saying **Code**. Go to **SSH** and copy that url. You will use it to *clone* the repository.
 - Open RStudio. Create a new R project from a GitHub repository. Paste the repository's url, give it a name (by default the same as the repository) and select in which folder you want to keep it locally (for example the base directory `~`). This will clone all the files from GitHub onto the project directory in your computer.
-- With this, you're set up. You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, keep adding the report content to this R project folder.
-- Create a new **R Markdown** file called `report.Rmd`. This is where you will include the solutions to the \*\*\* Exercises and incrementally write your report.
+- With this, you're set up. You should have two R projects: a local project containing solutions to general exercises (for yourself) and the report project + git repository (that you'll share with us at the end of the course).
+- You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, keep adding the report content to this R project folder. Create a new **R Markdown** file called `report.Rmd`. This is where you will include the solutions to the \*\*\* Exercises and incrementally write your report.
