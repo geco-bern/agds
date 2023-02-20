@@ -476,7 +476,7 @@ df7
 bind_cols(df6, df7)
 ```
 
-But beware! In particular the stacking along columns (`bind_cols()`) is very error-prone. Since a tidy data frame regards each row as an instance of associated measurements, the rows of the two data frames and their order must match exactly. Otherwise, an error is raised or (even worse) rows get associated when they shouldn't be. In such cases, where information about a common set of observations is distributed across multiple data objects, we are dealing with *relational data*. The key for their combination (or "merging") is a *unique identification key* - the column that is present in both data frames and which contains values along which the merging of the two data frames is performed. In our example from above, this is `month`, and we can use the dplyr function `left_join()`.
+But beware! In particular the stacking along columns (`bind_cols()`) is very error-prone. Since a tidy data frame regards each row as an instance of associated measurements, the rows of the two data frames and their order must match exactly. Otherwise, an error is raised or (even worse) rows get associated when they shouldn't be. In such cases, where information about a common set of observations is distributed across multiple data objects, we are dealing with *relational data*. The key for their combination (or "merging") is the *join variable* - the column that is present in both data frames and which contains values along which the merging of the two data frames is performed. In our example from above, this is `month`, and we can use the {dplyr} function `left_join()`.
 
 ```{r}
 df6 |>
@@ -485,7 +485,7 @@ df6 |>
   arrange(month)  # sort in ascending order
 ```
 
-Note that here, we first re-shuffled (permuted) the rows of `df6` for demonstration purposes, and arranged the output data frame again by `month` - an ordinal variable. `left_join()` is not compromised by the order of the rows, but instead relies on the unique identification key, specified by the argument `by = "month"`, for associating (merging, joining) the two data frames. In some cases, multiple columns may act as the unique identification key in their combination (for example `by = c("year", "month")`).
+Note that here, we first re-shuffled (permuted) the rows of `df6` for demonstration purposes, and arranged the output data frame again by `month` - an ordinal variable. `left_join()` is not compromised by the order of the rows, but instead relies on the join variable, specified by the argument `by = "month"`, for associating (merging, joining) the two data frames. In some cases, multiple columns may act as the unique identification key in their combination (for example `by = c("year", "month")`).
 
 Other variants of `*_join()` are available as described [here](https://r4ds.had.co.nz/relational-data.html).
 
