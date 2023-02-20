@@ -140,7 +140,9 @@ hhdf <- hhdf |>
 
 Here, the **pipe** operator `|>` is used. It "pipes" the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the *first argument* of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.
 
-> Note: The pipe operator is so popular that has been recently included in the latest versions of base R. This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
+> Note: The pipe operator is so popular that has been recently included in the latest versions of base R (version 4.1.0 and beyond). This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
+
+> Note: If you have an older Macbook that can't operate the latest Operating System version, you may not be able to update R. In this case, just use the `magrittr` pipe throughout.
 
 Mutating both our timestamp variables could be written as `mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START), TIMESTAMP_END = ymd_hm(TIMESTAMP_END))`. Sometimes, such multiple-variable mutate statements can get quite long. A handy short version of this can be implemented using `across()`:
 
