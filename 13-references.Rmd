@@ -1,1 +1,9 @@
 # References {-}
+
+## System information and package list {.unnumbered}
+
+This book was compiled with the following environment:
+
+```{r}
+sessioninfo::session_info()
+```
