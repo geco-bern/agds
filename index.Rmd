@@ -94,14 +94,6 @@ Chapters \@ref(gettingstarted)-\@ref(randomforest) serve as lecture notes for *A
 
 All tutorials use the R programming language.
 
-## System information and package list {.unnumbered}
-
-This book was compiled with the following environment:
-
-```{r}
-sessioninfo::session_info()
-```
-
 # Introduction {.unnumbered}
 
 The sheer volume of data that is becoming available today bears a huge potential for answering long-standing questions in all fields of environmental and geo-sciences. This gives rise to a new set of tools that can be used and a new set of challenges when applying them.
