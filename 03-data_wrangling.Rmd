@@ -51,7 +51,7 @@ Let's get started with working with our example data set and read it into R, as 
 
 To import the data into the R environment, we use the function `read_csv()` from the {readr} package (part of tidyverse). In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. For example, *tibbles* generate a nicely readable output when printing the object as is done below.
 
-```{r}
+```{r results=FALSE, message=FALSE, warning=FALSE}
 half_hourly_fluxes <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
 half_hourly_fluxes
 ```
@@ -128,7 +128,10 @@ half_hourly_fluxes$TIMESTAMP_START <- ymd_hm(half_hourly_fluxes$TIMESTAMP_START)
 Modifying existing or creating new variables (columns) in a data frame is done in the tidyverse using the function `mutate()`. The equivalent statement is:
 
 ```{r eval=FALSE}
-half_hourly_fluxes <- mutate(half_hourly_fluxes, TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
+half_hourly_fluxes <- mutate(
+  half_hourly_fluxes,
+  TIMESTAMP_START = ymd_hm(TIMESTAMP_START)
+  )
 ```
 
 Note that in the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `half_hourly_fluxes`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
@@ -170,7 +173,11 @@ Note also that some structures are *hierarchical*. For example, data may be stru
 Our example data contains values recorded at each half-hourly time interval over the course of eleven years (check by `nrow(half_hourly_fluxes)/(2*24*365)`). The data are recorded at a site, located in the temperate climate zone, where solar radiation and therefore also other meteorological variables and ecosystem fluxes vary substantially over the course of a day and over the course of a year. Although not explicitly separated, the date-time object thus encodes information along multiple *axes of variation* in the data. For example, over the course of one day (`2*24` rows in our data), the shortwave incoming radiation `SW_IN_F` varies over a typical diurnal cycle:
 
 ```{r}
-plot(half_hourly_fluxes[1:(2*24),]$TIMESTAMP_START, half_hourly_fluxes[1:(2*24),]$SW_IN_F, type = "l")
+plot(
+  half_hourly_fluxes[1:(2*24),]$TIMESTAMP_START,
+  half_hourly_fluxes[1:(2*24),]$SW_IN_F,
+  type = "l"
+  )
 ```
 
 > Note: `plot()` is the very basic of plotting data. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. The argument `type = "l"` indicates that we want a line plot, rather than points.
@@ -178,7 +185,11 @@ plot(half_hourly_fluxes[1:(2*24),]$TIMESTAMP_START, half_hourly_fluxes[1:(2*24),
 Over the course of an entire year, shortwave incoming radiation varies with the seasons, peaking in summer:
 
 ```{r}
-plot(half_hourly_fluxes[1:(365*2*24),]$TIMESTAMP_START, half_hourly_fluxes[1:(365*2*24),]$SW_IN_F, type = "l")
+plot(
+  half_hourly_fluxes[1:(365*2*24),]$TIMESTAMP_START,
+  half_hourly_fluxes[1:(365*2*24),]$SW_IN_F,
+  type = "l"
+  )
 ```
 
 All data frames have two dimensions, rows and columns. Our data frame is organised along half-hourly time steps in rows. As described above, these time steps belong to different days, months, and years, although these "axes of variation" are not reflected by the structure of the data frame and we do not have columns that indicate the day, month or year of each half-hourly time step. This would be redundant information since the date-time objects of columns `TIMESTAMP_*` contain this information. However, for certain applications, it may be useful to separate information regarding these axes of variation more explicitly. For example by:
@@ -199,7 +210,7 @@ Data comes in many forms and shapes. For example, Excel provides a playground fo
 ```{r echo=FALSE}
 ## this is hidden - used to create the objects printed in next chunk
 ## using the ts object 'co2'
-df1 <- tibble(co2_concentration = as.vector(co2), 
+co2_concentration <- tibble(co2_concentration = as.vector(co2), 
        year_dec = time(co2)
        ) |> 
   mutate(month_dec = year_dec - as.integer(year_dec)) |> 
@@ -210,18 +221,18 @@ df1 <- tibble(co2_concentration = as.vector(co2),
   select(year, month, co2_concentration) |> 
   slice(1:36)
 
-df2 <- df1 |> 
+co2_concentration_monthly <- co2_concentration |> 
   pivot_wider(names_from = month, values_from = co2_concentration)
 
-df3 <- df1 |> 
+co2_concentration_yearly <- co2_concentration |> 
   # mutate(year = as.character(year)) |> 
   pivot_wider(names_from = year, values_from = co2_concentration)
 ```
 
 ```{r}
-df1
-df2
-df3
+co2_concentration
+co2_concentration_monthly
+co2_concentration_yearly
 ```
 
 There are advantages for interoperability and ease of use when data frames come with consistent layouts, adhering to certain design principles. We have learned that in tabular data, each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). And that each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. Following these principles strictly leads to *tidy data*. In essence, quoting [Wickham and Grolemund (2017)](https://r4ds.had.co.nz/tidy-data.html), data are tidy if:
@@ -234,16 +245,16 @@ There are advantages for interoperability and ease of use when data frames come 
 knitr::include_graphics("./figures/tidy_data.png")
 ```
 
-The {tidyr} package provides powerful functions to make data tidy. In the examples above, `df2` and and `df3` are not tidy. In `df2`, the same variable (CO2 concentration) appears in multiple columns. Organising columns by months leads to a "wide" table format. We can convert it to a "long" format by:
+The {tidyr} package provides powerful functions to make data tidy. In the examples above, `co2_concentration_monthly` and and `co2_concentration_yearly` are not tidy. In `co2_concentration_monthly`, the same variable (CO2 concentration) appears in multiple columns. Organising columns by months leads to a "wide" table format. We can convert it to a "long" format by:
 ```{r}
-df2 |> 
+co2_concentration_monthly |> 
   pivot_longer(cols = 2:13, names_to = "month", values_to = "co2")
 ```
-This corresponds to the format of `df1` and is tidy. A long format of data frames is required to visualise data using the plotting functions of the {ggplot2} package which will be introduced in Chapter \@ref(datavis).
+This corresponds to the format of `co2_concentration` and is tidy. A long format of data frames is required to visualise data using the plotting functions of the {ggplot2} package which will be introduced in Chapter \@ref(datavis).
 
 Either way, for certain applications, it may be advantageous to work with a wide format. We can convert from a long to a wide format by:
 ```{r}
-df1 |> 
+co2_concentration |> 
   pivot_wider(names_from = year, values_from = co2_concentration)
 ```
 
@@ -453,33 +464,33 @@ write_csv(half_hourly_fluxes, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_200
 Often, data are spread across multiple files and tables and needs to be combined for the planned analysis. In the simplest case, data frames have a corresponding set of columns and we can "stack" them along rows:
 
 ```{r echo=FALSE}
-df4 <- df3[1:6,]
-df5 <- df3[7:12,]
+co2_conc_subset_1 <- co2_concentration_yearly[1:6,]
+co2_conc_subset_2 <- co2_concentration_yearly[7:12,]
 ```
 
 ```{r}
-df4
-df5
-bind_rows(df4, df5)
+co2_conc_subset_1
+co2_conc_subset_2
+bind_rows(co2_conc_subset_1, co2_conc_subset_2)
 ```
 
 ..., or data frames have a corresponding set of rows (and in the same order) and we can "stack" them along columns.
 
 ```{r echo=FALSE}
-df6 <- df3[, c(1,2,3)]
-df7 <- df3[, c(1,4)]
+co2_conc_subset_3 <- co2_concentration_yearly[, c(1,2,3)]
+co2_conc_subset_4 <- co2_concentration_yearly[, c(1,4)]
 ```
 
 ```{r}
-df6
-df7
-bind_cols(df6, df7)
+co2_conc_subset_3
+co2_conc_subset_4
+bind_cols(co2_conc_subset_3, co2_conc_subset_4)
 ```
 
 But beware! In particular the stacking along columns (`bind_cols()`) is very error-prone. Since a tidy data frame regards each row as an instance of associated measurements, the rows of the two data frames and their order must match exactly. Otherwise, an error is raised or (even worse) rows get associated when they shouldn't be. In such cases, where information about a common set of observations is distributed across multiple data objects, we are dealing with *relational data*. The key for their combination (or "merging") is a *unique identification key* - the column that is present in both data frames and which contains values along which the merging of the two data frames is performed. In our example from above, this is `month`, and we can use the dplyr function `left_join()`.
 
 ```{r}
-df6 |>
+co2_conc_subset_3 |>
   slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
   left_join(df7, by = "month") |> 
   arrange(month)  # sort in ascending order
@@ -709,7 +720,10 @@ print(paste("Nested and joined:",
                    standard = "SI")))
 
 # save for later use
-write_rds(daily_fluxes_allsites_nested_joined, file = "data/daily_fluxes_allsites_nested_joined.rds")
+write_rds(
+  daily_fluxes_allsites_nested_joined,
+  file = "data/daily_fluxes_allsites_nested_joined.rds"
+  )
 ```
 
 ## Exercises {#exerciseswrangling}
