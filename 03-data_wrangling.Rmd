@@ -72,7 +72,7 @@ For our further data exploration, we will reduce the data frame we are working w
 This is implemented by:
 
 ```{r}
-hhdf <- select(
+hhdf <- dplyr::select(
   hhdf,
   starts_with("TIMESTAMP"),
   ends_with("_F"),
@@ -122,20 +122,20 @@ The number 1 stands for the month of the year, i.e., January. You can find more 
 Since `read_csv()` did not interpret the `TIMESTAMP_*` variables as desired, we may convert the entire column in the data frame into a date-time object. In base-R, we would do this by:
 
 ```{r eval=FALSE}
-hhdf$TIMESTAMP_START <- ymd_hm(hhdf$TIMESTAMP_START)
+hhdf$TIMESTAMP_START <- lubridate::ymd_hm(hhdf$TIMESTAMP_START)
 ```
 
 Modifying existing or creating new variables (columns) in a data frame is done in the tidyverse using the function `mutate()`. The equivalent statement is:
 
 ```{r eval=FALSE}
-hhdf <- mutate(hhdf, TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
+hhdf <- dplyr::mutate(hhdf, TIMESTAMP_START = lubridate::ymd_hm(TIMESTAMP_START))
 ```
 
 Note that in the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `hhdf`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
 
 ```{r, eval=FALSE}
 hhdf <- hhdf |> 
-  mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
+  dplyr::mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
 ```
 
 Here, the **pipe** operator `|>` is used. It "pipes" the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the *first argument* of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.
@@ -148,7 +148,7 @@ Mutating both our timestamp variables could be written as `mutate(TIMESTAMP_STAR
 
 ```{r}
 hhdf <- hhdf |> 
-  mutate(across(starts_with("TIMESTAMP_"), ymd_hm))
+  dplyr::mutate(across(starts_with("TIMESTAMP_"), lubridate::ymd_hm))
 ```
 
 We will encounter more ways to use mutate later in this tutorial. A complete reference to `mutate()` is available [here](https://r4ds.had.co.nz/transform.html#add-new-variables-with-mutate).
@@ -187,9 +187,9 @@ All data frames have two dimensions, rows and columns. Our data frame is organis
 
 ```{r}
 hhdf |>
-  mutate(year = year(TIMESTAMP_START),
-         month = month(TIMESTAMP_START)) |>
-  select(TIMESTAMP_START, TIMESTAMP_END, year, month)  # for displaying
+  dplyr::mutate(year = lubridate::year(TIMESTAMP_START),
+         month = lubridate::month(TIMESTAMP_START)) |>
+  dplyr::select(TIMESTAMP_START, TIMESTAMP_END, year, month)  # for displaying
 ```
 
 Note that we used `mutate()` here to create a new variable (column) in the data frame, as opposed to above where we overwrote an existing variable with the same function.
@@ -201,23 +201,23 @@ Data comes in many forms and shapes. For example, Excel provides a playground fo
 ```{r echo=FALSE}
 ## this is hidden - used to create the objects printed in next chunk
 ## using the ts object 'co2'
-df1 <- tibble(co2_concentration = as.vector(co2), 
+df1 <- tibble::tibble(co2_concentration = as.vector(co2), 
        year_dec = time(co2)
        ) |> 
-  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-  mutate(year = as.integer(year_dec - month_dec)) |> 
-  mutate(month = as.integer(month_dec * 12)) |> 
-  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  select(year, month, co2_concentration) |> 
-  slice(1:36)
+  dplyr::mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+  dplyr::mutate(year = as.integer(year_dec - month_dec)) |> 
+  dplyr::mutate(month = as.integer(month_dec * 12)) |> 
+  dplyr::mutate(date = lubridate::ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+  dplyr::mutate(month = month(date, label = TRUE)) |> 
+  dplyr::select(year, month, co2_concentration) |> 
+  dplyr::slice(1:36)
 
 df2 <- df1 |> 
-  pivot_wider(names_from = month, values_from = co2_concentration)
+  tidyr::pivot_wider(names_from = month, values_from = co2_concentration)
 
 df3 <- df1 |> 
-  # mutate(year = as.character(year)) |> 
-  pivot_wider(names_from = year, values_from = co2_concentration)
+  # dplyr::mutate(year = as.character(year)) |> 
+  tidyr::pivot_wider(names_from = year, values_from = co2_concentration)
 ```
 
 ```{r}
@@ -261,9 +261,9 @@ Let's say we want to calculate the mean of half-hourly shortwave radiation withi
 
 ```{r}
 ddf <- hhdf |>  
-  mutate(date = as_date(TIMESTAMP_START)) |>  # converts the ymd_hm-formatted date-time object to a date-only object (ymd)
-  group_by(date) |> 
-  summarise(SW_IN_F = mean(SW_IN_F))
+  dplyr::mutate(date = as_date(TIMESTAMP_START)) |>  # converts the ymd_hm-formatted date-time object to a date-only object (ymd)
+  dplyr::group_by(date) |> 
+  dplyr::summarise(SW_IN_F = mean(SW_IN_F))
 ```
 
 The seasonal course can now be more clearly be visualized with the data aggregated to daily values.
@@ -286,15 +286,15 @@ Finally, we calculate the fraction of measured underlying half-hourly data from 
 
 ```{r}
 ddf <- hhdf |> 
-    mutate(date = as_date(TIMESTAMP_START)) |>   # converts time object to a date object
-    group_by(date) |> 
-    summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE),
+    dplyr::mutate(date = as_date(TIMESTAMP_START)) |>   # converts time object to a date object
+    dplyr::group_by(date) |> 
+    dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE),
               n_datapoints = n(), # counts the number of observations per day
               n_measured = sum(NEE_VUT_REF_QC == 0), # counts the number of actually measured data (excluding gap-filled and poor quality data)
               SW_IN_F = mean(SW_IN_F, na.rm = TRUE),  # we will use this later
               .groups = 'drop' # to un-group the resulting data frame
               ) |> 
-    mutate(f_measured = n_measured / n_datapoints) # calculate the fraction of measured values over total observations
+    dplyr::mutate(f_measured = n_measured / n_datapoints) # calculate the fraction of measured values over total observations
 write_csv(ddf, file = "data/ddf.csv")
 ddf
 ```
@@ -305,7 +305,7 @@ Aggregating is related to *nesting* performed by the {tidyr} function `nest()`:
 
 ```{r message=FALSE}
 hhdf |>  
-  mutate(date = as_date(TIMESTAMP_START)) |>
+  dplyr::mutate(date = as_date(TIMESTAMP_START)) |>
   group_by(date) |> 
   nest()
 ```
@@ -325,7 +325,7 @@ As a general principle, we want to have *machine readable* data. Key for achievi
 -   Even if the data are clean and contains a consistently spelled categorical variable in the form of a character string, R doesn't necessarily treat it as categorical. For certain downstream steps of the workflow, it may be necessary to transform such a variable to one of type `factor`. For example, as entries of an unordered categorical variable, we have `unique(df$gender) = c("female", "male", "non-binary")`. To treat them as categorical and not just mere character strings, we would have to do:
 
 ```{r, eval=FALSE}
-df <- df |> mutate(gender = as.factor(gender))
+df <- df |> dplyr::mutate(gender = as.factor(gender))
 ```
 
 -   Character strings may encode ordinal information. For example, entries specify quality control information and are one of `c("good quality", "fair quality, "poor quality")`. A challenge could be that the spelling is inconsistent (`c("Good quality", "good quality", …)`). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable `NEE_VUT_REF_QC` in our example dataset `hhdf` follows this approach:
@@ -379,7 +379,7 @@ In our example dataset, some values of `SWC_F_MDS_*` are given as `-9999`.
 
 ```{r}
 hhdf |> 
-  select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
+  dplyr::select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
   head()
 ```
 
@@ -387,10 +387,10 @@ When reading the documentation of this specific dataset, we learn that `-9999` i
 
 ```{r}
 hhdf <- hhdf |>  
-  mutate(across(where(is.numeric), ~na_if(., -9999)))
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999)))
 
 hhdf |> 
-  select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
+  dplyr::select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
   head()
 ```
 
@@ -398,7 +398,7 @@ This lets us visualise the data and its gaps with `vis_miss()` from the {visdat}
 
 ```{r warning=FALSE, message=FALSE}
 visdat::vis_miss(
-  hhdf |> slice(1:10000),
+  hhdf |> dplyr::slice(1:10000),
   cluster = FALSE, 
   warn_large_data = FALSE
   )
@@ -428,7 +428,7 @@ Note that `filter()` removes entire rows. In some cases this is undesired and it
 
 ```{r eval=FALSE}
 hhdf |> 
-    mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC %in% c(0,1), GPP_NT_VUT_REF, NA))
+    dplyr::mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC %in% c(0,1), GPP_NT_VUT_REF, NA))
 ```
 
 If we decide to drop a row containing `NA` in any of the variables later during the workflow, we can do this, for example using the useful {tidyr} function `drop_na()`.
@@ -482,7 +482,7 @@ But beware! In particular the stacking along columns (`bind_cols()`) is very err
 
 ```{r}
 df6 |>
-  slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
+  dplyr::slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
   left_join(df7, by = "month") |> 
   arrange(month)  # sort in ascending order
 ```
@@ -536,7 +536,7 @@ clean_data_dd <- function(df){
   df <- df |>
 
     # select only the variables we are interested in
-    select(
+    dplyr::select(
       TIMESTAMP,
       ends_with("_F"),
       GPP_NT_VUT_REF,
@@ -545,10 +545,10 @@ clean_data_dd <- function(df){
       -contains("JSB")) |> 
 
     # convert to a nice date object
-    mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
+    dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
 
     # set all -9999 to NA
-    mutate(across(where(is.numeric), ~na_if(., -9999)))
+    dplyr::mutate(across(where(is.numeric), ~na_if(., -9999)))
   
   return(df)
 }
@@ -571,7 +571,7 @@ A visualisation of missing data indicates that soil water content data (`SWC_F_M
 
 ```{r}
 visdat::vis_miss(
-  ddf_allsites |> slice(1:10000),
+  ddf_allsites |> dplyr::slice(1:10000),
   cluster = FALSE,
   warn_large_data = FALSE
   )
@@ -598,7 +598,7 @@ We can use this function to mutate all values of column `"siteid"`, overwriting 
 
 ```{r}
 ddf_allsites <- ddf_allsites |>
-  mutate(siteid = str_sub(siteid, start = 12, end = 17))
+  dplyr::mutate(siteid = str_sub(siteid, start = 12, end = 17))
 
 ddf_allsites
 ```
@@ -628,7 +628,7 @@ When writing code for an analysis, it's useful, if not essential, to understand 
 Yes, they can. Think of the linear model objects as 'values'. Values don't necessarily have to be scalars, but they can be of any type (class).
 
 ```{r}
-tibble(
+tibble::tibble(
   siteid = vec_sites,
   linmod = list_linmod
   )
@@ -639,7 +639,7 @@ The fact that cells can contain any type of object offers a powerful concept. In
 The following creates a nested data frame, where the column `data` is defined by the list of data frames read from files above (`list_df`).
 
 ```{r}
-tibble(
+tibble::tibble(
   siteid = vec_sites,
   data = list_df
   )
@@ -661,7 +661,7 @@ This structure is very useful. For example, for applying functions over sites' d
 ddf_allsites |>
   group_by(siteid) |>
   nest() |>
-  mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
+  dplyr::mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
 ```
 
 This approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column `"data"` have time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by `siteid`), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of `summarise()` (see above).
@@ -672,9 +672,9 @@ Combining the steps described above into a single workflow, we have:
 ddf_allsites_nested <- ddf_allsites |>
   group_by(siteid) |>
   nest() |>
-  mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
-  mutate(summ = purrr::map(linmod, ~summary(.))) |>
-  mutate(rsq = map_dbl(summ, "r.squared")) |>
+  dplyr::mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
+  dplyr::mutate(summ = purrr::map(linmod, ~summary(.))) |>
+  dplyr::mutate(rsq = map_dbl(summ, "r.squared")) |>
   arrange(desc(rsq))  # to arrange output, with highest r-squared on top
 
 ddf_allsites_nested
@@ -692,13 +692,13 @@ Joining the nested data frame with site meta information results in a substantia
 
 ```{r}
 ddf_allsites_nested_joined <- siteinfo_fluxnet2015 |>
-  rename(siteid = sitename) |>
-  right_join(select(ddf_allsites_nested, -linmod, -summ, -rsq),
+  dplyr::rename(siteid = sitename) |>
+  dplyr::right_join(dplyr::select(ddf_allsites_nested, -linmod, -summ, -rsq),
              by = "siteid")
 
 ddf_allsites_joined <- siteinfo_fluxnet2015 |>
-  rename(siteid = sitename) |>
-  right_join(ddf_allsites,
+  dplyr::rename(siteid = sitename) |>
+  dplyr::right_join(ddf_allsites,
              by = "siteid")
 
 print(paste("Flat and joined:", 
