@@ -18,7 +18,7 @@ In Chapter \@ref(datawrangling), we learned about axes of variation in the data.
 
 In this chapter, we will be working mainly with the same half-hourly time series data of ecosystem-atmosphere fluxes and parallel measurements of meteorological variables - as in Chapters \@ref(gettingstarted) and \@ref(datawrangling). For time series data, the entry point of the exploratory data analysis cycle may be a visualization of some variable of interest (here `GPP_NT_VUT_REF`) against time:
 
-```{r}
+```{r results=FALSE, messages=FALSE, warning=FALSE}
 half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 plot(half_hourly_fluxes$TIMESTAMP_START, half_hourly_fluxes$GPP_NT_VUT_REF, type = "l")
 ```
@@ -76,9 +76,9 @@ Not only the different aesthetics, but also the type of *geometry* (the layers o
 
 #### One value per category
 
-Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `daily_fluxes` which we created in Chapter \@ref(datawrangling).
+Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `plot_2`. Both examples are based on the data frame `daily_fluxes` which we created in Chapter \@ref(datawrangling).
 
-```{r}
+```{r results=FALSE, messages=FALSE, warning=FALSE}
 # read in demo daily data
 # as saved in the previous chapter
 daily_fluxes <- read_csv("data/daily_fluxes.csv")
@@ -91,7 +91,7 @@ mdf <- daily_fluxes |>
 
 
 # Bar plot
-gg1 <- ggplot(
+plot_1 <- ggplot(
   data = mdf,
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_bar(stat = "identity") +
@@ -101,7 +101,7 @@ gg1 <- ggplot(
        y =expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")))
 
 # Custom plot
-gg2 <- ggplot(
+plot_2 <- ggplot(
   data = mdf,
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_segment(aes(x = month, xend = month, y = 0, yend = GPP_NT_VUT_REF), 
@@ -117,10 +117,10 @@ gg2 <- ggplot(
   coord_flip()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2)
+cowplot::plot_grid(plot_1, plot_2)
 ```
 
-Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the {cowplot} library.
+Above, we created two objects, `plot_1` and `plot_2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the {cowplot} library.
 
 Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the function `dplyr::summarise()`. This equivalency is demonstrated below.
 
@@ -132,7 +132,7 @@ df_count <- half_hourly_fluxes |>
   dplyr::summarise(count = n())
 
 # separate aggregation  
-gg1 <-ggplot(
+plot_1 <-ggplot(
   data = df_count,
   aes(x = NIGHT, y = count)) +
   geom_bar(stat = "identity") +
@@ -144,7 +144,7 @@ half_hourly_fluxes_bad <- half_hourly_fluxes |>
   dplyr::filter(NEE_VUT_REF_QC == 0)
 
 # implicit aggregation by 'stat'
-gg2 <- ggplot(
+plot_2 <- ggplot(
   data = half_hourly_fluxes_bad,
   aes(x = NIGHT)) +
   geom_bar(stat = "count") +
@@ -152,7 +152,7 @@ gg2 <- ggplot(
   theme_classic()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2)
+cowplot::plot_grid(plot_1, plot_2)
 ```
 
 #### Distribution of one variable
@@ -187,7 +187,7 @@ plot_data <- half_hourly_fluxes |>
   mutate(Night = ifelse(NIGHT == 1, TRUE, FALSE))
 
 # Boxplot
-gg1 <-ggplot(
+plot_1 <-ggplot(
   data = plot_data,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70") +
@@ -196,7 +196,7 @@ gg1 <-ggplot(
   theme_classic()
 
 # Box plot + jittered points
-gg2 <-ggplot(
+plot_2 <-ggplot(
   data = plot_data,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70", outlier.shape = NA) +
@@ -206,7 +206,7 @@ gg2 <-ggplot(
   theme_classic()
 
 # Violin plot
-gg3 <- ggplot(
+plot_3 <- ggplot(
   data = plot_data,
   aes(x = Night, y = VPD_F)) +
   geom_violin(fill = "grey70") +
@@ -215,7 +215,7 @@ gg3 <- ggplot(
   theme_classic()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2, gg3, ncol = 3)
+cowplot::plot_grid(plot_1, plot_2, plot_3, ncol = 3)
 ```
 
 #### Regression of two continuous variables
@@ -230,7 +230,7 @@ half_hourly_fluxes_sub <- half_hourly_fluxes |>
   sample_n(1000)
 
 # a
-gg1 <- ggplot(
+plot_1 <- ggplot(
   data = half_hourly_fluxes_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
@@ -239,7 +239,7 @@ gg1 <- ggplot(
   theme_classic()
 
 # b
-gg2 <- ggplot(
+plot_2 <- ggplot(
   data = half_hourly_fluxes_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = NIGHT)) +
   geom_point(size = 0.75) +
@@ -248,7 +248,7 @@ gg2 <- ggplot(
   theme_classic()
 
 # c
-gg3 <- ggplot(
+plot_3 <- ggplot(
   data = half_hourly_fluxes_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))) +
   geom_point(size = 0.75) +
@@ -257,7 +257,7 @@ gg3 <- ggplot(
   theme_classic()
 
 # d
-gg4 <- ggplot(
+plot_4 <- ggplot(
   data = half_hourly_fluxes_sub,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = TA_F)) +
   geom_point(size = 0.75) +
@@ -267,7 +267,7 @@ gg4 <- ggplot(
   scale_color_viridis_c()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
+cowplot::plot_grid(plot_1, plot_2, plot_3, plot_4, ncol = 2, labels = "auto")
 ```
 
 #### Use of colors
@@ -389,13 +389,13 @@ doydf <- daily_fluxes |>
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # seasonal cycle, cartesian
-gg1 <- ggplot(
+plot_1 <- ggplot(
   data = doydf,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # seasonal cycle, polar
-gg2 <- ggplot(
+plot_2 <- ggplot(
   data = doydf,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line() +
@@ -410,20 +410,20 @@ daydf <- half_hourly_fluxes |>
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # diurnal cycle, cartesian
-gg3 <-ggplot(
+plot_3 <-ggplot(
     data = daydf,
     aes(hour, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # diurnal cycle, polar
-gg4 <-ggplot(
+plot_4 <-ggplot(
   data = daydf,
   aes(hour, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
+cowplot::plot_grid(plot_1, plot_2, plot_3, plot_4, ncol = 2, labels = "auto")
 ```
 
 #### Density along two continuous variables
