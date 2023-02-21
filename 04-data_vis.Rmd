@@ -4,6 +4,15 @@
 
 ## Learning objectives
 
+In this chapter you will learn how to visualize data for exploration or publication.
+
+You will learn among others the:
+
+- grammar of graphics, i.e. using the {ggplot2} library
+- construct plots in a intuitive way
+- represent the same data in a variety of ways
+- the proper use of colours in visualization
+
 ## Tutorial
 
 Visualizations often take the center stage of publications and are often the main vehicles for transporting information in scientific publications and (ever more often) in the media. Visualizations communicate data and its patterns in visual form. Visualizing data is also an integral part of the exploratory data analysis cycle. Visually understanding the data guides its transformation and the identification of suitable models and analysis methods.
@@ -511,7 +520,7 @@ Raster data often reflects values in geographic space. Also points and polygons 
 Interested readers can find more content on geospatial data visualisation here:
 
 -   Timo Grossenbacher's blog on geographic data journalism ([link](https://timogrossenbacher.ch/blog/))
--   Koen Hufken's blog containing various worked example XXX
+-   Koen Hufken's blog containing various [worked example](https://bluegreenlabs.org/categories/visualization/).
 
 ## Exercises
 
