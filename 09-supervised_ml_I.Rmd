@@ -390,21 +390,23 @@ all_equal(daily_fluxes_juiced, daily_fluxes_baked)
 The effect is of standardization is illustrated by comparing original and transformed variables:
 
 ```{r warning=FALSE, message=FALSE}
-gg1 <- daily_fluxes_train |> 
+# prepare data for plotting
+daily_fluxes_train_plot <- daily_fluxes_train |> 
   dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
-  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
-  ggplot(aes(val, ..density..)) +
+  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val")
+
+# plot density
+plot_1 <- ggplot(data = daily_fluxes_train_plot, aes(val, ..density..)) +
   geom_density() +
   facet_wrap(~var)
 
-gg2 <- daily_fluxes_juiced |> 
-  dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
-  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
-  ggplot(aes(val, ..density..)) +
+# plot density by var
+plot_2 <- ggplot(data = daily_fluxes_train_plot, aes(val, ..density..)) +
   geom_density() +
   facet_wrap(~var)
 
-cowplot::plot_grid(gg1, gg2, nrow = 2)
+# combine both plots
+cowplot::plot_grid(plot_1, plot_2, nrow = 2)
 ```
 
 #### Handling missing data
@@ -491,17 +493,15 @@ Target engineering refers to pre-processing of the target variable. Its applicat
 In our data set, the variable `WS_F` (wind speed) is skewed. The target variable that we have considered so far (`GPP_NT_VUT_REF`) is not skewed. In a case where we would consider `WS_F` to be our target variable, we would thus consider applying a log-transformation.
 
 ```{r warning=FALSE, message=FALSE}
-gg1 <- daily_fluxes |> 
-  ggplot(aes(x = WS_F, y = ..density..)) +
+plot_1 <- ggplot(data = daily_fluxes, aes(x = WS_F, y = ..density..)) +
   geom_histogram() +
   labs(title = "Original")
 
-gg2 <- daily_fluxes |> 
-  ggplot(aes(x = log(WS_F), y = ..density..)) +
+plot_2 <- ggplot(data = daily_fluxes, aes(x = log(WS_F), y = ..density..)) +
   geom_histogram() +
   labs(title = "Log-transformed")
 
-cowplot::plot_grid(gg1, gg2)
+cowplot::plot_grid(plot_1, plot_2)
 ```
 
 Log transformation as part of the pre-processing is specified using the `step_log()` function, here applied to the model target variable (`all_outcomes()`).
@@ -640,8 +640,7 @@ eval_model <- function(mod, df_train, df_test){
   
   # visualise as a scatterplot
   # adding information of metrics as sub-titles
-  gg1 <- df_train %>% 
-    ggplot(aes(GPP_NT_VUT_REF, fitted)) +
+  plot_1 <- ggplot(data = df_train, aes(GPP_NT_VUT_REF, fitted)) +
     geom_point(alpha = 0.3) +
     geom_smooth(method = "lm", se = FALSE, color = "red") +
     geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
@@ -650,8 +649,7 @@ eval_model <- function(mod, df_train, df_test){
          title = "Training set") +
     theme_classic()
   
-  gg2 <- df_test %>% 
-    ggplot(aes(GPP_NT_VUT_REF, fitted)) +
+  plot_2 <- ggplot(data = df_test, aes(GPP_NT_VUT_REF, fitted)) +
     geom_point(alpha = 0.3) +
     geom_smooth(method = "lm", se = FALSE, color = "red") +
     geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
@@ -660,7 +658,7 @@ eval_model <- function(mod, df_train, df_test){
          title = "Test set") +
     theme_classic()
   
-  out <- cowplot::plot_grid(gg1, gg2)
+  out <- cowplot::plot_grid(plot_1, plot_2)
   
   return(out)
 }

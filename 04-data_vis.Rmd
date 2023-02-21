@@ -89,7 +89,6 @@ mdf <- daily_fluxes |>
   dplyr::group_by(month) |> 
   dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
-
 # Bar plot
 plot_1 <- ggplot(
   data = mdf,
@@ -182,13 +181,13 @@ The box plot is rather reductionist in showing the data (the vector of all value
 ```{r}
 # prepare plot data
 set.seed(1985)  # for random number reproducibility in sample_n() and jitter
-plot_data <- half_hourly_fluxes |> 
+half_hourly_fluxes_subset <- half_hourly_fluxes |> 
   sample_n(300) |> 
   mutate(Night = ifelse(NIGHT == 1, TRUE, FALSE))
 
 # Boxplot
 plot_1 <-ggplot(
-  data = plot_data,
+  data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70") +
   labs(title = "Box plot") +
@@ -197,7 +196,7 @@ plot_1 <-ggplot(
 
 # Box plot + jittered points
 plot_2 <-ggplot(
-  data = plot_data,
+  data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70", outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.3) +
@@ -207,7 +206,7 @@ plot_2 <-ggplot(
 
 # Violin plot
 plot_3 <- ggplot(
-  data = plot_data,
+  data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_violin(fill = "grey70") +
   labs(title = "Violin plot") +
@@ -226,12 +225,12 @@ In the figure below, we start with a simple scatter plot (a), regressing GPP aga
 
 ```{r}
 # prepare plot data
-half_hourly_fluxes_sub <- half_hourly_fluxes |>
+half_hourly_fluxes_subset <- half_hourly_fluxes |>
   sample_n(1000)
 
 # a
 plot_1 <- ggplot(
-  data = half_hourly_fluxes_sub,
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
@@ -240,7 +239,7 @@ plot_1 <- ggplot(
 
 # b
 plot_2 <- ggplot(
-  data = half_hourly_fluxes_sub,
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = NIGHT)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
@@ -249,7 +248,7 @@ plot_2 <- ggplot(
 
 # c
 plot_3 <- ggplot(
-  data = half_hourly_fluxes_sub,
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
@@ -258,7 +257,7 @@ plot_3 <- ggplot(
 
 # d
 plot_4 <- ggplot(
-  data = half_hourly_fluxes_sub,
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = TA_F)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
@@ -305,11 +304,11 @@ Hence, let's consider months as the categories to be used for separating the dat
 
 ```{r}
 # prepare data
-daily_fluxes_plot <- daily_fluxes |>
+daily_fluxes <- daily_fluxes |>
   dplyr::mutate(month = month(date, label = TRUE))
 
 ggplot(
-  data = daily_fluxes_plot,
+  data = daily_fluxes,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = month)) +
   geom_point(alpha = 0.5) +
   geom_smooth(formula = y ~ x + 0, method = "lm", se = FALSE) +
@@ -331,7 +330,7 @@ Yet another "mapping" is available with `facet_wrap()`. It separates the visuali
 
 ```{r}
 ggplot(
-  data = daily_fluxes_plot, # reusing the previously subset data (see above)
+  data = daily_fluxes, # reusing the previously subset data (see above)
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
   geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
@@ -383,14 +382,14 @@ Below, we first aggregate the data to get a mean seasonal cycle from `daily_flux
 
 ```{r}
 # prepare plot data
-doydf <- daily_fluxes |>
+daily_mean_fluxes <- daily_fluxes |>
   mutate(doy = yday(date)) |> 
   group_by(doy) |> 
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # seasonal cycle, cartesian
 plot_1 <- ggplot(
-  data = doydf,
+  data = daily_mean_fluxes,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line()
 
@@ -402,7 +401,7 @@ plot_2 <- ggplot(
   coord_polar()
 
 # prepare plot data (diurnal step)
-daydf <- half_hourly_fluxes |>
+daily_mean_hourly_fluxes <- half_hourly_fluxes |>
   mutate(month = month(TIMESTAMP_START)) |> 
   filter(month == 6) |>  # taking only June data
   mutate(hour = hour(TIMESTAMP_START)) |> 
@@ -411,13 +410,13 @@ daydf <- half_hourly_fluxes |>
 
 # diurnal cycle, cartesian
 plot_3 <-ggplot(
-    data = daydf,
+    data = daily_mean_hourly_fluxes,
     aes(hour, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # diurnal cycle, polar
 plot_4 <-ggplot(
-  data = daydf,
+  data = daily_mean_hourly_fluxes,
   aes(hour, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()
