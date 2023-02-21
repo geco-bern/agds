@@ -59,11 +59,13 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train)
 
 ### Loss function {#training}
 
-Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm ("optimiser" in Fig. XXX of Chapter \@ref(supervisedmli)) takes care of progressively reducing the loss during model training.
+Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm ("optimiser" in Fig. \@ref(fig:mlingredients) of Chapter \@ref(supervisedmli)) takes care of progressively reducing the loss during model training.
 
 Let's say the machine learning model contains two parameters and predictions can be considered a function of the two ($\hat{Y}(w_1, w_2)$). $Y$ is actually constant. Thus, the loss function is effectively a function $L(w_1, w_2)$. Therefore, we can consider the model training as a search of the parameter space to find the minimum of the loss. The parameter space spanned by all possible combinations of $(w_1, w_2)$. Common loss functions are the root mean square error (RMSE), or the mean square error (MSE), or the mean absolute error (MAE). Loss minimization is a general feature of ML model training.
 
-![Visualization of a loss function](figures/loss_plane.png){width="10cm"}
+```{r lossfunction, echo = FALSE, fig.cap="Visualization of a loss function."}
+knitr::include_graphics("figures/loss_plane.png")
+```
 
 Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter \@ref(#supervisedmli), the {caret} package provides "wrappers" that handle a large selection of different machine learning model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The {caret} function `train()` is the center piece also in terms of specifying the loss function as the argument `metric`. It defaults to the RMSE for regression models and the accuracy for classification.
 
@@ -149,9 +151,9 @@ Whether or not a resampling is applied depends on the data volume and computatio
 
 In *k-fold cross validation*, the training data is split into *k* equally sized subsets (*folds*). (Don't confuse this k with the k in KNN.) Then, there will be *k* iterations, where each fold is used for validation once (while the remaining folds are used for training). An extreme case is *leave-one-out cross validation*, where *k* corresponds to the number of data points.
 
-![K-fold cross validation. From Boehmke & Greenwell (2020).](figures/cv.png)
-
-<!-- XXX Exercises: implement k-fold cross validation by hand XXX -->
+```{r kfoldcv, echo = FALSE, fig.cap="K-fold cross validation. From Boehmke & Greenwell (2020)."}
+knitr::include_graphics("figures/cv.png")
+```
 
 To do a k-fold cross validation during model training in R, we don't have to implement the loops around folds ourselves. The resampling procedure can be specified in the {caret} function `train()` with the argument `trControl`. The object that this argument takes is the output of a function call to `trainControl()`. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:
 
@@ -187,15 +189,15 @@ Let's look at the results as we did in Chapter \@ref(supervisedmli). The model o
 eval_model(mod = mod_cv, df_train = ddf_train, df_test = ddf_test)
 ```
 
-Remember that in Chapter \@ref(supervisedmli), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set. 
-
-<!-- XXX exercises: explain to your neighbor why XXX. -->
+Remember that in Chapter \@ref(supervisedmli), we used $k=5$ and got an $R^2=0.74$ on the training set and $R^2=0.61$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=5$ on the training set but better on the test set.
 
 ### Validation versus testing data
 
 A source of confusion can be the distinction of validation and testing data. They are different things. The validation data is used during model training. The model fitting and the selection of the optimal hyperparameters is based on comparing predictions with the validation data. Hence, a evaluations of true out-of-sample predictions should be done with a portion of the data that has never been used during the model training process (see Figure below).
 
-![Figure adopted form [Google Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course/validation/video-lecture)](./figures/training_validation_testing.png){width="14cm"}
+```{r trainvaltest, echo = FALSE, fig.cap="Figure adopted form [Google Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course/validation/video-lecture)."}
+knitr::include_graphics("./figures/training_validation_testing.png")
+```
 
 ### Modeling with structured data
 
@@ -226,8 +228,3 @@ The tutorial holds all steps to train and test on data from the [Davos](https://
 -   How do the model metric on the test set change, when you are training and testing on the same or on different datasets?
 -   What are the differences between Davos and Laegern that could cause the pattern that you found?
 -   What do you expect when training and testing on Davos and Laegern simultaneously? Is this a valid approach? Use your new knowledge to reason for or against a situation where you would train on both sites.
-
-
-
-
-

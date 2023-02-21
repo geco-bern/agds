@@ -532,29 +532,12 @@ We will learn more about *git* in Chapter \@ref(codemgmt). For now, follow instr
 Let's install all the required packages for this course and load them.
 
 ```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("KernSmooth", "MASS", "Matrix", "ModelMetrics", "R6",
-              "RColorBrewer", "Rcpp", "SQUAREM", "askpass", "backports",
-              "base64enc", "bit", "bit64", "bookdown", "broom", "bslib",
-              "cachem", "caret", "class", "cli", "clipr", "clock",
-              "codetools", "colorspace", "cowplot", "cpp11", "crayon",
-              "curl", "data.table", "digest", "dplyr", "e1071",
-              "ellipsis", "evaluate", "fansi", "farver", "fastmap", "forcats",
-              "foreach", "fs", "furrr", "future", "future.apply", "generics",
-              "ggplot2", "globals", "glue", "gower", "gtable", "hardhat",
-              "hexbin", "highr", "hms", "htmltools", "httr", "ipred", "isoband",
-              "iterators", "jquerylib", "jsonlite", "knitr", "labeling",
-              "lattice", "lava", "lifecycle", "listenv", "lubridate",
-              "magrittr", "memoise", "mgcv", "mime", "modelr", "munsell",
-              "nlme", "nnet", "numDeriv", "openssl", "pROC", "parallelly",
-              "pillar", "pkgconfig", "plyr", "prettyunits", "prodlim", 
-              "progress", "progressr", "proxy", "purrr", "rappdirs", "readr",
-              "recipes", "renv", "reshape2", "rlang", "rmarkdown", "rpart",
-              "rpart.plot", "rsample", "sass", "scales", "scico", "sessioninfo",
-              "slider", "stringi", "stringr", "survival", "sys", "terra",
-              "tibble", "tidyr", "tidyselect", "timeDate", "timechange",
-              "tinytex", "tzdb", "utf8", "vctrs", "viridisLite", "visdat",
-              "vroom", "warp", "withr", "xfun", "yaml", "yardstick", 
-              "tidyverse", "MODISTools", "skimr", "hwsdr", "usethis", "ranger")
+use_pkgs <-  c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
+              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
+              "MODISTools", "forcats", "yardstick", "recipes", "caret",
+              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
+              "renv", "rsample", "modelr", "rmarkdown", "rpart",
+              "rpart.plot", "ranger", "sessioninfo")
   
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)

@@ -962,8 +962,10 @@ imbalanced classes and interpreting your results.
     positive and false positive rate. The following image describes
     clearly how to interpret a ROC curve plot:
 
-![ROC curves and how they compare, from
-[Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).](figures/Roc_curve.png)
+
+```{r roccurve, echo = FALSE, fig.cap = "ROC curves and how they compare, from [Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)."}
+knitr::include_graphics("figures/Roc_curve.png")
+```
 
 <!-- XXX Exercises: Fit regression (NIGHT ~ SW), vary tau, plot TPR vs FPR. Fit second regression (NIGHT ~ TEMPERATURE), do the same. Interpret ROC curves. -->
 
