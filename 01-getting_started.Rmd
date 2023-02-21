@@ -599,7 +599,10 @@ You can check if the installation was successful by running the following code i
      
 #### git
 
--   First, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
+In this section, you will install *git*, create a GitHub account and connect it to RStudio. This should set up your laptop so that you can do version control of your code (with an easy to use interface) and upload changes to an online copy of your R project (on GitHub) directly from RStudio. Follow these instructions:
+
+-   If you don't have one already, create a GitHub account on <https://github.com> and sign in. We encourage you to use a personal email (not your student email) so you can keep using this account for years to come, thus compiling your "code knowledge base".
+-   Next, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
 -   Once Git is installed, reboot RStudio. Set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". The path to your Git installation should be correct automatically.
     -    If it says "(Not Found)", try the following:
          -    For Windows, it's probably `C:\\Program Files\\Git\\bin\\git.exe`.
@@ -610,20 +613,17 @@ You can check if the installation was successful by running the following code i
 knitr::include_graphics("./figures/git_in_rstudio.png")
 ```
 
--   If you don't have one already, create a GitHub account on <https://github.com> and sign in. We encourage you to use a personal email so you can keep using this account for years to come, thus compiling your "code knowledge base".
 -   Connect your GitHub account with Git locally, using SSH keys (which are cryptographic authentication credentials). You can do this from RStudio following the steps:
-        -   Go to **Tools \> Global Options \> Git/SVN** and select **Create SSH Key...**. Create an SSH key with the default options (you can ignore the passphrase and click "Create"). This will create a new SSH in your default `~/.ssh` folder. 
-        
+    -   Go to **Tools \> Global Options \> Git/SVN** and select **Create SSH Key...**. Create an SSH key with the default options (you can ignore the passphrase and click "Create"). This will create a new SSH in your default `~/.ssh` folder. 
 ```{r label="createsshkey", echo=FALSE, fig.cap="Create an SSH key from RStudio.", out.width="75%", fig.align='center'}
 knitr::include_graphics("./figures/create_ssh_key.png")
 ```
-        -   Next, click on **View public key** (above your new SSH key) and copy the public key (all the text). 
-      
+    -   Next, click on **View public key** (above your new SSH key) and copy the public key (all the text). 
 ```{r label="viewpublickey", echo=FALSE, fig.cap="Copy the public key for the SSH connection", out.width="75%", fig.align='center'}
 knitr::include_graphics("./figures/copy_public_key.png")
 ```
-        -   Go back to your browser and open your GitHub account. At the top right, open your profile's menu and choose **Settings > SSH and GPG Keys**. Then select **Add new SSH key**. Give your SSH connection a name, for example "My laptop" and paste the *public key* that you copied from RStudio. If you have problems, check out [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add a new SSH key to your GitHub account. 
-        -   Finally, you can test your SSH connection following [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Note that, at the top of these websites, there's an option to choose your OS because the steps vary depending on the type of computer your work with.
+    -   Go back to your browser and open your GitHub account. At the top right, open your profile's menu and choose **Settings > SSH and GPG Keys**. Then select **Add new SSH key**. Give your SSH connection a name, for example "My laptop" and paste the *public key* that you copied from RStudio. If you have problems, check out [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add a new SSH key to your GitHub account. 
+    -   Finally, you can test your SSH connection following [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Note that, at the top of these websites, there's an option to choose your OS because the steps vary depending on the type of computer your work with.
 
 #### Preparation for your report
 
@@ -651,7 +651,7 @@ knitr::include_graphics("./figures/clone_repo_ssh.png")
 knitr::include_graphics("./figures/Rmd_report.png")
 ```
 
-In total you should have two R projects related to this course: a local project containing solutions to general exercises (for yourself, created [here](#workspaceexercise)) and the report project + git repository (that you just created and will share with us at the end of the course). Your report project should not include the solutions to general exercises.
+In total you should have two R projects related to this course: a local project containing solutions to general exercises (for yourself, created in the exercises below) and the report project + git repository (that you just created and will share with us at the end of the course). Your report project should not include the solutions to general exercises.
 
 ## Exercises
 
@@ -707,6 +707,6 @@ Print the object `datasets::quakes` and consult the manual of this object.
 - Determine the value largest value in the vector of event magnitudes.
 - Determine the geographic position of the epicenter of the largest event.
 
-### Workspace {-} {#workspaceexercise}
+### Workspace {-}
 
 Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
