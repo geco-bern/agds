@@ -129,8 +129,8 @@ models by doing:
 
 ```{r message=F}
 # numerical variables only, remove NA
-df <- half_hourly_fluxes %>%
-  dplyr::select(-starts_with("TIMESTAMP")) %>%
+df <- half_hourly_fluxes |>
+  dplyr::select(-starts_with("TIMESTAMP")) |>
   tidyr::drop_na()
 
 # fit univariate linear regression
@@ -377,10 +377,8 @@ analyse_modobs <- function(df){
   linmod <- lm(y ~ x, data = df)
   
   # construct metrics table using the 'yardstick' library
-  df_metrics <- df %>%
-    
-    # simply the squared correlation between truth and estimate (0,1)
-    yardstick::rsq(., y, x)  |> 
+  # simply the squared correlation between truth and estimate (0,1)
+  df_metrics <- yardstick::rsq(df, y, x)  |> 
     
     # root mean square error
     dplyr::bind_rows(yardstick::rmse(df, y, x)) |> 
@@ -608,8 +606,8 @@ yardstick::rsq(df, y, x) |> pull(.estimate)
 
 # implementations using coefficient of determination definition
 1 - sum((df$x - df$y)^2) / sum((df$y - mean(df$y))^2) # should be \hat{y}, not x
-yardstick::rsq_trad(df, y, x) %>% pull(.estimate) # incorrect
-yardstick::rsq_trad(df, y, y_fitted) %>% pull(.estimate) # correct
+yardstick::rsq_trad(df, y, x) |> pull(.estimate) # incorrect
+yardstick::rsq_trad(df, y, y_fitted) |> pull(.estimate) # correct
 ```
 
 > An "$R^2$" is commonly reported when evaluating the *agreement* between observed
@@ -1219,7 +1217,7 @@ should be considered outliers or not.
 ```{r}
 # create an outlier for demonstration purposes
 half_hourly_fluxes_outlier <- half_hourly_fluxes_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
+  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20)
 
 # Various ways to identify the outlier using graphs
 plot_5 <- ggplot(
@@ -1347,10 +1345,10 @@ potentially collect more data.
 <!--     the yardstick package computes the RMSE the same way. -->
 <!--     ```{r} -->
 <!--     ## generate random data  -->
-<!--     df <- tibble(x = rnorm(100)) %>%  -->
+<!--     df <- tibble(x = rnorm(100)) |>  -->
 <!--       mutate(y = x + rnorm(100), -->
 <!--              x = x) -->
-<!--     yardstick::rmse(df, y, x) %>% pull(.estimate) -->
+<!--     yardstick::rmse(df, y, x) |> pull(.estimate) -->
 <!--     sqrt(mean((df$x - df$y)^2)) -->
 <!--     ``` -->
 

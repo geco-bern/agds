@@ -52,8 +52,8 @@ set.seed(2)
 n_samples <- 30
 
 # create training data
-df_train <- tibble( x = runif(n_samples, min = 0, max = 1)) %>%
-  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) %>%
+df_train <- tibble( x = runif(n_samples, min = 0, max = 1)) |>
+  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
   arrange(x)
 
 polyfit_1 <- lm(y ~ poly(x, 1), data = df_train)
@@ -64,18 +64,18 @@ polyfit_15 <- lm(y ~ poly(x, 15), data = df_train)
 eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
 
   # training results
-  df <- df %>%
-    dplyr::rename(y_true = y) %>%
-    modelr::add_predictions(polyfit_1, var = "poly1") %>%
-    modelr::add_predictions(polyfit_4, var = "poly4") %>%
+  df <- df |>
+    dplyr::rename(y_true = y) |>
+    modelr::add_predictions(polyfit_1, var = "poly1") |>
+    modelr::add_predictions(polyfit_4, var = "poly4") |>
     modelr::add_predictions(polyfit_15, var = "poly15")
 
   ## at equally spaced x
-  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) %>%
-    modelr::add_predictions(polyfit_1, var = "poly1") %>%
-    modelr::add_predictions(polyfit_4, var = "poly4") %>%
-    modelr::add_predictions(polyfit_15, var = "poly15") %>%
-    tidyr::pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") %>%
+  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) |>
+    modelr::add_predictions(polyfit_1, var = "poly1") |>
+    modelr::add_predictions(polyfit_4, var = "poly4") |>
+    modelr::add_predictions(polyfit_15, var = "poly15") |>
+    tidyr::pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") |>
     dplyr::mutate(fit = forcats::fct_relevel(fit, "poly1", "poly4", "poly15"))
 
   ## get a table (data frame) for the RMSE
@@ -84,9 +84,9 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
     rmse = yardstick::metrics(df,
                               truth = y_true,
                               estimate = poly1
-                              ) %>%
-      dplyr::filter(.metric == "rmse") %>%
-      dplyr::pull(.estimate)) %>%
+                              ) |>
+      dplyr::filter(.metric == "rmse") |>
+      dplyr::pull(.estimate)) |>
     bind_rows(
       .,
       tibble(
@@ -94,10 +94,10 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
         rmse = yardstick::metrics(df,
                                   truth = y_true,
                                   estimate = poly4
-                                  ) %>%
-         dplyr::filter(.metric == "rmse") %>%
+                                  ) |>
+         dplyr::filter(.metric == "rmse") |>
          dplyr::pull(.estimate))
-    ) %>%
+    ) |>
     bind_rows(
       .,
       tibble(
@@ -105,8 +105,8 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
         rmse = yardstick::metrics(df,
                                   truth = y_true,
                                   estimate = poly15
-                                  ) %>%
-         dplyr::filter(.metric == "rmse") %>%
+                                  ) |>
+         dplyr::filter(.metric == "rmse") |>
          dplyr::pull(.estimate))
     )
 
@@ -608,34 +608,34 @@ We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to 
 eval_model <- function(mod, df_train, df_test){
   
   # add predictions to the data frames
-  df_train <- df_train %>% 
-    drop_na() %>% 
+  df_train <- df_train |> 
+    drop_na() |> 
     mutate(fitted =  predict(mod, newdata = .))
   
-  df_test <- df_test %>% 
-    drop_na() %>% 
+  df_test <- df_test |> 
+    drop_na() |> 
     mutate(fitted =  predict(mod, newdata = .))
   
   # get metrics tables
-  metrics_train <- df_train %>% 
+  metrics_train <- df_train |> 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
-  metrics_test <- df_test %>% 
+  metrics_test <- df_test |> 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
   # extract values from metrics tables
-  rmse_train <- metrics_train %>% 
-    filter(.metric == "rmse") %>% 
+  rmse_train <- metrics_train |> 
+    filter(.metric == "rmse") |> 
     pull(.estimate)
-  rsq_train <- metrics_train %>% 
-    filter(.metric == "rsq") %>% 
+  rsq_train <- metrics_train |> 
+    filter(.metric == "rsq") |> 
     pull(.estimate)
   
-  rmse_test <- metrics_test %>% 
-    filter(.metric == "rmse") %>% 
+  rmse_test <- metrics_test |> 
+    filter(.metric == "rmse") |> 
     pull(.estimate)
-  rsq_test <- metrics_test %>% 
-    filter(.metric == "rsq") %>% 
+  rsq_test <- metrics_test |> 
+    filter(.metric == "rsq") |> 
     pull(.estimate)
   
   # visualise as a scatterplot

@@ -395,7 +395,7 @@ plot_1 <- ggplot(
 
 # seasonal cycle, polar
 plot_2 <- ggplot(
-  data = doydf,
+  data = daily_mean_fluxes,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()

@@ -492,7 +492,7 @@ But beware! In particular the stacking along columns (`bind_cols()`) is very err
 ```{r}
 co2_conc_subset_3 |>
   slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
-  left_join(df7, by = "month") |> 
+  left_join(co2_conc_subset_4, by = "month") |> 
   arrange(month)  # sort in ascending order
 ```
 
