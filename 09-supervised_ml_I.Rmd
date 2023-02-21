@@ -88,7 +88,6 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
       dplyr::filter(.metric == "rmse") |>
       dplyr::pull(.estimate)) |>
     bind_rows(
-      .,
       tibble(
        fittype = "poly4",
         rmse = yardstick::metrics(df,
@@ -99,7 +98,6 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
          dplyr::pull(.estimate))
     ) |>
     bind_rows(
-      .,
       tibble(
        fittype = "poly15",
         rmse = yardstick::metrics(df,
@@ -609,12 +607,12 @@ eval_model <- function(mod, df_train, df_test){
   
   # add predictions to the data frames
   df_train <- df_train |> 
-    drop_na() |> 
-    mutate(fitted =  predict(mod, newdata = .))
+    drop_na()
+  df_train$fitted <- predict(mod, newdata = df_train)
   
   df_test <- df_test |> 
-    drop_na() |> 
-    mutate(fitted =  predict(mod, newdata = .))
+    drop_na()
+  df_test$fitted <- predict(mod, newdata = df_test)
   
   # get metrics tables
   metrics_train <- df_train |> 

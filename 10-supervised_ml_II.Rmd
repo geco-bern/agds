@@ -15,7 +15,7 @@ In this chapter, you will learn more about the process of model training, the co
 We're using the same data and address the same modelling challenge as in Chapter \@ref(supervisedmli). Let's load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter \@ref(supervisedmli).
 
 ```{r warning=FALSE, message=FALSE}
-daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+daily_fluxes <- readr::read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
   dplyr::select(TIMESTAMP,
