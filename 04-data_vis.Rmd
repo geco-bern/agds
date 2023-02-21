@@ -388,9 +388,9 @@ Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b
 ```{r}
 # prepare plot data
 doydf <- ddf |>
-  mutate(doy = yday(date)) |> 
-  group_by(doy) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
+  mutate(doy = lubridate::yday(date)) |> 
+  dplyr::group_by(doy) |> 
+  dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # seasonal cycle, cartesian
 gg1 <- ggplot(
@@ -410,8 +410,8 @@ daydf <- hhdf |>
   mutate(month = month(TIMESTAMP_START)) |> 
   filter(month == 6) |>  # taking only June data
   mutate(hour = hour(TIMESTAMP_START)) |> 
-  group_by(hour) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
+  dplyr::group_by(hour) |> 
+  dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # diurnal cycle, cartesian
 gg3 <-ggplot(
