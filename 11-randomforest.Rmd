@@ -126,7 +126,7 @@ A great strength of Random Forest is, inherited by the characteristics of its un
 ```{r}
 source("R/eval_model.R")
 
-ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
   dplyr::select(TIMESTAMP,
@@ -158,19 +158,19 @@ ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>
 
 # Data splitting
 set.seed(123)  # for reproducibility
-split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
-ddf_train <- rsample::training(split)
-ddf_test <- rsample::testing(split)
+split <- rsample::initial_split(daily_fluxes, prop = 0.7, strata = "VPD_F")
+daily_fluxes_train <- rsample::training(split)
+daily_fluxes_test <- rsample::testing(split)
 
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
-                      data = ddf_train) |> 
+                      data = daily_fluxes_train) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
 
 mod <- train(
   pp, 
-  data = ddf_train %>% 
+  data = daily_fluxes_train %>% 
     drop_na(), 
   method = "ranger",
   trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
@@ -189,7 +189,7 @@ print(mod)
 ```
 
 ```{r}
-eval_model(mod = mod, df_train = ddf_train, df_test = ddf_test)
+eval_model(mod = mod, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 ```
 
 

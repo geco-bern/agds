@@ -64,10 +64,10 @@ based on observed shortwave radiation values.
 
 ```{r message=FALSE, warning=FALSE}
 # read and format data from Ch 3
-hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+half_hourly_fluxes <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 
 set.seed(2023)
-gg1 <- hhdf |>
+gg1 <- half_hourly_fluxes |>
   sample_n(2000) |>  # to reduce the dataset
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75, alpha=0.4) +
@@ -129,7 +129,7 @@ models by doing:
 
 ```{r message=F}
 # numerical variables only, remove NA
-df <- hhdf %>%
+df <- half_hourly_fluxes %>%
   dplyr::select(-starts_with("TIMESTAMP")) %>%
   tidyr::drop_na()
 
@@ -256,7 +256,7 @@ create models that capture the relationships between variables better.
 
 ```{r}
 # create month category
-df_cat <- hhdf |>
+df_cat <- half_hourly_fluxes |>
   mutate(MONTH = lubridate::month(TIMESTAMP_START)) |>
   tidyr::drop_na() |>
   dplyr::select(MONTH, GPP_NT_VUT_REF, SW_IN_F)
@@ -1169,11 +1169,11 @@ if it's also off, the regression model will be affected greatly.
 
 ```{r warning=FALSE}
 set.seed(2023)
-hhdf_small <- hhdf |>
+half_hourly_fluxes_small <- half_hourly_fluxes |>
   sample_n(100) |> # reduce dataset
   select(SW_IN_F, GPP_NT_VUT_REF)
 
-gg3 <- hhdf_small |>
+gg3 <- half_hourly_fluxes_small |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
   geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
@@ -1183,7 +1183,7 @@ gg3 <- hhdf_small |>
   ylim(-20, 40) + 
   xlim(0, 2000)
 
-gg4 <- hhdf_small |>
+gg4 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
@@ -1208,7 +1208,7 @@ tails helps to discern whether the values that pop out of a boxplot
 should be considered outliers or not.
 
 ```{r}
-gg5 <- hhdf_small |>
+gg5 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
@@ -1217,7 +1217,7 @@ gg5 <- hhdf_small |>
        x = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
   theme_classic()
 
-gg6 <- hhdf_small |>
+gg6 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = "", y = GPP_NT_VUT_REF)) +
   geom_boxplot(fill = "grey70", color = "black") +
@@ -1227,7 +1227,7 @@ gg6 <- hhdf_small |>
         axis.ticks.y=element_blank()) +
   labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")))
 
-gg7 <- hhdf_small |>
+gg7 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = SW_IN_F, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
@@ -1236,7 +1236,7 @@ gg7 <- hhdf_small |>
        x = expression(paste("Shortwave radiation (W m"^-2, ")"))) +
   theme_classic()
 
-gg8 <- hhdf_small |>
+gg8 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = "", y = SW_IN_F)) +
   geom_boxplot(fill = "grey70", color = "black") +
@@ -1261,7 +1261,7 @@ outliers deviate greatly from the straight line (which represents a
 match between the observed values and the theoretical distribution):
 
 ```{r}
-gg9 <- hhdf_small |>
+gg9 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier |>
   ggplot(aes(sample = GPP_NT_VUT_REF)) +
   geom_qq() +
@@ -1270,7 +1270,7 @@ gg9 <- hhdf_small |>
        x = "Theoretical normal quantiles") +
   theme_classic()
 
-gg10 <- hhdf_small |>
+gg10 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier |>
   ggplot(aes(sample = SW_IN_F)) +
   geom_qq() +
@@ -1299,7 +1299,7 @@ particular the "Residuals vs Leverage" plot:
 ```{r}
 # Fit regression with outlier
 linmod_outlier <- lm(GPP_NT_VUT_REF ~ SW_IN_F, 
-                     data = add_row(hhdf_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
+                     data = add_row(half_hourly_fluxes_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
 
 plot(linmod_outlier, 5)
 ```
