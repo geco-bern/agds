@@ -64,10 +64,10 @@ based on observed shortwave radiation values.
 
 ```{r message=FALSE, warning=FALSE}
 # read and format data from Ch 3
-hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+half_hourly_fluxes <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 
 set.seed(2023)
-gg1 <- hhdf |>
+plot_1 <- half_hourly_fluxes |>
   sample_n(2000) |>  # to reduce the dataset
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75, alpha=0.4) +
@@ -78,7 +78,7 @@ gg1 <- hhdf |>
 
 segment_points <- data.frame(x0 = 332, y0 = 3.65, y_regr = 8.77)
 
-gg1 +
+plot_1 +
   geom_segment(aes(x = x0, y = y0, xend = x0, yend = y_regr), 
                data = segment_points,
                color = "blue", lwd = 1.2, alpha = 0.8)
@@ -129,8 +129,8 @@ models by doing:
 
 ```{r message=F}
 # numerical variables only, remove NA
-df <- hhdf %>%
-  dplyr::select(-starts_with("TIMESTAMP")) %>%
+df <- half_hourly_fluxes |>
+  dplyr::select(-starts_with("TIMESTAMP")) |>
   tidyr::drop_na()
 
 # fit univariate linear regression
@@ -256,7 +256,7 @@ create models that capture the relationships between variables better.
 
 ```{r}
 # create month category
-df_cat <- hhdf |>
+df_cat <- half_hourly_fluxes |>
   mutate(MONTH = lubridate::month(TIMESTAMP_START)) |>
   tidyr::drop_na() |>
   dplyr::select(MONTH, GPP_NT_VUT_REF, SW_IN_F)
@@ -377,10 +377,8 @@ analyse_modobs <- function(df){
   linmod <- lm(y ~ x, data = df)
   
   # construct metrics table using the 'yardstick' library
-  df_metrics <- df %>%
-    
-    # simply the squared correlation between truth and estimate (0,1)
-    yardstick::rsq(., y, x)  |> 
+  # simply the squared correlation between truth and estimate (0,1)
+  df_metrics <- yardstick::rsq(df, y, x)  |> 
     
     # root mean square error
     dplyr::bind_rows(yardstick::rmse(df, y, x)) |> 
@@ -422,14 +420,19 @@ analyse_modobs <- function(df){
     geom_abline(intercept = 0, slope = 1, linetype = "dotted") +  # 1:1 line
     theme_classic() +
     labs(subtitle = subtitle) + 
-    geom_smooth(method = 'lm', color = "red", size = 0.5, se = FALSE)  # regression fit
+    geom_smooth(
+      method = 'lm',  # regression fit
+      color = "red",
+      size = 0.5,
+      se = FALSE
+      ) 
   
 }
 
 set.seed(1982)
 
 # uncorrelated
-gg1 <- tibble(x = rnorm(100),
+plot_1 <- tibble(x = rnorm(100),
               y = rnorm(100)) |> 
   analyse_modobs() +
   labs(title = "Uncorrelated") +
@@ -439,7 +442,7 @@ gg1 <- tibble(x = rnorm(100),
         plot.subtitle = element_text(size = 8))
 
 # perfectly correlated - zero error
-gg3 <- tibble(x = rnorm(100)) |> 
+plot_3 <- tibble(x = rnorm(100)) |> 
   mutate(y = x) |> 
   analyse_modobs() +
   labs(title = bquote("Perfectly correlated, zero error:" ~ y == hat(y))) +
@@ -449,27 +452,30 @@ gg3 <- tibble(x = rnorm(100)) |>
         plot.subtitle = element_text(size = 8))
 
 # perfectly correlated - scaling error
-gg4 <- tibble(x = rnorm(100)) |> 
+plot_4 <- tibble(x = rnorm(100)) |> 
   mutate(y = 0.6 * x) |> 
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ hat(y))) +
+  labs(
+    title = bquote(
+      "Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ hat(y))) +
   ylim(-3,3) + xlim(-3, 3) +
   xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
 # perfectly correlated - constant error
-gg5 <- tibble(x = rnorm(100)) |> 
+plot_5 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + 1) |>
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, constant error:" ~ y == hat(y) + 1)) +
+  labs(title = bquote(
+    "Perfectly correlated, constant error:" ~ y == hat(y) + 1)) +
   ylim(-3,3) + xlim(-3, 3) +
   xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
 # correlated
-gg6 <- tibble(x = rnorm(100)) |> 
+plot_6 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + rnorm(100)) |> 
   analyse_modobs() +
   labs(title = bquote("Correlated:" ~ y == hat(y) + epsilon[0])) +
@@ -479,17 +485,18 @@ gg6 <- tibble(x = rnorm(100)) |>
         plot.subtitle = element_text(size = 8))
 
 # better correlation
-gg7 <- tibble(x = rnorm(100)) |> 
+plot_7 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + 0.7 * rnorm(100)) |> 
   analyse_modobs() +
-  labs(title = bquote("Better correlated:" ~ y == hat(y) + ~ .(0.7) ~ epsilon[0])) +
+  labs(title = bquote(
+    "Better correlated:" ~ y == hat(y) + ~ .(0.7) ~ epsilon[0])) +
   xlab(expression(hat(y))) +
   # labs(title = "Better correlated (y = x + 0.7 rnorm(100))") +
   ylim(-3,3) + xlim(-3, 3) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
-cowplot::plot_grid(gg1, gg3, gg4, gg5, gg6, gg7, 
+cowplot::plot_grid(plot_1, plot_3, plot_4, plot_5, plot_6, plot_7, 
                    ncol = 2)
 ```
 
@@ -599,8 +606,8 @@ yardstick::rsq(df, y, x) |> pull(.estimate)
 
 # implementations using coefficient of determination definition
 1 - sum((df$x - df$y)^2) / sum((df$y - mean(df$y))^2) # should be \hat{y}, not x
-yardstick::rsq_trad(df, y, x) %>% pull(.estimate) # incorrect
-yardstick::rsq_trad(df, y, y_fitted) %>% pull(.estimate) # correct
+yardstick::rsq_trad(df, y, x) |> pull(.estimate) # incorrect
+yardstick::rsq_trad(df, y, y_fitted) |> pull(.estimate) # correct
 ```
 
 > An "$R^2$" is commonly reported when evaluating the *agreement* between observed
@@ -731,12 +738,12 @@ carbon dioxide uptake rate of the plant (continuous variable `uptake`
 measured in $\mu$mol m$^{-2}$s$^{-1}$). More information on the dataset can be obtained by typing `?datasets::CO2` in the console.
 
 ```{r}
-gg2 <- datasets::CO2 |>
+plot_2 <- datasets::CO2 |>
   ggplot(aes(x = uptake, y = Type, color = Type)) +
   geom_point(size = 0.75, alpha = 0.8) +
   theme_classic() +
   theme(legend.position = "none")
-gg2
+plot_2
 ```
 
 At first sight, it's easy to see that the carbon uptake is lower for the
@@ -830,7 +837,7 @@ threshold line). You can see it plotted below:
 ```{r}
 beta <- coef(logmod)
 # reuse previous plot with classification line
-gg2.1 <- datasets::CO2 |>
+plot_2.1 <- datasets::CO2 |>
   ggplot(aes(x = uptake, y = as.numeric(Type)-1, color = Type)) +
   geom_point(size = 0.75, alpha = 0.8) +
   ylab("") +
@@ -839,7 +846,7 @@ gg2.1 <- datasets::CO2 |>
               method.args = list(family=binomial)) +
   geom_vline(xintercept = -beta[1]/beta[2], lty = 2)
 
-gg2.1
+plot_2.1
 ```
 
 Most blue points fall to one side of the dashed classification line and
@@ -1169,11 +1176,11 @@ if it's also off, the regression model will be affected greatly.
 
 ```{r warning=FALSE}
 set.seed(2023)
-hhdf_small <- hhdf |>
+half_hourly_fluxes_small <- half_hourly_fluxes |>
   sample_n(100) |> # reduce dataset
   select(SW_IN_F, GPP_NT_VUT_REF)
 
-gg3 <- hhdf_small |>
+plot_3 <- half_hourly_fluxes_small |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
   geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
@@ -1183,7 +1190,7 @@ gg3 <- hhdf_small |>
   ylim(-20, 40) + 
   xlim(0, 2000)
 
-gg4 <- hhdf_small |>
+plot_4 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
@@ -1195,7 +1202,7 @@ gg4 <- hhdf_small |>
   ylim(-20, 40) + 
   xlim(0, 2000)
   
-cowplot::plot_grid(gg3, gg4)
+cowplot::plot_grid(plot_3, plot_4)
 ```
 
 The first step to identifying outliers is to look at your data, one
@@ -1208,18 +1215,23 @@ tails helps to discern whether the values that pop out of a boxplot
 should be considered outliers or not.
 
 ```{r}
-gg5 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
+# create an outlier for demonstration purposes
+half_hourly_fluxes_outlier <- half_hourly_fluxes_small |>
+  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20)
+
+# Various ways to identify the outlier using graphs
+plot_5 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = 'red')+
   labs(title = 'Histogram, density and boxplot', 
        x = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
   theme_classic()
 
-gg6 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = "", y = GPP_NT_VUT_REF)) +
+plot_6 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = "", y = GPP_NT_VUT_REF)) +
   geom_boxplot(fill = "grey70", color = "black") +
   coord_flip() +
   theme_classic() +
@@ -1227,18 +1239,18 @@ gg6 <- hhdf_small |>
         axis.ticks.y=element_blank()) +
   labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")))
 
-gg7 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = SW_IN_F, y = after_stat(density))) +
+plot_7 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = SW_IN_F, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = 'red')+
   labs(title = 'Histogram, density and boxplot', 
        x = expression(paste("Shortwave radiation (W m"^-2, ")"))) +
   theme_classic()
 
-gg8 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = "", y = SW_IN_F)) +
+plot_8 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = "", y = SW_IN_F)) +
   geom_boxplot(fill = "grey70", color = "black") +
   coord_flip() +
   theme_classic() +
@@ -1246,7 +1258,7 @@ gg8 <- hhdf_small |>
         axis.ticks.y=element_blank()) +
   labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")))
 
-cowplot::plot_grid(gg5, gg7, gg6, gg8,
+cowplot::plot_grid(plot_5, plot_7, plot_6, plot_8,
                    ncol = 2, rel_heights = c(2,1),
                    align = 'v', axis = 'lr')
 ```
@@ -1261,25 +1273,25 @@ outliers deviate greatly from the straight line (which represents a
 match between the observed values and the theoretical distribution):
 
 ```{r}
-gg9 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier |>
-  ggplot(aes(sample = GPP_NT_VUT_REF)) +
+plot_9 <- ggplot(
+    data = half_hourly_fluxes_outlier,
+    aes(sample = GPP_NT_VUT_REF)) +
   geom_qq() +
   geom_qq_line() +
   labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")),
        x = "Theoretical normal quantiles") +
   theme_classic()
 
-gg10 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier |>
-  ggplot(aes(sample = SW_IN_F)) +
+plot_10 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(sample = SW_IN_F)) +
   geom_qq() +
   geom_qq_line() +
   labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")),
        x = "Theoretical normal quantiles") +
   theme_classic()
 
-cowplot::plot_grid(gg9, gg10, ncol=2)
+cowplot::plot_grid(plot_9, plot_10, ncol=2)
 ```
 
 For linear (and logistic) regression, we would like predictor variables
@@ -1299,7 +1311,7 @@ particular the "Residuals vs Leverage" plot:
 ```{r}
 # Fit regression with outlier
 linmod_outlier <- lm(GPP_NT_VUT_REF ~ SW_IN_F, 
-                     data = add_row(hhdf_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
+                     data = add_row(half_hourly_fluxes_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
 
 plot(linmod_outlier, 5)
 ```
@@ -1333,10 +1345,10 @@ potentially collect more data.
 <!--     the yardstick package computes the RMSE the same way. -->
 <!--     ```{r} -->
 <!--     ## generate random data  -->
-<!--     df <- tibble(x = rnorm(100)) %>%  -->
+<!--     df <- tibble(x = rnorm(100)) |>  -->
 <!--       mutate(y = x + rnorm(100), -->
 <!--              x = x) -->
-<!--     yardstick::rmse(df, y, x) %>% pull(.estimate) -->
+<!--     yardstick::rmse(df, y, x) |> pull(.estimate) -->
 <!--     sqrt(mean((df$x - df$y)^2)) -->
 <!--     ``` -->
 
@@ -1351,7 +1363,6 @@ Important tools to code a step-wise regression are nested for-loops, if-statemen
 ### Task Statement
 
 Re-read the section on stepwise regression of this tutorial and write a pseudo-code for how you would encode a stepwise regression, write-out using coding terms like "I have to loop over all predictors and for each predictor I have to check...". For picking the next-best variable to add, you can pick your metric of choice: $R^2$, *adjusted-*$R^2$, the Akaike Information Criterion (AIC) or the Bayesian Information Criterion (BIC). Visualise the result of the step-wise regression so that it shows how the chosen metric varies with the number of predictors, preferably showing the name of the additional predictor (not that you don't always have to use graphs, you can also create a simple table for this). Use the code chunk below to start with an already cleaned dataset.
-
 
 
 ```{r}
