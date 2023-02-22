@@ -142,7 +142,7 @@ Here, the **pipe** operator `|>` is used. It "pipes" the object evaluated on its
 
 > Note: The pipe operator is so popular that has been recently included in the latest versions of base R (version 4.1.0 and beyond). This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
 
-> Note: If you have an older Macbook that can't operate the latest Operating System version, you may not be able to update R. In this case, just use the `magrittr` pipe throughout.
+> Note: If you cannot update R and have a version older than 4.1.0, just use the `magrittr` pipe `%>%` throughout. This can happen if you have an older Macbook that can't operate the latest Operating System version.
 
 Mutating both our timestamp variables could be written as `mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START), TIMESTAMP_END = ymd_hm(TIMESTAMP_END))`. Sometimes, such multiple-variable mutate statements can get quite long. A handy short version of this can be implemented using `across()`:
 
