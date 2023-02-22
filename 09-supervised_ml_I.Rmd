@@ -26,7 +26,9 @@ From above definitions, we can note a few key ingredients of supervised machine 
 -   A metric measuring how good the match between $Y$ and $\hat{Y}$ is - the *loss* function
 -   An algorithm (the *optimiser*) to find the best set of parameters that minimize the loss
 
-![Supervised machine learning ingredients, adopted from Chollet & Allaire (2018) Deep Learning with R](./figures/supervised_ml.png){width="13cm"}
+```{r mlingredients, echo = FALSE, fig.cap="Supervised machine learning ingredients, adopted from Chollet & Allaire (2018) Deep Learning with R"}
+knitr::include_graphics("figures/supervised_ml.png")
+```
 
 The type of modelling approach of supervised machine learning is very similar to fitting regression models as we did in Chapter \@ref{#regressionclassification}. In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Furthermore, machine learning differs from traditional statistical modelling methods in that it makes no assumptions regarding the data generation process and underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)).
 
@@ -50,8 +52,8 @@ set.seed(2)
 n_samples <- 30
 
 # create training data
-df_train <- tibble( x = runif(n_samples, min = 0, max = 1)) %>%
-  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) %>%
+df_train <- tibble( x = runif(n_samples, min = 0, max = 1)) |>
+  mutate(y = true_fun(x) + 0.1 * rnorm(n_samples)) |>
   arrange(x)
 
 polyfit_1 <- lm(y ~ poly(x, 1), data = df_train)
@@ -62,18 +64,18 @@ polyfit_15 <- lm(y ~ poly(x, 15), data = df_train)
 eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
 
   # training results
-  df <- df %>%
-    dplyr::rename(y_true = y) %>%
-    modelr::add_predictions(polyfit_1, var = "poly1") %>%
-    modelr::add_predictions(polyfit_4, var = "poly4") %>%
+  df <- df |>
+    dplyr::rename(y_true = y) |>
+    modelr::add_predictions(polyfit_1, var = "poly1") |>
+    modelr::add_predictions(polyfit_4, var = "poly4") |>
     modelr::add_predictions(polyfit_15, var = "poly15")
 
   ## at equally spaced x
-  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) %>%
-    modelr::add_predictions(polyfit_1, var = "poly1") %>%
-    modelr::add_predictions(polyfit_4, var = "poly4") %>%
-    modelr::add_predictions(polyfit_15, var = "poly15") %>%
-    tidyr::pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") %>%
+  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) |>
+    modelr::add_predictions(polyfit_1, var = "poly1") |>
+    modelr::add_predictions(polyfit_4, var = "poly4") |>
+    modelr::add_predictions(polyfit_15, var = "poly15") |>
+    tidyr::pivot_longer(cols = starts_with("poly"), names_to = "fit", values_to = "y_pred") |>
     dplyr::mutate(fit = forcats::fct_relevel(fit, "poly1", "poly4", "poly15"))
 
   ## get a table (data frame) for the RMSE
@@ -82,29 +84,27 @@ eval_fits <- function(df, polyfit_1, polyfit_4, polyfit_15, justdata = FALSE){
     rmse = yardstick::metrics(df,
                               truth = y_true,
                               estimate = poly1
-                              ) %>%
-      dplyr::filter(.metric == "rmse") %>%
-      dplyr::pull(.estimate)) %>%
+                              ) |>
+      dplyr::filter(.metric == "rmse") |>
+      dplyr::pull(.estimate)) |>
     bind_rows(
-      .,
       tibble(
        fittype = "poly4",
         rmse = yardstick::metrics(df,
                                   truth = y_true,
                                   estimate = poly4
-                                  ) %>%
-         dplyr::filter(.metric == "rmse") %>%
+                                  ) |>
+         dplyr::filter(.metric == "rmse") |>
          dplyr::pull(.estimate))
-    ) %>%
+    ) |>
     bind_rows(
-      .,
       tibble(
        fittype = "poly15",
         rmse = yardstick::metrics(df,
                                   truth = y_true,
                                   estimate = poly15
-                                  ) %>%
-         dplyr::filter(.metric == "rmse") %>%
+                                  ) |>
+         dplyr::filter(.metric == "rmse") |>
          dplyr::pull(.estimate))
     )
 
@@ -191,7 +191,7 @@ The data set `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` contains a ti
 Let's read the data, select suitable variables, and interpret missing value codes, and select only good-quality data (where at least 80% of the underlying half-hourly data was good quality measured data, and not gap-filled).
 
 ```{r warning=FALSE, message=FALSE}
-ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
   dplyr::select(TIMESTAMP,
@@ -246,10 +246,10 @@ The aim of supervised ML is to find a model $\hat{Y} = f(X)$ so that $\hat{Y}$ a
 
 #### Formula notation
 
-In R, it is common to use the *formula* notation to specify the target and predictor variables. You have encountered formulas before, e.g., for a linear regression using the `lm()` function. To specify a linear regression model for `GPP_NT_VUT_REF` with three predictors `SW_IN_F`, `VPD_F`, and `TA_F`, to be fitted to data `ddf`, we write:
+In R, it is common to use the *formula* notation to specify the target and predictor variables. You have encountered formulas before, e.g., for a linear regression using the `lm()` function. To specify a linear regression model for `GPP_NT_VUT_REF` with three predictors `SW_IN_F`, `VPD_F`, and `TA_F`, to be fitted to data `daily_fluxes`, we write:
 
 ```{r eval=F}
-lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf)
+lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_fluxes)
 ```
 
 #### The generic `train()`
@@ -259,7 +259,7 @@ The way we formulate a model can be understood as being independent of the algor
 ```{r class.source = 'fold-show'}
 caret::train(
   form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
-  data = ddf |> drop_na(),  # drop missing values
+  data = daily_fluxes |> drop_na(),  # drop missing values
   trControl = caret::trainControl(method = "none"),  # no resampling
   method = "lm"
 )
@@ -272,7 +272,7 @@ Of course, it is an overkill compared to write this as in the chunk above compar
 ```{r class.source = 'fold-show'}
 caret::train(
   form = GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
-  data = ddf |> drop_na(), 
+  data = daily_fluxes |> drop_na(), 
   trControl = caret::trainControl(method = "none"),
   method = "knn"
 )
@@ -297,17 +297,17 @@ Several alternative functions for the data splitting step are available from dif
 
 ```{r warning=FALSE, message=FALSE}
 set.seed(123)  # for reproducibility
-split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
-ddf_train <- rsample::training(split)
-ddf_test <- rsample::testing(split)
+split <- rsample::initial_split(daily_fluxes, prop = 0.7, strata = "VPD_F")
+daily_fluxes_train <- rsample::training(split)
+daily_fluxes_test <- rsample::testing(split)
 ```
 
 Plot the distribution of values in the training and testing sets.
 
 ```{r warning=FALSE, message=FALSE}
-ddf_train |> 
+daily_fluxes_train |> 
   dplyr::mutate(split = "train") |> 
-  dplyr::bind_rows(ddf_test |> 
+  dplyr::bind_rows(daily_fluxes_test |> 
     dplyr::mutate(split = "test")) |> 
   tidyr::pivot_longer(cols = 2:9, names_to = "variable", values_to = "value") |> 
   ggplot(aes(x = value, y = ..density.., color = split)) +
@@ -323,22 +323,22 @@ In a general sense, pre-processing involve data transformations where the transf
 
 Often, multiple splits of the data are considered during model training. Hence, an even larger number of data transformation parameters ($\mu, \sigma$ in the example of normalization) have to be determined and transformations applied to the multiple splits of the data. *caret* deals with this for you and the transformations do not have to be "manually" applied before applying the `train()` function call. Instead, the data pre-processing is considered an integral step of model training and instructions are specified as part of the `train()` function call and along with the un-transformed data.
 
-The [*recipes*](https://recipes.tidymodels.org/) package provides an even more powerful way for specifying the *formula* and pre-processing steps in one go. It is compatible with the `train()` function of {caret}. For the same formula as above, and an example where the data `ddf_train` is to be normalized (centered and scaled), we can specify a "recipe" using the pipe operator as:
+The [*recipes*](https://recipes.tidymodels.org/) package provides an even more powerful way for specifying the *formula* and pre-processing steps in one go. It is compatible with the `train()` function of {caret}. For the same formula as above, and an example where the data `daily_fluxes_train` is to be normalized (centered and scaled), we can specify a "recipe" using the pipe operator as:
 
 ```{r warning=FALSE, message=FALSE}
-pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = ddf_train) |> 
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_fluxes_train) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
-The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "{recipes} speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `ddf_train`, but rather the information that allows us to apply a specific set of pre-processing steps also to any data set.
+The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "{recipes} speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `daily_fluxes_train`, but rather the information that allows us to apply a specific set of pre-processing steps also to any data set.
 
 The object `pp` can then be supplied to `train()` as its first argument:
 
 ```{r warning=FALSE, message=FALSE, eval=FALSE}
 caret::train(
   pp, 
-  data = ddf_train, 
+  data = daily_fluxes_train, 
   method = "knn",
   trControl = caret::trainControl(method = "none")
 )
@@ -351,7 +351,7 @@ The example above showed data standardization as a data pre-processing step. Dat
 Several algorithms explicitly require data to be standardized so that values of all predictors vary within a comparable range. The necessity of this step becomes obvious when considering KNN, where the magnitude of the distance is strongly influenced by the order of magnitude of the predictor values. To get a quick overview of the distribution of all variables (columns) in our data frame, we can use the {skimr} package.
 
 ```{r warning=FALSE, message=FALSE}
-ddf |> 
+daily_fluxes |> 
   summarise(across(where(is.numeric), ~quantile(.x, probs = c(0, 0.25, 0.5, 0.75, 1), na.rm = TRUE))) |> 
   t() |> 
   as_tibble(rownames = "variable") |> 
@@ -364,45 +364,47 @@ The steps for centering and scaling using the recipes package are described abov
 
 Standardization can be done not only by centering and scaling (as described above), but also by *scaling to within range*, where values are scaled such that the minimum value within each variable (column) is 0 and the maximum is 1.
 
-As seen above for the feature engineering example, the object `pp` does not contain a standardized version of the data frame `ddf_train`, but rather the information that allows us to apply the same standardization also to other data. In other words, `recipe(..., data = ddf_train) |> step_center(...) |> step_scale(...)` doesn't actually transform `ddf_train`. There are two more steps involved to get there. This might seem bothersome at first but their separation is critical in the context of model training and data leakage, and translates the conception of the pre-processing as a "recipe" into the way we write the code.
+As seen above for the feature engineering example, the object `pp` does not contain a standardized version of the data frame `daily_fluxes_train`, but rather the information that allows us to apply the same standardization also to other data. In other words, `recipe(..., data = daily_fluxes_train) |> step_center(...) |> step_scale(...)` doesn't actually transform `daily_fluxes_train`. There are two more steps involved to get there. This might seem bothersome at first but their separation is critical in the context of model training and data leakage, and translates the conception of the pre-processing as a "recipe" into the way we write the code.
 
 To actually transform the data, we first have to "prepare" the recipe:
 
 ```{r warning=FALSE, message=FALSE}
-pp_prep <- recipes::prep(pp, training = ddf_train) 
+pp_prep <- recipes::prep(pp, training = daily_fluxes_train) 
 ```
 
 Finally we can actually transform the data. That is, "juice" the prepared recipe.
 
 ```{r warning=FALSE, message=FALSE}
-ddf_juiced <- recipes::juice(pp_prep)
+daily_fluxes_juiced <- recipes::juice(pp_prep)
 ```
 
 Note, if we are to apply the prepared recipe to new data, we'll have to `bake()` it.
 
 ```{r}
-ddf_baked <- recipes::bake(pp_prep, new_data = ddf_train)
-all_equal(ddf_juiced, ddf_baked)
+daily_fluxes_baked <- recipes::bake(pp_prep, new_data = daily_fluxes_train)
+all_equal(daily_fluxes_juiced, daily_fluxes_baked)
 ```
 
 The effect is of standardization is illustrated by comparing original and transformed variables:
 
 ```{r warning=FALSE, message=FALSE}
-gg1 <- ddf_train |> 
+# prepare data for plotting
+daily_fluxes_train_plot <- daily_fluxes_train |> 
   dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
-  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
-  ggplot(aes(val, ..density..)) +
+  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val")
+
+# plot density
+plot_1 <- ggplot(data = daily_fluxes_train_plot, aes(val, ..density..)) +
   geom_density() +
   facet_wrap(~var)
 
-gg2 <- ddf_juiced |> 
-  dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
-  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val") |> 
-  ggplot(aes(val, ..density..)) +
+# plot density by var
+plot_2 <- ggplot(data = daily_fluxes_train_plot, aes(val, ..density..)) +
   geom_density() +
   facet_wrap(~var)
 
-cowplot::plot_grid(gg1, gg2, nrow = 2)
+# combine both plots
+cowplot::plot_grid(plot_1, plot_2, nrow = 2)
 ```
 
 #### Handling missing data
@@ -413,7 +415,7 @@ Visualizing missing data is the essential first step in making decisions about d
 
 ```{r warning=FALSE, message=FALSE}
 visdat::vis_miss(
-  ddf,
+  daily_fluxes,
   cluster = FALSE, 
   warn_large_data = FALSE
   )
@@ -456,7 +458,7 @@ Note that in a case where color is strictly one of `c("red", "red", "green", "bl
 Using the recipes package, one-hot encoding is implemented by:
 
 ```{r warning=FALSE, message=FALSE}
-recipe(GPP_NT_VUT_REF ~ ., data = ddf) |> 
+recipe(GPP_NT_VUT_REF ~ ., data = daily_fluxes) |> 
   step_dummy(all_nominal(), one_hot = TRUE)
 ```
 
@@ -472,7 +474,7 @@ We can test for zero-variance or near-zero variance predictors by quantifying th
 The function `nearZeroVar` of the {caret} package flags suspicious variables (`zeroVar = TRUE` or `nzv = TRUE`). In our data set, we don't find any:
 
 ```{r warning=FALSE, message=FALSE}
-caret::nearZeroVar(ddf, saveMetrics = TRUE)
+caret::nearZeroVar(daily_fluxes, saveMetrics = TRUE)
 ```
 
 Using the recipes package, we can add a step that removes zero-variance predictors by:
@@ -489,23 +491,21 @@ Target engineering refers to pre-processing of the target variable. Its applicat
 In our data set, the variable `WS_F` (wind speed) is skewed. The target variable that we have considered so far (`GPP_NT_VUT_REF`) is not skewed. In a case where we would consider `WS_F` to be our target variable, we would thus consider applying a log-transformation.
 
 ```{r warning=FALSE, message=FALSE}
-gg1 <- ddf |> 
-  ggplot(aes(x = WS_F, y = ..density..)) +
+plot_1 <- ggplot(data = daily_fluxes, aes(x = WS_F, y = ..density..)) +
   geom_histogram() +
   labs(title = "Original")
 
-gg2 <- ddf |> 
-  ggplot(aes(x = log(WS_F), y = ..density..)) +
+plot_2 <- ggplot(data = daily_fluxes, aes(x = log(WS_F), y = ..density..)) +
   geom_histogram() +
   labs(title = "Log-transformed")
 
-cowplot::plot_grid(gg1, gg2)
+cowplot::plot_grid(plot_1, plot_2)
 ```
 
 Log transformation as part of the pre-processing is specified using the `step_log()` function, here applied to the model target variable (`all_outcomes()`).
 
 ```{r warning=FALSE, message=FALSE}
-recipes::recipe(WS_F ~ ., data = ddf) |>   # it's of course non-sense to model wind speed like this
+recipes::recipe(WS_F ~ ., data = daily_fluxes) |>   # it's of course non-sense to model wind speed like this
   recipes::step_log(all_outcomes())
 ```
 
@@ -521,16 +521,16 @@ $$
 $\lambda$ is treated as a parameter that is fitted such that the resulting distribution of values $Y$ approaches the normal distribution. To specify a Box-Cox-transformation as part of the pre-processing, we can use `step_BoxCox()` from the {recipes} package.
 
 ```{r warning=FALSE, message=FALSE}
-pp <- recipe(WS_F ~ ., data = ddf_train) |>
+pp <- recipe(WS_F ~ ., data = daily_fluxes_train) |>
   step_BoxCox(all_outcomes())
 ```
 
 How do transformed values look like?
 
 ```{r warning=FALSE, message=FALSE}
-prep_pp <- prep(pp, training = ddf_train |> drop_na())
-ddf_baked <- bake(prep_pp, new_data = ddf_test |> drop_na())
-ddf_baked |>
+prep_pp <- prep(pp, training = daily_fluxes_train |> drop_na())
+daily_fluxes_baked <- bake(prep_pp, new_data = daily_fluxes_test |> drop_na())
+daily_fluxes_baked |>
   ggplot(aes(x = WS_F, y = ..density..)) +
   geom_histogram() +
   labs(title = "Box-Cox-transformed")
@@ -539,16 +539,16 @@ ddf_baked |>
 Note that the Box-Cox-transformation can only be applied to values that are strictly positive. In our example, wind speed (`WS_F`) is. If this is not satisfied, a Yeo-Johnson transformation can be applied.
 
 ```{r warning=FALSE, message=FALSE}
-recipe(WS_F ~ ., data = ddf) |>
+recipe(WS_F ~ ., data = daily_fluxes) |>
   step_YeoJohnson(all_outcomes())
 ```
 
 ### Putting it all together (half-way)
 
-Let's recap. We have a dataset `ddf` and we want to predict ecosystem GPP (`GPP_NT_VUT_REF`) from a set of predictors - environmental covariates that were measured in parallel to GPP. Let's compare the performance of a multivariate linear regression and KNN model in terms of its generalisation to data that was not used for model fitting. The following pieces are implemented:
+Let's recap. We have a dataset `daily_fluxes` and we want to predict ecosystem GPP (`GPP_NT_VUT_REF`) from a set of predictors - environmental covariates that were measured in parallel to GPP. Let's compare the performance of a multivariate linear regression and KNN model in terms of its generalisation to data that was not used for model fitting. The following pieces are implemented:
 
 -   Missing data: We've seen that the predictor `LW_IN_F` has lots of missing values and - given *a priori* knowledge is not critical for predicting GPP and we'll drop it.
--   Data cleaning: Data (`ddf`) was cleaned based on quality control information upon reading the data at the beginning of this Chapter. Before modelling, we're checking the distribution of the target value here again to make sure it is "well-behaved".
+-   Data cleaning: Data (`daily_fluxes`) was cleaned based on quality control information upon reading the data at the beginning of this Chapter. Before modelling, we're checking the distribution of the target value here again to make sure it is "well-behaved".
 -   Imputation: We drop rows with missing data for model training, instead of imputing them.
 -   Some of the predictors are distintively not normally distributed. Let's Box-Cox transform all predictors as a pre-processing step.
 -   We have to standardize the data in order to use it for KNN.
@@ -562,19 +562,19 @@ These steps are implemented by the code below.
 ```{r warning=FALSE, message=FALSE}
 # Data cleaning: looks ok, no obviously bad data
 # no long tail, therefore no further target engineering
-ddf |> 
+daily_fluxes |> 
   ggplot(aes(x = GPP_NT_VUT_REF, y = ..count..)) + 
   geom_histogram()
 
 # Data splitting
 set.seed(1982)  # for reproducibility
-split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
-ddf_train <- rsample::training(split)
-ddf_test <- rsample::testing(split)
+split <- rsample::initial_split(daily_fluxes, prop = 0.7, strata = "VPD_F")
+daily_fluxes_train <- rsample::training(split)
+daily_fluxes_test <- rsample::testing(split)
 
 # Model and pre-processing formulation, use all variables but LW_IN_F
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F + PA_F + P_F + WS_F, 
-                      data = ddf_train |> drop_na()) |> 
+                      data = daily_fluxes_train |> drop_na()) |> 
   recipes::step_BoxCox(all_predictors()) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
@@ -582,7 +582,7 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F + PA_F + P_F + WS_
 # Fit linear regression model
 mod_lm <- caret::train(
   pp, 
-  data = ddf_train |> drop_na(), 
+  data = daily_fluxes_train |> drop_na(), 
   method = "lm",
   trControl = caret::trainControl(method = "none"),
   metric = "RMSE"
@@ -591,7 +591,7 @@ mod_lm <- caret::train(
 # Fit KNN model
 mod_knn <- caret::train(
   pp, 
-  data = ddf_train |> drop_na(), 
+  data = daily_fluxes_train |> drop_na(), 
   method = "knn",
   trControl = caret::trainControl(method = "none"),
   tuneGrid = data.frame(k = 5),
@@ -606,40 +606,39 @@ We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to 
 eval_model <- function(mod, df_train, df_test){
   
   # add predictions to the data frames
-  df_train <- df_train %>% 
-    drop_na() %>% 
-    mutate(fitted =  predict(mod, newdata = .))
+  df_train <- df_train |> 
+    drop_na()
+  df_train$fitted <- predict(mod, newdata = df_train)
   
-  df_test <- df_test %>% 
-    drop_na() %>% 
-    mutate(fitted =  predict(mod, newdata = .))
+  df_test <- df_test |> 
+    drop_na()
+  df_test$fitted <- predict(mod, newdata = df_test)
   
   # get metrics tables
-  metrics_train <- df_train %>% 
+  metrics_train <- df_train |> 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
-  metrics_test <- df_test %>% 
+  metrics_test <- df_test |> 
     yardstick::metrics(GPP_NT_VUT_REF, fitted)
   
   # extract values from metrics tables
-  rmse_train <- metrics_train %>% 
-    filter(.metric == "rmse") %>% 
+  rmse_train <- metrics_train |> 
+    filter(.metric == "rmse") |> 
     pull(.estimate)
-  rsq_train <- metrics_train %>% 
-    filter(.metric == "rsq") %>% 
+  rsq_train <- metrics_train |> 
+    filter(.metric == "rsq") |> 
     pull(.estimate)
   
-  rmse_test <- metrics_test %>% 
-    filter(.metric == "rmse") %>% 
+  rmse_test <- metrics_test |> 
+    filter(.metric == "rmse") |> 
     pull(.estimate)
-  rsq_test <- metrics_test %>% 
-    filter(.metric == "rsq") %>% 
+  rsq_test <- metrics_test |> 
+    filter(.metric == "rsq") |> 
     pull(.estimate)
   
   # visualise as a scatterplot
   # adding information of metrics as sub-titles
-  gg1 <- df_train %>% 
-    ggplot(aes(GPP_NT_VUT_REF, fitted)) +
+  plot_1 <- ggplot(data = df_train, aes(GPP_NT_VUT_REF, fitted)) +
     geom_point(alpha = 0.3) +
     geom_smooth(method = "lm", se = FALSE, color = "red") +
     geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
@@ -648,8 +647,7 @@ eval_model <- function(mod, df_train, df_test){
          title = "Training set") +
     theme_classic()
   
-  gg2 <- df_test %>% 
-    ggplot(aes(GPP_NT_VUT_REF, fitted)) +
+  plot_2 <- ggplot(data = df_test, aes(GPP_NT_VUT_REF, fitted)) +
     geom_point(alpha = 0.3) +
     geom_smooth(method = "lm", se = FALSE, color = "red") +
     geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
@@ -658,16 +656,16 @@ eval_model <- function(mod, df_train, df_test){
          title = "Test set") +
     theme_classic()
   
-  out <- cowplot::plot_grid(gg1, gg2)
+  out <- cowplot::plot_grid(plot_1, plot_2)
   
   return(out)
 }
 
 # linear regression model
-eval_model(mod = mod_lm, df_train = ddf_train, df_test = ddf_test)
+eval_model(mod = mod_lm, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 
 # KNN
-eval_model(mod = mod_knn, df_train = ddf_train, df_test = ddf_test)
+eval_model(mod = mod_knn, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 ```
 
 It is advisable to keep workflow notebooks (this RMarkdown file) light and legible. Therefore, code chunks should not be excessively long and functions should be kept in a `./R/*.R` file, which can be loaded. This also facilitates debugging code inside the function. Here, the function `eval_model()` is part of the book's git repository, stored in the sub-directory `./R/`, and used also in later chapters.
@@ -681,5 +679,5 @@ It is advisable to keep workflow notebooks (this RMarkdown file) light and legib
 
 2.  Let's look at the role of $k$ in a KNN. Answer the following questions:
     a. Write a hypothesis based on the following questions: What do you expect, how do the model metrics of both sets, the training set **and** the test set, change if you increase or decrease $k$? Connect this question to what you learned about the bias-variance trade-off!
-    b. Put your hypothesis to the test! Write a code script that repeats fitting different values for $k$ as done in the tutorial. Use a simple bivariate model, regressing temperature against the day-of-year in the `ddf` dataset (`DOY ~ TA_F`). **Visualise** your results in an intuitive plot that is understandable without additional explanation. To get the DOY from a date, you can use `lubridate::yday()`.
+    b. Put your hypothesis to the test! Write a code script that repeats fitting different values for $k$ as done in the tutorial. Use a simple bivariate model, regressing temperature against the day-of-year in the `daily_fluxes` dataset (`DOY ~ TA_F`). **Visualise** your results in an intuitive plot that is understandable without additional explanation. To get the DOY from a date, you can use `lubridate::yday()`.
     c. Compare your results against your hypothesis from 2a. Is the result as you expected? If your hypothesis was right, can you explain further, why your hypothesis was correct, using the results. If your hypothesis was wrong, can you explain why? What surprised you, what did you not expect to see?

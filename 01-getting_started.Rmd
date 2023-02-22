@@ -386,7 +386,7 @@ To tell the function where the data is located, pass the data's path as an argum
 load("./data/data_frames.RData")
 ```
 
-Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into R with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()` and gives the user more control.
+Alternatively, the function `saveRDS()` allows you save single R objects that can then be read into R with a specific (potentially new) variable name. This is more transparent than using `save()` and `load()`, and thus is preferred, as it gives the user more control over variable names.
 
 ```{r, eval=F}
 saveRDS(df_small, file = "./data/df_small.rds")
@@ -489,11 +489,11 @@ Workspace management is crucial for efficient data science projects. Two aspects
 
 #### R projects {#rprojects}
 
-Think of all files that are linked to a certain data science workflow as belonging together into one project. A project is therefore a directory that contains the code and the files it produces. Different types of files go in different sub-directories. To keep an order and make your code useful also for others, always keep files of the same type in sub-directories that are always named the same way across projects. When creating a new project, you will find the same overall structure. A common structure is:
+Think of all files that are linked to a certain data science workflow as belonging together into one project. A project is therefore a directory that contains the code and the files it produces. Different types of files go in different sub-directories with descriptive names. To keep an order and make your code useful also for others, always keep files of the same type in sub-directories that are always named the same way across projects. When creating a new project, you will find the same overall structure. A common structure is:
 
 - Keep `.R` files that implement a user-defined function (see Chapter \@ref(programmingprimers)) in a sub-directory `./R/`, and `.R` files that implement a workflow in a sub-directory `./analysis/`. Workflow implementations with a view to communication should be implemented in RMarkdown files.
 - RMarkdown files are commonly kept in a sub-directory `./vignettes/` or in the main (top-level) project directory.
-- Keep figures produced by your code in a sub-directory `./fig/`
+- Keep figures produced by your code in a sub-directory `./figures/`
 - Keep data files produced by your code in a sub-directory `./data/`
 - Data obtained from external sources (e.g., published datasets, data shared by collaborators) and potentially used across multiple projects should be kept outside a project directory. Set up your own directory of data obtained from external sources, for example in your home as `~/data/`
 
@@ -531,31 +531,14 @@ We will learn more about *git* in Chapter \@ref(codemgmt). For now, follow instr
 
 Let's install all the required packages for this course and load them.
 
-```{r message=FALSE, warning=FALSE}
-use_pkgs <- c("KernSmooth", "MASS", "Matrix", "ModelMetrics", "R6",
-              "RColorBrewer", "Rcpp", "SQUAREM", "askpass", "backports",
-              "base64enc", "bit", "bit64", "bookdown", "broom", "bslib",
-              "cachem", "caret", "class", "cli", "clipr", "clock",
-              "codetools", "colorspace", "cowplot", "cpp11", "crayon",
-              "curl", "data.table", "digest", "e1071",
-              "ellipsis", "evaluate", "fansi", "farver", "fastmap", "forcats",
-              "foreach", "fs", "furrr", "future", "future.apply", "generics",
-              "ggplot2", "globals", "glue", "gower", "gtable", "hardhat",
-              "hexbin", "highr", "hms", "htmltools", "httr", "ipred", "isoband",
-              "iterators", "jquerylib", "jsonlite", "knitr", "labeling",
-              "lattice", "lava", "lifecycle", "listenv", "lubridate",
-              "magrittr", "memoise", "mgcv", "mime", "modelr", "munsell",
-              "nlme", "nnet", "numDeriv", "openssl", "pROC", "parallelly",
-              "pillar", "pkgconfig", "plyr", "dplyr", "prettyunits", "prodlim", 
-              "progress", "progressr", "proxy", "purrr", "rappdirs", "readr",
-              "recipes", "renv", "reshape2", "rlang", "rmarkdown", "rpart",
-              "rpart.plot", "rsample", "sass", "scales", "scico", "sessioninfo",
-              "slider", "stringi", "stringr", "survival", "sys", "terra",
-              "tibble", "tidyr", "tidyselect", "timeDate", "timechange",
-              "tinytex", "tzdb", "utf8", "vctrs", "viridisLite", "visdat",
-              "vroom", "warp", "withr", "xfun", "yaml", "yardstick",
-              "tidyverse", "MODISTools", "skimr", "hwsdr", "usethis", "ranger")
-  
+```{r message=FALSE, warning=FALSE, results=FALSE}
+use_pkgs <-  c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
+              "ggplot2", "tidyverse", "visdat", "terra", "hexbin", "jsonlite",
+              "MODISTools", "forcats", "yardstick", "recipes", "caret",
+              "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
+              "renv", "rsample", "modelr", "rmarkdown", "rpart",
+              "rpart.plot", "ranger", "sessioninfo")
+
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))

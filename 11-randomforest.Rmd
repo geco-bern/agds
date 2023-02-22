@@ -4,7 +4,12 @@
 
 ## Learning objectives
 
-TBC
+In this chapter you will learn how to implement a random forest model.
+
+You will learn among others how:
+
+- the principles of a decision tree, and what is bagging
+- decision trees are related to random forest methods
 
 ## Tutorial
 
@@ -113,8 +118,6 @@ The approach of *bagging* is to smooth out the high variance of decision tree pr
 
 Bagging is particularly effective when the base learner tends to have a high variance. The variance of predictions is continuously reduced with an increasing number of decision trees, over which averages are taken, and no tendency to overfit results from increasing the number of trees. However, the computational cost linearly increases with the number of trees and the gain in model performance levels out. Bagging also limits the interpretability. We can no longer visualise the fitted model with an intuitive graphical decision tree as done above.
 
-<!-- XXX Exercise: implement bagging 12 decision trees, each with a maximum depth of 4, for the same data as used in the demonstration above. -->
-
 ### From trees to a forest
 
 While bagging reduces the variance in predictions, limits to predictive performance remain. This is linked to the fact that, although a certain degree of randomness is introduced by sub-sampling the training data for each tree, individual trees often remain relatively similar. This is particularly expressed if variations in the target variable are controlled primarily by variations in a small number of predictor variables. In this case, decision trees tend to be built by splits on the same variable, irrespective of which bootstrapped sample the individual tree is trained with. 
@@ -128,7 +131,7 @@ A great strength of Random Forest is, inherited by the characteristics of its un
 ```{r}
 source("R/eval_model.R")
 
-ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
   dplyr::select(TIMESTAMP,
@@ -160,19 +163,19 @@ ddf <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>
 
 # Data splitting
 set.seed(123)  # for reproducibility
-split <- rsample::initial_split(ddf, prop = 0.7, strata = "VPD_F")
-ddf_train <- rsample::training(split)
-ddf_test <- rsample::testing(split)
+split <- rsample::initial_split(daily_fluxes, prop = 0.7, strata = "VPD_F")
+daily_fluxes_train <- rsample::training(split)
+daily_fluxes_test <- rsample::testing(split)
 
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
-                      data = ddf_train) |> 
+                      data = daily_fluxes_train) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
 
 mod <- train(
   pp, 
-  data = ddf_train %>% 
+  data = daily_fluxes_train %>% 
     drop_na(), 
   method = "ranger",
   trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
@@ -191,27 +194,30 @@ print(mod)
 ```
 
 ```{r}
-eval_model(mod = mod, df_train = ddf_train, df_test = ddf_test)
+eval_model(mod = mod, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 ```
 
 
 
-## Exercises
+<!-- ## Exercises -->
 
-In a previous tutorial, you learned how to tune the hyperparameter $k$ in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are three hyperparameters in :
+<!-- In a previous tutorial, you learned how to tune the hyperparameter $k$ in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are three hyperparameters in : -->
 
-Answer the following questions:
+<!-- Answer the following questions: -->
 
--   
+<!-- -    -->
+
+<!-- <!-- XXX Exercise: implement bagging 12 decision trees, each with a maximum depth of 4, for the same data as used in the demonstration above. --> -->
 
 
-XXX Exercise: fit a random forest model to the flux data used in previous chapters. Use a single set of hyperparameters. Same modelling task, different engine.
 
-XXXXXXXXX
+<!-- XXX Exercise: fit a random forest model to the flux data used in previous chapters. Use a single set of hyperparameters. Same modelling task, different engine. -->
 
-For random forests from the {ranger} package, hyperparameters are:
+<!-- XXXXXXXXX -->
 
--   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors.
--   `min.node.size`: the number of data points at the "bottom" of each decision tree
--   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision
+<!-- For random forests from the {ranger} package, hyperparameters are: -->
+
+<!-- -   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors. -->
+<!-- -   `min.node.size`: the number of data points at the "bottom" of each decision tree -->
+<!-- -   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision -->
 
