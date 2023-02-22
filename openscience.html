@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-21" />
+<meta name="date" content="2023-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -178,7 +178,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#data-frames-1"><i class="fa fa-check"></i>Data frames</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="gettingstarted.html"><a href="gettingstarted.html#report-exercise"><i class="fa fa-check"></i><b>1.4</b> Report Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
 <ul>
@@ -221,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3.3" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="datawrangling.html"><a href="datawrangling.html#exerciseswrangling"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
-<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#report-exercise-1"><i class="fa fa-check"></i><b>3.5</b> Report Exercise</a></li>
+<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#report-exercise"><i class="fa fa-check"></i><b>3.5</b> Report Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="datavis.html"><a href="datavis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
 <ul>
@@ -298,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2.3" data-path="regressionclassification.html"><a href="regressionclassification.html#classification"><i class="fa fa-check"></i><b>8.2.3</b> Classification</a></li>
 <li class="chapter" data-level="8.2.4" data-path="regressionclassification.html"><a href="regressionclassification.html#model-evaluation"><i class="fa fa-check"></i><b>8.2.4</b> Model evaluation</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-2"><i class="fa fa-check"></i><b>8.3</b> Report Exercise</a>
+<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-1"><i class="fa fa-check"></i><b>8.3</b> Report Exercise</a>
 <ul>
 <li class="chapter" data-level="8.3.1" data-path="regressionclassification.html"><a href="regressionclassification.html#task-statement"><i class="fa fa-check"></i><b>8.3.1</b> Task Statement</a></li>
 <li class="chapter" data-level="8.3.2" data-path="regressionclassification.html"><a href="regressionclassification.html#warm-up-exercises"><i class="fa fa-check"></i><b>8.3.2</b> Warm-Up Exercises</a></li>
@@ -424,23 +423,23 @@ Figure 6.1: The reproducibility matrix by The Turing Way
 <p>In Chapter <a href="gettingstarted.html#gettingstarted">1</a> you learned how to setup an R project. This R project gatheres all components of your analysis in a single directory. Although current computers make it easy to “find” your data and are largely file location agnostic this is not the case in many research environments. Projects grow quickly, and often the number of files will flood the this single directory. Therefore, files need a precise and structured location. This structure allows you to determine both the function and or order of a workflow without reading any code.</p>
 <p>It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a <a href="">github project</a> from this location, or just copy the project to a new drive.</p>
 <p>An example data structure for raw data processing is given below and we provided an <a href="https://github.com/geco-bern/R_proj_template">R project template</a> to work from and adjust on the lab website. A full description on using the template is provided in the Chapter <a href="codemgmt.html#codemgmt">7</a>.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb268-1"><a href="openscience.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data-raw/</span></span>
-<span id="cb268-2"><a href="openscience.html#cb268-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> raw_data_product/</span>
-<span id="cb268-3"><a href="openscience.html#cb268-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> 00_download_raw_data.R</span>
-<span id="cb268-4"><a href="openscience.html#cb268-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> 01_process_raw_data.R</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb269-1"><a href="openscience.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="ex">data-raw/</span></span>
+<span id="cb269-2"><a href="openscience.html#cb269-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> raw_data_product/</span>
+<span id="cb269-3"><a href="openscience.html#cb269-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> 00_download_raw_data.R</span>
+<span id="cb269-4"><a href="openscience.html#cb269-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> 01_process_raw_data.R</span></code></pre></div>
 </div>
 <div id="managing-workflows" class="section level3 hasAnchor" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Managing workflows<a href="openscience.html#managing-workflows" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Although some code is agnostic to the order of execution many projects are effectively workflows, where the output of one routine is required for the successful execution of the next routine.</p>
 <p>In order to make sure that a future you, or a collaborator, understands in which order things should be executed it is best to number scripts / code properly. This is the most basic approach to managing workflows.</p>
 <p>In the example below all statistics code is stored in the statistics folder in an overall analysis folder (which also includes code for figures). All statistical analysis are numbered, to ensure that the output of a first analysis is available to the following one.</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb269-1"><a href="openscience.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="ex">analysis/</span></span>
-<span id="cb269-2"><a href="openscience.html#cb269-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> statistics/</span>
-<span id="cb269-3"><a href="openscience.html#cb269-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ 00_randomforest_model.R</span>
-<span id="cb269-4"><a href="openscience.html#cb269-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ 01_randomforest_tuning.R</span>
-<span id="cb269-5"><a href="openscience.html#cb269-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> figures/</span>
-<span id="cb269-6"><a href="openscience.html#cb269-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ global_model_results_map.R</span>
-<span id="cb269-7"><a href="openscience.html#cb269-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ complex_process_visualization.R</span></code></pre></div>
+<div class="sourceCode" id="cb270"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb270-1"><a href="openscience.html#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="ex">analysis/</span></span>
+<span id="cb270-2"><a href="openscience.html#cb270-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> statistics/</span>
+<span id="cb270-3"><a href="openscience.html#cb270-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ 00_randomforest_model.R</span>
+<span id="cb270-4"><a href="openscience.html#cb270-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ 01_randomforest_tuning.R</span>
+<span id="cb270-5"><a href="openscience.html#cb270-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> figures/</span>
+<span id="cb270-6"><a href="openscience.html#cb270-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ global_model_results_map.R</span>
+<span id="cb270-7"><a href="openscience.html#cb270-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ complex_process_visualization.R</span></code></pre></div>
 <div id="automating-and-visualizing-workflows-with-targets" class="section level4 hasAnchor" number="6.2.2.1">
 <h4><span class="header-section-number">6.2.2.1</span> Automating and visualizing workflows with targets<a href="openscience.html#automating-and-visualizing-workflows-with-targets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To sidestep some of the manual management in R you can use dedicated pipeline tool like the <strong>{targets} package</strong> in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.</p>
@@ -460,17 +459,17 @@ Figure 6.2: A targets visualized workflow by rOpenSci
 <p>If you want to ensure full reproducibility, especially across several years, you will need to capture the state of the system and libraries with which you ran the original analysis.</p>
 <p>In R the <a href="https://rstudio.github.io/renv/">{renv} package</a> serves this purpose and will provide an index of all the packages used in your project as well as their version.For a particular project it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis, isolated, portable and reproducible. The analogue in python would be the <a href="https://docs.python.org/3/library/venv.html">virtual environments, or venv program</a>.</p>
 <p>When setting up your project you can run:</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="openscience.html#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initiate a {renv} environment</span></span>
-<span id="cb270-2"><a href="openscience.html#cb270-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="openscience.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initiate a {renv} environment</span></span>
+<span id="cb271-2"><a href="openscience.html#cb271-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span></code></pre></div>
 <p>To initiate your static R environment. Whenever you want to save the state of your project (and its packages) you can call:</p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="openscience.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the current state of the environment / project</span></span>
-<span id="cb271-2"><a href="openscience.html#cb271-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="openscience.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the current state of the environment / project</span></span>
+<span id="cb272-2"><a href="openscience.html#cb272-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code></pre></div>
 <p>To save any changes made to your environment. All data will be saved in a project description file called a lock file (i.e. <code>renv.lock</code>). It is advised to update the state of your project regularly, and in particular before closing a project.</p>
 <p>When you move your project to a new system, or share a project on github with collaborators, you can revert to the original state of the analysis by calling:</p>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="openscience.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On a new system, or when inheriting a project</span></span>
-<span id="cb272-2"><a href="openscience.html#cb272-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from a collaborator you can use a lock file</span></span>
-<span id="cb272-3"><a href="openscience.html#cb272-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to restore the session/project state using</span></span>
-<span id="cb272-4"><a href="openscience.html#cb272-4" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="openscience.html#cb273-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On a new system, or when inheriting a project</span></span>
+<span id="cb273-2"><a href="openscience.html#cb273-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from a collaborator you can use a lock file</span></span>
+<span id="cb273-3"><a href="openscience.html#cb273-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to restore the session/project state using</span></span>
+<span id="cb273-4"><a href="openscience.html#cb273-4" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span></code></pre></div>
 <blockquote>
 <p>NOTE: as mentioned in the {renv} documentation. “For development and collaboration, the <code>.Rprofile</code>, <code>renv.lock</code> and <code>renv/activate.R</code> files should be committed to your version control system. But the <code>renv/library</code> directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore statements to the project <code>.gitignore</code>.” We refer to <a href="openscience.html#learning-objectives-6">6.1</a> for details on github and its use.</p>
 </blockquote>
@@ -484,44 +483,44 @@ Figure 6.2: A targets visualized workflow by rOpenSci
 <h3><span class="header-section-number">6.2.5</span> Readable reporting using Rmarkdown<a href="openscience.html#readable-reporting-using-rmarkdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Within Rstudio you can use Rmarkdown dynamic documents to combine both text and code. Rmarkdown is ideal for <strong>reporting</strong> i.e., writing your final document presenting your analysis results. A Rmarkdown documents consists of a header document properties, such as how it should be rendered (as an html page, a docx file or a pdf), and the actual content.</p>
 <p>Below you see the header file of an Rmarkdown document that should be rendered as an html page.</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="openscience.html#cb273-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
-<span id="cb273-2"><a href="openscience.html#cb273-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> My R Markdown Report</span>
-<span id="cb273-3"><a href="openscience.html#cb273-3" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> You</span>
-<span id="cb273-4"><a href="openscience.html#cb273-4" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> html_document</span>
-<span id="cb273-5"><a href="openscience.html#cb273-5" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="openscience.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb274-2"><a href="openscience.html#cb274-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> My R Markdown Report</span>
+<span id="cb274-3"><a href="openscience.html#cb274-3" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> You</span>
+<span id="cb274-4"><a href="openscience.html#cb274-4" aria-hidden="true" tabindex="-1"></a>output<span class="sc">:</span> html_document</span>
+<span id="cb274-5"><a href="openscience.html#cb274-5" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span></code></pre></div>
 <p>The remainder of the document shows a code chunk outlined by ``` quotes and the chunk arguments in {} brackets. Inline operations, the evaluation of code, in text is also possible by using single quotes around a variable or code.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb274-1"><a href="openscience.html#cb274-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb274-2"><a href="openscience.html#cb274-2" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="ex">r</span></span>
-<span id="cb274-3"><a href="openscience.html#cb274-3" aria-hidden="true" tabindex="-1"></a><span class="ex">x</span> <span class="op">&lt;</span>- 5  <span class="co"># radius of a circle</span></span>
-<span id="cb274-4"><a href="openscience.html#cb274-4" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
-<span id="cb274-5"><a href="openscience.html#cb274-5" aria-hidden="true" tabindex="-1"></a><span class="ex">For</span> a circle with the radius 5,</span>
-<span id="cb274-6"><a href="openscience.html#cb274-6" aria-hidden="true" tabindex="-1"></a><span class="ex">its</span> area is 78.5398163.</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb275-1"><a href="openscience.html#cb275-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb275-2"><a href="openscience.html#cb275-2" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span><span class="ex">r</span></span>
+<span id="cb275-3"><a href="openscience.html#cb275-3" aria-hidden="true" tabindex="-1"></a><span class="ex">x</span> <span class="op">&lt;</span>- 5  <span class="co"># radius of a circle</span></span>
+<span id="cb275-4"><a href="openscience.html#cb275-4" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span>
+<span id="cb275-5"><a href="openscience.html#cb275-5" aria-hidden="true" tabindex="-1"></a><span class="ex">For</span> a circle with the radius 5,</span>
+<span id="cb275-6"><a href="openscience.html#cb275-6" aria-hidden="true" tabindex="-1"></a><span class="ex">its</span> area is 78.5398163.</span></code></pre></div>
 <p>The document can be rendered by calling <code>rmarkdown::render()</code> on the command line or hitting the “Knit” button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).</p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="openscience.html#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="co"># render the document on the command line</span></span>
-<span id="cb275-2"><a href="openscience.html#cb275-2" aria-hidden="true" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="openscience.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># render the document on the command line</span></span>
+<span id="cb276-2"><a href="openscience.html#cb276-2" aria-hidden="true" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>()</span></code></pre></div>
 <div id="referencing-and-finding-files" class="section level4 hasAnchor" number="6.2.5.1">
 <h4><span class="header-section-number">6.2.5.1</span> Referencing and finding files<a href="openscience.html#referencing-and-finding-files" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In R projects all files can be referenced relative to the top most path of the project. When opening <code>your_project.Rproj</code> in RStudio you can load data in the console as such <code>read.table("data/some_data.csv")</code>, specifying a “soft” relative path for <code>some_data.csv</code>.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb276-1"><a href="openscience.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="ex">project/</span></span>
-<span id="cb276-2"><a href="openscience.html#cb276-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> your_project.Rproj</span>
-<span id="cb276-3"><a href="openscience.html#cb276-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> statistics/</span>
-<span id="cb276-4"><a href="openscience.html#cb276-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ your_dynamic_document.Rmd</span>
-<span id="cb276-5"><a href="openscience.html#cb276-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> data/</span>
-<span id="cb276-6"><a href="openscience.html#cb276-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ some_data.csv</span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb277-1"><a href="openscience.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="ex">project/</span></span>
+<span id="cb277-2"><a href="openscience.html#cb277-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> your_project.Rproj</span>
+<span id="cb277-3"><a href="openscience.html#cb277-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> statistics/</span>
+<span id="cb277-4"><a href="openscience.html#cb277-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ your_dynamic_document.Rmd</span>
+<span id="cb277-5"><a href="openscience.html#cb277-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> data/</span>
+<span id="cb277-6"><a href="openscience.html#cb277-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>  ├─ some_data.csv</span></code></pre></div>
 <p>Rmarkdown files are rendered relative to the file path where to document resides. This means that data which resides in <code>data</code> can’t be accessed by <code>statistics/your_dynamic_document.Rmd</code> even when using an R project and soft relative paths (which work for scripts and functions). As such trying to render the <code>your_dynamic_document.Rmd</code> will fail as the file <code>some_data.csv</code> will not be found.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb277-1"><a href="openscience.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
-<span id="cb277-2"><a href="openscience.html#cb277-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Your dynamic document</span>
-<span id="cb277-3"><a href="openscience.html#cb277-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> You</span>
-<span id="cb277-4"><a href="openscience.html#cb277-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
-<span id="cb277-5"><a href="openscience.html#cb277-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="openscience.html#cb278-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&#39;data/some_data.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb278-1"><a href="openscience.html#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb278-2"><a href="openscience.html#cb278-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Your dynamic document</span>
+<span id="cb278-3"><a href="openscience.html#cb278-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> You</span>
+<span id="cb278-4"><a href="openscience.html#cb278-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
+<span id="cb278-5"><a href="openscience.html#cb278-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="openscience.html#cb279-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&#39;data/some_data.csv&#39;</span>)</span></code></pre></div>
 <p>We need to explicitly take the project’s base path into the fold using the <a href="https://here.r-lib.org/">{here} package</a>. The here package gathers the absolute path of files inside an R project. As such, <code>here::here("data/some_data.csv")</code> will return the full path of the data (e.g. <code>/your_computer/project/data/some_data.csv</code>). This absolute path will be a valid path for the read.table() function, making the Rmarkdown file render correctly. The correct Rmarkdown code to read the data therefore reads:</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb279-1"><a href="openscience.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
-<span id="cb279-2"><a href="openscience.html#cb279-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Your dynamic document</span>
-<span id="cb279-3"><a href="openscience.html#cb279-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> You</span>
-<span id="cb279-4"><a href="openscience.html#cb279-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
-<span id="cb279-5"><a href="openscience.html#cb279-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="openscience.html#cb280-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&#39;data/some_data.csv&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb280-1"><a href="openscience.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb280-2"><a href="openscience.html#cb280-2" aria-hidden="true" tabindex="-1"></a><span class="ex">title:</span> Your dynamic document</span>
+<span id="cb280-3"><a href="openscience.html#cb280-3" aria-hidden="true" tabindex="-1"></a><span class="ex">author:</span> You</span>
+<span id="cb280-4"><a href="openscience.html#cb280-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output:</span> html_document</span>
+<span id="cb280-5"><a href="openscience.html#cb280-5" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="openscience.html#cb281-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.table</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">&#39;data/some_data.csv&#39;</span>))</span></code></pre></div>
 <p>But why not use absolute paths to begin with? Portability! When I would run your *.Rmd file with an absolute path on my computer it would not render as the file <code>some_data.csv</code> would then be located at: <code>/my_computer/project/data/some_data.csv</code></p>
 </div>
 <div id="limitations" class="section level4 hasAnchor" number="6.2.5.2">
@@ -545,19 +544,19 @@ Figure 6.2: A targets visualized workflow by rOpenSci
 <div id="external-data" class="section level3 hasAnchor" number="6.3.1">
 <h3><span class="header-section-number">6.3.1</span> External data<a href="openscience.html#external-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You inherit a project folder which contains the following files.</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb281-1"><a href="openscience.html#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/project/</span></span>
-<span id="cb281-2"><a href="openscience.html#cb281-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> survey.xlsx</span>
-<span id="cb281-3"><a href="openscience.html#cb281-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> xls conversion.csv</span>
-<span id="cb281-4"><a href="openscience.html#cb281-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> xls conversion <span class="er">(</span><span class="ex">copy</span> 1<span class="kw">)</span><span class="ex">.csv</span></span>
-<span id="cb281-5"><a href="openscience.html#cb281-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Model-test_1.R</span>
-<span id="cb281-6"><a href="openscience.html#cb281-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Model-test-final.R</span>
-<span id="cb281-7"><a href="openscience.html#cb281-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Plots.R</span>
-<span id="cb281-8"><a href="openscience.html#cb281-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Figure 1.png</span>
-<span id="cb281-9"><a href="openscience.html#cb281-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> test.png</span>
-<span id="cb281-10"><a href="openscience.html#cb281-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Rplot01.png</span>
-<span id="cb281-11"><a href="openscience.html#cb281-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Report.Rmd</span>
-<span id="cb281-12"><a href="openscience.html#cb281-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Report.html</span>
-<span id="cb281-13"><a href="openscience.html#cb281-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> my_functions.R</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb282-1"><a href="openscience.html#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/project/</span></span>
+<span id="cb282-2"><a href="openscience.html#cb282-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> survey.xlsx</span>
+<span id="cb282-3"><a href="openscience.html#cb282-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> xls conversion.csv</span>
+<span id="cb282-4"><a href="openscience.html#cb282-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> xls conversion <span class="er">(</span><span class="ex">copy</span> 1<span class="kw">)</span><span class="ex">.csv</span></span>
+<span id="cb282-5"><a href="openscience.html#cb282-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Model-test_1.R</span>
+<span id="cb282-6"><a href="openscience.html#cb282-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Model-test-final.R</span>
+<span id="cb282-7"><a href="openscience.html#cb282-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Plots.R</span>
+<span id="cb282-8"><a href="openscience.html#cb282-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Figure 1.png</span>
+<span id="cb282-9"><a href="openscience.html#cb282-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> test.png</span>
+<span id="cb282-10"><a href="openscience.html#cb282-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Rplot01.png</span>
+<span id="cb282-11"><a href="openscience.html#cb282-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Report.Rmd</span>
+<span id="cb282-12"><a href="openscience.html#cb282-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> Report.html</span>
+<span id="cb282-13"><a href="openscience.html#cb282-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> my_functions.R</span></code></pre></div>
 <p>What are your steps to make this project more reproducible? Write down how and why you would organize your project.</p>
 </div>
 <div id="a-new-project" class="section level3 hasAnchor" number="6.3.2">

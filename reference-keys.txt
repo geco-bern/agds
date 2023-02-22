@@ -6,6 +6,13 @@ fig:rmarkdown
 fig:rmarkdownrender
 fig:newrmarkdown
 fig:projectmenu
+fig:gitrstudio
+fig:createsshkey
+fig:viewpublickey
+fig:reportrepository
+fig:copysshrepo
+fig:clonerepo
+fig:reportmarkdown
 fig:tidy
 fig:common-aesthetics
 fig:repromatrix
@@ -61,8 +68,8 @@ setup
 packages
 other-libraries-and-applications
 git-1
+preparation-for-your-report
 exercises
-report-exercise
 programmingprimers
 learning-objectives-2
 tutorial-1
@@ -103,7 +110,7 @@ functional-programming-i
 strings
 functional-programming-ii
 exerciseswrangling
-report-exercise-1
+report-exercise
 datavis
 learning-objectives-4
 tutorial-3
@@ -193,7 +200,7 @@ model-evaluation
 model-comparison
 variable-selection-1
 outlier-detection
-report-exercise-2
+report-exercise-1
 task-statement
 warm-up-exercises
 nested-loops-and-if-statements

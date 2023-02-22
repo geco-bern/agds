@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-21" />
+<meta name="date" content="2023-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -178,7 +178,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#data-frames-1"><i class="fa fa-check"></i>Data frames</a></li>
 <li class="chapter" data-level="" data-path="gettingstarted.html"><a href="gettingstarted.html#workspace"><i class="fa fa-check"></i>Workspace</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="gettingstarted.html"><a href="gettingstarted.html#report-exercise"><i class="fa fa-check"></i><b>1.4</b> Report Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="programmingprimers.html"><a href="programmingprimers.html"><i class="fa fa-check"></i><b>2</b> Programming primers</a>
 <ul>
@@ -221,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3.3" data-path="datawrangling.html"><a href="datawrangling.html#functional-programming-ii"><i class="fa fa-check"></i><b>3.3.3</b> Functional programming II</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="datawrangling.html"><a href="datawrangling.html#exerciseswrangling"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
-<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#report-exercise-1"><i class="fa fa-check"></i><b>3.5</b> Report Exercise</a></li>
+<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#report-exercise"><i class="fa fa-check"></i><b>3.5</b> Report Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="datavis.html"><a href="datavis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
 <ul>
@@ -298,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.2.3" data-path="regressionclassification.html"><a href="regressionclassification.html#classification"><i class="fa fa-check"></i><b>8.2.3</b> Classification</a></li>
 <li class="chapter" data-level="8.2.4" data-path="regressionclassification.html"><a href="regressionclassification.html#model-evaluation"><i class="fa fa-check"></i><b>8.2.4</b> Model evaluation</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-2"><i class="fa fa-check"></i><b>8.3</b> Report Exercise</a>
+<li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-1"><i class="fa fa-check"></i><b>8.3</b> Report Exercise</a>
 <ul>
 <li class="chapter" data-level="8.3.1" data-path="regressionclassification.html"><a href="regressionclassification.html#task-statement"><i class="fa fa-check"></i><b>8.3.1</b> Task Statement</a></li>
 <li class="chapter" data-level="8.3.2" data-path="regressionclassification.html"><a href="regressionclassification.html#warm-up-exercises"><i class="fa fa-check"></i><b>8.3.2</b> Warm-Up Exercises</a></li>
@@ -812,41 +811,147 @@ Figure 1.5: R project menu.
 <h3><span class="header-section-number">1.2.8</span> Setup<a href="gettingstarted.html#setup" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="packages" class="section level4 hasAnchor" number="1.2.8.1">
 <h4><span class="header-section-number">1.2.8.1</span> Packages<a href="gettingstarted.html#packages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Let’s install all the required packages for this course and load them.</p>
+<p>You either have installed R and RStudio at the start of this chapter or you had them in your computer already. If you belong to the second group, make sure that you update both R and RStudio to get the latest versions. Working with the latest version of R, RStudio and packages helps to avoid errors due to dependency conflicts. Now, let’s install all the required packages for this course and load them.</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="gettingstarted.html#cb101-1" aria-hidden="true" tabindex="-1"></a>use_pkgs <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;readr&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;stringr&quot;</span>, <span class="st">&quot;purrr&quot;</span>,</span>
 <span id="cb101-2"><a href="gettingstarted.html#cb101-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;visdat&quot;</span>, <span class="st">&quot;terra&quot;</span>, <span class="st">&quot;hexbin&quot;</span>, <span class="st">&quot;jsonlite&quot;</span>,</span>
 <span id="cb101-3"><a href="gettingstarted.html#cb101-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;MODISTools&quot;</span>, <span class="st">&quot;forcats&quot;</span>, <span class="st">&quot;yardstick&quot;</span>, <span class="st">&quot;recipes&quot;</span>, <span class="st">&quot;caret&quot;</span>,</span>
 <span id="cb101-4"><a href="gettingstarted.html#cb101-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;broom&quot;</span>, <span class="st">&quot;skimr&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;scico&quot;</span>, <span class="st">&quot;hwsdr&quot;</span>, <span class="st">&quot;usethis&quot;</span>,</span>
 <span id="cb101-5"><a href="gettingstarted.html#cb101-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;renv&quot;</span>, <span class="st">&quot;rsample&quot;</span>, <span class="st">&quot;modelr&quot;</span>, <span class="st">&quot;rmarkdown&quot;</span>, <span class="st">&quot;rpart&quot;</span>,</span>
 <span id="cb101-6"><a href="gettingstarted.html#cb101-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;rpart.plot&quot;</span>, <span class="st">&quot;ranger&quot;</span>, <span class="st">&quot;sessioninfo&quot;</span>)</span>
-<span id="cb101-7"><a href="gettingstarted.html#cb101-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb101-7"><a href="gettingstarted.html#cb101-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb101-8"><a href="gettingstarted.html#cb101-8" aria-hidden="true" tabindex="-1"></a>new_pkgs <span class="ot">&lt;-</span> use_pkgs[<span class="sc">!</span>(use_pkgs <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]</span>
 <span id="cb101-9"><a href="gettingstarted.html#cb101-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new_pkgs) <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="fu">install.packages</span>(new_pkgs)</span>
 <span id="cb101-10"><a href="gettingstarted.html#cb101-10" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">lapply</span>(use_pkgs, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p>If the installation failed, there should be an error message “Installation of package … had non-zero exit status”. If so, check with teaching assistance.</p>
 </div>
 <div id="other-libraries-and-applications" class="section level4 hasAnchor" number="1.2.8.2">
 <h4><span class="header-section-number">1.2.8.2</span> Other libraries and applications<a href="gettingstarted.html#other-libraries-and-applications" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.</p>
-<p>For example, to work with <em>netcdf</em> files in R, you would need to install the {ncdf4} library and the <code>netCDF</code> command-line tools:</p>
+<p>Some R packages depend on one another (for example, all depend on {base} R), but they can also depend on software external to the R ecosystem. For Chapter @ref{datavariety}, we will need the {ncdf4} package to work with <a href="https://www.unidata.ucar.edu/software/netcdf/"><em>netCDF</em></a> files in R. NetCDF (network Common Data Form) is a file format for storing multidimensional scientific data (variables) such as temperature, humidity, pressure, wind speed, and direction. The package {ncdf4} depends on software that is not available as an R package, the <code>netCDF</code> command-line tools, which you need to install additionally on your computer.</p>
+<p>To install the <code>netCDF</code> command-line tools, follow these instructions:</p>
 <ul>
-<li>To install the {ncdf4} library, follow the same steps as above for installing an R library.</li>
-<li>To install the <code>netCDF</code> command-line tools, follow the instructions on the <a href="https://www.unidata.ucar.edu/downloads/netcdf/index.jsp">netCDF website</a>.</li>
-<li>Once the {ncdf4} library and the <code>netCDF</code> command-line tools are installed, you can use them to work with <code>.nc</code> files in R. For example, you could use the <code>nc_open()</code> function from the <code>"ncdf4"</code> library to open a file.</li>
+<li>For MacOS users, via <em>homebrew</em>:
+<ul>
+<li>You first need to install the package manager <a href="https://brew.sh/">Homebrew</a>. Copy-paste the following code into the terminal: <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>.</li>
+<li>Type into terminal <code>brew --version</code>.
+<ul>
+<li>If version number is shown, you are good to go.</li>
+<li>If nothing pops up, restart Mac and type in again. If still nothing shows, check with teaching assistance.</li>
+</ul></li>
+<li>Type in <code>brew install netcdf</code> following <a href="https://formulae.brew.sh/formula/netcdf">this</a>.</li>
+<li>Restart RStudio if it was open during the steps above. Enter <code>install.packages("ncdf4")</code> and see if it installs it correctly.
+<ul>
+<li>If installation failed, there should be a message “Installation of package … had non-zero exit status”. If so, check with teaching assistance.</li>
+</ul></li>
+</ul></li>
 </ul>
+<blockquote>
+<p>Note: <em>Terminal</em> allows you to interact with your Mac through the command line. You can open it through the Finder if you go to <strong>Applications &gt; Utilities &gt; Terminal</strong>.</p>
+</blockquote>
+<ul>
+<li>For MacOS users, via <em>MacPorts</em>:
+<ul>
+<li>Install <em>xcode</em> via Terminal by typing in <code>xcode-select --install</code> (if not installed already).</li>
+<li>Check your OS Version (Apple icon in menu bar, then choose <strong>About this Mac</strong> and the <strong>macOS</strong> should be displayed). Click on the respective version for MacPorts <a href="https://www.macports.org/install.php">here</a> and run the downloaded <code>.pkg</code> file.</li>
+<li>Install <em>netcdf</em> using <code>sudo port install netcdf</code> in the Terminal, as explained <a href="https://ports.macports.org/port/netcdf/">here</a>.</li>
+</ul></li>
+<li>For Linux users:
+<ul>
+<li>Since the package is pre-installed in Linux, just type <code>sudo apt install gdal-bin libgdal-dev</code> in the terminal.</li>
+</ul></li>
+<li>For Windows users:
+<ul>
+<li>Download the “netCDF-4 64-bit (Windows)” <code>.exe</code> file on the <a href="https://www.unidata.ucar.edu/downloads/netcdf/index.jsp">netCDF website</a>.</li>
+<li>Once downloaded, click on the <code>.exe</code> file and follow the installation dialog.</li>
+</ul></li>
+</ul>
+<p>You can check if the installation was successful by running the following code in the RStudio console:</p>
+<pre><code># XXX TO DO @koenhufkens</code></pre>
 </div>
 <div id="git-1" class="section level4 hasAnchor" number="1.2.8.3">
 <h4><span class="header-section-number">1.2.8.3</span> git<a href="gettingstarted.html#git-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In this section, you will install <em>git</em>, create a GitHub account and connect it to RStudio. This should set up your laptop so that you can do version control of your code (with an easy to use interface) and upload changes to an online copy of your R project (on GitHub) directly from RStudio. Follow these instructions:</p>
 <ul>
-<li>First, follow the Git download and installation instructions for your OS outlined <a href="https://git-scm.com/downloads">here</a>.</li>
-<li>Once Git is installed, set up RStudio for version control by going to <strong>Tools &gt; Global Options &gt; Git/SVN</strong> and tick “Enable version control interface…”. You can check that the path to your Git installation is correct.</li>
-<li>If you don’t have one already, create a GitHub account on <a href="https://github.com" class="uri">https://github.com</a> and sign in.</li>
-<li>Connect your GitHub account with Git locally, using SSH keys.
+<li>If you don’t have one already, create a GitHub account on <a href="https://github.com" class="uri">https://github.com</a> and sign in. We encourage you to use a personal email (not your student email) so you can keep using this account for years to come, thus compiling your “code knowledge base”.</li>
+<li>Next, follow the Git download and installation instructions for your OS outlined <a href="https://git-scm.com/downloads">here</a>.</li>
+<li>Once Git is installed, reboot RStudio. Set up RStudio for version control by going to <strong>Tools &gt; Global Options &gt; Git/SVN</strong> and tick “Enable version control interface…”. The path to your Git installation should be correct automatically.
 <ul>
-<li>Alternative from RStudio: Go to <strong>Tools &gt; Global Options &gt; Git/SVN</strong> and select <strong>Create SSH Key…</strong>. This will create a new SSH in your default <code>~/.ssh</code> folder. Close the window with the message and click on <strong>View public key</strong>. Copy the public key (all the text). Follow <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">these instructions</a> to add a new SSH key to your GitHub account. Finally, you can <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection">test your SSH connection</a>.</li>
-<li>Alternative from Terminal: You should sequentially follow the instructions to <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys">check for existing SSH keys</a>, <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">generate a new SSH key</a>, <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">add a new SSH key to your GitHub account</a> and finally <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection">test your SSH connection</a>. Note that, at the top of these websites, there’s an option to choose your OS because the steps vary depending on the type of computer your work with.</li>
+<li>If it says “(Not Found)”, try the following:
+<ul>
+<li>For Windows, it’s probably <code>C:\\Program Files\\Git\\bin\\git.exe</code>.</li>
+<li>For MacOS and Linux, you can type <code>which git</code> in the Terminal and it will show the installation location.</li>
+<li>If you get an error after trying this, ask the teaching assistance.</li>
+</ul></li>
 </ul></li>
 </ul>
-<p>Now you should see a <strong>Git</strong> panel in RStudio (next to <strong>Environment</strong>) and also be able to use Git in the <strong>Terminal</strong> panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:gitrstudio"></span>
+<img src="figures/git_in_rstudio.png" alt="Set up Git for RStudio." width="75%" />
+<p class="caption">
+Figure 1.6: Set up Git for RStudio.
+</p>
+</div>
+<ul>
+<li>Connect your GitHub account with Git locally, using SSH keys (which are cryptographic authentication credentials). You can do this from RStudio following the steps:
+<ul>
+<li>Go to <strong>Tools &gt; Global Options &gt; Git/SVN</strong> and select <strong>Create SSH Key…</strong>. Create an SSH key with the default options (you can ignore the passphrase and click “Create”). This will create a new SSH in your default <code>~/.ssh</code> folder.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:createsshkey"></span>
+<img src="figures/create_ssh_key.png" alt="Create an SSH key from RStudio." width="75%" />
+<p class="caption">
+Figure 1.7: Create an SSH key from RStudio.
+</p>
+</div></li>
+<li>Next, click on <strong>View public key</strong> (above your new SSH key) and copy the public key (all the text).
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:viewpublickey"></span>
+<img src="figures/copy_public_key.png" alt="Copy the public key for the SSH connection" width="75%" />
+<p class="caption">
+Figure 1.8: Copy the public key for the SSH connection
+</p>
+</div></li>
+<li>Go back to your browser and open your GitHub account. At the top right, open your profile’s menu and choose <strong>Settings &gt; SSH and GPG Keys</strong>. Then select <strong>Add new SSH key</strong>. Give your SSH connection a name, for example “My laptop” and paste the <em>public key</em> that you copied from RStudio. If you have problems, check out <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">these instructions</a> to add a new SSH key to your GitHub account.</li>
+<li>Finally, you can test your SSH connection following <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection">these instructions</a>. Note that, at the top of these websites, there’s an option to choose your OS because the steps vary depending on the type of computer your work with.</li>
+</ul></li>
+</ul>
+</div>
+<div id="preparation-for-your-report" class="section level4 hasAnchor" number="1.2.8.4">
+<h4><span class="header-section-number">1.2.8.4</span> Preparation for your report<a href="gettingstarted.html#preparation-for-your-report" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. This section is meant to guide you through the preparation of your report workspace, such that it’s in the form that you will submit it. Following the next steps, you will set up a git repository containing an R project and an R Markdown file.</p>
+<ul>
+<li>Log into GitHub in your browser and create a <strong>new repository</strong>. Name it <em>agds_report_yourname</em>, give it a short description and set it to be public, so we can read it for the evaluation. Include a README file (it’s a sort of menu which you’ll edit later), a <code>.gitignore</code> template for R (select in the drop-down menu) and a Creative Commons license (for code sharing rights, etc).</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:reportrepository"></span>
+<img src="figures/create_git_repository.png" alt="Create a Git repository for your report." width="75%" />
+<p class="caption">
+Figure 1.9: Create a Git repository for your report.
+</p>
+</div>
+<ul>
+<li>Now that you have a GitHub repository, open it and you should see a green button saying <strong>Code</strong>. Go to <strong>SSH</strong> and copy that url. You will use it to <em>clone</em> the repository.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:copysshrepo"></span>
+<img src="figures/copy_ssh_repo.png" alt="Copy the SSH url to clone your reporitory." width="75%" />
+<p class="caption">
+Figure 1.10: Copy the SSH url to clone your reporitory.
+</p>
+</div>
+<ul>
+<li>Open RStudio. Create a new R project (opening the <strong>New Project</strong> dialog) from a GitHub repository. Paste the repository’s url, give it a name (by default the same as the repository) and select in which folder you want to keep it locally (for example the base directory <code>~</code>). This will clone all the files from GitHub onto the project directory (i.e. folder) in your computer.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:clonerepo"></span>
+<img src="figures/clone_repo_ssh.png" alt="Clone your repository and create an R project." width="75%" />
+<p class="caption">
+Figure 1.11: Clone your repository and create an R project.
+</p>
+</div>
+<ul>
+<li>With this, you’re set up. If your R project <code>agds_report_yourname</code> is open, you should see a <strong>Git</strong> panel in RStudio (next to <strong>Environment</strong>) and also be able to use Git in the <strong>Terminal</strong> panel in RStudio. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.</li>
+<li>You’ll see a detailed explanation of the <em>git</em> workflows in Chapter <a href="codemgmt.html#codemgmt">7</a>. For now, keep adding the report content to this R project folder. Create a new <strong>R Markdown</strong> file called <code>report.Rmd</code>. This is where you will include the solutions to the *** Exercises and incrementally write your report.</li>
+</ul>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:reportmarkdown"></span>
+<img src="figures/Rmd_report.png" alt="At first, the R Markdown for your report will look something like this." width="75%" />
+<p class="caption">
+Figure 1.12: At first, the R Markdown for your report will look something like this.
+</p>
+</div>
+<p>In total you should have two R projects related to this course: a local project containing solutions to general exercises (for yourself, created in the exercises below) and the report project + git repository (that you just created and will share with us at the end of the course). Your report project should not include the solutions to general exercises.</p>
 </div>
 </div>
 </div>
@@ -914,19 +1019,8 @@ Figure 1.5: R project menu.
 <div id="workspace" class="section level3 unnumbered hasAnchor">
 <h3>Workspace<a href="gettingstarted.html#workspace" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Create a new <em>R project</em> and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.</p>
-</div>
-</div>
-<div id="report-exercise" class="section level2 hasAnchor" number="1.4">
-<h2><span class="header-section-number">1.4</span> Report Exercise<a href="gettingstarted.html#report-exercise" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. The first task is to set up an R project as a <em>git</em> repository, and create an R Markdown file for your report. Follow these steps:</p>
-<ul>
-<li>Log into GitHub in your browser and create a <strong>new repository</strong>. Name it <em>agds_report_yourname</em>, give it a short description and set it to be public, so we can read it for the evaluation. Include a README file (it’s a sort of menu which you’ll edit later), a <code>.gitignore</code> template for R (select in the drop-down menu) and a Creative Commons license (for code sharing rights, etc).</li>
-<li>Now that you have a GitHub repository, open it and you should see a green button saying <strong>Code</strong>. Go to <strong>SSH</strong> and copy that url. You will use it to <em>clone</em> the repository.</li>
-<li>Open RStudio. Create a new R project from a GitHub repository. Paste the repository’s url, give it a name (by default the same as the repository) and select in which folder you want to keep it locally (for example the base directory <code>~</code>). This will clone all the files from GitHub onto the project directory in your computer.</li>
-<li>With this, you’re set up. You should have two R projects: a local project containing solutions to general exercises (for yourself) and the report project + git repository (that you’ll share with us at the end of the course).</li>
-<li>You’ll see a detailed explanation of the <em>git</em> workflows in Chapter <a href="codemgmt.html#codemgmt">7</a>. For now, keep adding the report content to this R project folder. Create a new <strong>R Markdown</strong> file called <code>report.Rmd</code>. This is where you will include the solutions to the *** Exercises and incrementally write your report.</li>
-</ul>
 
+</div>
 </div>
 </div>
             </section>
