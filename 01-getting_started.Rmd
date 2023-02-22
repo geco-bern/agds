@@ -529,7 +529,7 @@ We will learn more about *git* in Chapter \@ref(codemgmt). For now, follow instr
 
 #### Packages
 
-Let's install all the required packages for this course and load them.
+You either have installed R and RStudio at the start of this chapter or you had them in your computer already. If you belong to the second group, make sure that you update both R and RStudio to get the latest versions. Working with the latest version of R, RStudio and packages helps to avoid errors due to dependency conflicts. Now, let's install all the required packages for this course and load them.
 
 ```{r message=FALSE, warning=FALSE, results=FALSE}
 use_pkgs <-  c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
