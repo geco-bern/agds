@@ -6,10 +6,10 @@
 
 In this chapter you will learn how to implement a random forest model.
 
-You will learn among others how:
+You will learn among others:
 
 - the principles of a decision tree, and what is bagging
-- decision trees are related to random forest methods
+- how decision trees are related to random forest methods
 
 ## Tutorial
 
