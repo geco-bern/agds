@@ -468,7 +468,7 @@ Once loaded into your R environment, combine and save all data as a **temporary*
 Download and open the following file:
 
 ``` r
-https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc
+https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
 ```
 
 1.  What file format are we dealing with?
@@ -483,7 +483,7 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc
 Download and open the following file:
 
 ``` r
-https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tiff
+https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif
 ```
 
 1.  Does this data seem familiar, and how can you tell? What are your conclusions?
