@@ -529,7 +529,7 @@ We will learn more about *git* in Chapter \@ref(codemgmt). For now, follow instr
 
 #### Packages
 
-Let's install all the required packages for this course and load them.
+You either have installed R and RStudio at the start of this chapter or you had them in your computer already. If you belong to the second group, make sure that you update both R and RStudio to get the latest versions. Working with the latest version of R, RStudio and packages helps to avoid errors due to dependency conflicts. Now, let's install all the required packages for this course and load them.
 
 ```{r message=FALSE, warning=FALSE, results=FALSE}
 use_pkgs <-  c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
@@ -538,33 +538,103 @@ use_pkgs <-  c("dplyr", "tidyr", "readr", "lubridate", "stringr", "purrr",
               "broom", "skimr", "cowplot", "scico", "hwsdr", "usethis",
               "renv", "rsample", "modelr", "rmarkdown", "rpart",
               "rpart.plot", "ranger", "sessioninfo")
-  
+
 new_pkgs <- use_pkgs[!(use_pkgs %in% installed.packages()[, "Package"])]
 if (length(new_pkgs) > 0) install.packages(new_pkgs)
 invisible(lapply(use_pkgs, require, character.only = TRUE))
 ```
 
+If the installation failed, there should be an error message "Installation of package ... had non-zero exit status". If so, check with teaching assistance.
+
 #### Other libraries and applications
 
-For this course, we will also need software that is not available as an R package. To work with other libraries and applications, you may need to install additional software on your computer.
+Some R packages depend on one another (for example, all depend on {base} R), but they can also depend on software external to the R ecosystem. For Chapter \@ref{datavariety}, we will need the {ncdf4} package to work with [*netCDF*](https://www.unidata.ucar.edu/software/netcdf/) files in R. NetCDF (network Common Data Form) is a file format for storing multidimensional scientific data (variables) such as temperature, humidity, pressure, wind speed, and direction. The package {ncdf4} depends on software that is not available as an R package, the `netCDF` command-line tools, which you need to install additionally on your computer.
 
-For example, to work with *netcdf* files in R, you would need to install the {ncdf4} library and the `netCDF` command-line tools:
+To install the `netCDF` command-line tools, follow these instructions:
 
--   To install the {ncdf4} library, follow the same steps as above for installing an R library.
--   To install the `netCDF` command-line tools, follow the instructions on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
--   Once the {ncdf4} library and the `netCDF` command-line tools are installed, you can use them to work with `.nc` files in R. For example, you could use the `nc_open()` function from the `"ncdf4"` library to open a file.
+-    For MacOS users, via *homebrew*:
+     -    You first need to install the package manager [Homebrew](https://brew.sh/). Copy-paste the following code into the terminal: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`.
+     -    Type into terminal `brew --version`.
+          -    If version number is shown, you are good to go.
+          -    If nothing pops up, restart Mac and type in again. If still nothing shows, check with teaching assistance.
+     -    Type in `brew install netcdf` following [this](https://formulae.brew.sh/formula/netcdf).
+     -    Restart RStudio if it was open during the steps above. Enter `install.packages("ncdf4")` and see if it installs it correctly.
+          -    If installation failed, there should be a message "Installation of package ... had non-zero exit status". If so, check with teaching assistance.
 
+> Note: *Terminal* allows you to interact with your Mac through the command line. You can open it through the Finder if you go to **Applications > Utilities > Terminal**.
+
+-    For MacOS users, via *MacPorts*:
+     -    Install *xcode* via Terminal by typing in `xcode-select --install` (if not installed already).
+     -    Check your OS Version (Apple icon in menu bar, then choose **About this Mac** and the **macOS** should be displayed). Click on the respective version for MacPorts [here](https://www.macports.org/install.php) and run the downloaded `.pkg` file.
+     -    Install *netcdf* using `sudo port install netcdf` in the Terminal, as explained [here](https://ports.macports.org/port/netcdf/).
+     
+-    For Linux users:
+     -    Since the package is pre-installed in Linux, just type `sudo apt install gdal-bin libgdal-dev` in the terminal.
+     
+-    For Windows users:
+     -    Download the "netCDF-4 64-bit (Windows)" `.exe` file on the [netCDF website](https://www.unidata.ucar.edu/downloads/netcdf/index.jsp).
+     -    Once downloaded, click on the `.exe` file and follow the installation dialog.
+     
+You can check if the installation was successful by running the following code in the RStudio console:
+```
+# XXX TO DO @koenhufkens
+```
+     
 #### git
 
--   First, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
--   Once Git is installed, set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". You can check that the path to your Git installation is correct.
--   If you don't have one already, create a GitHub account on <https://github.com> and sign in.
--   Connect your GitHub account with Git locally, using SSH keys. 
-    -   Alternative from RStudio: Go to **Tools \> Global Options \> Git/SVN** and select **Create SSH Key...**. This will create a new SSH in your default `~/.ssh` folder. Close the window with the message and click on **View public key**. Copy the public key (all the text). Follow [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add a new SSH key to your GitHub account. Finally, you can [test your SSH connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection).
-    -   Alternative from Terminal: You should sequentially follow the instructions to [check for existing SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys), [generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent), [add a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) and finally [test your SSH connection](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Note that, at the top of these websites, there's an option to choose your OS because the steps vary depending on the type of computer your work with.
+In this section, you will install *git*, create a GitHub account and connect it to RStudio. This should set up your laptop so that you can do version control of your code (with an easy to use interface) and upload changes to an online copy of your R project (on GitHub) directly from RStudio. Follow these instructions:
 
-Now you should see a **Git** panel in RStudio (next to **Environment**) and also be able to use Git in the **Terminal** panel in RStudio, whenever your R Project is also a repository. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.
+-   If you don't have one already, create a GitHub account on <https://github.com> and sign in. We encourage you to use a personal email (not your student email) so you can keep using this account for years to come, thus compiling your "code knowledge base".
+-   Next, follow the Git download and installation instructions for your OS outlined [here](https://git-scm.com/downloads).
+-   Once Git is installed, reboot RStudio. Set up RStudio for version control by going to **Tools \> Global Options \> Git/SVN** and tick "Enable version control interface...". The path to your Git installation should be correct automatically.
+    -    If it says "(Not Found)", try the following:
+         -    For Windows, it's probably `C:\\Program Files\\Git\\bin\\git.exe`.
+         -    For MacOS and Linux, you can type `which git` in the Terminal and it will show the installation location.
+         -    If you get an error after trying this, ask the teaching assistance.
+         
+```{r label="gitrstudio", echo=FALSE, fig.cap="Set up Git for RStudio.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/git_in_rstudio.png")
+```
 
+-   Connect your GitHub account with Git locally, using SSH keys (which are cryptographic authentication credentials). You can do this from RStudio following the steps:
+    -   Go to **Tools \> Global Options \> Git/SVN** and select **Create SSH Key...**. Create an SSH key with the default options (you can ignore the passphrase and click "Create"). This will create a new SSH in your default `~/.ssh` folder. 
+```{r label="createsshkey", echo=FALSE, fig.cap="Create an SSH key from RStudio.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/create_ssh_key.png")
+```
+    -   Next, click on **View public key** (above your new SSH key) and copy the public key (all the text). 
+```{r label="viewpublickey", echo=FALSE, fig.cap="Copy the public key for the SSH connection", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/copy_public_key.png")
+```
+    -   Go back to your browser and open your GitHub account. At the top right, open your profile's menu and choose **Settings > SSH and GPG Keys**. Then select **Add new SSH key**. Give your SSH connection a name, for example "My laptop" and paste the *public key* that you copied from RStudio. If you have problems, check out [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add a new SSH key to your GitHub account. 
+    -   Finally, you can test your SSH connection following [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Note that, at the top of these websites, there's an option to choose your OS because the steps vary depending on the type of computer your work with.
+
+#### Preparation for your report
+
+Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. This section is meant to guide you through the preparation of your report workspace, such that it's in the form that you will submit it. Following the next steps, you will set up a git repository containing an R project and an R Markdown file. 
+
+- Log into GitHub in your browser and create a **new repository**. Name it *agds_report_yourname*, give it a short description and set it to be public, so we can read it for the evaluation. Include a README file (it's a sort of menu which you'll edit later), a `.gitignore` template for R (select in the drop-down menu) and a Creative Commons license (for code sharing rights, etc).
+
+```{r label="reportrepository", echo=FALSE, fig.cap="Create a Git repository for your report.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/create_git_repository.png")
+```
+- Now that you have a GitHub repository, open it and you should see a green button saying **Code**. Go to **SSH** and copy that url. You will use it to *clone* the repository.
+
+```{r label="copysshrepo", echo=FALSE, fig.cap="Copy the SSH url to clone your reporitory.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/copy_ssh_repo.png")
+```
+- Open RStudio. Create a new R project (opening the **New Project** dialog) from a GitHub repository. Paste the repository's url, give it a name (by default the same as the repository) and select in which folder you want to keep it locally (for example the base directory `~`). This will clone all the files from GitHub onto the project directory (i.e. folder) in your computer.
+
+```{r label="clonerepo", echo=FALSE, fig.cap="Clone your repository and create an R project.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/clone_repo_ssh.png")
+```
+- With this, you're set up. If your R project `agds_report_yourname` is open, you should see a **Git** panel in RStudio (next to **Environment**) and also be able to use Git in the **Terminal** panel in RStudio. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.
+- You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, keep adding the report content to this R project folder. Create a new **R Markdown** file called `report.Rmd`. This is where you will include the solutions to the \*\*\* Exercises and incrementally write your report.
+
+```{r label="reportmarkdown", echo=FALSE, fig.cap="At first, the R Markdown for your report will look something like this.", out.width="75%", fig.align='center'}
+knitr::include_graphics("./figures/Rmd_report.png")
+```
+
+In total you should have two R projects related to this course: a local project containing solutions to general exercises (for yourself, created in the exercises below) and the report project + git repository (that you just created and will share with us at the end of the course). Your report project should not include the solutions to general exercises.
 
 ## Exercises
 
@@ -623,13 +693,3 @@ Print the object `datasets::quakes` and consult the manual of this object.
 ### Workspace {-}
 
 Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
-
-## Report Exercise
-
-Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. The first task is to set up an R project as a *git* repository, and create an R Markdown file for your report. Follow these steps:
-
-- Log into GitHub in your browser and create a **new repository**. Name it *agds_report_yourname*, give it a short description and set it to be public, so we can read it for the evaluation. Include a README file (it's a sort of menu which you'll edit later), a `.gitignore` template for R (select in the drop-down menu) and a Creative Commons license (for code sharing rights, etc).
-- Now that you have a GitHub repository, open it and you should see a green button saying **Code**. Go to **SSH** and copy that url. You will use it to *clone* the repository.
-- Open RStudio. Create a new R project from a GitHub repository. Paste the repository's url, give it a name (by default the same as the repository) and select in which folder you want to keep it locally (for example the base directory `~`). This will clone all the files from GitHub onto the project directory in your computer.
-- With this, you're set up. You should have two R projects: a local project containing solutions to general exercises (for yourself) and the report project + git repository (that you'll share with us at the end of the course).
-- You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, keep adding the report content to this R project folder. Create a new **R Markdown** file called `report.Rmd`. This is where you will include the solutions to the \*\*\* Exercises and incrementally write your report.

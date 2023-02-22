@@ -414,8 +414,8 @@ daily_mean_hourly_fluxes <- half_hourly_fluxes |>
   mutate(month = month(TIMESTAMP_START)) |> 
   filter(month == 6) |>  # taking only June data
   mutate(hour = hour(TIMESTAMP_START)) |> 
-  group_by(hour) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
+  dplyr::group_by(hour) |> 
+  dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # diurnal cycle, cartesian
 plot_3 <-ggplot(

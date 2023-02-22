@@ -154,7 +154,9 @@ half_hourly_fluxes <- half_hourly_fluxes |>
 
 Here, the **pipe** operator `|>` is used. It "pipes" the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the *first argument* of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.
 
-> Note: The pipe operator is so popular that has been recently included in the latest versions of base R. This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
+> Note: The pipe operator is so popular that has been recently included in the latest versions of base R (version 4.1.0 and beyond). This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
+
+> Note: If you cannot update R and have a version older than 4.1.0, just use the `magrittr` pipe `%>%` throughout. This can happen if you have an older Macbook that can't operate the latest Operating System version.
 
 Mutating both our timestamp variables could be written as `mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START), TIMESTAMP_END = ymd_hm(TIMESTAMP_END))`. Sometimes, such multiple-variable mutate statements can get quite long. A handy short version of this can be implemented using `across()`:
 
@@ -224,13 +226,13 @@ Data comes in many forms and shapes. For example, Excel provides a playground fo
 co2_concentration <- tibble(co2_concentration = as.vector(co2), 
        year_dec = time(co2)
        ) |> 
-  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-  mutate(year = as.integer(year_dec - month_dec)) |> 
-  mutate(month = as.integer(month_dec * 12)) |> 
-  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  select(year, month, co2_concentration) |> 
-  slice(1:36)
+  dplyr::mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+  dplyr::mutate(year = as.integer(year_dec - month_dec)) |> 
+  dplyr::mutate(month = as.integer(month_dec * 12)) |> 
+  dplyr::mutate(date = lubridate::ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+  dplyr::mutate(month = month(date, label = TRUE)) |> 
+  dplyr::select(year, month, co2_concentration) |> 
+  dplyr::slice(1:36)
 
 co2_concentration_monthly <- co2_concentration |> 
   pivot_wider(names_from = month, values_from = co2_concentration)
@@ -345,7 +347,7 @@ As a general principle, we want to have *machine readable* data. Key for achievi
 -   Even if the data are clean and contains a consistently spelled categorical variable in the form of a character string, R doesn't necessarily treat it as categorical. For certain downstream steps of the workflow, it may be necessary to transform such a variable to one of type `factor`. For example, as entries of an unordered categorical variable, we have `unique(df$gender) = c("female", "male", "non-binary")`. To treat them as categorical and not just mere character strings, we would have to do:
 
 ```{r, eval=FALSE}
-df <- df |> mutate(gender = as.factor(gender))
+df <- df |> dplyr::mutate(gender = as.factor(gender))
 ```
 
 -   Character strings may encode ordinal information. For example, entries specify quality control information and are one of `c("good quality", "fair quality, "poor quality")`. A challenge could be that the spelling is inconsistent (`c("Good quality", "good quality", …)`). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable `NEE_VUT_REF_QC` in our example dataset `half_hourly_fluxes` follows this approach:
@@ -556,7 +558,7 @@ clean_data_dd <- function(df){
   df <- df |>
 
     # select only the variables we are interested in
-    select(
+    dplyr::select(
       TIMESTAMP,
       ends_with("_F"),
       GPP_NT_VUT_REF,
@@ -565,10 +567,10 @@ clean_data_dd <- function(df){
       -contains("JSB")) |> 
 
     # convert to a nice date object
-    mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
+    dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
 
     # set all -9999 to NA
-    mutate(across(where(is.numeric), ~na_if(., -9999)))
+    dplyr::mutate(across(where(is.numeric), ~na_if(., -9999)))
   
   return(df)
 }
@@ -648,7 +650,7 @@ When writing code for an analysis, it's useful, if not essential, to understand 
 Yes, they can. Think of the linear model objects as 'values'. Values don't necessarily have to be scalars, but they can be of any type (class).
 
 ```{r}
-tibble(
+tibble::tibble(
   siteid = vec_sites,
   linmod = list_linmod
   )
@@ -659,7 +661,7 @@ The fact that cells can contain any type of object offers a powerful concept. In
 The following creates a nested data frame, where the column `data` is defined by the list of data frames read from files above (`list_df`).
 
 ```{r}
-tibble(
+tibble::tibble(
   siteid = vec_sites,
   data = list_df
   )
@@ -681,7 +683,7 @@ This structure is very useful. For example, for applying functions over sites' d
 daily_fluxes_allsites |>
   group_by(siteid) |>
   nest() |>
-  mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
+  dplyr::mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
 ```
 
 This approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column `"data"` have time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by `siteid`), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of `summarise()` (see above).
@@ -692,9 +694,9 @@ Combining the steps described above into a single workflow, we have:
 daily_fluxes_allsites_nested <- daily_fluxes_allsites |>
   group_by(siteid) |>
   nest() |>
-  mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
-  mutate(summ = purrr::map(linmod, ~summary(.))) |>
-  mutate(rsq = map_dbl(summ, "r.squared")) |>
+  dplyr::mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
+  dplyr::mutate(summ = purrr::map(linmod, ~summary(.))) |>
+  dplyr::mutate(rsq = map_dbl(summ, "r.squared")) |>
   arrange(desc(rsq))  # to arrange output, with highest r-squared on top
 
 daily_fluxes_allsites_nested
