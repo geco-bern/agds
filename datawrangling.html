@@ -274,7 +274,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.1" data-path="codemgmt.html"><a href="codemgmt.html#learning-objectives-7"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
 <li class="chapter" data-level="7.2" data-path="codemgmt.html"><a href="codemgmt.html#tutorial-6"><i class="fa fa-check"></i><b>7.2</b> Tutorial</a>
 <ul>
-<li class="chapter" data-level="7.2.1" data-path="codemgmt.html"><a href="codemgmt.html#git-and-local-version-control"><i class="fa fa-check"></i><b>7.2.1</b> Git and local version control</a></li>
+<li class="chapter" data-level="7.2.1" data-path="codemgmt.html"><a href="codemgmt.html#gitworkflow"><i class="fa fa-check"></i><b>7.2.1</b> Git and local version control</a></li>
 <li class="chapter" data-level="7.2.2" data-path="codemgmt.html"><a href="codemgmt.html#remote-version-control"><i class="fa fa-check"></i><b>7.2.2</b> Remote version control</a></li>
 <li class="chapter" data-level="7.2.3" data-path="codemgmt.html"><a href="codemgmt.html#location-based-code-management---github-templates"><i class="fa fa-check"></i><b>7.2.3</b> Location based code management - github templates</a></li>
 </ul></li>
@@ -439,8 +439,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Tabular data are organised in rows and columns. Each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. For example, a data frame in R is tabular data. In Chapter <a href="datavariety.html#datavariety">5</a>, you will be introduced to other types of data. The most common format for tabular data are CSV (comma-separated-values), typically indicated by the file name suffix <code>.csv</code>. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, <code>.xlsx</code>). The first row in a CSV file typically specifies the name of the variable provided in the respective column.</p>
 <p>Let’s get started with working with our example data set and read it into R, as the variable <code>half_hourly_fluxes</code>. Note that the naming of variables can be important for keeping code legible. For example, it may indicate the type of the object it holds (<code>df</code> for data frame) and that the data are half-hourly (<code>hh</code>).</p>
 <p>To import the data into the R environment, we use the function <code>read_csv()</code> from the {readr} package (part of tidyverse). In other R code, you will also encounter the base R <code>read.csv()</code> function. However, <code>read_csv()</code> is much faster and reads data into a tidyverse-data frame (a <em>tibble</em>) which has some useful additional characteristics, on top of a common R data frame. For example, <em>tibbles</em> generate a nicely readable output when printing the object as is done below.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="datawrangling.html#cb118-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv&quot;</span>)</span>
-<span id="cb118-2"><a href="datawrangling.html#cb118-2" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="datawrangling.html#cb119-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv&quot;</span>)</span>
+<span id="cb119-2"><a href="datawrangling.html#cb119-2" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes</span></code></pre></div>
 <p>Since the file is properly formatted, with variable names given in the first line of the file, the function <code>read_csv()</code> identifies them correctly as column names and interprets values in each column as values of a consistent type (as numeric <code>&lt;dbl&gt;</code>). The file is also automatically machine-readable because it has no merged cells and only one value per cell (i.e. <a href="datawrangling.html#tidydata">tidy</a>).</p>
 </div>
 <div id="variable-selection" class="section level3 hasAnchor" number="3.2.4">
@@ -455,50 +455,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Flag indicating whether a time step is at night (<code>NIGHT</code>)</li>
 </ul>
 <p>This is implemented by:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="datawrangling.html#cb119-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> <span class="fu">select</span>(</span>
-<span id="cb119-2"><a href="datawrangling.html#cb119-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes,</span>
-<span id="cb119-3"><a href="datawrangling.html#cb119-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP&quot;</span>),</span>
-<span id="cb119-4"><a href="datawrangling.html#cb119-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),</span>
-<span id="cb119-5"><a href="datawrangling.html#cb119-5" aria-hidden="true" tabindex="-1"></a>  GPP_NT_VUT_REF,</span>
-<span id="cb119-6"><a href="datawrangling.html#cb119-6" aria-hidden="true" tabindex="-1"></a>  NEE_VUT_REF_QC,</span>
-<span id="cb119-7"><a href="datawrangling.html#cb119-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>),</span>
-<span id="cb119-8"><a href="datawrangling.html#cb119-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>),</span>
-<span id="cb119-9"><a href="datawrangling.html#cb119-9" aria-hidden="true" tabindex="-1"></a>  NIGHT</span>
-<span id="cb119-10"><a href="datawrangling.html#cb119-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="datawrangling.html#cb120-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> <span class="fu">select</span>(</span>
+<span id="cb120-2"><a href="datawrangling.html#cb120-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes,</span>
+<span id="cb120-3"><a href="datawrangling.html#cb120-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP&quot;</span>),</span>
+<span id="cb120-4"><a href="datawrangling.html#cb120-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),</span>
+<span id="cb120-5"><a href="datawrangling.html#cb120-5" aria-hidden="true" tabindex="-1"></a>  GPP_NT_VUT_REF,</span>
+<span id="cb120-6"><a href="datawrangling.html#cb120-6" aria-hidden="true" tabindex="-1"></a>  NEE_VUT_REF_QC,</span>
+<span id="cb120-7"><a href="datawrangling.html#cb120-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>),</span>
+<span id="cb120-8"><a href="datawrangling.html#cb120-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>),</span>
+<span id="cb120-9"><a href="datawrangling.html#cb120-9" aria-hidden="true" tabindex="-1"></a>  NIGHT</span>
+<span id="cb120-10"><a href="datawrangling.html#cb120-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>This reduces our dataset from 235 available variables to 59 variables. As you can see, <code>select()</code> is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with <code>starts_with()</code>, <code>ends_with</code>, <code>contains()</code>, <code>matches()</code>, etc. Using these functions within <code>select()</code> can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (<code>-</code>) is added in front of a column name or one of the mentioned functions within <code>select()</code>, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the <code>select()</code> function call. You can find the complete reference for selecting variables <a href="https://dplyr.tidyverse.org/reference/select.html">here</a>.</p>
 </div>
 <div id="time-objects" class="section level3 hasAnchor" number="3.2.5">
 <h3><span class="header-section-number">3.2.5</span> Time objects<a href="datawrangling.html#time-objects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The automatic interpretation of the variables <code>TIMESTAMP_START</code> and <code>TIMESTAMP_END</code> by the function <code>read_csv()</code> is not optimal:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="datawrangling.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START[[<span class="dv">1</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="datawrangling.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START[[<span class="dv">1</span>]])</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="datawrangling.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START[[<span class="dv">1</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="datawrangling.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START[[<span class="dv">1</span>]])</span></code></pre></div>
 <pre><code>## [1] &quot;200401010000&quot;</code></pre>
 <p>As we can see, it is considered by R as a numeric variable with 12 digits (“double-precision”, occupying 64 bits in computer memory). After printing the variable as a string, we can guess that the format is: <code>YYYYMMDDhhmm</code>. The {lubridate} package is designed to facilitate processing date and time objects. Knowing the format of the timestamp variables in our dataset, we can use <code>ymd_hm()</code> to convert them to actual date-time objects.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="datawrangling.html#cb124-1" aria-hidden="true" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">ymd_hm</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START)</span>
-<span id="cb124-2"><a href="datawrangling.html#cb124-2" aria-hidden="true" tabindex="-1"></a>dates[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="datawrangling.html#cb125-1" aria-hidden="true" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">ymd_hm</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START)</span>
+<span id="cb125-2"><a href="datawrangling.html#cb125-2" aria-hidden="true" tabindex="-1"></a>dates[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;2004-01-01 UTC&quot;</code></pre>
 <p>Working with such date-time objects facilitates typical operations on time series. For example, adding one day can be done by:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="datawrangling.html#cb126-1" aria-hidden="true" tabindex="-1"></a>nextday <span class="ot">&lt;-</span> dates <span class="sc">+</span> <span class="fu">days</span>(<span class="dv">1</span>)</span>
-<span id="cb126-2"><a href="datawrangling.html#cb126-2" aria-hidden="true" tabindex="-1"></a>nextday[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="datawrangling.html#cb127-1" aria-hidden="true" tabindex="-1"></a>nextday <span class="ot">&lt;-</span> dates <span class="sc">+</span> <span class="fu">days</span>(<span class="dv">1</span>)</span>
+<span id="cb127-2"><a href="datawrangling.html#cb127-2" aria-hidden="true" tabindex="-1"></a>nextday[<span class="dv">1</span>]</span></code></pre></div>
 <pre><code>## [1] &quot;2004-01-02 UTC&quot;</code></pre>
 <p>The following returns the month of each date object:</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="datawrangling.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">month</span>(dates[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="datawrangling.html#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="fu">month</span>(dates[<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
 <p>The number 1 stands for the month of the year, i.e., January. You can find more information on formatting dates and time within the {tidyverse} <a href="https://r4ds.had.co.nz/dates-and-times.html">here</a>, and a complete reference of the {lubridate} package is available <a href="https://lubridate.tidyverse.org/">here</a>.</p>
 </div>
 <div id="variable-re--definition" class="section level3 hasAnchor" number="3.2.6">
 <h3><span class="header-section-number">3.2.6</span> Variable (re-) definition<a href="datawrangling.html#variable-re--definition" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Since <code>read_csv()</code> did not interpret the <code>TIMESTAMP_*</code> variables as desired, we may convert the entire column in the data frame into a date-time object. In base-R, we would do this by:</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="datawrangling.html#cb130-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START <span class="ot">&lt;-</span> <span class="fu">ymd_hm</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START)</span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="datawrangling.html#cb131-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START <span class="ot">&lt;-</span> <span class="fu">ymd_hm</span>(half_hourly_fluxes<span class="sc">$</span>TIMESTAMP_START)</span></code></pre></div>
 <p>Modifying existing or creating new variables (columns) in a data frame is done in the tidyverse using the function <code>mutate()</code>. The equivalent statement is:</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="datawrangling.html#cb131-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> <span class="fu">mutate</span>(</span>
-<span id="cb131-2"><a href="datawrangling.html#cb131-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes,</span>
-<span id="cb131-3"><a href="datawrangling.html#cb131-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">TIMESTAMP_START =</span> <span class="fu">ymd_hm</span>(TIMESTAMP_START)</span>
-<span id="cb131-4"><a href="datawrangling.html#cb131-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="datawrangling.html#cb132-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> <span class="fu">mutate</span>(</span>
+<span id="cb132-2"><a href="datawrangling.html#cb132-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes,</span>
+<span id="cb132-3"><a href="datawrangling.html#cb132-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">TIMESTAMP_START =</span> <span class="fu">ymd_hm</span>(TIMESTAMP_START)</span>
+<span id="cb132-4"><a href="datawrangling.html#cb132-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Note that in the code chunk above, the function <code>mutate()</code> is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here <code>half_hourly_fluxes</code>) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="datawrangling.html#cb132-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb132-2"><a href="datawrangling.html#cb132-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TIMESTAMP_START =</span> <span class="fu">ymd_hm</span>(TIMESTAMP_START))</span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="datawrangling.html#cb133-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
+<span id="cb133-2"><a href="datawrangling.html#cb133-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TIMESTAMP_START =</span> <span class="fu">ymd_hm</span>(TIMESTAMP_START))</span></code></pre></div>
 <p>Here, the <strong>pipe</strong> operator <code>|&gt;</code> is used. It “pipes” the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the <em>first argument</em> of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.</p>
 <blockquote>
 <p>Note: The pipe operator is so popular that has been recently included in the latest versions of base R (version 4.1.0 and beyond). This is the <code>|&gt;</code> pipe we just introduced. Nevertheless, you may encounter the <code>%&gt;%</code> operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).</p>
@@ -507,15 +507,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Note: If you cannot update R and have a version older than 4.1.0, just use the <code>magrittr</code> pipe <code>%&gt;%</code> throughout. This can happen if you have an older Macbook that can’t operate the latest Operating System version.</p>
 </blockquote>
 <p>Mutating both our timestamp variables could be written as <code>mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START), TIMESTAMP_END = ymd_hm(TIMESTAMP_END))</code>. Sometimes, such multiple-variable mutate statements can get quite long. A handy short version of this can be implemented using <code>across()</code>:</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="datawrangling.html#cb133-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb133-2"><a href="datawrangling.html#cb133-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP_&quot;</span>), ymd_hm))</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="datawrangling.html#cb134-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
+<span id="cb134-2"><a href="datawrangling.html#cb134-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP_&quot;</span>), ymd_hm))</span></code></pre></div>
 <p>We will encounter more ways to use mutate later in this tutorial. A complete reference to <code>mutate()</code> is available <a href="https://r4ds.had.co.nz/transform.html#add-new-variables-with-mutate">here</a>.</p>
 <p>If you only want to change the name of a variable, but not modify its values whatsoever, you can do so with the {dplyr} function <code>rename()</code>.</p>
 </div>
 <div id="axes-of-variation" class="section level3 hasAnchor" number="3.2.7">
 <h3><span class="header-section-number">3.2.7</span> Axes of variation<a href="datawrangling.html#axes-of-variation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Tabular data are two-dimensional (rows <span class="math inline">\(\times\)</span> columns), but not all two-dimensional data are tabular. For example, raster data are a two-dimensional array of data (a matrix) representing variables on an evenly spaced grid, for example pixels in remotely sensed imagery. For example the <code>volcano</code> data (provided as an example dataset in R) is a 2-dimensional array, each column contains the same variable, and no variable names are provided.</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="datawrangling.html#cb134-1" aria-hidden="true" tabindex="-1"></a>volcano[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="datawrangling.html#cb135-1" aria-hidden="true" tabindex="-1"></a>volcano[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
 ## [1,]  100  100  101  101  101
 ## [2,]  101  101  102  102  102
@@ -526,27 +526,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Tabular data, although formatted in two dimensions by rows and columns, may represent data that varies along multiple axes. Most environmental data are <em>structured</em>, that is, values of “nearby” observations tend to be more similar than values of “distant” observations. Here, “nearby” and “distant” may refer to a spatial distance, but not necessarily so. Structure in data arises from similarity of the subjects generating the data (e.g., evapotranspiration over two croplands may be more similar than evapotranspiration over a forest), or from temporal proximity. In biological data, there may be a genetic structure arising from evolutionary relatedness (<a href="https://onlinelibrary.wiley.com/doi/10.1111/ecog.02881">Roberts et al., 2016</a>). Note also that temporal proximity is more complex than than being governed by a single dimension - time. In environmental data, time is often expressed through periodically varying conditions (the diurnal and seasonal cycles). It’s often critical to understand and account for the structure in data when analysing it and using it for model fitting. Challenges are posed when structure is not apparent or not known.</p>
 <p>Note also that some structures are <em>hierarchical</em>. For example, data may be structured by postal codes within cantons; or by hours within a day within a year). Biological data may be generated by species within <em>genera</em> within <em>families</em>. Data from experiments is typically structured as <em>samples</em> within <em>treatments</em>. Etc. You see, structure in data are rather the rule than the expception.</p>
 <p>Our example data contains values recorded at each half-hourly time interval over the course of eleven years (check by <code>nrow(half_hourly_fluxes)/(2*24*365)</code>). The data are recorded at a site, located in the temperate climate zone, where solar radiation and therefore also other meteorological variables and ecosystem fluxes vary substantially over the course of a day and over the course of a year. Although not explicitly separated, the date-time object thus encodes information along multiple <em>axes of variation</em> in the data. For example, over the course of one day (<code>2*24</code> rows in our data), the shortwave incoming radiation <code>SW_IN_F</code> varies over a typical diurnal cycle:</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="datawrangling.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb136-2"><a href="datawrangling.html#cb136-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>TIMESTAMP_START,</span>
-<span id="cb136-3"><a href="datawrangling.html#cb136-3" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>SW_IN_F,</span>
-<span id="cb136-4"><a href="datawrangling.html#cb136-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span></span>
-<span id="cb136-5"><a href="datawrangling.html#cb136-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-68-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="datawrangling.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb137-2"><a href="datawrangling.html#cb137-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>TIMESTAMP_START,</span>
+<span id="cb137-3"><a href="datawrangling.html#cb137-3" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>SW_IN_F,</span>
+<span id="cb137-4"><a href="datawrangling.html#cb137-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span></span>
+<span id="cb137-5"><a href="datawrangling.html#cb137-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-69-1.png" width="672" style="display: block; margin: auto;" /></p>
 <blockquote>
 <p>Note: <code>plot()</code> is the very basic of plotting data. In Chapter <a href="datavis.html#datavis">4</a>, you will get introduced to additional methods for visualising data. The argument <code>type = "l"</code> indicates that we want a line plot, rather than points.</p>
 </blockquote>
 <p>Over the course of an entire year, shortwave incoming radiation varies with the seasons, peaking in summer:</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="datawrangling.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="cb137-2"><a href="datawrangling.html#cb137-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">365</span><span class="sc">*</span><span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>TIMESTAMP_START,</span>
-<span id="cb137-3"><a href="datawrangling.html#cb137-3" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">365</span><span class="sc">*</span><span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>SW_IN_F,</span>
-<span id="cb137-4"><a href="datawrangling.html#cb137-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span></span>
-<span id="cb137-5"><a href="datawrangling.html#cb137-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-69-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="datawrangling.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
+<span id="cb138-2"><a href="datawrangling.html#cb138-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">365</span><span class="sc">*</span><span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>TIMESTAMP_START,</span>
+<span id="cb138-3"><a href="datawrangling.html#cb138-3" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">365</span><span class="sc">*</span><span class="dv">2</span><span class="sc">*</span><span class="dv">24</span>),]<span class="sc">$</span>SW_IN_F,</span>
+<span id="cb138-4"><a href="datawrangling.html#cb138-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;l&quot;</span></span>
+<span id="cb138-5"><a href="datawrangling.html#cb138-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-70-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>All data frames have two dimensions, rows and columns. Our data frame is organised along half-hourly time steps in rows. As described above, these time steps belong to different days, months, and years, although these “axes of variation” are not reflected by the structure of the data frame and we do not have columns that indicate the day, month or year of each half-hourly time step. This would be redundant information since the date-time objects of columns <code>TIMESTAMP_*</code> contain this information. However, for certain applications, it may be useful to separate information regarding these axes of variation more explicitly. For example by:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="datawrangling.html#cb138-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span></span>
-<span id="cb138-2"><a href="datawrangling.html#cb138-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">year</span>(TIMESTAMP_START),</span>
-<span id="cb138-3"><a href="datawrangling.html#cb138-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">month =</span> <span class="fu">month</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span></span>
-<span id="cb138-4"><a href="datawrangling.html#cb138-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(TIMESTAMP_START, TIMESTAMP_END, year, month)  <span class="co"># for displaying</span></span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="datawrangling.html#cb139-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span></span>
+<span id="cb139-2"><a href="datawrangling.html#cb139-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">year</span>(TIMESTAMP_START),</span>
+<span id="cb139-3"><a href="datawrangling.html#cb139-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">month =</span> <span class="fu">month</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span></span>
+<span id="cb139-4"><a href="datawrangling.html#cb139-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(TIMESTAMP_START, TIMESTAMP_END, year, month)  <span class="co"># for displaying</span></span></code></pre></div>
 <pre><code>## # A tibble: 52,608 × 4
 ##    TIMESTAMP_START     TIMESTAMP_END        year month
 ##    &lt;dttm&gt;              &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt;
@@ -566,7 +566,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="tidydata" class="section level3 hasAnchor" number="3.2.8">
 <h3><span class="header-section-number">3.2.8</span> Tidy data<a href="datawrangling.html#tidydata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Data comes in many forms and shapes. For example, Excel provides a playground for even the wildest layouts of information in some remotely tabular form and merged cells as we will see in the <a href="datawrangling.html#exerciseswrangling">Exercises</a>. A data frame imposes a relatively strict formatting in named columns of equal length. But even data frames can come in various shapes - even if the information they contain is the same.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="datawrangling.html#cb140-1" aria-hidden="true" tabindex="-1"></a>co2_concentration</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="datawrangling.html#cb141-1" aria-hidden="true" tabindex="-1"></a>co2_concentration</span></code></pre></div>
 <pre><code>## # A tibble: 36 × 3
 ##     year month co2_concentration
 ##    &lt;int&gt; &lt;ord&gt;             &lt;dbl&gt;
@@ -581,14 +581,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  9  1959 Sep                314.
 ## 10  1959 Oct                313.
 ## # … with 26 more rows</code></pre>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="datawrangling.html#cb142-1" aria-hidden="true" tabindex="-1"></a>co2_concentration_monthly</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="datawrangling.html#cb143-1" aria-hidden="true" tabindex="-1"></a>co2_concentration_monthly</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 13
 ##    year   Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
 ##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1  1959  315.  316.  316.  318.  318.  318   316.  315.  314.  313.  315.  315.
 ## 2  1960  316.  317.  317.  319.  320.  319.  318.  316.  314   314.  315.  316.
 ## 3  1961  317.  318.  318.  319.  320.  320.  318.  317.  315.  315.  316.  317.</code></pre>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="datawrangling.html#cb144-1" aria-hidden="true" tabindex="-1"></a>co2_concentration_yearly</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="datawrangling.html#cb145-1" aria-hidden="true" tabindex="-1"></a>co2_concentration_yearly</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 4
 ##    month `1959` `1960` `1961`
 ##    &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -617,8 +617,8 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 </p>
 </div>
 <p>The {tidyr} package provides powerful functions to make data tidy. In the examples above, <code>co2_concentration_monthly</code> and and <code>co2_concentration_yearly</code> are not tidy. In <code>co2_concentration_monthly</code>, the same variable (CO2 concentration) appears in multiple columns. Organising columns by months leads to a “wide” table format. We can convert it to a “long” format by:</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="datawrangling.html#cb146-1" aria-hidden="true" tabindex="-1"></a>co2_concentration_monthly <span class="sc">|&gt;</span> </span>
-<span id="cb146-2"><a href="datawrangling.html#cb146-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>, <span class="at">names_to =</span> <span class="st">&quot;month&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;co2&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="datawrangling.html#cb147-1" aria-hidden="true" tabindex="-1"></a>co2_concentration_monthly <span class="sc">|&gt;</span> </span>
+<span id="cb147-2"><a href="datawrangling.html#cb147-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">13</span>, <span class="at">names_to =</span> <span class="st">&quot;month&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;co2&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 36 × 3
 ##     year month   co2
 ##    &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
@@ -635,8 +635,8 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## # … with 26 more rows</code></pre>
 <p>This corresponds to the format of <code>co2_concentration</code> and is tidy. A long format of data frames is required to visualise data using the plotting functions of the {ggplot2} package which will be introduced in Chapter <a href="datavis.html#datavis">4</a>.</p>
 <p>Either way, for certain applications, it may be advantageous to work with a wide format. We can convert from a long to a wide format by:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="datawrangling.html#cb148-1" aria-hidden="true" tabindex="-1"></a>co2_concentration <span class="sc">|&gt;</span> </span>
-<span id="cb148-2"><a href="datawrangling.html#cb148-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> co2_concentration)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="datawrangling.html#cb149-1" aria-hidden="true" tabindex="-1"></a>co2_concentration <span class="sc">|&gt;</span> </span>
+<span id="cb149-2"><a href="datawrangling.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> co2_concentration)</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 4
 ##    month `1959` `1960` `1961`
 ##    &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -659,13 +659,13 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <h3><span class="header-section-number">3.2.9</span> Aggregating data<a href="datawrangling.html#aggregating-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Aggregating data refers to collapsing a larger set of values into a smaller set of values that are derived from the larger set. For example, we can aggregate over all <span class="math inline">\(N\)</span> rows in a data frame (<span class="math inline">\(N\times M\)</span>), calculating the sum for each of the <span class="math inline">\(M\)</span> columns. This returns a data frame (<span class="math inline">\(1 \times M\)</span>) with the same number of columns as the initial data frame, but only one row. Often, aggregations are done not across all rows but for rows within <span class="math inline">\(G\)</span> groups of rows. This yields a data frame (<span class="math inline">\(G \times M\)</span>) with the number of rows corresponding to the number of groups.</p>
 <p>Let’s say we want to calculate the mean of half-hourly shortwave radiation within each day. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or “axis of variation”), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the <code>mean()</code> function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the {dplyr} functions <code>group_by()</code> and <code>summarise()</code>. The entire aggregation workflow is implemented by the following code:</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="datawrangling.html#cb150-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span>  </span>
-<span id="cb150-2"><a href="datawrangling.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span>  <span class="co"># converts the ymd_hm-formatted date-time object to a date-only object (ymd)</span></span>
-<span id="cb150-3"><a href="datawrangling.html#cb150-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">|&gt;</span> </span>
-<span id="cb150-4"><a href="datawrangling.html#cb150-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">SW_IN_F =</span> <span class="fu">mean</span>(SW_IN_F))</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="datawrangling.html#cb151-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span>  </span>
+<span id="cb151-2"><a href="datawrangling.html#cb151-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span>  <span class="co"># converts the ymd_hm-formatted date-time object to a date-only object (ymd)</span></span>
+<span id="cb151-3"><a href="datawrangling.html#cb151-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">|&gt;</span> </span>
+<span id="cb151-4"><a href="datawrangling.html#cb151-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">SW_IN_F =</span> <span class="fu">mean</span>(SW_IN_F))</span></code></pre></div>
 <p>The seasonal course can now be more clearly be visualized with the data aggregated to daily values.</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="datawrangling.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(daily_fluxes[<span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>,]<span class="sc">$</span>date, daily_fluxes[<span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>,]<span class="sc">$</span>SW_IN_F, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="datawrangling.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(daily_fluxes[<span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>,]<span class="sc">$</span>date, daily_fluxes[<span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>,]<span class="sc">$</span>SW_IN_F, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We can also apply multiple aggregation functions to different variables simultaneously. In the example below, we aggregate half-hourly data to daily data by…</p>
 <ul>
 <li><p>taking the daily mean GPP</p></li>
@@ -674,18 +674,18 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <li><p>taking the mean shortwave radiation</p></li>
 </ul>
 <p>Finally, we calculate the fraction of measured underlying half-hourly data from which the aggregation is calculated and we save the daily data frame as a CSV file for later use.</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="datawrangling.html#cb152-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb152-2"><a href="datawrangling.html#cb152-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span>   <span class="co"># converts time object to a date object</span></span>
-<span id="cb152-3"><a href="datawrangling.html#cb152-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(date) <span class="sc">|&gt;</span> </span>
-<span id="cb152-4"><a href="datawrangling.html#cb152-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">mean</span>(GPP_NT_VUT_REF, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb152-5"><a href="datawrangling.html#cb152-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_datapoints =</span> <span class="fu">n</span>(), <span class="co"># counts the number of observations per day</span></span>
-<span id="cb152-6"><a href="datawrangling.html#cb152-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_measured =</span> <span class="fu">sum</span>(NEE_VUT_REF_QC <span class="sc">==</span> <span class="dv">0</span>), <span class="co"># counts the number of actually measured data (excluding gap-filled and poor quality data)</span></span>
-<span id="cb152-7"><a href="datawrangling.html#cb152-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">SW_IN_F =</span> <span class="fu">mean</span>(SW_IN_F, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># we will use this later</span></span>
-<span id="cb152-8"><a href="datawrangling.html#cb152-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span> <span class="co"># to un-group the resulting data frame</span></span>
-<span id="cb152-9"><a href="datawrangling.html#cb152-9" aria-hidden="true" tabindex="-1"></a>              ) <span class="sc">|&gt;</span> </span>
-<span id="cb152-10"><a href="datawrangling.html#cb152-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">f_measured =</span> n_measured <span class="sc">/</span> n_datapoints) <span class="co"># calculate the fraction of measured values over total observations</span></span>
-<span id="cb152-11"><a href="datawrangling.html#cb152-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(daily_fluxes, <span class="at">file =</span> <span class="st">&quot;data/daily_fluxes.csv&quot;</span>)</span>
-<span id="cb152-12"><a href="datawrangling.html#cb152-12" aria-hidden="true" tabindex="-1"></a>daily_fluxes</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="datawrangling.html#cb153-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
+<span id="cb153-2"><a href="datawrangling.html#cb153-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span>   <span class="co"># converts time object to a date object</span></span>
+<span id="cb153-3"><a href="datawrangling.html#cb153-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(date) <span class="sc">|&gt;</span> </span>
+<span id="cb153-4"><a href="datawrangling.html#cb153-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">mean</span>(GPP_NT_VUT_REF, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb153-5"><a href="datawrangling.html#cb153-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_datapoints =</span> <span class="fu">n</span>(), <span class="co"># counts the number of observations per day</span></span>
+<span id="cb153-6"><a href="datawrangling.html#cb153-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_measured =</span> <span class="fu">sum</span>(NEE_VUT_REF_QC <span class="sc">==</span> <span class="dv">0</span>), <span class="co"># counts the number of actually measured data (excluding gap-filled and poor quality data)</span></span>
+<span id="cb153-7"><a href="datawrangling.html#cb153-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">SW_IN_F =</span> <span class="fu">mean</span>(SW_IN_F, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),  <span class="co"># we will use this later</span></span>
+<span id="cb153-8"><a href="datawrangling.html#cb153-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span> <span class="co"># to un-group the resulting data frame</span></span>
+<span id="cb153-9"><a href="datawrangling.html#cb153-9" aria-hidden="true" tabindex="-1"></a>              ) <span class="sc">|&gt;</span> </span>
+<span id="cb153-10"><a href="datawrangling.html#cb153-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">f_measured =</span> n_measured <span class="sc">/</span> n_datapoints) <span class="co"># calculate the fraction of measured values over total observations</span></span>
+<span id="cb153-11"><a href="datawrangling.html#cb153-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(daily_fluxes, <span class="at">file =</span> <span class="st">&quot;data/daily_fluxes.csv&quot;</span>)</span>
+<span id="cb153-12"><a href="datawrangling.html#cb153-12" aria-hidden="true" tabindex="-1"></a>daily_fluxes</span></code></pre></div>
 <pre><code>## # A tibble: 1,096 × 6
 ##    date       GPP_NT_VUT_REF n_datapoints n_measured SW_IN_F f_measured
 ##    &lt;date&gt;              &lt;dbl&gt;        &lt;int&gt;      &lt;int&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -702,10 +702,10 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## # … with 1,086 more rows</code></pre>
 <p>More info on how to group values using summarise functions <a href="https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise">here</a>, or a summary on the inputs the function <a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a> and <a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a> take.</p>
 <p>Aggregating is related to <em>nesting</em> performed by the {tidyr} function <code>nest()</code>:</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="datawrangling.html#cb154-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span>  </span>
-<span id="cb154-2"><a href="datawrangling.html#cb154-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span></span>
-<span id="cb154-3"><a href="datawrangling.html#cb154-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">|&gt;</span> </span>
-<span id="cb154-4"><a href="datawrangling.html#cb154-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="datawrangling.html#cb155-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span>  </span>
+<span id="cb155-2"><a href="datawrangling.html#cb155-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_date</span>(TIMESTAMP_START)) <span class="sc">|&gt;</span></span>
+<span id="cb155-3"><a href="datawrangling.html#cb155-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">|&gt;</span> </span>
+<span id="cb155-4"><a href="datawrangling.html#cb155-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 1,096 × 2
 ## # Groups:   date [1,096]
 ##    date       data              
@@ -733,11 +733,11 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <li><p>Often, character strings encode the units of a measurement, and entries are <code>c("kg m-2", "kg/m2", "Kg / m2", "1000 g m-2")</code> . They are all equivalent, but “the machine” treats them as non-identical. To clean such data, one may compile a lookup-table to identify equivalent (but not identical) strings. Much better is to specify a consistent treatment of units before data collection.</p></li>
 <li><p>Even if the data are clean and contains a consistently spelled categorical variable in the form of a character string, R doesn’t necessarily treat it as categorical. For certain downstream steps of the workflow, it may be necessary to transform such a variable to one of type <code>factor</code>. For example, as entries of an unordered categorical variable, we have <code>unique(df$gender) = c("female", "male", "non-binary")</code>. To treat them as categorical and not just mere character strings, we would have to do:</p></li>
 </ul>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="datawrangling.html#cb156-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">as.factor</span>(gender))</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="datawrangling.html#cb157-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">as.factor</span>(gender))</span></code></pre></div>
 <ul>
 <li>Character strings may encode ordinal information. For example, entries specify quality control information and are one of <code>c("good quality", "fair quality, "poor quality")</code>. A challenge could be that the spelling is inconsistent (<code>c("Good quality", "good quality", …)</code>). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable <code>NEE_VUT_REF_QC</code> in our example dataset <code>half_hourly_fluxes</code> follows this approach:</li>
 </ul>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="datawrangling.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(half_hourly_fluxes<span class="sc">$</span>NEE_VUT_REF_QC)</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="datawrangling.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(half_hourly_fluxes<span class="sc">$</span>NEE_VUT_REF_QC)</span></code></pre></div>
 <pre><code>## [1] 3 2 1 0</code></pre>
 <ul>
 <li>An entry like <code>&gt;10 m</code> is not a friend of a data scientist. Here, we have three pieces of information: <code>&gt;</code> as in “greater than”, <code>10</code>, and <code>m</code> indicating the units. A machine-readable format would be obtained by creating separate columns for each piece of information. The <code>&gt;</code> should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see <a href="datawrangling.html#exerciseswrangling">Exercises</a>).</li>
@@ -754,10 +754,10 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <p>Bad data may come in the form of <em>outliers</em>, which are commonly defined based on their value with respect to the <em>distribution</em> of all values of the same variable in a dataset. Hence, their identification most commonly relies on quantifying their distance from the center of the variable’s empirical distribution. The default <code>boxplot()</code> plotting function in R (which we will learn about more in Chapter @ref(data_vis)) shows the median (bold line in the center), the upper and lower quartiles (corresponding to the 25% and the 75% quantiles, often referred to as <span class="math inline">\(Q_1\)</span> and <span class="math inline">\(Q_3\)</span> , given by the upper and lower edge of the box plot) and the range of <span class="math inline">\(( Q_1 - 1.5 (Q_3 - Q_1), Q_3 + 1.5 (Q_3 - Q_1))\)</span>. Any point outside this range is plotted by a circle and labeled an “outlier”. However, this definition is very restrictive and may lead to a false labeling of outliers, in particular if they are drawn from a distribution with a fat tail or from asymmetrical distributions.</p>
 <p>Outliers may also be identified via multivariate distributions. We will re-visit such methods later, in Chapter <a href="regressionclassification.html#regressionclassification">8</a>. For certain applications, outliers or <em>anomalies</em> may be the target of the investigation, not the noise in the data. This has spurred the field of <a href="https://en.wikipedia.org/wiki/Anomaly_detection"><em>anomaly detection</em></a> which relies on machine learning algorithms for determining whether a value is anomalous, given a set of covariates.</p>
 <p>Sensor error or algorithm error may generate spurious values, identified, for example when a continuous variable attains the numerically identical value with a spuriously high frequency.</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="datawrangling.html#cb159-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes<span class="sc">$</span>GPP_NT_VUT_REF <span class="sc">|&gt;</span> </span>
-<span id="cb159-2"><a href="datawrangling.html#cb159-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb159-3"><a href="datawrangling.html#cb159-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb159-4"><a href="datawrangling.html#cb159-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="datawrangling.html#cb160-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes<span class="sc">$</span>GPP_NT_VUT_REF <span class="sc">|&gt;</span> </span>
+<span id="cb160-2"><a href="datawrangling.html#cb160-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb160-3"><a href="datawrangling.html#cb160-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb160-4"><a href="datawrangling.html#cb160-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## 
 ##  5.18422  3.54996   1.3107 -5.57199 0.984756  2.49444 
 ##       32       22       19       18       17       17</code></pre>
@@ -770,9 +770,9 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <p>Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of <em>informative missingness</em> (Kuhn &amp; Johnson, 2003) and its information can be used for modelling. For categorical data, we may replace such data with <code>"none"</code> (instead of <code>NA</code>), while randomly missing data may be dropped altogether. Some machine learning algorithms (mainly tree-based methods, e.g., Random Forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.</p>
 <p>Most machine learning algorithms require missing values to be removed. That is, if any of the cells in one row has a missing value, the entire cell gets removed. This generally leads to a loss of information contained in the remaining variables that are not missing. Methods exist to <em>impute</em> missing values in order to avoid this information loss. However, the gain of data imputation has to be traded off against effects of associating the available variables with the imputed (knowingly wrong) values, and effects of <em>data leakage</em> have to be considered. Data imputation as part of the modelling process will be dealt with in Chapter <a href="supervisedmli.html#supervisedmli">9</a>.</p>
 <p>In our example dataset, some values of <code>SWC_F_MDS_*</code> are given as <code>-9999</code>.</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="datawrangling.html#cb161-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb161-2"><a href="datawrangling.html#cb161-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(TIMESTAMP_START, <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb161-3"><a href="datawrangling.html#cb161-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="datawrangling.html#cb162-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
+<span id="cb162-2"><a href="datawrangling.html#cb162-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(TIMESTAMP_START, <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb162-3"><a href="datawrangling.html#cb162-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
 ##   TIMESTAMP_START     SWC_F_MD…¹ SWC_F…² SWC_F…³ SWC_F…⁴ SWC_F…⁵ SWC_F…⁶ SWC_F…⁷
 ##   &lt;dttm&gt;                   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
@@ -786,12 +786,12 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## #   ¹​SWC_F_MDS_1, ²​SWC_F_MDS_2, ³​SWC_F_MDS_3, ⁴​SWC_F_MDS_4, ⁵​SWC_F_MDS_1_QC,
 ## #   ⁶​SWC_F_MDS_2_QC, ⁷​SWC_F_MDS_3_QC</code></pre>
 <p>When reading the documentation of this specific dataset, we learn that <code>-9999</code> is the code for <em>missing data</em>. The {dplyr} functions help us to clarify these missing values by mutating across all numeric variables and overwrite entries with <code>NA</code> if they hold a <code>-9999</code>.</p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="datawrangling.html#cb163-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span>  </span>
-<span id="cb163-2"><a href="datawrangling.html#cb163-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">na_if</span>(., <span class="sc">-</span><span class="dv">9999</span>)))</span>
-<span id="cb163-3"><a href="datawrangling.html#cb163-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb163-4"><a href="datawrangling.html#cb163-4" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb163-5"><a href="datawrangling.html#cb163-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(TIMESTAMP_START, <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb163-6"><a href="datawrangling.html#cb163-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="datawrangling.html#cb164-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span>  </span>
+<span id="cb164-2"><a href="datawrangling.html#cb164-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">na_if</span>(., <span class="sc">-</span><span class="dv">9999</span>)))</span>
+<span id="cb164-3"><a href="datawrangling.html#cb164-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-4"><a href="datawrangling.html#cb164-4" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
+<span id="cb164-5"><a href="datawrangling.html#cb164-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(TIMESTAMP_START, <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb164-6"><a href="datawrangling.html#cb164-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
 ##   TIMESTAMP_START     SWC_F_MD…¹ SWC_F…² SWC_F…³ SWC_F…⁴ SWC_F…⁵ SWC_F…⁶ SWC_F…⁷
 ##   &lt;dttm&gt;                   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
@@ -805,12 +805,12 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## #   ¹​SWC_F_MDS_1, ²​SWC_F_MDS_2, ³​SWC_F_MDS_3, ⁴​SWC_F_MDS_4, ⁵​SWC_F_MDS_1_QC,
 ## #   ⁶​SWC_F_MDS_2_QC, ⁷​SWC_F_MDS_3_QC</code></pre>
 <p>This lets us visualise the data and its gaps with <code>vis_miss()</code> from the {visdat} package. Visualising missing data can be informative for making decisions about dropping rows with missing data versus removing predictors from the analysis (which would imply too much data removal).</p>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="datawrangling.html#cb165-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
-<span id="cb165-2"><a href="datawrangling.html#cb165-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>),</span>
-<span id="cb165-3"><a href="datawrangling.html#cb165-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb165-4"><a href="datawrangling.html#cb165-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
-<span id="cb165-5"><a href="datawrangling.html#cb165-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-84-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="datawrangling.html#cb166-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
+<span id="cb166-2"><a href="datawrangling.html#cb166-2" aria-hidden="true" tabindex="-1"></a>  half_hourly_fluxes <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>),</span>
+<span id="cb166-3"><a href="datawrangling.html#cb166-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb166-4"><a href="datawrangling.html#cb166-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
+<span id="cb166-5"><a href="datawrangling.html#cb166-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-85-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>For many applications, we want to filter the data so that the values of particular variables satisfy certain conditions. The {dplyr} function used for such tasks is <code>filter()</code>. As argument, it takes the expressions that specify the criterion for filtering using logical operators (<code>&gt;, &gt;=, &lt;, ==, !-, ...</code>, see Chapter <a href="gettingstarted.html#gettingstarted">1</a>). Multiple filtering criteria can be combined with logical (boolean) operators:</p>
 <ul>
 <li><code>&amp;</code>: logical AND</li>
@@ -818,24 +818,24 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <li><code>!</code> logical NOT</li>
 </ul>
 <p>For example, if we wanted only those rows in our data where NEE is based on measured or good quality gap-filled NEE data, we write:</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="datawrangling.html#cb166-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span></span>
-<span id="cb166-2"><a href="datawrangling.html#cb166-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NEE_VUT_REF_QC <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> NEE_VUT_REF_QC <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
-<p>For evaluating multiple OR operations simultaneously, we can write alternatively and equivalently:</p>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="datawrangling.html#cb167-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span></span>
-<span id="cb167-2"><a href="datawrangling.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NEE_VUT_REF_QC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
+<span id="cb167-2"><a href="datawrangling.html#cb167-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NEE_VUT_REF_QC <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> NEE_VUT_REF_QC <span class="sc">==</span> <span class="dv">1</span>)</span></code></pre></div>
+<p>For evaluating multiple OR operations simultaneously, we can write alternatively and equivalently:</p>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="datawrangling.html#cb168-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span></span>
+<span id="cb168-2"><a href="datawrangling.html#cb168-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(NEE_VUT_REF_QC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p>Note that <code>filter()</code> removes entire rows. In some cases this is undesired and it is preferred to replace bad quality values with <code>NA</code>. It is important to note that specifying a value as missing is information itself. Dropping an entire row leads to the loss of this information. For cases where we do not want to drop entire rows when applying <code>filter()</code>, we can just replace certain values with <code>NA</code>. In our case, where we want to retain only data where NEE is based on actual measurements or good quality gap-filling, we can do this by:</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="datawrangling.html#cb168-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb168-2"><a href="datawrangling.html#cb168-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), GPP_NT_VUT_REF, <span class="cn">NA</span>))</span></code></pre></div>
-<p>If we decide to drop a row containing <code>NA</code> in any of the variables later during the workflow, we can do this, for example using the useful {tidyr} function <code>drop_na()</code>.</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="datawrangling.html#cb169-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
-<span id="cb169-2"><a href="datawrangling.html#cb169-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code></pre></div>
+<span id="cb169-2"><a href="datawrangling.html#cb169-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), GPP_NT_VUT_REF, <span class="cn">NA</span>))</span></code></pre></div>
+<p>If we decide to drop a row containing <code>NA</code> in any of the variables later during the workflow, we can do this, for example using the useful {tidyr} function <code>drop_na()</code>.</p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="datawrangling.html#cb170-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span> </span>
+<span id="cb170-2"><a href="datawrangling.html#cb170-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code></pre></div>
 <p>An excellent source for a more comprehensive introduction to missing data handling is given in <a href="https://bookdown.org/max/FES/handling-missing-data.html">Kuhn &amp; Johnson</a>.</p>
 </div>
 </div>
 <div id="writing-data-to-csv" class="section level3 hasAnchor" number="3.2.11">
 <h3><span class="header-section-number">3.2.11</span> Writing data to CSV<a href="datawrangling.html#writing-data-to-csv" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>After having applied some data reduction and cleaning steps above, let’s save the data frame in the form of a CSV file for use in later chapters.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="datawrangling.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(half_hourly_fluxes, <span class="at">file =</span> <span class="st">&quot;data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="datawrangling.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(half_hourly_fluxes, <span class="at">file =</span> <span class="st">&quot;data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv&quot;</span>)</span></code></pre></div>
 <blockquote>
 <p>Note: Making a file publicly available as a <code>.rds</code> or <code>.RData</code> file (explained in Chapter <a href="gettingstarted.html#gettingstarted">1</a>) violates the open science principles (introduced in Chapter <a href="openscience.html#openscience">6</a>). These two formats make it very easy to save R objects related to your analysis project, but are not adequate to save <em>data</em>. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use <code>write_csv()</code> from {readr} whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter <a href="datavariety.html#datavariety">5</a>.</p>
 </blockquote>
@@ -843,7 +843,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <div id="combining-relational-data" class="section level3 hasAnchor" number="3.2.12">
 <h3><span class="header-section-number">3.2.12</span> Combining relational data<a href="datawrangling.html#combining-relational-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Often, data are spread across multiple files and tables and needs to be combined for the planned analysis. In the simplest case, data frames have a corresponding set of columns and we can “stack” them along rows:</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="datawrangling.html#cb171-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_1</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="datawrangling.html#cb172-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_1</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
 ##   month `1959` `1960` `1961`
 ##   &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -853,7 +853,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 4 Apr     318.   319.   319.
 ## 5 May     318.   320.   320.
 ## 6 Jun     318    319.   320.</code></pre>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="datawrangling.html#cb173-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_2</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="datawrangling.html#cb174-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_2</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 4
 ##   month `1959` `1960` `1961`
 ##   &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -863,7 +863,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 4 Oct     313.   314.   315.
 ## 5 Nov     315.   315.   316.
 ## 6 Dec     315.   316.   317.</code></pre>
-<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="datawrangling.html#cb175-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(co2_conc_subset_1, co2_conc_subset_2)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="datawrangling.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(co2_conc_subset_1, co2_conc_subset_2)</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 4
 ##    month `1959` `1960` `1961`
 ##    &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -880,7 +880,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 11 Nov     315.   315.   316.
 ## 12 Dec     315.   316.   317.</code></pre>
 <p>…, or data frames have a corresponding set of rows (and in the same order) and we can “stack” them along columns.</p>
-<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="datawrangling.html#cb177-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_3</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="datawrangling.html#cb178-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_3</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 3
 ##    month `1959` `1960`
 ##    &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -896,7 +896,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 10 Oct     313.   314.
 ## 11 Nov     315.   315.
 ## 12 Dec     315.   316.</code></pre>
-<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="datawrangling.html#cb179-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_4</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="datawrangling.html#cb180-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_4</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 2
 ##    month `1961`
 ##    &lt;ord&gt;  &lt;dbl&gt;
@@ -912,7 +912,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 10 Oct     315.
 ## 11 Nov     316.
 ## 12 Dec     317.</code></pre>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="datawrangling.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(co2_conc_subset_3, co2_conc_subset_4)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="datawrangling.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(co2_conc_subset_3, co2_conc_subset_4)</span></code></pre></div>
 <pre><code>## New names:
 ## • `month` -&gt; `month...1`
 ## • `month` -&gt; `month...4`</code></pre>
@@ -932,10 +932,10 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 11 Nov         315.   315. Nov         316.
 ## 12 Dec         315.   316. Dec         317.</code></pre>
 <p>But beware! In particular the stacking along columns (<code>bind_cols()</code>) is very error-prone. Since a tidy data frame regards each row as an instance of associated measurements, the rows of the two data frames and their order must match exactly. Otherwise, an error is raised or (even worse) rows get associated when they shouldn’t be. In such cases, where information about a common set of observations is distributed across multiple data objects, we are dealing with <em>relational data</em>. The key for their combination (or “merging”) is a <em>unique identification key</em> - the column that is present in both data frames and which contains values along which the merging of the two data frames is performed. In our example from above, this is <code>month</code>, and we can use the dplyr function <code>left_join()</code>.</p>
-<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="datawrangling.html#cb184-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_3 <span class="sc">|&gt;</span></span>
-<span id="cb184-2"><a href="datawrangling.html#cb184-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span>  <span class="co"># re-shuffling rows</span></span>
-<span id="cb184-3"><a href="datawrangling.html#cb184-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(co2_conc_subset_4, <span class="at">by =</span> <span class="st">&quot;month&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb184-4"><a href="datawrangling.html#cb184-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(month)  <span class="co"># sort in ascending order</span></span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="datawrangling.html#cb185-1" aria-hidden="true" tabindex="-1"></a>co2_conc_subset_3 <span class="sc">|&gt;</span></span>
+<span id="cb185-2"><a href="datawrangling.html#cb185-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span>  <span class="co"># re-shuffling rows</span></span>
+<span id="cb185-3"><a href="datawrangling.html#cb185-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(co2_conc_subset_4, <span class="at">by =</span> <span class="st">&quot;month&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb185-4"><a href="datawrangling.html#cb185-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(month)  <span class="co"># sort in ascending order</span></span></code></pre></div>
 <pre><code>## # A tibble: 12 × 4
 ##    month `1959` `1960` `1961`
 ##    &lt;ord&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
@@ -961,50 +961,50 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <h3><span class="header-section-number">3.3.1</span> Functional programming I<a href="datawrangling.html#functional-programming-i" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Above, we read a CSV table into R and applied several data transformation steps. In practice, we often have to apply the same data transformation steps repeatedly over a set of similar objects. This <em>extra material</em> section outlines an example workflow for demonstrating how to efficiently work with lists of similar objects - in particular, lists of data frames.</p>
 <p>Our aim is to read a set of files into R data frames and apply transformation steps to each data frame separately. Here, we will work with daily data, not half-hourly data. The daily data contains largely identical variables with consistent naming and units as in the half-hourly data (description above). Let’s start by creating a list of paths that point to the files with daily data. They are all located in the directory <code>"./data"</code> and share a certain string of characters in their file names <code>"_FLUXNET2015_FULLSET_DD_"</code>.</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="datawrangling.html#cb186-1" aria-hidden="true" tabindex="-1"></a>vec_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;./data&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;_FLUXNET2015_FULLSET_DD_&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb186-2"><a href="datawrangling.html#cb186-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(vec_files)</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="datawrangling.html#cb187-1" aria-hidden="true" tabindex="-1"></a>vec_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;./data&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;_FLUXNET2015_FULLSET_DD_&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb187-2"><a href="datawrangling.html#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(vec_files)</span></code></pre></div>
 <pre><code>## [1] &quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;
 ## [2] &quot;./data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv&quot;
 ## [3] &quot;./data/FLX_FI-Hyy_FLUXNET2015_FULLSET_DD_1996-2014_1-3.csv&quot;
 ## [4] &quot;./data/FLX_FR-Pue_FLUXNET2015_FULLSET_DD_2000-2014_2-3.csv&quot;</code></pre>
 <p><code>vec_files</code> is now a vector of three files paths as character strings. To read in the three files and combine the three data frames (<code>list_df</code> below) into a list of data frames, we could use a <code>for</code> loop:</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="datawrangling.html#cb188-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb188-2"><a href="datawrangling.html#cb188-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ifil <span class="cf">in</span> vec_files){</span>
-<span id="cb188-3"><a href="datawrangling.html#cb188-3" aria-hidden="true" tabindex="-1"></a>  list_df[[ifil]] <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(ifil)</span>
-<span id="cb188-4"><a href="datawrangling.html#cb188-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="datawrangling.html#cb189-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb189-2"><a href="datawrangling.html#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ifil <span class="cf">in</span> vec_files){</span>
+<span id="cb189-3"><a href="datawrangling.html#cb189-3" aria-hidden="true" tabindex="-1"></a>  list_df[[ifil]] <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(ifil)</span>
+<span id="cb189-4"><a href="datawrangling.html#cb189-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>Repeatedly applying a function (here <code>read_csv()</code>) over a list similar objects is facilitated by the <code>map*()</code> family of functions from the {purrr} package. An (almost) equivalent statement is:</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="datawrangling.html#cb189-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(<span class="fu">as.list</span>(vec_files), <span class="sc">~</span><span class="fu">read_csv</span>(.))</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="datawrangling.html#cb190-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(<span class="fu">as.list</span>(vec_files), <span class="sc">~</span><span class="fu">read_csv</span>(.))</span></code></pre></div>
 <p>Here, <code>purrr::map()</code> applies the function <code>read_csv()</code> to elements of a <em>list</em>. Hence, we first have to convert the vector <code>vec_files</code> to a list. A list is always the first argument within the <code>purrr::map()</code> function. Note two new symbols (<code>~</code> and <code>.</code>). The <code>~</code> always goes before the function that is repeatedly applied (or “mapped”) to elements of the list. The <code>.</code> indicates where the elements of the list would go if spelled out (e.g., here, <code>read_csv(.)</code> would be <code>read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv")</code> for the first iteration). The output of <code>purrr::map()</code> is again a list. There are many variants of the function <code>purrr::map()</code> that each have a specific use. A complete reference for all {purrr} functions is available <a href="https://purrr.tidyverse.org/reference/index.html">here</a>. A useful and more extensive tutorial on {purrr} is available <a href="https://www.r-bloggers.com/one-stop-tutorial-on-purrr-package-in-r/">here</a>.</p>
 <p>The above <code>purrr::map()</code> call does not return a <em>named</em> list as our <code>for</code> loop created. But we can give each element of the returned list of data frames different names by:</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="datawrangling.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(list_df) <span class="ot">&lt;-</span> vec_files  <span class="co"># this makes it a named list</span></span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="datawrangling.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(list_df) <span class="ot">&lt;-</span> vec_files  <span class="co"># this makes it a named list</span></span></code></pre></div>
 <p>Next, we will apply a similar data cleaning procedure to this data set as we did above for half-hourly data. To do so, we “package” the individual cleaning steps into a function …</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="datawrangling.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function definition</span></span>
-<span id="cb191-2"><a href="datawrangling.html#cb191-2" aria-hidden="true" tabindex="-1"></a>clean_data_dd <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
-<span id="cb191-3"><a href="datawrangling.html#cb191-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-4"><a href="datawrangling.html#cb191-4" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb191-5"><a href="datawrangling.html#cb191-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-6"><a href="datawrangling.html#cb191-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select only the variables we are interested in</span></span>
-<span id="cb191-7"><a href="datawrangling.html#cb191-7" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
-<span id="cb191-8"><a href="datawrangling.html#cb191-8" aria-hidden="true" tabindex="-1"></a>      TIMESTAMP,</span>
-<span id="cb191-9"><a href="datawrangling.html#cb191-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),</span>
-<span id="cb191-10"><a href="datawrangling.html#cb191-10" aria-hidden="true" tabindex="-1"></a>      GPP_NT_VUT_REF,</span>
-<span id="cb191-11"><a href="datawrangling.html#cb191-11" aria-hidden="true" tabindex="-1"></a>      NEE_VUT_REF_QC,</span>
-<span id="cb191-12"><a href="datawrangling.html#cb191-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>),</span>
-<span id="cb191-13"><a href="datawrangling.html#cb191-13" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb191-14"><a href="datawrangling.html#cb191-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-15"><a href="datawrangling.html#cb191-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># convert to a nice date object</span></span>
-<span id="cb191-16"><a href="datawrangling.html#cb191-16" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
-<span id="cb191-17"><a href="datawrangling.html#cb191-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb191-18"><a href="datawrangling.html#cb191-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set all -9999 to NA</span></span>
-<span id="cb191-19"><a href="datawrangling.html#cb191-19" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">na_if</span>(., <span class="sc">-</span><span class="dv">9999</span>)))</span>
-<span id="cb191-20"><a href="datawrangling.html#cb191-20" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb191-21"><a href="datawrangling.html#cb191-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
-<span id="cb191-22"><a href="datawrangling.html#cb191-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="datawrangling.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function definition</span></span>
+<span id="cb192-2"><a href="datawrangling.html#cb192-2" aria-hidden="true" tabindex="-1"></a>clean_data_dd <span class="ot">&lt;-</span> <span class="cf">function</span>(df){</span>
+<span id="cb192-3"><a href="datawrangling.html#cb192-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb192-4"><a href="datawrangling.html#cb192-4" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb192-5"><a href="datawrangling.html#cb192-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb192-6"><a href="datawrangling.html#cb192-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># select only the variables we are interested in</span></span>
+<span id="cb192-7"><a href="datawrangling.html#cb192-7" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb192-8"><a href="datawrangling.html#cb192-8" aria-hidden="true" tabindex="-1"></a>      TIMESTAMP,</span>
+<span id="cb192-9"><a href="datawrangling.html#cb192-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),</span>
+<span id="cb192-10"><a href="datawrangling.html#cb192-10" aria-hidden="true" tabindex="-1"></a>      GPP_NT_VUT_REF,</span>
+<span id="cb192-11"><a href="datawrangling.html#cb192-11" aria-hidden="true" tabindex="-1"></a>      NEE_VUT_REF_QC,</span>
+<span id="cb192-12"><a href="datawrangling.html#cb192-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">starts_with</span>(<span class="st">&quot;SWC_F_MDS_&quot;</span>),</span>
+<span id="cb192-13"><a href="datawrangling.html#cb192-13" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb192-14"><a href="datawrangling.html#cb192-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb192-15"><a href="datawrangling.html#cb192-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># convert to a nice date object</span></span>
+<span id="cb192-16"><a href="datawrangling.html#cb192-16" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> lubridate<span class="sc">::</span><span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
+<span id="cb192-17"><a href="datawrangling.html#cb192-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb192-18"><a href="datawrangling.html#cb192-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set all -9999 to NA</span></span>
+<span id="cb192-19"><a href="datawrangling.html#cb192-19" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), <span class="sc">~</span><span class="fu">na_if</span>(., <span class="sc">-</span><span class="dv">9999</span>)))</span>
+<span id="cb192-20"><a href="datawrangling.html#cb192-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb192-21"><a href="datawrangling.html#cb192-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb192-22"><a href="datawrangling.html#cb192-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>… and apply this function to each data frame within our list of data frames:</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="datawrangling.html#cb192-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(list_df, <span class="sc">~</span><span class="fu">clean_data_dd</span>(.))</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="datawrangling.html#cb193-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(list_df, <span class="sc">~</span><span class="fu">clean_data_dd</span>(.))</span></code></pre></div>
 <p>Having different data frames as elements of a list may be impractical. Since we read in similarly formatted files and selected always the same variables in each data frame, all elements of the list of data frames <code>list_df</code> share the same columns. This suggests that we can collapse our list of data frames and “stack” data frames along rows. As described above, this can be done using <code>bind_rows()</code> and we can automatically create a new column <code>"siteid"</code> in the stacked data frame that takes the name of the corresponding list element.</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="datawrangling.html#cb193-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(list_df, <span class="at">.id =</span> <span class="st">&quot;siteid&quot;</span>)</span>
-<span id="cb193-2"><a href="datawrangling.html#cb193-2" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="datawrangling.html#cb194-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(list_df, <span class="at">.id =</span> <span class="st">&quot;siteid&quot;</span>)</span>
+<span id="cb194-2"><a href="datawrangling.html#cb194-2" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites</span></code></pre></div>
 <pre><code>## # A tibble: 23,011 × 21
 ##    siteid      TIMESTAMP    TA_F SW_IN_F LW_IN_F VPD_F  PA_F   P_F  WS_F GPP_N…¹
 ##    &lt;chr&gt;       &lt;date&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
@@ -1024,17 +1024,17 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## #   SWC_F_MDS_4 &lt;dbl&gt;, SWC_F_MDS_4_QC &lt;dbl&gt;, SWC_F_MDS_5 &lt;dbl&gt;,
 ## #   SWC_F_MDS_5_QC &lt;dbl&gt;, and abbreviated variable name ¹​GPP_NT_VUT_REF</code></pre>
 <p>A visualisation of missing data indicates that soil water content data (<code>SWC_F_MDS_*</code>) are often missing.</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="datawrangling.html#cb195-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
-<span id="cb195-2"><a href="datawrangling.html#cb195-2" aria-hidden="true" tabindex="-1"></a>  daily_fluxes_allsites <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>),</span>
-<span id="cb195-3"><a href="datawrangling.html#cb195-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb195-4"><a href="datawrangling.html#cb195-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
-<span id="cb195-5"><a href="datawrangling.html#cb195-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-102-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="datawrangling.html#cb196-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
+<span id="cb196-2"><a href="datawrangling.html#cb196-2" aria-hidden="true" tabindex="-1"></a>  daily_fluxes_allsites <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>),</span>
+<span id="cb196-3"><a href="datawrangling.html#cb196-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb196-4"><a href="datawrangling.html#cb196-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
+<span id="cb196-5"><a href="datawrangling.html#cb196-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-103-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="strings" class="section level3 hasAnchor" number="3.3.2">
 <h3><span class="header-section-number">3.3.2</span> Strings<a href="datawrangling.html#strings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The column <code>siteid</code> currently contains strings specifying the full paths of the files that were read in earlier. The next task is to extract the site name from these strings. The file names follow a clear pattern (this also highlights why naming files wisely can often make life a lot simpler).</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="datawrangling.html#cb196-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites<span class="sc">$</span>siteid <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="datawrangling.html#cb197-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites<span class="sc">$</span>siteid <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code></pre></div>
 <pre><code>## [1] &quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;
 ## [2] &quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;
 ## [3] &quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;
@@ -1043,14 +1043,14 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## [6] &quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;</code></pre>
 <p>The paths each start with the subdirectory where they are located (<code>"./data/"</code>), then <code>"FLX_"</code>, followed by the site name (the first three entries of the table containing data from all sites are for the site <code>"CH-Dav"</code>), and then some more specifications, including the years that respective files’ data cover.</p>
 <p>The <a href="https://stringr.tidyverse.org/">{stringr}</a> package (part of tidyverse) offers a set of functions for working with strings. <a href="https://r4ds.had.co.nz/strings.html">Wikham and Grolemund (2017)</a> provide a more comprehensive introduction to working with strings. Here, we would like to extract the six characters, starting at position 12. The function <code>str_sub()</code> does that job.</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="datawrangling.html#cb198-1" aria-hidden="true" tabindex="-1"></a>vec_sites <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(vec_files, <span class="at">start =</span> <span class="dv">12</span>, <span class="at">end =</span> <span class="dv">17</span>)</span>
-<span id="cb198-2"><a href="datawrangling.html#cb198-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vec_sites)</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="datawrangling.html#cb199-1" aria-hidden="true" tabindex="-1"></a>vec_sites <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(vec_files, <span class="at">start =</span> <span class="dv">12</span>, <span class="at">end =</span> <span class="dv">17</span>)</span>
+<span id="cb199-2"><a href="datawrangling.html#cb199-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vec_sites)</span></code></pre></div>
 <pre><code>## [1] &quot;CH-Dav&quot; &quot;CH-Lae&quot; &quot;FI-Hyy&quot; &quot;FR-Pue&quot;</code></pre>
 <p>We can use this function to mutate all values of column <code>"siteid"</code>, overwriting it with just these six characters.</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="datawrangling.html#cb200-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="ot">&lt;-</span> daily_fluxes_allsites <span class="sc">|&gt;</span></span>
-<span id="cb200-2"><a href="datawrangling.html#cb200-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">siteid =</span> <span class="fu">str_sub</span>(siteid, <span class="at">start =</span> <span class="dv">12</span>, <span class="at">end =</span> <span class="dv">17</span>))</span>
-<span id="cb200-3"><a href="datawrangling.html#cb200-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb200-4"><a href="datawrangling.html#cb200-4" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="datawrangling.html#cb201-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="ot">&lt;-</span> daily_fluxes_allsites <span class="sc">|&gt;</span></span>
+<span id="cb201-2"><a href="datawrangling.html#cb201-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">siteid =</span> <span class="fu">str_sub</span>(siteid, <span class="at">start =</span> <span class="dv">12</span>, <span class="at">end =</span> <span class="dv">17</span>))</span>
+<span id="cb201-3"><a href="datawrangling.html#cb201-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb201-4"><a href="datawrangling.html#cb201-4" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites</span></code></pre></div>
 <pre><code>## # A tibble: 23,011 × 21
 ##    siteid TIMESTAMP    TA_F SW_IN_F LW_IN_F VPD_F  PA_F   P_F  WS_F GPP_NT_VUT…¹
 ##    &lt;chr&gt;  &lt;date&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;
@@ -1073,12 +1073,12 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <div id="functional-programming-ii" class="section level3 hasAnchor" number="3.3.3">
 <h3><span class="header-section-number">3.3.3</span> Functional programming II<a href="datawrangling.html#functional-programming-ii" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Functions can be applied to a list of objects of any type. Therefore, <code>purrr::map()</code> is a powerful approach to “iterating” over multiple instances of the same object type and can be used for all sorts of tasks. In the following, list elements are data frames of daily data and the function <code>lm()</code> fits a linear regression model of GPP versus shortwave radiation to each sites’ data. We’ll learn more about fitting statistical models in R in Chapter <a href="regressionclassification.html#regressionclassification">8</a>.</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="datawrangling.html#cb202-1" aria-hidden="true" tabindex="-1"></a>list_linmod <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(list_df, <span class="sc">~</span><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F, <span class="at">data =</span> .))</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="datawrangling.html#cb203-1" aria-hidden="true" tabindex="-1"></a>list_linmod <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(list_df, <span class="sc">~</span><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F, <span class="at">data =</span> .))</span></code></pre></div>
 <p>Note how the <code>.</code> indicates where the elements of <code>list_df</code> go when evaluating the <code>lm()</code> function. This returns a list of linear model objects (the type of objects returned by the <code>lm()</code> function call).</p>
 <p>We can spin the functional programming concept further and apply (or map) the <code>summary()</code> function to the <code>lm</code>-model objects to get a list of useful statistics and metrics, and then further extract the element <code>"r.squared"</code> from that list as:</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="datawrangling.html#cb203-1" aria-hidden="true" tabindex="-1"></a>list_linmod <span class="sc">|&gt;</span></span>
-<span id="cb203-2"><a href="datawrangling.html#cb203-2" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(summary) <span class="sc">|&gt;</span>  <span class="co"># apply the summary() function to each list element</span></span>
-<span id="cb203-3"><a href="datawrangling.html#cb203-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(<span class="st">&quot;r.squared&quot;</span>)    <span class="co"># extract R-squared from the list generated by summary()</span></span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="datawrangling.html#cb204-1" aria-hidden="true" tabindex="-1"></a>list_linmod <span class="sc">|&gt;</span></span>
+<span id="cb204-2"><a href="datawrangling.html#cb204-2" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(summary) <span class="sc">|&gt;</span>  <span class="co"># apply the summary() function to each list element</span></span>
+<span id="cb204-3"><a href="datawrangling.html#cb204-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(<span class="st">&quot;r.squared&quot;</span>)    <span class="co"># extract R-squared from the list generated by summary()</span></span></code></pre></div>
 <pre><code>## ./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv 
 ##                                                  0.4201802 
 ## ./data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv 
@@ -1090,10 +1090,10 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <p><code>map_dbl()</code> is a variant of the <code>purrr::map()</code> function that returns not a list, but a vector of numeric values of class “double” (hence, the name <code>_dbl</code>). Note further, that providing a character (<code>"r.squared"</code>) as an argument instead of an (unquoted) function name, <code>purrr::map()</code> extracts the correspondingly named list element, instead of applying a function to a list element.</p>
 <p>When writing code for an analysis, it’s useful, if not essential, to understand the objects we’re working with, understand its type and shape, and make sense of the results of simple <code>print &lt;object&gt;</code> statements. Data frames are particularly handy as they provide an organisation of data that is particularly intuitive (variables along columns, observations along rows, values in cells). Here, we’re dealing with a list of linear model objects. Can such a list fit into the paradigm of <em>tidy</em> data frames?</p>
 <p>Yes, they can. Think of the linear model objects as ‘values’. Values don’t necessarily have to be scalars, but they can be of any type (class).</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="datawrangling.html#cb205-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb205-2"><a href="datawrangling.html#cb205-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">siteid =</span> vec_sites,</span>
-<span id="cb205-3"><a href="datawrangling.html#cb205-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">linmod =</span> list_linmod</span>
-<span id="cb205-4"><a href="datawrangling.html#cb205-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="datawrangling.html#cb206-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb206-2"><a href="datawrangling.html#cb206-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">siteid =</span> vec_sites,</span>
+<span id="cb206-3"><a href="datawrangling.html#cb206-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">linmod =</span> list_linmod</span>
+<span id="cb206-4"><a href="datawrangling.html#cb206-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 2
 ##   siteid linmod      
 ##   &lt;chr&gt;  &lt;named list&gt;
@@ -1103,10 +1103,10 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 4 FR-Pue &lt;lm&gt;</code></pre>
 <p>The fact that cells can contain any type of object offers a powerful concept. Instead of a linear model object as in the example above, each cell may even contain another data frame. In such a case, we say that the data frame is no longer <em>flat</em>, but <em>nested</em>.</p>
 <p>The following creates a nested data frame, where the column <code>data</code> is defined by the list of data frames read from files above (<code>list_df</code>).</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="datawrangling.html#cb207-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb207-2"><a href="datawrangling.html#cb207-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">siteid =</span> vec_sites,</span>
-<span id="cb207-3"><a href="datawrangling.html#cb207-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_df</span>
-<span id="cb207-4"><a href="datawrangling.html#cb207-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="datawrangling.html#cb208-1" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb208-2"><a href="datawrangling.html#cb208-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">siteid =</span> vec_sites,</span>
+<span id="cb208-3"><a href="datawrangling.html#cb208-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> list_df</span>
+<span id="cb208-4"><a href="datawrangling.html#cb208-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 2
 ##   siteid data                 
 ##   &lt;chr&gt;  &lt;named list&gt;         
@@ -1115,9 +1115,9 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 3 FI-Hyy &lt;tibble [6,940 × 20]&gt;
 ## 4 FR-Pue &lt;tibble [5,479 × 10]&gt;</code></pre>
 <p>We can achieve the same result by directly nesting the flat data frame holding all sites’ data (<code>daily_fluxes_allsites</code>). This is done by combining the <code>group_by()</code>, which we have encountered above when aggregating using <code>summarise()</code>, with the function <code>nest()</code> from the {tidyr} package.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="datawrangling.html#cb209-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="sc">|&gt;</span></span>
-<span id="cb209-2"><a href="datawrangling.html#cb209-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(siteid) <span class="sc">|&gt;</span></span>
-<span id="cb209-3"><a href="datawrangling.html#cb209-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="datawrangling.html#cb210-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="sc">|&gt;</span></span>
+<span id="cb210-2"><a href="datawrangling.html#cb210-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(siteid) <span class="sc">|&gt;</span></span>
+<span id="cb210-3"><a href="datawrangling.html#cb210-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 2
 ## # Groups:   siteid [4]
 ##   siteid data                 
@@ -1128,21 +1128,21 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 4 FR-Pue &lt;tibble [5,479 × 20]&gt;</code></pre>
 <p>The function <code>nest()</code> names the nested data column automatically <code>"data"</code>.</p>
 <p>This structure is very useful. For example, for applying functions over sites’ data frames separately (and not over the entire data frame). By combining <code>purrr::map()</code> and <code>mutate()</code>, we can fit linear models on each site’s data frame individually in one go.</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="datawrangling.html#cb211-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="sc">|&gt;</span></span>
-<span id="cb211-2"><a href="datawrangling.html#cb211-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(siteid) <span class="sc">|&gt;</span></span>
-<span id="cb211-3"><a href="datawrangling.html#cb211-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">|&gt;</span></span>
-<span id="cb211-4"><a href="datawrangling.html#cb211-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">linmod =</span> purrr<span class="sc">::</span><span class="fu">map</span>(data, <span class="sc">~</span><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F, <span class="at">data =</span> .)))</span></code></pre></div>
-<p>This approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column <code>"data"</code> have time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by <code>siteid</code>), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of <code>summarise()</code> (see above).</p>
-<p>Combining the steps described above into a single workflow, we have:</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="datawrangling.html#cb212-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested <span class="ot">&lt;-</span> daily_fluxes_allsites <span class="sc">|&gt;</span></span>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="datawrangling.html#cb212-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites <span class="sc">|&gt;</span></span>
 <span id="cb212-2"><a href="datawrangling.html#cb212-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(siteid) <span class="sc">|&gt;</span></span>
 <span id="cb212-3"><a href="datawrangling.html#cb212-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">|&gt;</span></span>
-<span id="cb212-4"><a href="datawrangling.html#cb212-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">linmod =</span> purrr<span class="sc">::</span><span class="fu">map</span>(data, <span class="sc">~</span><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F, <span class="at">data =</span> .))) <span class="sc">|&gt;</span></span>
-<span id="cb212-5"><a href="datawrangling.html#cb212-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">summ =</span> purrr<span class="sc">::</span><span class="fu">map</span>(linmod, <span class="sc">~</span><span class="fu">summary</span>(.))) <span class="sc">|&gt;</span></span>
-<span id="cb212-6"><a href="datawrangling.html#cb212-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rsq =</span> <span class="fu">map_dbl</span>(summ, <span class="st">&quot;r.squared&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb212-7"><a href="datawrangling.html#cb212-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(rsq))  <span class="co"># to arrange output, with highest r-squared on top</span></span>
-<span id="cb212-8"><a href="datawrangling.html#cb212-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb212-9"><a href="datawrangling.html#cb212-9" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested</span></code></pre></div>
+<span id="cb212-4"><a href="datawrangling.html#cb212-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">linmod =</span> purrr<span class="sc">::</span><span class="fu">map</span>(data, <span class="sc">~</span><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F, <span class="at">data =</span> .)))</span></code></pre></div>
+<p>This approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column <code>"data"</code> have time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by <code>siteid</code>), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of <code>summarise()</code> (see above).</p>
+<p>Combining the steps described above into a single workflow, we have:</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="datawrangling.html#cb213-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested <span class="ot">&lt;-</span> daily_fluxes_allsites <span class="sc">|&gt;</span></span>
+<span id="cb213-2"><a href="datawrangling.html#cb213-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(siteid) <span class="sc">|&gt;</span></span>
+<span id="cb213-3"><a href="datawrangling.html#cb213-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">|&gt;</span></span>
+<span id="cb213-4"><a href="datawrangling.html#cb213-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">linmod =</span> purrr<span class="sc">::</span><span class="fu">map</span>(data, <span class="sc">~</span><span class="fu">lm</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F, <span class="at">data =</span> .))) <span class="sc">|&gt;</span></span>
+<span id="cb213-5"><a href="datawrangling.html#cb213-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">summ =</span> purrr<span class="sc">::</span><span class="fu">map</span>(linmod, <span class="sc">~</span><span class="fu">summary</span>(.))) <span class="sc">|&gt;</span></span>
+<span id="cb213-6"><a href="datawrangling.html#cb213-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">rsq =</span> <span class="fu">map_dbl</span>(summ, <span class="st">&quot;r.squared&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb213-7"><a href="datawrangling.html#cb213-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(rsq))  <span class="co"># to arrange output, with highest r-squared on top</span></span>
+<span id="cb213-8"><a href="datawrangling.html#cb213-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb213-9"><a href="datawrangling.html#cb213-9" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 5
 ## # Groups:   siteid [4]
 ##   siteid data                  linmod summ         rsq
@@ -1153,33 +1153,33 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## 4 FR-Pue &lt;tibble [5,479 × 20]&gt; &lt;lm&gt;   &lt;smmry.lm&gt; 0.377</code></pre>
 <p>This code is a demonstration of the power of tidy and nested data frames and for the clarity of the {tidyverse} syntax.</p>
 <p>Nesting is useful also for avoiding value duplication when joining relational data objects. Above, we nested time series data objects (where time steps and sites are both organised along rows) by sites and got a data frame where only sites are organised along rows, while time steps are nested inside the column <code>"data"</code>. This now fits the structure of a relational data object (<code>siteinfo_fluxnet2015</code>) containing site-specific meta information (also with only sites along rows).</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="datawrangling.html#cb214-1" aria-hidden="true" tabindex="-1"></a>base<span class="sc">::</span><span class="fu">load</span>(<span class="st">&quot;data/siteinfo_fluxnet2015.rda&quot;</span>)  <span class="co"># loads siteinfo_fluxnet2015</span></span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="datawrangling.html#cb215-1" aria-hidden="true" tabindex="-1"></a>base<span class="sc">::</span><span class="fu">load</span>(<span class="st">&quot;data/siteinfo_fluxnet2015.rda&quot;</span>)  <span class="co"># loads siteinfo_fluxnet2015</span></span></code></pre></div>
 <p>Joining the nested data frame with site meta information results in a substantially smaller and much handier data frame compared to an alternative, where the site meta information is joined into the un-nested (daily) data frame, and therefore duplicated for each day within sites.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="datawrangling.html#cb215-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
-<span id="cb215-2"><a href="datawrangling.html#cb215-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
-<span id="cb215-3"><a href="datawrangling.html#cb215-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(<span class="fu">select</span>(daily_fluxes_allsites_nested, <span class="sc">-</span>linmod, <span class="sc">-</span>summ, <span class="sc">-</span>rsq),</span>
-<span id="cb215-4"><a href="datawrangling.html#cb215-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span>)</span>
-<span id="cb215-5"><a href="datawrangling.html#cb215-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb215-6"><a href="datawrangling.html#cb215-6" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
-<span id="cb215-7"><a href="datawrangling.html#cb215-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
-<span id="cb215-8"><a href="datawrangling.html#cb215-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(daily_fluxes_allsites,</span>
-<span id="cb215-9"><a href="datawrangling.html#cb215-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span>)</span>
-<span id="cb215-10"><a href="datawrangling.html#cb215-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb215-11"><a href="datawrangling.html#cb215-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Flat and joined:&quot;</span>, </span>
-<span id="cb215-12"><a href="datawrangling.html#cb215-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_joined),  </span>
-<span id="cb215-13"><a href="datawrangling.html#cb215-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>, </span>
-<span id="cb215-14"><a href="datawrangling.html#cb215-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">standard =</span> <span class="st">&quot;SI&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="datawrangling.html#cb216-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
+<span id="cb216-2"><a href="datawrangling.html#cb216-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
+<span id="cb216-3"><a href="datawrangling.html#cb216-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(<span class="fu">select</span>(daily_fluxes_allsites_nested, <span class="sc">-</span>linmod, <span class="sc">-</span>summ, <span class="sc">-</span>rsq),</span>
+<span id="cb216-4"><a href="datawrangling.html#cb216-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span>)</span>
+<span id="cb216-5"><a href="datawrangling.html#cb216-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb216-6"><a href="datawrangling.html#cb216-6" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
+<span id="cb216-7"><a href="datawrangling.html#cb216-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
+<span id="cb216-8"><a href="datawrangling.html#cb216-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(daily_fluxes_allsites,</span>
+<span id="cb216-9"><a href="datawrangling.html#cb216-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span>)</span>
+<span id="cb216-10"><a href="datawrangling.html#cb216-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb216-11"><a href="datawrangling.html#cb216-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Flat and joined:&quot;</span>, </span>
+<span id="cb216-12"><a href="datawrangling.html#cb216-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_joined),  </span>
+<span id="cb216-13"><a href="datawrangling.html#cb216-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>, </span>
+<span id="cb216-14"><a href="datawrangling.html#cb216-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">standard =</span> <span class="st">&quot;SI&quot;</span>)))</span></code></pre></div>
 <pre><code>## [1] &quot;Flat and joined: 5.8 MB&quot;</code></pre>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="datawrangling.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Nested and joined:&quot;</span>, </span>
-<span id="cb217-2"><a href="datawrangling.html#cb217-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_nested_joined),  </span>
-<span id="cb217-3"><a href="datawrangling.html#cb217-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>, </span>
-<span id="cb217-4"><a href="datawrangling.html#cb217-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">standard =</span> <span class="st">&quot;SI&quot;</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="datawrangling.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Nested and joined:&quot;</span>, </span>
+<span id="cb218-2"><a href="datawrangling.html#cb218-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_nested_joined),  </span>
+<span id="cb218-3"><a href="datawrangling.html#cb218-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>, </span>
+<span id="cb218-4"><a href="datawrangling.html#cb218-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">standard =</span> <span class="st">&quot;SI&quot;</span>)))</span></code></pre></div>
 <pre><code>## [1] &quot;Nested and joined: 3.7 MB&quot;</code></pre>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="datawrangling.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save for later use</span></span>
-<span id="cb219-2"><a href="datawrangling.html#cb219-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(</span>
-<span id="cb219-3"><a href="datawrangling.html#cb219-3" aria-hidden="true" tabindex="-1"></a>  daily_fluxes_allsites_nested_joined,</span>
-<span id="cb219-4"><a href="datawrangling.html#cb219-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/daily_fluxes_allsites_nested_joined.rds&quot;</span></span>
-<span id="cb219-5"><a href="datawrangling.html#cb219-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="datawrangling.html#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save for later use</span></span>
+<span id="cb220-2"><a href="datawrangling.html#cb220-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(</span>
+<span id="cb220-3"><a href="datawrangling.html#cb220-3" aria-hidden="true" tabindex="-1"></a>  daily_fluxes_allsites_nested_joined,</span>
+<span id="cb220-4"><a href="datawrangling.html#cb220-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/daily_fluxes_allsites_nested_joined.rds&quot;</span></span>
+<span id="cb220-5"><a href="datawrangling.html#cb220-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 </div>
 </div>
 <div id="exerciseswrangling" class="section level2 hasAnchor" number="3.4">

@@ -170,7 +170,7 @@ tracking-the-state-of-your-project
 codemgmt
 learning-objectives-7
 tutorial-6
-git-and-local-version-control
+gitworkflow
 git-add
 git-commit
 remote-version-control
