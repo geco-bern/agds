@@ -496,7 +496,7 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif
 
 #### GET
 
-1.  Download the HWSD total sand content data for the extent of Switzerland following the tutorial example. Visualize the data as a simple map.
+1.  Download the HWSD total sand content data for the extent of Switzerland following the tutorial example. Visualize/plot the data as a simple map.
 2.  Download the HWSD topsoil silt content for the extent of Switzerland.
 
 #### Dedicated library
