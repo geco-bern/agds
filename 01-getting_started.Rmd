@@ -576,10 +576,10 @@ To install the `netCDF` command-line tools, follow these instructions:
      -    Once downloaded, click on the `.exe` file and follow the installation dialog.
      
 You can check if the installation was successful by running the following code in the RStudio console:
+```{r}
+terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc")
 ```
-# XXX TO DO @koenhufkens
-```
-     
+
 #### git
 
 In this section, you will install *git*, create a GitHub account and connect it to RStudio. This should set up your laptop so that you can do version control of your code (with an easy to use interface) and upload changes to an online copy of your R project (on GitHub) directly from RStudio. Follow these instructions:
