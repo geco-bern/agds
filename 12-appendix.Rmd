@@ -213,3 +213,99 @@ vec <- approx(1:100, vec, xout = 1:100)
 
 plot(vec)
 ```
+
+## Data wrangling
+
+### Star wars {-}
+
+{dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use (possibly among others) the functions `dplyr::filter()`, `dplyr::arrange()`, `dplyr::pull()`, `dplyr::select()`, and `dplyr::slice()` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio):
+
+a.  How many pale characters come from the planets Ryloth or Naboo?
+```{r message=FALSE}
+dplyr::starwars |> 
+  dplyr::filter(skin_color == "pale" & (homeworld == "Naboo" | homeworld == "Ryloth")) |> 
+  nrow()   
+```
+
+b.  Who is the oldest of the tallest thirty characters?
+```{r message=FALSE}
+dplyr::starwars |> 
+  arrange(desc(height)) |> 
+  slice(1:30) |> 
+  arrange(birth_year) |> 
+  slice(1) |> 
+  pull(name)
+```
+
+c.  What is the name of the shortest character and their starship in "Return of the Jedi"?
+```{r message=FALSE}
+dplyr::starwars |> 
+  select(name, starships, films, height) |> 
+  unnest(films) |> 
+  filter(films == "Return of the Jedi") |> 
+  unnest(starships) |> 
+  arrange(height) |> 
+  slice(1)
+```
+
+### Aggregating {-}
+
+Reuse the code in the tutorial to read, reduce, clean, and aggregate the `hhdf` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values for each day: maximum value, minimum value, median, and standard deviation.
+```{r}
+# Load and wrangle the hhdf dataset
+hhdf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |>
+  dplyr::select(
+    starts_with("TIMESTAMP"),
+    ends_with("_F"),
+    GPP_NT_VUT_REF,
+    NEE_VUT_REF_QC,
+    starts_with("SWC_F_MDS_"),
+    -contains("JSB"),
+    NIGHT
+  )
+
+# Get different statistics for VPD_F
+ddf <- hhdf |>  
+  mutate(date_time = lubridate::ymd_hm(TIMESTAMP_START),
+         date      = lubridate::date(date_time)) |>
+  group_by(date) |> 
+  summarise(VPD_F_mean   = mean(VPD_F),
+            VPD_F_median = median(VPD_F),
+            VPD_F_min    = min(VPD_F),
+            VPD_F_max    = max(VPD_F),
+            VPD_F_sd     = sd(VPD_F))
+
+ddf
+```
+
+
+### Patterns in data quality {-}
+
+The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes of poor quality. Investigate whether NEE data quality is randomly spread across hours in a day by calculating the proportion of (i) actually measured data, (ii) good quality gap-filled data, (iii) medium quality data, and (iv) poor quality data within each hour-of-day (24 hours per day).
+
+```{r}
+# using hhdf read above
+df <- hhdf |> 
+  mutate(TIMESTAMP_START = lubridate::ymd_hm(TIMESTAMP_START)) |> 
+  mutate(hod = lubridate::hour(TIMESTAMP_START)) |> 
+  group_by(hod) |> 
+  summarise(n_measured = sum(NEE_VUT_REF_QC == 0),
+            n_good     = sum(NEE_VUT_REF_QC == 1),
+            n_medium   = sum(NEE_VUT_REF_QC == 2),
+            n_poor     = sum(NEE_VUT_REF_QC == 3),
+            n_total    = n()
+            ) |> 
+  mutate(f_measured = n_measured / n_total,
+         f_good     = n_good     / n_total,
+         f_medium   = n_medium   / n_total,
+         f_poor     = n_poor     / n_total,
+         )
+
+# this is not asked for but interesting. More on data visualisation in Chapter 5
+df |> 
+  pivot_longer(c(f_measured, f_good, f_medium, f_poor), 
+               names_to = "quality", 
+               values_to = "fraction") |> 
+  ggplot(aes(x = hod, y = fraction, color = quality)) +
+  geom_line()
+```

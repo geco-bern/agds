@@ -90,7 +90,7 @@ Often, analyses require many steps and your scripts may get excessively long. An
 For example, the following code, converting temperature values provided in Fahrenheit to degrees Celsius, could be turned into a function.
 
 ```{r eval=FALSE}
-# NOT ADVISABLE
+# not advisable
 temp_soil <- (temp_soil - 32) * 5 / 9
 temp_air  <- (temp_air  - 32) * 5 / 9
 temp_leaf <- (temp_leaf - 32) * 5 / 9
@@ -106,7 +106,7 @@ Functions are a set of instructions encapsulated within curly brackets (`{}`) th
 Below, we define our own function `f2c()`:
 
 ```{r eval=FALSE}
-# ADVISABLE
+# advisable
 f2c <- function(temp_f){
   temp_c <- (temp_f - 32) * 5 / 9
   return(temp_c)
@@ -181,23 +181,17 @@ A good and comprehensive best practices guide is given by the [tidyverse style g
 
 ### Where to find help
 
-The material covered in this course will give you a solid basis for your future projects. Even more so, it provides you with code examples that you can adapt to your own purposes. Naturally, you will face problems we did not cover in the course and you will need to learn more as you go. The good news is, you do not have to. Many people make their code available online and often others have faced similar problems. Modifying existing code might make it easier for you to get started.
+The material covered in this course will give you a solid basis for your future projects. Even more so, it provides you with code examples that you can adapt to your own purposes. Naturally, you will face problems we did not cover in the course and you will learn more as you go. Different approaches to getting help can be taken for different types of problems and questions.
 
 #### Within R
 
-"*I know the name of a function that might help solve the problem but I do not know how to use it.*" Typing a `?` in front of the function will open the documentation of the function, giving lots of information on the uses and options a function has. You have learned a few things about plots but you may not know how to make a boxplot:
+"*I know the name of a function that might help solve the problem but I do not know how to use it.*" Typing a `?` in front of the function will open the documentation of the function, giving information about a function's purpose and method, arguments, the returned object, and examples. You have learned a few things about plots but you may not know how to make a boxplot:
 
 ```{r eval =F}
-?boxplot
+?graphics::boxplot
 ```
 
 Running the above code will open the information on making boxplots in R.
-
-If you do know how a function works but need to be reminded of the arguments it takes, simply type:
-
-```{r eval =F}
-args(boxplot)
-```
 
 "*There must be a function that does task X but I do not know which one.*" Typing `??` will call the function `help.search()`. Maybe you want to save a plot as a JPEG but you do not know how:
 
@@ -213,13 +207,20 @@ To search in the entire library of R go to the website [rdocumentation.org](http
 
 #### Error messages
 
-If you do not understand the error message, start by searching the web. Be aware, that this is not always useful as developers rely on the error catching provided by R. To be more specific add the name of the function and package you are using, to get a more detailed answer.
+If you do not understand the error message, start by searching for it on the web. Be aware that this is not always useful as developers rely on the error catching provided by R. To be more specific, add the name of the function and package you are using, to get a more detailed answer.
+
+#### Worked examples
+
+Worked examples are implementations of certain workflows that may serve as a template for your own purpose. It is often simpler to adjust existing code to fulfill your purpose than to write it from scratch. *Vignettes* are provided for many packages and serve as example workflows that demonstrate the utility of package functions. You can type ...
+```{r}
+vignette("caret", package = "caret")
+```
+
+... to get information about how to use the {caret} package in an easily digestible format. (You will learn more about caret in Chapters \@ref(supervisedmli) and \@ref(supervisedmlii)). Several blogs serve similar purposes and are a great entry point to learn about new topics. Examples are the [Posit Blog](https://posit.co/blog/) (Posit is the company developing and maintaining RStudio and several R packages), [R-bloggers](https://www.r-bloggers.com/), [R-Ladies](https://www.rladies.org/blog/), etc.
 
 #### Asking for help
 
-If you cannot find a solution online, start by asking your friends and colleagues. Someone with more experience than you might be able and willing to help you. When asking for help it is important to think about how you state the problem. The key to receiving help is to make it as easy as possible to understand the issue your facing. Try to reduce what does not work to a simple example. Reproduce a problem with a simple data frame instead of one with thousands of rows. Generalize it in a way that people who do not do research in your field can understand the problem. If you are asking a question online in a forum include the output of `sessionInfo()` (it provides information about the R version, packages your using,...) and other information that can be helpful to understand the problem. [Stackoverflow](https://www.stackoverflow.com) has its own [guidelines](https://stackoverflow.com/help/how-to-ask) on how to ask a good question, which you should follow. Here's a [great template](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) you should use for R-specific question. If your question is well crafted and has not been answered before you can sometimes get an answer within 5 minutes.
-
-Finally, many packages have a mailing list or allow you to open a query on the code repository, where you can ask specific questions. The same is true for R itself. The [R-Help mailing list](https://stat.ethz.ch/mailman/listinfo/r-help) is read by many people. However, the tone of such mailing lists can be pretty dry and unwelcoming to new users. Be sure to use the right terminology or else you might get an answer pointing out your misuse of language instead of your problem. Also, be sure your question is valid. Or else you won't get an answer.
+If you cannot find a solution online, start by asking your friends and colleagues. Someone with more experience than you might be able and willing to help you. When asking for help it is important to think about how you state the problem. The key to receiving help is to make it as easy as possible to understand the issue you are facing. Try to reduce what does not work to a simple example. Reproduce a problem with a simple data frame instead of one with thousands of rows. Generalize it in a way that people who do not do research in your field can understand the problem. If you are asking a question online in a forum include the output of `sessionInfo()` (it provides information about the R version, packages your using,...) and other information that can be helpful to understand the problem. [Stackoverflow](https://www.stackoverflow.com) has its own [guidelines](https://stackoverflow.com/help/how-to-ask) on how to ask a good question, which you should follow. Here's a [great template](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) you should use for R-specific question. If your question is well crafted and has not been answered before you can sometimes get an answer within 5 minutes.
 
 ## Exercises
 

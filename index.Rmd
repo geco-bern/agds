@@ -169,6 +169,10 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 - Hadley Wickham and Garrett Grolemund: "R for Data Science", https://r4ds.had.co.nz/
 
     - A comprehensive resource for data analysis (and visualisation) using R *tidyverse*. Covers contents of Chapters \@ref(gettingstarted), \@ref(programmingprimers), and \@ref(datawrangling) - but in more depth.
+    
+- Max Kuhn and Kjell Johnson: "Feature Engineering and Selection: A Practical Approach for Predictive Models", http://www.feat.engineering/    
+    
+    - A practical guide to all steps of the data science workflow, with particularly valuable chapters on data wrangling and feature engineering. This free online book is *not* accompanied by code and is thus useful for any data science practitioner, irrespective of their preferred programming language.
 
 **Data visualisation**
 
