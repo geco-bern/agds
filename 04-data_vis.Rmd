@@ -511,8 +511,8 @@ Raster data often reflects values in geographic space. Also points and polygons 
 
 Interested readers can find more content on geospatial data visualisation here:
 
--   Timo Grossenbacher's blog on geographic data journalism ([link](https://timogrossenbacher.ch/blog/))
--   Koen Hufken's blog containing various worked example XXX
+-   Timo Grossenbacher's [blog](https://timogrossenbacher.ch/blog/) on geographic data journalism
+-   Koen Hufken's [blog](https://khufkens.com/blog/) containing various beautiful and interesting examples, always accompanied by a GitHub repo to reproduce them.
 
 ## Exercises
 
