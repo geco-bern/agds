@@ -445,7 +445,7 @@ Below you find a list of common environmental data repositories which provide ma
 
 ## Exercises
 
-### Files and file formats
+### Files and file formats {-}
 
 #### Reading and writing human readable files {.unnumbered}
 
@@ -492,9 +492,9 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif
 # Your solution script
 ```
 
-### API use
+### API use {-}
 
-#### GET
+#### GET {.unnumbered}
 
 1.  Download the HWSD total sand content data for the extent of Switzerland following the tutorial example. Visualize/plot the data as a simple map.
 2.  Download the HWSD topsoil silt content for the extent of Switzerland.
