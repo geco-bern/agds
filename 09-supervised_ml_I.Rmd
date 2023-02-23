@@ -678,11 +678,6 @@ There are no exercises with provided solutions for this Chapter.
 
 > *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
-1.  The last figures of this tutorial show the training of testing of a linear model and a KNN model. Compare the four figures and answer to following questions:
-    a.  How does the point cloud differ between the two training set plots? Why does the $R^2$ value increase from LM to KNN? Use your knowledge on the fundamental difference between the two fitted models!
-    b.  How does the performance of both models (LM and KNN) change when predicting onto the test set? Why do they change in that manner?
-    c.  The test set plots for both models show a tendency to have more points on the right side of the dotted one-to-one line. What does that tell you about the performance of the model? How do you interpret this model performance in an ecophysiological manner? Note that we are comparing predicted (y-axis) against observed (x-axis) values of gross primary production.
-
 The last figures of this tutorial show the training of testing of a linear model and a KNN model. Compare the four figures and answer to following questions:
 
 1.  How does the point cloud differ between the two training set plots? Why does the $R^2$ value increase from LM to KNN? Use your knowledge on the fundamental difference between the two fitted models!
@@ -699,4 +694,4 @@ Let's look at the role of $k$ in a KNN. Answer the following questions:
 
 2.  Put your hypothesis to the test! Write a code script that repeats fitting different values for $k$ as done in the tutorial. Use a simple bivariate model, regressing temperature against the day-of-year in the `daily_fluxes` dataset (`DOY ~ TA_F`). **Visualise** your results in an intuitive plot that is understandable without additional explanation.
 
-3.  Compare your results against your hypothesis from 2a. Is the result as you expected? If your hypothesis was right, can you explain further, why your hypothesis was correct, using the results. If your hypothesis was wrong, can you explain why? What surprised you, what did you not expect to see?
+3.  Compare your results against your hypothesis from above. Is the result as you expected? If your hypothesis was right, can you explain further, why your hypothesis was correct, using the results. If your hypothesis was wrong, can you explain why? What surprised you, what did you not expect to see?
