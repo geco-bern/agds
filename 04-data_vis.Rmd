@@ -542,7 +542,7 @@ A key part of data cleaning is to detect and understand where outliers are comin
 
 As explored in the previous Chapter's exercises, GPP varies strongly with the diurnal and seasonal cycle. Create a publication-ready figure showing both cycles in one single plot that is fully labelled, easy to read, and colorblind-friendly:
 
--   Again, start with the cleand the half-hourly dataset for site CH-Lae.
+-   Again, start with the cleaned the half-hourly dataset for site CH-Lae.
 -   To get the diurnal and seasonal trend, summarise the half-hourly data by the hour of the day and the day of the year simultaneously and calculate mean values for GPP for each group.
 -   Create a plot with {ggplot2} using the temporal variables as axes and GPP as color.
 -   Make this figure ready for publication: 
