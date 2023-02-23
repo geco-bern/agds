@@ -524,31 +524,52 @@ Interested readers can find more content on geospatial data visualisation here:
 
 ## Exercises
 
-**Identifying Outliers**:
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
--   Based on this and previous tutorials, read the half-hourly dataset for site CH-Lae, drop entries with `-9999` and aggregate `GPP_NT_VUT_REF` and `PPFD_IN` to daily means. 
--   Fit a linear relationship between `GPP_NT_VUT_REF` and `PPFD_IN`, using `lm()`.
--   The function returns a list of objects which you can access using the `$` syntax. Access the fitted `residuals` and use them in `boxplot.stats()` to get box plot statistics to determine outliers.
--   The output of `boxplot.stats()` is a list with the object `out`, a named vector where the names are the row number of the `residuals` in your original dataframe and the values are the entries for that row. Use `out_boxplot$out |> names() |> as.integer()` to get all row numbers.
--   Create a new variable in the daily-aggregated dataset, which defines whether a datapoint is an outlier or not.
+### Identifying Outliers {-}
 
-**Visualising diurnal and seasonal cycles:** 
+A key part of data cleaning is to detect and understand where outliers are coming from. Visualisations make this task often informative. Your task here is to find outliers in `PPFD_IN`
 
--   Using the half-hourly dataset for site CH-Lae (after dropping `-9999` entries), visualise how GPP (`GPP_NT_VUT_REF`) varies on two time scales: diurnal (within-day at hourly time scale) and seasonal. To implement this, follow the following steps:
-- Summarise half-hourly data for each hour and day across multiple years to get a mean seasonality with a mean diurnal cycle for each day of the year. To deal with date-time objects, use the {lubridate} package. Use the functions `lubridate::yday()` and `lubridate::hour()` to extract the day of year and hour of day across entries. See `?yday` to get more hints.
--   Create a raster plot (`geom_raster()`), mapping the hour of the day to the x-axis, the day of the year to the y-axis, and the magnitude of `GPP_NT_VUT_REF` to color (use the `fill` argument).
--   Make this figure ready for publication by adding nice labels and choosing a good color scale.
+-   Based on this and previous tutorials, read the half-hourly dataset for site CH-Lae, labels entries with `-9999` as `NA` and aggregate `GPP_NT_VUT_REF` and `PPFD_IN` to daily means. 
+-   Fit a linear relationship between `GPP_NT_VUT_REF` and `PPFD_IN`
+-   The function for fitting a linear model returns a list of objects which you can access using the `$` syntax.
+    -   Access the fitted `residuals` and use them as argument in `boxplot.stats()` to quickly get box plot statistics that are useful to determine outliers.
+    -   The output of `boxplot.stats()` is a list with the object `out`, a named vector where the names are the row numbers of the `residuals` in your original dataframe. The values are the entries for that row. Use `out_boxplot$out |> names() |> as.integer()` to get all row numbers.
+-   Use these row numbers to create a new variable in the daily-aggregated dataset.
+-   Create a plot that visualises the relationship between `GPP_NT_VUT_REF` and `PPFD_IN` and shows whether any given datapoint is an outlier or not.
 
-<!-- -   Remove data in `daily_fluxes` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors. -->
+### Visualising diurnal and seasonal cycles of GPP {-}
 
-**Running mean of monthly CO2 concentrations:**
+As explored in the previous Chapter's exercises, GPP varies strongly with the diurnal and seasonal cycle. Create a publication-ready figure showing both cycles in one single plot that is fully labelled, easy to read, and colorblind-friendly:
 
--   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
+-   Again, start with the cleand the half-hourly dataset for site CH-Lae.
+-   To get the diurnal and seasonal trend, summarise the half-hourly data by the hour of the day and the day of the year simultaneously and calculate mean values for GPP for each group.
+-   Create a plot with {ggplot2} using the temporal variables as axes and GPP as color.
+-   Make this figure ready for publication: 
+    -   Add a title, maybe a subtitle
+    -   Label axes and legend (don't forget to add units!)
+    -   Pick a colorblind-friendly color scale
+    -   Anything else you want to change? Axes limits, axes ticks, grid lines?
 
--   Define a function to compute a 12-month running mean of the monthly CO2 time series. Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken (in this case 12). Plot the running mean on top of the monthly data. Use a different color for the running mean graph.
+> Hint: The functions to make a suitable plot was introduced in the tutorial.
+
+### Trend in carbon dioxide concentrations {-}
+
+This exercise explores the change of CO$_2$, measured at the famous Mauna Loa observatory. Your task is to calculate and visualise the trend of CO$_2$ from 1958 to 2012, following these steps:
+
+-   Download the `co2_monthly_maunaloa.txt` from [here](https://github.com/geco-bern/agds/blob/main/data/co2_monthly_maunaloa.txt) and look at the data.
+-   Make a simple figure showing the change of average CO$_2$ over time.
+-   Do you need to do any data wrangling before continuing?
+-   Write a function that computes a 12-month running mean of the CO$_2$ time series.
+-   Make nice "publishable" figure that shows the measured and trended timeseries of CO$_2$.
+
+> Hint: You don't need to clean the .txt file, find a suitable function in R.
+> Hint: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
 
 ## Report Exercises
 
-**Data exploration:**
+### Telling a story from data {-}
 
--   Tell a story about the `airquality` data (data is directly available in R, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
+In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to tell a story about the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console).
+
+> Hint: To get more background information on the data, use the help functionalities in RStudio.

@@ -224,7 +224,9 @@ You can now clone the project to your local computer and continue to populate it
 
 ## Exercises
 
-### Location based code management
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+
+### Location based code management {-}
 
 Create a new R project using the git R project template.
 
@@ -236,24 +238,24 @@ Create a new R project using the git R project template.
 
 ## Report Exercises
 
-### Github
+### Collaborative Work on Github {-}
 
-This is a team exercise, so team up with someone else in the classroom! You will learn about how to collaborate online using git and Github. **Note** that this is part of your final performance assessment! You will hand in a link to your GitHub account and we will check your repositories' commit histories to see whether this pair-coding exercise was done correctly. Therefore, follow these steps precisely:
+This is a team exercise, so team up with someone else in the classroom! You will learn about how to collaborate online using git and Github. **Note** that this is part of your final performance assessment. In your report, you have to provide links to your your own and your forked repositories as created in this exercise. We will check your repositories' commit histories to see whether this pair-coding exercise was done correctly. Therefore, follow these steps precisely:
 
-1.  Person 1 - Create a new repository (can be the same as you created following the tutorial but should no be the same as the one where you hand in your report)
+-  Person 1 - Create a new repository (can be the same as you created following the tutorial but should no be the same as the one where you hand in your report)
 
-2.  Person 2 - Fork the github project that Person 1 created in Step 1.
+-  Person 2 - Fork the github project that Person 1 created in Step 1.
 
-3.  Person 2 - Create a new file in this project
+-  Person 2 - Create a new file in this project
 
-4.  Person 2 - Commit and push these changes to this project. Create a **pull request** to the original project of Person 1.
+-  Person 2 - Commit and push these changes to this project. Create a **pull request** to the original project of Person 1.
 
-5.  Person 1 - Review the pull request from Person 2. Provide some comments, accept the pull request, letting it the new code by Person 2 be integrated into the project.
+-  Person 1 - Review the pull request from Person 2. Provide some comments, accept the pull request, letting it the new code by Person 2 be integrated into the project.
 
-6.  Person 1 - Add a new file to your own project, and update the github project.
+-  Person 1 - Add a new file to your own project, and update the github project.
 
-7.  Person 2 - Sync your forked project to integrate the changes made by Person 1 into your own repository.
+-  Person 2 - Sync your forked project to integrate the changes made by Person 1 into your own repository.
 
-8.  *Voluntary:* Can you force a merge conflict, for example by editing the same file at once, and resolve?
+-  *Voluntary:* Can you force a merge conflict, for example by editing the same file at once, and resolve?
 
 To complete the exercise, reverse rolls between Person 1 and Person 2!
