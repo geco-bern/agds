@@ -217,24 +217,28 @@ This illustrates that the data structure and the modelling aim (generalisability
 
 ## Exercises
 
-### Implement a k-fold cross validation by hand.
+### Cross-validation by hand {-}
 
-In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use this package, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Here's a step-by-step guidance that should help you do so:
+In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Can your algorithm achieve the same result as returned by `caret::train()` function?
 
--   The first steps are the same as done in this tutorial:
-    -   Source the file `eval_model.R`, as done in the tutorial above.
-    -   Load and wrangle the daily-aggregated data from the Davos FLUXNET site, as done in the tutorial above.
-    -   Create a test and train split
--   Now let's focus on the cross validation
-    -   The functions from {rsample} create a test and train split 
--   To make your life simpler, wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of $k$'s to test
--   
+-  Load, wrangle and split the data from the Davos FLUXNET site as done in the tutorial.
+-  Carefully read the tutorial's explanation for how to conduct a cross validation and put it into code.
+-  Use your cross-validation algorithm to find the best $k$.
+-  Train your final model, report its estimated error and evaluate it against the test set.
+-  Compare your results to the ones from using {caret}, using the same setup (trainin data, number of folds, $k$).
+-  Interpret your results
+    - Is the error on the test set within the estimated error? Why so, wy not?
+    - What are the differences between your implementation of a cross-validation and the one in {caret}?
+
+> Hint: Wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of $k$'s to test
+> Hint: Use the script `eval_model.R` (downloadable [here](https://raw.githubusercontent.com/geco-bern/agds/main/R/eval_model.R)).
+
 
 ## Report Exercises
 
-In this tutorial's exercise, you will explore the key idea of generalisability!
+### Testing the generalisability of a model {-}
 
-The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
+In this tutorial's exercise, you will explore the key idea of generalisability. The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
 
 -   How do the model metric on the test set change, when you are training and testing on the same or on different datasets?
 -   What are the differences between Davos and Laegern that could cause the pattern that you found?
