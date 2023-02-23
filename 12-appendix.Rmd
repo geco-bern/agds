@@ -366,8 +366,8 @@ Answer the following questions, giving a reason for your responses:
 
 ```{r}
 mtry_values <- c(2, 4, 6)
-min.node.size_values <- c(2, 5, 10)
-splitrule_values <- c("variance", "extratrees", "maxstat", "beta")
+min.node.size_values <- c(2, 5, 10, 20)
+splitrule_values <- c("variance", "extratrees", "maxstat")
 ```
 
 2.   In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when `min.node.size = 1` and when `min.node.size = n` (`n` being the number of observations)? For the next questions, it's not necessary to provide the `max.depth` argument to `train()` because `min.node.size` is already limiting the size of the trees in the random forests.
@@ -375,13 +375,14 @@ splitrule_values <- c("variance", "extratrees", "maxstat", "beta")
 **Solution**:
 The minimum node size is inversely related to the tree depth. The more nodes are required to be at the leaves, the shorter the tree will be, because not so many splits can be done. If we allowed each leave to correspond to a single observation, we would have a very large tree, such that each branch corresponds to one observation. If we force each leave to have at least $n$ observations, then the tree will not "grow", that is, it will never even split.
 
-3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take thhe code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
+3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
 > Tip: Keep the number of trees low, otherwise it takes too long to fit each random forest model.
 
 ```{r}
 # Use data and model formulation created before
 
-results <- c()
+results <- c()   # initialise results
+set.seed(1997)   # for reproducibility
 
 # Train models in a loop, save metrics
 for(mtry_value in mtry_values){
@@ -392,26 +393,167 @@ for(mtry_value in mtry_values){
     method = "ranger",
     metric = "RMSE",
     trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-    tuneGrid = expand.grid( .mtry = floor(6 / 3),        # default p/3
+    tuneGrid = expand.grid( .mtry = mtry_value,           # modify mtry
                           .min.node.size = 5,            # default 5
                           .splitrule = "variance"),      # default "variance"
     # arguments specific to "ranger" method
     replace = FALSE,
-    max.depth = 6,
     sample.fraction = 0.5,
     num.trees = 100,                                     # keep small for computation
     seed = 1982                                          # for reproducibility
   )
   
-  rbind(results,
-        mod$results)
+  results <- rbind(results, mod$results)
 }
+
+results
 ```
+
+Based on the first round of hyperparameter tuning, we should take `mtry = 2` because it leads to the smallest RMSE and MAE, and the highest Rsquared. That is, the best fit. Nevertheless, the difference between taking `mtry = 2` or `4` is very small and the second actually leads to smaller variance in the metric estimates. Hence, the decision is not so clear.
+
+```{r}
+# Take the previous best model and tune next hyperparameter
+
+results <- c()   # initialise results
+set.seed(1997)   # for reproducibility
+
+# Train models in a loop, save metrics
+for(min.node.size_value in min.node.size_values){
+  mod <- caret::train(
+    pp, 
+    data = daily_fluxes_train %>% 
+      drop_na(), 
+    method = "ranger",
+    metric = "RMSE",
+    trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+    tuneGrid = expand.grid( .mtry = 2,      # best mtry
+                          .min.node.size = min.node.size_value,   # modify
+                          .splitrule = "variance"),      # default "variance"
+    # arguments specific to "ranger" method
+    replace = FALSE,
+    sample.fraction = 0.5,
+    num.trees = 100,                                     # keep small for computation
+    seed = 1982                                          # for reproducibility
+  )
+  
+  results <- rbind(results, mod$results)
+}
+
+results
+```
+
+The second hyperparameter should be either `min.node.size = 2` or `5` because they lead to the best metrics overall. Again, the differences are very small and each metric would lead to a different decision. By increasing `min.node.size`, we get more generalisability, but if it's too high we will lose fit quality. If you change the random seed, you'll see that the tuning results are not robust, so whichever hyperparameter we choose won't make a big difference in the model fit (at least within the ranges searched). Let's take `min.node.size = 5` for the next loop.
+
+```{r}
+# Take the previous best models and tune last hyperparameter
+results <- c()
+
+# Train models in a loop, save metrics
+for(splitrule_value in splitrule_values){
+  mod <- caret::train(
+    pp, 
+    data = daily_fluxes_train %>% 
+      drop_na(), 
+    method = "ranger",
+    metric = "RMSE",
+    trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+    tuneGrid = expand.grid( .mtry = 4,                    # best mtry
+                          .min.node.size = 5,             # best min.node.size
+                          .splitrule = splitrule_value),  # modify
+    # arguments specific to "ranger" method
+    replace = FALSE,
+    sample.fraction = 0.5,
+    num.trees = 100,                                     # keep small for computation
+    seed = 1982                                          # for reproducibility
+  )
+  
+  results <- rbind(results, mod$results)
+}
+
+results
+```
+
+According to the last round of tuning, we should use `spliturle = "extratrees"`. With that, we found the best model so far.
 
 4.   *Grid hyperparameter tuning*: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the `expand.grid()` function to create a data.frame of hyperparameter value combinations. This grid will be passed to `train()` via the `tuneGrid` argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of `train()` and the results of the hyperparameter search.
 
+```{r}
+set.seed(1403)    # for reproducibility
+
+mod <- caret::train(
+  pp, 
+  data = daily_fluxes_train %>% 
+    drop_na(), 
+  method = "ranger",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  # expand grid of tunable hyperparameters
+  tuneGrid = expand.grid( .mtry = mtry_values,             
+                        .min.node.size = min.node.size_values,    
+                        .splitrule = splitrule_values),  
+  # arguments specific to "ranger" method
+  replace = FALSE,
+  sample.fraction = 0.5,
+  num.trees = 100,                                     # keep small for computation
+  seed = 1982                                          # for reproducibility
+)
+
+plot(mod, metric = "RMSE")
+plot(mod, metric = "Rsquared")
+```
+
 5.   Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?
+
+The best model according to the grid search, with lowest RMSE, is the one with `mtry = 4`, `min.node.size = 5` and `splitrule = "extratrees"` . This is not the "best model" we found with the greedy approach (different `mtry`) and also not the best according to Rsquared (`mtry = 4`, `min.node.size = ` and `splitrule = ""`). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best `splitrule` is `"extratrees"` (and if you change the random seed, this result is consistent). The best `mtry` value is different for each split rule used, so having started with `"variance"` in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).
 
 ### Model performance {-}
 
 You have trained several random forest models. Evaluate the model performance on the best model (the one for the tuned hyperparameters) and on one of your worse models. If you compare the RMSE and $R^2$ on the training and the test set, does it show overfitting?
+
+```{r}
+# Train best model
+mod_best <- caret::train(
+  pp, 
+  data = daily_fluxes_train %>% 
+    drop_na(), 
+  method = "ranger",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  # expand grid of tunable hyperparameters
+  tuneGrid = expand.grid( .mtry = 6,             
+                        .min.node.size = 10,    
+                        .splitrule = "extratrees"),  
+  # arguments specific to "ranger" method
+  replace = FALSE,
+  sample.fraction = 0.5,
+  num.trees = 100,                                     # keep small for computation
+  seed = 1982                                          # for reproducibility
+)
+
+# Get predictions
+
+# Train worst model
+mod_worst <- caret::train(
+  pp, 
+  data = daily_fluxes_train %>% 
+    drop_na(), 
+  method = "ranger",
+  metric = "RMSE",
+  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  # expand grid of tunable hyperparameters
+  tuneGrid = expand.grid( .mtry = 2,             
+                        .min.node.size = 20,    
+                        .splitrule = "maxstat"),  
+  # arguments specific to "ranger" method
+  replace = FALSE,
+  sample.fraction = 0.5,
+  num.trees = 100,                                     # keep small for computation
+  seed = 1982                                          # for reproducibility
+)
+
+source("R/eval_model.R")
+eval_model(mod_best, daily_fluxes_train, daily_fluxes_test)
+eval_model(mod_worst, daily_fluxes_train, daily_fluxes_test)
+```
+
+The performance on the test set for the best model is still close to the performance on the training set, so the model doesn't seem to overfit. The same goes for the worse model, which leads to worse $R^2$ and RMSE and visually the fit is slightly worse.
