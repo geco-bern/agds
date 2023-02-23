@@ -547,8 +547,9 @@ As explored in the previous Chapter's exercises, GPP varies strongly with the di
     -   Add a title, maybe a subtitle
     -   Label axes and legend (don't forget to add units!)
     -   Pick a colorblind-friendly color scale
+    -   Anything else you want to change? Axes limits, axes ticks, grid lines?
 
-> Hint: The plot you are looking was introduced in the tutorial.
+> Hint: The functions to make a suitable plot was introduced in the tutorial.
 
 ### Trend in carbon dioxide concentrations {-}
 
