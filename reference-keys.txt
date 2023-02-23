@@ -81,7 +81,7 @@ style-your-code
 spaces-and-breaks
 variable-naming
 script-style
-where-to-find-help
+findinghelp
 within-r
 online
 error-messages
