@@ -11,6 +11,9 @@ description: |
   This course prepares you to benefit from the general data richness in environmental and geo-sciences.
 link-citations: yes
 github-repo: stineb/agsd
+favicon: "figures/favicon.ico"
+apple-touch-icon: "figures/apple-touch-icon.png"
+apple-touch-icon-size: 120
 ---
 
 ```{r}
@@ -92,15 +95,7 @@ With Chapters \@ref(regressionclassification), Chapter \@ref(supervisedmli), Cha
 
 Chapters \@ref(gettingstarted)-\@ref(randomforest) serve as lecture notes for *Applied Geodata Science I* and as learning material for students and scientists in any data-intensive research domain. These chapters are not explicitly dealing with geospatial data and modelling. Modelling with geospatial and temporal data is the subject of the course *Applied Geodata Science II* and will be introduced with a focus on typical applications and modelling tasks in Geography and Environmental Sciences. Respective materials are not currently contained in this book but will be added here later.
 
-All tutorials use the R programming language.
-
-## System information and package list {.unnumbered}
-
-This book was compiled with the following environment:
-
-```{r}
-sessioninfo::session_info()
-```
+All tutorials use the R programming language, and a full list of the packages used in this course are provided in Appendix \@ref(references).
 
 # Introduction {.unnumbered}
 

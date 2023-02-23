@@ -4,11 +4,16 @@
 
 ## Learning objectives
 
-This chapter introduces typical transformation steps, applied to *tabular data*, and implemented using the R [*tidyverse*](https://www.tidyverse.org/) "dialect" (see below). After stuying it, you will be able to:
+In this chapter you will learn how to manipluate and transform data, a curcial part of the data science workflow.
 
-- Tidy data
-- Perform data transformation, including subsetting, aggregating, combining relational data
-- Understand axes of variation in the data and handle them for in transformation steps
+You will learn how to:
+
+- read and transform tabulated data
+- understand the 'tidy' data concept
+- select variables
+- Aggregate data
+- handle bad and/or missing data
+
 
 ## Tutorial
 
@@ -55,13 +60,13 @@ Tabular data are organised in rows and columns. R data frames are tabular data. 
 
 The most common format for tabular data are CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
 
-Let's get started with working with our example data set and read it into R, as the variable `hhdf`. Note that the naming of variables can be important for keeping code legible. For example, it may indicate the type of the object it holds (`df` for data frame) and that the data are half-hourly (`hh`).
+Let's get started with working with our example data set and read it into R, as the variable `half_hourly_fluxes`. Note that the naming of variables can be important for keeping code legible. For example, it may indicate the type of the object it holds (`df` for data frame) and that the data are half-hourly (`hh`).
 
 To import the data into the R environment, we use the function `read_csv()` from the {readr} package (part of tidyverse). In other R code, you will also encounter the base R `read.csv()` function. However, `read_csv()` is much faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. For example, *tibbles* generate a nicely readable output when printing the object as is done below.
 
-```{r}
-hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
-hhdf
+```{r results=FALSE, message=FALSE, warning=FALSE}
+half_hourly_fluxes <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv")
+half_hourly_fluxes
 ```
 
 Since the file is properly formatted, with variable names given in the first line of the file, the function `read_csv()` identifies them correctly as column names and interprets values in each column as values of a consistent type (as numeric `<dbl>`). The file is also automatically machine-readable because it has no merged cells and only one value per cell.
@@ -80,8 +85,8 @@ For our further data exploration, we will reduce the data frame we are working w
 This is implemented by:
 
 ```{r}
-hhdf <- select(
-  hhdf,
+half_hourly_fluxes <- select(
+  half_hourly_fluxes,
   starts_with("TIMESTAMP"),
   ends_with("_F"),
   GPP_NT_VUT_REF,
@@ -99,14 +104,14 @@ This reduces our dataset from 235 available variables to 59 variables. As you ca
 The automatic interpretation of the variables `TIMESTAMP_START` and `TIMESTAMP_END` by the function `read_csv()` is not optimal:
 
 ```{r}
-class(hhdf$TIMESTAMP_START[[1]])
-as.character(hhdf$TIMESTAMP_START[[1]])
+class(half_hourly_fluxes$TIMESTAMP_START[[1]])
+as.character(half_hourly_fluxes$TIMESTAMP_START[[1]])
 ```
 
 As we can see, it is considered by R as a numeric variable with 12 digits ("double-precision", occupying 64 bits in computer memory). After printing the variable as a string, we can guess that the format is: `YYYYMMDDhhmm`. The {lubridate} package is designed to facilitate processing date and time objects. Knowing the format of the timestamp variables in our dataset, we can use `ymd_hm()` to convert them to actual date-time objects.
 
 ```{r, message=FALSE}
-dates <- ymd_hm(hhdf$TIMESTAMP_START)
+dates <- ymd_hm(half_hourly_fluxes$TIMESTAMP_START)
 dates[1]
 ```
 
@@ -130,30 +135,35 @@ The number 1 stands for the month of the year, i.e., January. You can find more 
 Since `read_csv()` did not interpret the `TIMESTAMP_*` variables as desired, we may convert the entire column in the data frame into a date-time object. In base-R, we would do this by:
 
 ```{r eval=FALSE}
-hhdf$TIMESTAMP_START <- ymd_hm(hhdf$TIMESTAMP_START)
+half_hourly_fluxes$TIMESTAMP_START <- ymd_hm(half_hourly_fluxes$TIMESTAMP_START)
 ```
 
 Modifying existing or creating new variables (columns) in a data frame is done in the {tidyverse} using the function `mutate()`. The equivalent statement is:
 
 ```{r eval=FALSE}
-hhdf <- mutate(hhdf, TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
+half_hourly_fluxes <- mutate(
+  half_hourly_fluxes,
+  TIMESTAMP_START = ymd_hm(TIMESTAMP_START)
+  )
 ```
 
-Note that in the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `hhdf`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
+Note that in the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `half_hourly_fluxes`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
 
 ```{r, eval=FALSE}
-hhdf <- hhdf |> 
+half_hourly_fluxes <- half_hourly_fluxes |> 
   mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START))
 ```
 
 Here, the **pipe** operator `|>` is used. It "pipes" the object evaluated on its left side into the function on its right side, where the object takes the place of (but is not spelled out as) the *first argument* of that function. Using the pipe operator can have the advantage of facilitating the separation, removal, inserting, or re-arranging of individual transformation steps. Arguably, it facilitates reading code, especially for complex data transformation workflows. Therefore, you will encounter the pipe operator frequently throughout the remainder of this course.
 
-> Note: The pipe operator is so popular that has been recently included in the latest versions of base R. This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
+> Note: The pipe operator is so popular that has been recently included in the latest versions of base R (version 4.1.0 and beyond). This is the `|>` pipe we just introduced. Nevertheless, you may encounter the `%>%` operator, which is the original pipe from the {magrittr} package (part of the {tidyverse}).
+
+> Note: If you cannot update R and have a version older than 4.1.0, just use the `magrittr` pipe `%>%` throughout. This can happen if you have an older Macbook that can't operate the latest Operating System version.
 
 Mutating both our timestamp variables could be written as `mutate(TIMESTAMP_START = ymd_hm(TIMESTAMP_START), TIMESTAMP_END = ymd_hm(TIMESTAMP_END))`. Sometimes, such multiple-variable mutate statements can get quite long. A handy short version of this can be implemented using `across()`:
 
 ```{r}
-hhdf <- hhdf |> 
+half_hourly_fluxes <- half_hourly_fluxes |> 
   mutate(across(starts_with("TIMESTAMP_"), ymd_hm))
 ```
 
@@ -175,10 +185,14 @@ Tabular data, although formatted in two dimensions by rows and columns, may repr
 
 Note also that some structures are *hierarchical*. For example, data may be structured by postal codes within cantons; or by hours within a day within a year. Biological data may be generated by species within *genera* within *families*. Data from experiments is typically structured as *samples* within *treatments*. You see, structure in data is rather the rule than the exception.
 
-Our example data contains values recorded at each half-hourly time interval over the course of eleven years (check by `nrow(hhdf)/(2*24*365)`). The data are recorded at a site, located in the temperate climate zone, where solar radiation and therefore also other meteorological variables and ecosystem fluxes vary substantially over the course of a day and over the course of a year. Although not explicitly separated, the date-time object thus encodes information along multiple *axes of variation* in the data. For example, within one day (`2*24` rows in our data), the shortwave incoming radiation `SW_IN_F` varies over a typical diurnal cycle:
+Our example data contains values recorded at each half-hourly time interval over the course of eleven years (check by `nrow(half_hourly_fluxes)/(2*24*365)`). The data are recorded at a site, located in the temperate climate zone, where solar radiation and therefore also other meteorological variables and ecosystem fluxes vary substantially over the course of a day and over the course of a year. Although not explicitly separated, the date-time object thus encodes information along multiple *axes of variation* in the data. For example, over the course of one day (`2*24` rows in our data), the shortwave incoming radiation `SW_IN_F` varies over a typical diurnal cycle:
 
 ```{r}
-plot(hhdf[1:(2*24),]$TIMESTAMP_START, hhdf[1:(2*24),]$SW_IN_F, type = "l")
+plot(
+  half_hourly_fluxes[1:(2*24),]$TIMESTAMP_START,
+  half_hourly_fluxes[1:(2*24),]$SW_IN_F,
+  type = "l"
+  )
 ```
 
 > Note: `plot()` is the very basic of plotting data. In Chapter \@ref(datavis), you will get introduced to additional methods for visualising data. The argument `type = "l"` indicates that we want a line plot, rather than points.
@@ -186,13 +200,17 @@ plot(hhdf[1:(2*24),]$TIMESTAMP_START, hhdf[1:(2*24),]$SW_IN_F, type = "l")
 Over the course of an entire year, shortwave incoming radiation varies with the seasons, peaking in summer:
 
 ```{r}
-plot(hhdf[1:(365*2*24),]$TIMESTAMP_START, hhdf[1:(365*2*24),]$SW_IN_F, type = "l")
+plot(
+  half_hourly_fluxes[1:(365*2*24),]$TIMESTAMP_START,
+  half_hourly_fluxes[1:(365*2*24),]$SW_IN_F,
+  type = "l"
+  )
 ```
 
 All data frames have two dimensions, rows and columns. Our data frame is organised along half-hourly time steps in rows. As described above, these time steps belong to different days, months, and years, although these "axes of variation" are not reflected by the structure of the data frame object itself and we do not have columns that indicate the day, month or year of each half-hourly time step. This would be redundant information since the date-time objects of columns `TIMESTAMP_*` contain this information. However, for certain applications, it may be useful to separate information regarding these axes of variation more explicitly. For example by:
 
 ```{r}
-hhdf |>
+half_hourly_fluxes |>
   mutate(year = year(TIMESTAMP_START),
          month = month(TIMESTAMP_START),
          doy = yday(TIMESTAMP_START)     # day of year
@@ -209,29 +227,29 @@ Data comes in many forms and shapes. For example, Excel provides a playground fo
 ```{r echo=FALSE}
 ## this is hidden - used to create the objects printed in next chunk
 ## using the ts object 'co2'
-df1 <- tibble(co2_concentration = as.vector(co2), 
+co2_concentration <- tibble(co2_concentration = as.vector(co2), 
        year_dec = time(co2)
        ) |> 
-  mutate(month_dec = year_dec - as.integer(year_dec)) |> 
-  mutate(year = as.integer(year_dec - month_dec)) |> 
-  mutate(month = as.integer(month_dec * 12)) |> 
-  mutate(date = ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
-  mutate(month = month(date, label = TRUE)) |> 
-  select(year, month, co2_concentration) |> 
-  slice(1:36)
+  dplyr::mutate(month_dec = year_dec - as.integer(year_dec)) |> 
+  dplyr::mutate(year = as.integer(year_dec - month_dec)) |> 
+  dplyr::mutate(month = as.integer(month_dec * 12)) |> 
+  dplyr::mutate(date = lubridate::ymd(paste0(as.character(year), as.character(month + 1), "-15"))) |> 
+  dplyr::mutate(month = month(date, label = TRUE)) |> 
+  dplyr::select(year, month, co2_concentration) |> 
+  dplyr::slice(1:36)
 
-df2 <- df1 |> 
+co2_concentration_monthly <- co2_concentration |> 
   pivot_wider(names_from = month, values_from = co2_concentration)
 
-df3 <- df1 |> 
+co2_concentration_yearly <- co2_concentration |> 
   # mutate(year = as.character(year)) |> 
   pivot_wider(names_from = year, values_from = co2_concentration)
 ```
 
 ```{r}
-df1
-df2
-df3
+co2_concentration
+co2_concentration_monthly
+co2_concentration_yearly
 ```
 
 There are advantages for interoperability and ease of use when data frames come with consistent layouts, adhering to certain design principles. We have learned that in tabular data, each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). And that each row can be regarded as a separate instance of the same type, for example a record of simultaneously taken measurements, along with some attributes. Following these principles strictly leads to *tidy data*. In essence, quoting [Wickham and Grolemund (2017)](https://r4ds.had.co.nz/tidy-data.html), data are tidy if:
@@ -244,16 +262,16 @@ There are advantages for interoperability and ease of use when data frames come 
 knitr::include_graphics("./figures/tidy_data.png")
 ```
 
-The {tidyr} package provides powerful functions to make data tidy. In the examples above, `df2` and and `df3` are not tidy. In `df2`, the same variable (CO2 concentration) appears in multiple columns. Organising columns by months leads to a "wide" table format. We can convert it to a "long" format by:
+The {tidyr} package provides powerful functions to make data tidy. In the examples above, `co2_concentration_monthly` and and `co2_concentration_yearly` are not tidy. In `co2_concentration_monthly`, the same variable (CO2 concentration) appears in multiple columns. Organising columns by months leads to a "wide" table format. We can convert it to a "long" format by:
 ```{r}
-df2 |> 
+co2_concentration_monthly |> 
   pivot_longer(cols = 2:13, names_to = "month", values_to = "co2")
 ```
-This corresponds to the format of `df1` and is tidy. A long format of data frames is required to visualise data using the plotting functions of the {ggplot2} package which will be introduced in Chapter \@ref(datavis).
+This corresponds to the format of `co2_concentration` and is tidy. A long format of data frames is required to visualise data using the plotting functions of the {ggplot2} package which will be introduced in Chapter \@ref(datavis).
 
 Either way, for certain applications, it may be advantageous to work with a wide format. We can convert from a long to a wide format by:
 ```{r}
-df1 |> 
+co2_concentration |> 
   pivot_wider(names_from = year, values_from = co2_concentration)
 ```
 
@@ -268,7 +286,7 @@ Aggregating data refers to collapsing a larger set of values into a smaller set 
 Let's say we want to calculate the mean of half-hourly shortwave radiation within each day. We thus have $N$ half-hourly time steps in $G$ days. That is, to aggregate our half-hourly data to daily data by taking a mean. There are two pieces of information needed for an aggregation step: The factor (or "axis of variation"), here days, that groups a vector of values for collapsing it into a single value, and the function used for collapsing values, here, the `mean()` function. This function should take a vector as an argument and return a single value as an output. These two steps are implemented by the {dplyr} functions `group_by()` and `summarise()`. The entire aggregation workflow is implemented by the following code:
 
 ```{r}
-ddf <- hhdf |>  
+daily_fluxes <- half_hourly_fluxes |>  
   mutate(date = as_date(TIMESTAMP_START)) |>  # converts the ymd_hm-formatted date-time object to a date-only object (ymd)
   group_by(date) |> 
   summarise(SW_IN_F = mean(SW_IN_F))
@@ -277,7 +295,7 @@ ddf <- hhdf |>
 The seasonal course can now be more clearly be visualized with the data aggregated to daily values.
 
 ```{r}
-plot(ddf[1:365,]$date, ddf[1:365,]$SW_IN_F, type = "l")
+plot(daily_fluxes[1:365,]$date, daily_fluxes[1:365,]$SW_IN_F, type = "l")
 ```
 
 We can also apply multiple aggregation functions to different variables simultaneously. In the example below, we aggregate half-hourly data to daily data by...
@@ -293,7 +311,7 @@ We can also apply multiple aggregation functions to different variables simultan
 Finally, we calculate the fraction of measured underlying half-hourly data from which the aggregation is calculated and we save the daily data frame as a CSV file for later use.
 
 ```{r}
-ddf <- hhdf |> 
+daily_fluxes <- half_hourly_fluxes |> 
     mutate(date = as_date(TIMESTAMP_START)) |>   # converts time object to a date object
     group_by(date) |> 
     summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE),
@@ -303,8 +321,8 @@ ddf <- hhdf |>
               .groups = 'drop' # to un-group the resulting data frame
               ) |> 
     mutate(f_measured = n_measured / n_datapoints) # calculate the fraction of measured values over total observations
-write_csv(ddf, file = "data/ddf.csv")
-ddf
+write_csv(daily_fluxes, file = "data/daily_fluxes.csv")
+daily_fluxes
 ```
 
 More info on how to group values using summarise functions [here](https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise), or a summary on the inputs the function [group_by()](https://dplyr.tidyverse.org/reference/group_by.html) and [summarise()](https://dplyr.tidyverse.org/reference/summarise.html) take.
@@ -312,13 +330,13 @@ More info on how to group values using summarise functions [here](https://r4ds.h
 Aggregating is related to *nesting* performed by the {tidyr} function `nest()`:
 
 ```{r message=FALSE}
-hhdf |>  
+half_hourly_fluxes |>  
   mutate(date = as_date(TIMESTAMP_START)) |>
   group_by(date) |> 
   nest()
 ```
 
-Here, the data frame has one row per date and therefore the same number of rows as the data frame `ddf`, but the data itself is not reduced by a summarising function. Instead, the data are kept at the half-hourly level, but it's nested inside the new column `data`, which now contains a list of half-hourly data frames for each day. This is just a brief perspective of what nesting is about. More is explained in Section \@ref(extramaterialwrangling). More comprehensive tutorials on nesting and functional programming are provided in [Altman, Behrman and Wickham (2021)](https://dcl-prog.stanford.edu/) or in [Wickham and Grolemund (2017), Chapter 21](https://r4ds.had.co.nz/iteration.html).
+Here, the data frame has one row per date and therefore the same number of rows as the data frame `daily_fluxes`, but the data itself is not reduced by a summarising function. Instead, the data are kept at the half-hourly level, but it's nested inside the new column `data`, which now contains a list of half-hourly data frames for each day. This is just a brief perspective of what nesting is about. More is explained in Section \@ref(extramaterialwrangling). More comprehensive tutorials on nesting and functional programming are provided in [Altman, Behrman and Wickham (2021)](https://dcl-prog.stanford.edu/) or in [Wickham and Grolemund (2017), Chapter 21](https://r4ds.had.co.nz/iteration.html).
 
 ### Data cleaning
 
@@ -333,13 +351,13 @@ As a general principle, we want to have *machine readable* data. Key for achievi
 -   Even if the data are clean and contain a consistently spelled categorical variable in the form of a character string, R doesn't necessarily treat it as categorical. For certain downstream steps of the workflow, it may be necessary to transform such a variable to one of type `factor`. For example, as entries of an unordered categorical variable, we have `unique(df$gender) = c("female", "male", "non-binary")`. To treat them as categorical and not just mere character strings, we would have to do:
 
 ```{r, eval=FALSE}
-df <- df |> mutate(gender = as.factor(gender))
+df <- df |> dplyr::mutate(gender = as.factor(gender))
 ```
 
--   Character strings may encode ordinal information. For example, entries specify quality control information and are one of `c("good quality", "fair quality, "poor quality")`. A challenge could be that the spelling is inconsistent (`c("Good quality", "good quality", …)`). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable `NEE_VUT_REF_QC` in our example dataset `hhdf` follows this approach:
+-   Character strings may encode ordinal information. For example, entries specify quality control information and are one of `c("good quality", "fair quality, "poor quality")`. A challenge could be that the spelling is inconsistent (`c("Good quality", "good quality", …)`). Using integers (positive natural numbers) instead of character strings avoids such challenges and enforces an order. The quality control variable `NEE_VUT_REF_QC` in our example dataset `half_hourly_fluxes` follows this approach:
 
 ```{r}
-unique(hhdf$NEE_VUT_REF_QC)
+unique(half_hourly_fluxes$NEE_VUT_REF_QC)
 ```
 
 -   An entry like `>10 m` is not a friend of a data scientist. Here, we have three pieces of information: `>` as in "greater than", `10`, and `m` indicating the units. A machine-readable format would be obtained by creating separate columns for each piece of information. The `>` should be avoided already at the stage of recording the data. Here, we may have to find a solution for encoding it in a machine readable manner (see [Exercises](#exerciseswrangling)).
@@ -365,7 +383,7 @@ Outliers may also be identified via multivariate distributions. We will re-visit
 Sensor error or algorithm error may generate spurious values, identified, for example when a continuous variable attains the numerically identical value with a spuriously high frequency.
 
 ```{r}
-hhdf$GPP_NT_VUT_REF |> 
+half_hourly_fluxes$GPP_NT_VUT_REF |> 
   table() |> 
   sort(decreasing = TRUE) |> 
   head()
@@ -377,7 +395,8 @@ Other processes may lead to spurious trends or *drift* in the data, for example 
 
 #### Handling missing data
 
-The question about when data are "bad" and whether to remove it is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human analyzing the data or writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during the data collection process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions. In practice, this means that the removal of data and entire rows should be avoided and implemented only at the very last step if necessary (e.g., when passing the data into a model fitting function). Instead, information about whether data are bad should be kept in a separate, categorical, variable (a *quality control* variable, like `*_QC` variables in our example data `hhdf`).
+The question about when data are "bad" and whether to remove it is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human analyzing the data or writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during the data collection process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions. In practice, this means that the removal of data and entire rows should be avoided and implemented only at the very last step if necessary (e.g., when passing the data into a model fitting function). Instead, information about whether data are bad should be kept in a separate, categorical, variable (a *quality control* variable, like `*_QC` variables in our example data `half_hourly_fluxes`).
+
 
 Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* ([Kuhn and Johnson, 2019](http://www.feat.engineering/)) and its information can be used for modelling. For categorical data, we may replace such data with `"none"` (instead of `NA`). Some machine learning algorithms (mainly tree-based methods, e.g., Random Forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
 
@@ -386,7 +405,7 @@ Most machine learning algorithms require missing values to be removed. That is, 
 In our example dataset, some values of `SWC_F_MDS_*` are given as `-9999`.
 
 ```{r}
-hhdf |> 
+half_hourly_fluxes |> 
   select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
   head()
 ```
@@ -394,10 +413,10 @@ hhdf |>
 When reading the documentation of this specific dataset, we learn that `-9999` is the code for *missing data*. The {dplyr} functions help us to clarify these missing values by mutating across all numeric variables and overwrite entries with `NA` if they hold a `-9999`.
 
 ```{r}
-hhdf <- hhdf |>  
+half_hourly_fluxes <- half_hourly_fluxes |>  
   mutate(across(where(is.numeric), ~na_if(., -9999)))
 
-hhdf |> 
+half_hourly_fluxes |> 
   select(TIMESTAMP_START, starts_with("SWC_F_MDS_")) |> 
   head()
 ```
@@ -406,7 +425,7 @@ This lets us visualise the data and its gaps with `vis_miss()` from the {visdat}
 
 ```{r warning=FALSE, message=FALSE}
 visdat::vis_miss(
-  hhdf |> slice(1:10000),  # for demo
+  half_hourly_fluxes |> slice(1:10000),
   cluster = FALSE, 
   warn_large_data = FALSE
   )
@@ -421,28 +440,28 @@ For many applications, we want to filter the data so that the values of particul
 For example, if we wanted only those rows in our data where NEE is based on measured or good quality gap-filled NEE data, we write:
 
 ```{r eval=FALSE}
-hhdf |>
+half_hourly_fluxes |>
   filter(NEE_VUT_REF_QC == 0 | NEE_VUT_REF_QC == 1)
 ```
 
 For evaluating multiple OR operations simultaneously, we can write alternatively and equivalently:
 
 ```{r eval=FALSE}
-hhdf |>
+half_hourly_fluxes |>
   filter(NEE_VUT_REF_QC %in% c(0,1))
 ```
 
 Note that `filter()` removes entire rows. In some cases this is undesired and it is preferred to replace bad quality values with `NA`. It is important to note that specifying a value as missing is information itself. Dropping an entire row leads to the loss of this information. For cases where we do not want to drop entire rows when applying `filter()`, we can just replace certain values with `NA`. In our case, where we want to retain only data where NEE is based on actual measurements or good quality gap-filling, we can do this by:
 
 ```{r eval=FALSE}
-hhdf |> 
+half_hourly_fluxes |> 
     mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC %in% c(0,1), GPP_NT_VUT_REF, NA))
 ```
 
 If we decide to drop a row containing `NA` in any of the variables later during the workflow, we can do this, for example using the useful {tidyr} function `drop_na()`.
 
 ```{r eval=FALSE}
-hhdf |> 
+half_hourly_fluxes |> 
   drop_na()
 ```
 
@@ -453,7 +472,7 @@ An excellent source for a more comprehensive introduction to missing data handli
 After having applied some data reduction and cleaning steps above, let's save the data frame in the form of a CSV file for use in later chapters.
 
 ```{r}
-write_csv(hhdf, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+write_csv(half_hourly_fluxes, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 ```
 
 > Note: Making a file publicly available as a `.rds` or `.RData` file (explained in Chapter \@ref(gettingstarted)) violates the open science principles (introduced in Chapter \@ref(openscience)). These two formats make it very easy to save R objects related to your analysis project, but are not adequate to save *data*. Therefore, whenever possible, save your data in a format that is readable across platforms without requiring proprietary software. Hence use `write_csv()` from {readr} whenever possible. We will encounter other non-proprietary formats that let you save and share more complex data structures in Chapter \@ref(datavariety).
@@ -463,35 +482,35 @@ write_csv(hhdf, file = "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.c
 Often, data are spread across multiple files and tables and need to be combined for the planned analysis. In the simplest case, data frames have an identical number of columns, arranged in the same order, and we can "stack" them along rows:
 
 ```{r echo=FALSE}
-df4 <- df3[1:6,]
-df5 <- df3[7:12,]
+co2_conc_subset_1 <- co2_concentration_yearly[1:6,]
+co2_conc_subset_2 <- co2_concentration_yearly[7:12,]
 ```
 
 ```{r}
-df4
-df5
-bind_rows(df4, df5)
+co2_conc_subset_1
+co2_conc_subset_2
+bind_rows(co2_conc_subset_1, co2_conc_subset_2)
 ```
 
 In other cases, data frames may have an identical set of rows (and arranged in the same order) and we can "stack" them along columns.
 
 ```{r echo=FALSE}
-df6 <- df3[, c(1,2,3)]
-df7 <- df3[, c(1,4)]
+co2_conc_subset_3 <- co2_concentration_yearly[, c(1,2,3)]
+co2_conc_subset_4 <- co2_concentration_yearly[, c(1,4)]
 ```
 
 ```{r}
-df6
-df7
-bind_cols(df6, df7)
+co2_conc_subset_3
+co2_conc_subset_4
+bind_cols(co2_conc_subset_3, co2_conc_subset_4)
 ```
 
 But beware! In particular the stacking along columns (`bind_cols()`) is very error-prone and should be avoided. Since a *tidy* data frame regards each row as an instance of associated measurements, the rows of the two data frames and their order must match exactly. Otherwise, an error is raised or (even worse) rows get associated when they shouldn't be. In such cases, where information about a common set of observations is distributed across multiple data objects, we are dealing with *relational data*. The key for their combination (or "merging") is the *join variable* - the column that is present in both data frames and which contains values along which the merging of the two data frames is performed. In our example from above, this is `month`, and we can use the {dplyr} function `left_join()`.
 
 ```{r}
-df6 |>
+co2_conc_subset_3 |>
   slice(sample(1:n(), replace = FALSE)) |>  # re-shuffling rows
-  left_join(df7, by = "month") |> 
+  left_join(co2_conc_subset_4, by = "month") |> 
   arrange(month)  # sort in ascending order
 ```
 
@@ -544,7 +563,7 @@ clean_data_dd <- function(df){
   df <- df |>
 
     # select only the variables we are interested in
-    select(
+    dplyr::select(
       TIMESTAMP,
       ends_with("_F"),
       GPP_NT_VUT_REF,
@@ -553,10 +572,10 @@ clean_data_dd <- function(df){
       -contains("JSB")) |> 
 
     # convert to a nice date object
-    mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
+    dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
 
     # set all -9999 to NA
-    mutate(across(where(is.numeric), ~na_if(., -9999)))
+    dplyr::mutate(across(where(is.numeric), ~na_if(., -9999)))
   
   return(df)
 }
@@ -571,15 +590,15 @@ list_df <- purrr::map(list_df, ~clean_data_dd(.))
 Having different data frames as elements of a list may be impractical. Since we read in similarly formatted files and selected always the same variables in each data frame, all elements of the list of data frames `list_df` share the same columns. This suggests that we can collapse our list of data frames and "stack" data frames along rows. As described above, this can be done using `bind_rows()` and we can automatically create a new column `"siteid"` in the stacked data frame that takes the name of the corresponding list element.
 
 ```{r}
-ddf_allsites <- bind_rows(list_df, .id = "siteid")
-ddf_allsites
+daily_fluxes_allsites <- bind_rows(list_df, .id = "siteid")
+daily_fluxes_allsites
 ```
 
 A visualisation of missing data indicates that soil water content data (`SWC_F_MDS_*`) are often missing.
 
 ```{r}
 visdat::vis_miss(
-  ddf_allsites |> slice(1:10000),
+  daily_fluxes_allsites |> slice(1:10000),
   cluster = FALSE,
   warn_large_data = FALSE
   )
@@ -590,7 +609,7 @@ visdat::vis_miss(
 The column `siteid` currently contains strings specifying the full paths of the files that were read in earlier. The next task is to extract the site name from these strings. The file names follow a clear pattern (this also highlights why naming files wisely can often make life a lot simpler).
 
 ```{r}
-ddf_allsites$siteid |> head()
+daily_fluxes_allsites$siteid |> head()
 ```
 
 The paths each start with the subdirectory where they are located (`"./data/"`), then `"FLX_"`, followed by the site name (the first three entries of the table containing data from all sites are for the site `"CH-Dav"`), and then some more specifications, including the years that respective files' data cover.
@@ -605,10 +624,10 @@ head(vec_sites)
 We can use this function to mutate all values of column `"siteid"`, overwriting it with just these six characters.
 
 ```{r}
-ddf_allsites <- ddf_allsites |>
+daily_fluxes_allsites <- daily_fluxes_allsites |>
   mutate(siteid = str_sub(siteid, start = 12, end = 17))
 
-ddf_allsites
+daily_fluxes_allsites
 ```
 
 ### Functional programming II
@@ -636,7 +655,7 @@ When writing code for an analysis, it's useful, if not essential, to understand 
 Yes, they can. Think of the linear model objects as 'values'. Values don't necessarily have to be scalars, but they can be of any type (class).
 
 ```{r}
-tibble(
+tibble::tibble(
   siteid = vec_sites,
   linmod = list_linmod
   )
@@ -647,16 +666,16 @@ The fact that cells can contain any type of object offers a powerful concept. In
 The following creates a nested data frame, where the column `data` is defined by the list of data frames read from files above (`list_df`).
 
 ```{r}
-tibble(
+tibble::tibble(
   siteid = vec_sites,
   data = list_df
   )
 ```
 
-We can achieve the same result by directly nesting the flat data frame holding all sites' data (`ddf_allsites`). This is done by combining the `group_by()`, which we have encountered above when aggregating using `summarise()`, with the function `nest()` from the {tidyr} package.
+We can achieve the same result by directly nesting the flat data frame holding all sites' data (`daily_fluxes_allsites`). This is done by combining the `group_by()`, which we have encountered above when aggregating using `summarise()`, with the function `nest()` from the {tidyr} package.
 
 ```{r}
-ddf_allsites |>
+daily_fluxes_allsites |>
   group_by(siteid) |>
   nest()
 ```
@@ -666,10 +685,10 @@ The function `nest()` names the nested data column automatically `"data"`.
 This structure is very useful. For example, for applying functions over sites' data frames separately (and not over the entire data frame). By combining `purrr::map()` and `mutate()`, we can fit linear models on each site's data frame individually in one go.
 
 ```{r eval=FALSE}
-ddf_allsites |>
+daily_fluxes_allsites |>
   group_by(siteid) |>
   nest() |>
-  mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
+  dplyr::mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .)))
 ```
 
 This approach is extremely powerful and lets you stick to working with tidy data frames and use the rows-dimension flexibly. Here, rows are sites and no longer time steps, while the nested data frames in column `"data"` have time steps along their rows. The power of nesting is also to facilitate complex aggregation steps over a specified dimension (or axis of variation, here given by `siteid`), where the aggregating function is not limited to taking a vector as input and returning a scalar, as is the case for applications of `summarise()` (see above).
@@ -677,15 +696,15 @@ This approach is extremely powerful and lets you stick to working with tidy data
 Combining the steps described above into a single workflow, we have:
 
 ```{r}
-ddf_allsites_nested <- ddf_allsites |>
+daily_fluxes_allsites_nested <- daily_fluxes_allsites |>
   group_by(siteid) |>
   nest() |>
-  mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
-  mutate(summ = purrr::map(linmod, ~summary(.))) |>
-  mutate(rsq = map_dbl(summ, "r.squared")) |>
+  dplyr::mutate(linmod = purrr::map(data, ~lm(GPP_NT_VUT_REF ~ SW_IN_F, data = .))) |>
+  dplyr::mutate(summ = purrr::map(linmod, ~summary(.))) |>
+  dplyr::mutate(rsq = map_dbl(summ, "r.squared")) |>
   arrange(desc(rsq))  # to arrange output, with highest r-squared on top
 
-ddf_allsites_nested
+daily_fluxes_allsites_nested
 ```
 
 This code is a demonstration of the power of tidy and nested data frames and for the clarity of the {tidyverse} syntax.
@@ -699,54 +718,90 @@ base::load("data/siteinfo_fluxnet2015.rda")  # loads siteinfo_fluxnet2015
 Joining the nested data frame with site meta information results in a substantially smaller and much handier data frame compared to an alternative, where the site meta information is joined into the un-nested (daily) data frame, and therefore duplicated for each day within sites.
 
 ```{r}
-ddf_allsites_nested_joined <- siteinfo_fluxnet2015 |>
+daily_fluxes_allsites_nested_joined <- siteinfo_fluxnet2015 |>
   rename(siteid = sitename) |>
-  right_join(select(ddf_allsites_nested, -linmod, -summ, -rsq),
+  right_join(select(daily_fluxes_allsites_nested, -linmod, -summ, -rsq),
              by = "siteid")
 
-ddf_allsites_joined <- siteinfo_fluxnet2015 |>
+daily_fluxes_allsites_joined <- siteinfo_fluxnet2015 |>
   rename(siteid = sitename) |>
-  right_join(ddf_allsites,
+  right_join(daily_fluxes_allsites,
              by = "siteid")
 
 print(paste("Flat and joined:", 
-            format(object.size(ddf_allsites_joined),  
+            format(object.size(daily_fluxes_allsites_joined),  
                    units = "auto", 
                    standard = "SI")))
 print(paste("Nested and joined:", 
-            format(object.size(ddf_allsites_nested_joined),  
+            format(object.size(daily_fluxes_allsites_nested_joined),  
                    units = "auto", 
                    standard = "SI")))
 
 # save for later use
-write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rds")
+write_rds(
+  daily_fluxes_allsites_nested_joined,
+  file = "data/daily_fluxes_allsites_nested_joined.rds"
+  )
 ```
 
 ## Exercises {#exerciseswrangling}
 
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+
 ### Star wars {-}
 
-{dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use (possibly among others) the functions `dplyr::filter()`, `dplyr::arrange()`, `dplyr::pull()`, `dplyr::select()`, and `dplyr::slice()` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio):
+{dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use (possibly among others) the functions `dplyr::filter()`, `dplyr::arrange()`, `dplyr::pull()`, `dplyr::select()`, `dplyr::desc()` and `dplyr::slice()` to answer the following questions:
 
-a.  How many pale characters come from the planets Ryloth and Naboo?
-b.  Who is the oldest of the tallest thirty characters?
-c.  What is the name of the smallest character and their starship in "Return of the Jedi"
+- How many pale characters come from the planets Ryloth and Naboo?
+- Who is the oldest among the tallest thirty characters?
+- What is the name of the smallest character and their starship in "Return of the Jedi"
 
-> Use `unnest()` to expand columns that contain lists inside cells. The expansion of such columns creates additional rows in the data frame if the cell contained a list with more than one element. 
+> Hint: Use `unnest()` to expand columns that contain lists inside cells. The expansion of such columns creates additional rows in the data frame if the cell contained a list with more than one element. 
 
 ### Aggregating {-}
 
-Reuse the code in the tutorial to read, reduce, clean, and aggregate the `hhdf` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values for each day: maximum value, minimum value, median, and standard deviation.
+You have learned about aggregating in the {tidyverse}. Let's put it in practice.
+
+- Reuse the code in the tutorial to read, reduce, and aggregate the `half_hourly_fluxes` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values within each day: mean, 25% quantile, and 75% quantile. 
+
+- Retain only the daily data for which the daily mean VPD is among the upper or the lower 10% quantiles.
+
+- Calculate the mean of the 25% and the mean of the 75% quantiles of half-hourly VPD within the upper and lower 10% quantiles of mean daily VPD.
+
 
 ### Patterns in data quality {-}
 
 The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes of poor quality. Investigate whether NEE data quality is randomly spread across hours in a day by calculating the proportion of (i) actually measured data, (ii) good quality gap-filled data, (iii) medium quality data, and (iv) poor quality data within each hour-of-day (24 hours per day).
 
+> Hint: `summarise(total = n())` aggregates by counting the number of values.
+
+> Hint: `summarise(count_0 = sum(x == 0))` aggregates by counting the number of values for which the evaluation is `TRUE`. 
+
+Interpret your findings: Are the proportions evenly spread across hours in a day? 
+
+Perform an aggregation of the half-hourly GPP data (variable `GPP_NT_VUT_REF`) to daily means of the unmodified data read from file `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`, and from cleaned data where only measured (not gap-filled) data is kept. This yields two data frames with daily GPP data. Calculate the overall mean GPP for the two data frames (across all days in the data frame). Are the overall mean GPP values equal? If not, why?
+
 
 ## Report Exercise
 
-Great science is surely always easy to reproduce... right? Well, the truth is that not all journals require that authors upload their scripts and data in a coherent format and if you want to have a look at some data or reproduce findings, it is likely that you will have to go through data and code cleaning first. To exemplify this issue, conduct the following exercise:
+Open Science requires that data underlying published research articles is made available upon publication of the article. A separate aspect is the format of the shared data. Is it provided in an open-access data format? How easy is it to use the data for your own analyses? In this exercise, you will encounter data that was made freely available, but not in an open access format. Although it is "nice-looking" data, you will encounter that it is not tidy. 
 
-Download the .xlsx-file from the supplementary material of this paper: Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO 2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.
+Download the data file (`.xlsx`) from the Supplementary Material of the following paper: 
 
-Open the file and have a look - not quite tidy, right? Your task is to clean this file up so that it can easily be read into RStudio. Follow the principles that you learned in this tutorial and actually try to load the file into RStudio to see whether you've done a proper job. For your performance assessment, you have to upload your cleaned dataset to your report repository on GitHub and include a code-chunk in your report that loads the cleaned dataset and prints its first six rows.
+*Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.*
+
+Your task is to manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
+
+"Database S1" contains data of soil organic carbon measurements in experiments, where ecosystems are exposed to ambient (low) and elevated (high) CO2 concentrations. The mean soil organic carbon of multiple samples ("n") is recorded within each experiment for different sample dates. Information is provided for the time in years since the start of the experiment ("Time (years)").
+
+A log-response ratio (treatment effect) can be calculated as:
+$$
+R = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
+$$
+
+Perform the following steps:
+
+- Aggregate data per experiment and calculate the log-response ratio within each experiment.
+- Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (<3 years since start), a mid-phase (3-6 years since start), and a late phase (>6 years since start). Calculate the log-response ratio for each phase.
+
+Document and describe your workflow in R (reading, aggregating) using an RMarkdown file. Present your results as tables using the `knitr::kable()` function.

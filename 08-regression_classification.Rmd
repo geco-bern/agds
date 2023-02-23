@@ -64,10 +64,10 @@ based on observed shortwave radiation values.
 
 ```{r message=FALSE, warning=FALSE}
 # read and format data from Ch 3
-hhdf <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+half_hourly_fluxes <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
 
 set.seed(2023)
-gg1 <- hhdf |>
+plot_1 <- half_hourly_fluxes |>
   sample_n(2000) |>  # to reduce the dataset
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75, alpha=0.4) +
@@ -78,7 +78,7 @@ gg1 <- hhdf |>
 
 segment_points <- data.frame(x0 = 332, y0 = 3.65, y_regr = 8.77)
 
-gg1 +
+plot_1 +
   geom_segment(aes(x = x0, y = y0, xend = x0, yend = y_regr), 
                data = segment_points,
                color = "blue", lwd = 1.2, alpha = 0.8)
@@ -129,8 +129,8 @@ models by doing:
 
 ```{r message=F}
 # numerical variables only, remove NA
-df <- hhdf %>%
-  dplyr::select(-starts_with("TIMESTAMP")) %>%
+df <- half_hourly_fluxes |>
+  dplyr::select(-starts_with("TIMESTAMP")) |>
   tidyr::drop_na()
 
 # fit univariate linear regression
@@ -220,8 +220,6 @@ predictors. If this is not given, one can resort to step-wise forward
 regression, where predictors are sequentially added based on which
 predictor adds the most additional information at each step. 
 
-<!-- XXXexercises XXX. -->
-
 When multiple predictors are linearly correlated, then linear regression
 cannot discern individual effects and individual predictors may appear
 statistically insignificant when they would be significant if covarying
@@ -256,7 +254,7 @@ create models that capture the relationships between variables better.
 
 ```{r}
 # create month category
-df_cat <- hhdf |>
+df_cat <- half_hourly_fluxes |>
   mutate(MONTH = lubridate::month(TIMESTAMP_START)) |>
   tidyr::drop_na() |>
   dplyr::select(MONTH, GPP_NT_VUT_REF, SW_IN_F)
@@ -377,10 +375,8 @@ analyse_modobs <- function(df){
   linmod <- lm(y ~ x, data = df)
   
   # construct metrics table using the 'yardstick' library
-  df_metrics <- df %>%
-    
-    # simply the squared correlation between truth and estimate (0,1)
-    yardstick::rsq(., y, x)  |> 
+  # simply the squared correlation between truth and estimate (0,1)
+  df_metrics <- yardstick::rsq(df, y, x)  |> 
     
     # root mean square error
     dplyr::bind_rows(yardstick::rmse(df, y, x)) |> 
@@ -422,14 +418,19 @@ analyse_modobs <- function(df){
     geom_abline(intercept = 0, slope = 1, linetype = "dotted") +  # 1:1 line
     theme_classic() +
     labs(subtitle = subtitle) + 
-    geom_smooth(method = 'lm', color = "red", size = 0.5, se = FALSE)  # regression fit
+    geom_smooth(
+      method = 'lm',  # regression fit
+      color = "red",
+      size = 0.5,
+      se = FALSE
+      ) 
   
 }
 
 set.seed(1982)
 
 # uncorrelated
-gg1 <- tibble(x = rnorm(100),
+plot_1 <- tibble(x = rnorm(100),
               y = rnorm(100)) |> 
   analyse_modobs() +
   labs(title = "Uncorrelated") +
@@ -439,7 +440,7 @@ gg1 <- tibble(x = rnorm(100),
         plot.subtitle = element_text(size = 8))
 
 # perfectly correlated - zero error
-gg3 <- tibble(x = rnorm(100)) |> 
+plot_3 <- tibble(x = rnorm(100)) |> 
   mutate(y = x) |> 
   analyse_modobs() +
   labs(title = bquote("Perfectly correlated, zero error:" ~ y == hat(y))) +
@@ -449,27 +450,30 @@ gg3 <- tibble(x = rnorm(100)) |>
         plot.subtitle = element_text(size = 8))
 
 # perfectly correlated - scaling error
-gg4 <- tibble(x = rnorm(100)) |> 
+plot_4 <- tibble(x = rnorm(100)) |> 
   mutate(y = 0.6 * x) |> 
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ hat(y))) +
+  labs(
+    title = bquote(
+      "Perfectly correlated, scaling error:" ~ y == ~ .(0.6) ~ hat(y))) +
   ylim(-3,3) + xlim(-3, 3) +
   xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
 # perfectly correlated - constant error
-gg5 <- tibble(x = rnorm(100)) |> 
+plot_5 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + 1) |>
   analyse_modobs() +
-  labs(title = bquote("Perfectly correlated, constant error:" ~ y == hat(y) + 1)) +
+  labs(title = bquote(
+    "Perfectly correlated, constant error:" ~ y == hat(y) + 1)) +
   ylim(-3,3) + xlim(-3, 3) +
   xlab(expression(hat(y))) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
 # correlated
-gg6 <- tibble(x = rnorm(100)) |> 
+plot_6 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + rnorm(100)) |> 
   analyse_modobs() +
   labs(title = bquote("Correlated:" ~ y == hat(y) + epsilon[0])) +
@@ -479,17 +483,18 @@ gg6 <- tibble(x = rnorm(100)) |>
         plot.subtitle = element_text(size = 8))
 
 # better correlation
-gg7 <- tibble(x = rnorm(100)) |> 
+plot_7 <- tibble(x = rnorm(100)) |> 
   mutate(y = x + 0.7 * rnorm(100)) |> 
   analyse_modobs() +
-  labs(title = bquote("Better correlated:" ~ y == hat(y) + ~ .(0.7) ~ epsilon[0])) +
+  labs(title = bquote(
+    "Better correlated:" ~ y == hat(y) + ~ .(0.7) ~ epsilon[0])) +
   xlab(expression(hat(y))) +
   # labs(title = "Better correlated (y = x + 0.7 rnorm(100))") +
   ylim(-3,3) + xlim(-3, 3) +
   theme(plot.title = element_text(size = 10),
         plot.subtitle = element_text(size = 8))
 
-cowplot::plot_grid(gg1, gg3, gg4, gg5, gg6, gg7, 
+cowplot::plot_grid(plot_1, plot_3, plot_4, plot_5, plot_6, plot_7, 
                    ncol = 2)
 ```
 
@@ -599,8 +604,8 @@ yardstick::rsq(df, y, x) |> pull(.estimate)
 
 # implementations using coefficient of determination definition
 1 - sum((df$x - df$y)^2) / sum((df$y - mean(df$y))^2) # should be \hat{y}, not x
-yardstick::rsq_trad(df, y, x) %>% pull(.estimate) # incorrect
-yardstick::rsq_trad(df, y, y_fitted) %>% pull(.estimate) # correct
+yardstick::rsq_trad(df, y, x) |> pull(.estimate) # incorrect
+yardstick::rsq_trad(df, y, y_fitted) |> pull(.estimate) # correct
 ```
 
 > An "$R^2$" is commonly reported when evaluating the *agreement* between observed
@@ -627,8 +632,6 @@ The slope refers to the slope of the linear regression line between predicted an
 ```{r}
 coef(lm(y ~ y_fitted, data = df))[2]
 ```
-
-<!-- XXX Exercise: In supervised machine learning, a certain metric is chosen to guide the model training (fitting). Which metric would you chose as a target for optimisation. Discuss why. XXX -->
 
 #### Metrics for regression model comparison
 
@@ -731,12 +734,12 @@ carbon dioxide uptake rate of the plant (continuous variable `uptake`
 measured in $\mu$mol m$^{-2}$s$^{-1}$). More information on the dataset can be obtained by typing `?datasets::CO2` in the console.
 
 ```{r}
-gg2 <- datasets::CO2 |>
+plot_2 <- datasets::CO2 |>
   ggplot(aes(x = uptake, y = Type, color = Type)) +
   geom_point(size = 0.75, alpha = 0.8) +
   theme_classic() +
   theme(legend.position = "none")
-gg2
+plot_2
 ```
 
 At first sight, it's easy to see that the carbon uptake is lower for the
@@ -830,7 +833,7 @@ threshold line). You can see it plotted below:
 ```{r}
 beta <- coef(logmod)
 # reuse previous plot with classification line
-gg2.1 <- datasets::CO2 |>
+plot_2.1 <- datasets::CO2 |>
   ggplot(aes(x = uptake, y = as.numeric(Type)-1, color = Type)) +
   geom_point(size = 0.75, alpha = 0.8) +
   ylab("") +
@@ -839,7 +842,7 @@ gg2.1 <- datasets::CO2 |>
               method.args = list(family=binomial)) +
   geom_vline(xintercept = -beta[1]/beta[2], lty = 2)
 
-gg2.1
+plot_2.1
 ```
 
 Most blue points fall to one side of the dashed classification line and
@@ -962,10 +965,10 @@ imbalanced classes and interpreting your results.
     positive and false positive rate. The following image describes
     clearly how to interpret a ROC curve plot:
 
-![ROC curves and how they compare, from
-[Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic).](figures/Roc_curve.png)
 
-<!-- XXX Exercises: Fit regression (NIGHT ~ SW), vary tau, plot TPR vs FPR. Fit second regression (NIGHT ~ TEMPERATURE), do the same. Interpret ROC curves. -->
+```{r roccurve, echo = FALSE, fig.cap = "ROC curves and how they compare, from [Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)."}
+knitr::include_graphics("figures/Roc_curve.png")
+```
 
 -   **AUC**: The "area under the curve" is defined as the area left
     below the ROC curve. For a random classifier we would have AUC=0.5
@@ -1167,11 +1170,11 @@ if it's also off, the regression model will be affected greatly.
 
 ```{r warning=FALSE}
 set.seed(2023)
-hhdf_small <- hhdf |>
+half_hourly_fluxes_small <- half_hourly_fluxes |>
   sample_n(100) |> # reduce dataset
   select(SW_IN_F, GPP_NT_VUT_REF)
 
-gg3 <- hhdf_small |>
+plot_3 <- half_hourly_fluxes_small |>
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
   geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
@@ -1181,7 +1184,7 @@ gg3 <- hhdf_small |>
   ylim(-20, 40) + 
   xlim(0, 2000)
 
-gg4 <- hhdf_small |>
+plot_4 <- half_hourly_fluxes_small |>
   add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
@@ -1193,7 +1196,7 @@ gg4 <- hhdf_small |>
   ylim(-20, 40) + 
   xlim(0, 2000)
   
-cowplot::plot_grid(gg3, gg4)
+cowplot::plot_grid(plot_3, plot_4)
 ```
 
 The first step to identifying outliers is to look at your data, one
@@ -1206,18 +1209,23 @@ tails helps to discern whether the values that pop out of a boxplot
 should be considered outliers or not.
 
 ```{r}
-gg5 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
+# create an outlier for demonstration purposes
+half_hourly_fluxes_outlier <- half_hourly_fluxes_small |>
+  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20)
+
+# Various ways to identify the outlier using graphs
+plot_5 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = 'red')+
   labs(title = 'Histogram, density and boxplot', 
        x = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
   theme_classic()
 
-gg6 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = "", y = GPP_NT_VUT_REF)) +
+plot_6 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = "", y = GPP_NT_VUT_REF)) +
   geom_boxplot(fill = "grey70", color = "black") +
   coord_flip() +
   theme_classic() +
@@ -1225,18 +1233,18 @@ gg6 <- hhdf_small |>
         axis.ticks.y=element_blank()) +
   labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")))
 
-gg7 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = SW_IN_F, y = after_stat(density))) +
+plot_7 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = SW_IN_F, y = after_stat(density))) +
   geom_histogram(fill = "grey70", color = "black") +
   geom_density(color = 'red')+
   labs(title = 'Histogram, density and boxplot', 
        x = expression(paste("Shortwave radiation (W m"^-2, ")"))) +
   theme_classic()
 
-gg8 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = "", y = SW_IN_F)) +
+plot_8 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = "", y = SW_IN_F)) +
   geom_boxplot(fill = "grey70", color = "black") +
   coord_flip() +
   theme_classic() +
@@ -1244,7 +1252,7 @@ gg8 <- hhdf_small |>
         axis.ticks.y=element_blank()) +
   labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")))
 
-cowplot::plot_grid(gg5, gg7, gg6, gg8,
+cowplot::plot_grid(plot_5, plot_7, plot_6, plot_8,
                    ncol = 2, rel_heights = c(2,1),
                    align = 'v', axis = 'lr')
 ```
@@ -1259,25 +1267,25 @@ outliers deviate greatly from the straight line (which represents a
 match between the observed values and the theoretical distribution):
 
 ```{r}
-gg9 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier |>
-  ggplot(aes(sample = GPP_NT_VUT_REF)) +
+plot_9 <- ggplot(
+    data = half_hourly_fluxes_outlier,
+    aes(sample = GPP_NT_VUT_REF)) +
   geom_qq() +
   geom_qq_line() +
   labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")),
        x = "Theoretical normal quantiles") +
   theme_classic()
 
-gg10 <- hhdf_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier |>
-  ggplot(aes(sample = SW_IN_F)) +
+plot_10 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(sample = SW_IN_F)) +
   geom_qq() +
   geom_qq_line() +
   labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")),
        x = "Theoretical normal quantiles") +
   theme_classic()
 
-cowplot::plot_grid(gg9, gg10, ncol=2)
+cowplot::plot_grid(plot_9, plot_10, ncol=2)
 ```
 
 For linear (and logistic) regression, we would like predictor variables
@@ -1297,7 +1305,7 @@ particular the "Residuals vs Leverage" plot:
 ```{r}
 # Fit regression with outlier
 linmod_outlier <- lm(GPP_NT_VUT_REF ~ SW_IN_F, 
-                     data = add_row(hhdf_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
+                     data = add_row(half_hourly_fluxes_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
 
 plot(linmod_outlier, 5)
 ```
@@ -1324,112 +1332,110 @@ to keep it in the model. Interesting research questions arise when data
 doesn't align with our preconceptions, so keep looking into it and
 potentially collect more data.
 
-## Report Exercise
+## Exercises
+
+There are no exercises with provided solutions for this Chapter.
+
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
 <!-- -   Implement the formula for RMSE using simple "low-level" functions -->
 <!--     like `sqrt()` and `mean()`. Confirm that the function `rmse()` from -->
 <!--     the yardstick package computes the RMSE the same way. -->
 <!--     ```{r} -->
 <!--     ## generate random data  -->
-<!--     df <- tibble(x = rnorm(100)) %>%  -->
+<!--     df <- tibble(x = rnorm(100)) |>  -->
 <!--       mutate(y = x + rnorm(100), -->
 <!--              x = x) -->
-<!--     yardstick::rmse(df, y, x) %>% pull(.estimate) -->
+<!--     yardstick::rmse(df, y, x) |> pull(.estimate) -->
 <!--     sqrt(mean((df$x - df$y)^2)) -->
 <!--     ``` -->
 
-This tutorial's exercise is a bit special. Although there is a lot of helpful information out there, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are crucial parts of this process (see second chapter for more on getting help). To learn these skills, you will attempt to write your own step-wise forward regression from scratch using the theory and code provided this and previous chapters (see task statement and hints below).
+## Report Exercise
 
-**Important:** We do not expect that all of you solve this exercise without any issues - which is completely fine! **Thus, in your report**, you will add the code up to the point you got stuck **and** you will have to add a minimum reproducible example (MRE), following [this guideline](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example). Write this MRE as if you were addressing an online audience; describe in detail what you goal is, where you got stuck, what the error message is, provide a code example that is runnable without needing the .csv files that you have locally (see `dput()`), etc. If you can solve this problem without any issues, congratulations! But it is likely that you did not do so without facing any error messages. So, take one of these errors that you faced and write a MRE.
+### Stepwise regression and asking for help {-}
 
-Code errors can break knitting your report. To avoid having issues knitting your report from RMarkdown to HTML, make sure that you set the chunk settings, that hold erroneous code, to `eror = TRUE`, or skip running them entirely using `eval = FALSE` (more info [here](https://bookdown.org/yihui/rmarkdown-cookbook/opts-error.html)).
+#### Context {.unnumbered}
 
-Important tools to code a step-wise regression are nested for-loops, if-statements, and finding the best predictor for a given target variable. Instead of trying all of this at once, it is advisable to test your code in separate pieces that can then be stitched together. To help you out with these concepts, we provide two "warm-up exercises" (solutions are at the end of this book).
+Although there is a lot of helpful information out there, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are crucial parts of this process (see Chapter \@ref(programmingprimers) for more on getting help). To learn these skills, you will attempt to write your own step-wise forward regression from scratch using the theory and code provided in this and previous chapters.
 
-### Task Statement
+#### Deliverables for the report {.unnumbered}
 
-Re-read the section on stepwise regression of this tutorial and write a pseudo-code for how you would encode a stepwise regression, write-out using coding terms like "I have to loop over all predictors and for each predictor I have to check...". For picking the next-best variable to add, you can pick your metric of choice: $R^2$, *adjusted-*$R^2$, the Akaike Information Criterion (AIC) or the Bayesian Information Criterion (BIC). Visualise the result of the step-wise regression so that it shows how the chosen metric varies with the number of predictors, preferably showing the name of the additional predictor (not that you don't always have to use graphs, you can also create a simple table for this). Use the code chunk below to start with an already cleaned dataset.
+**Important:** For your final report you have to hand in the following two parts:
+1.  A comparison of all bivariate models, showing which predictor is the best single predictor and an interpretation of these results.
+2.  A minimum reproducible example of an error that you faced while solving the full stepwise regression.
 
+##### Find the single best predictor {.unnumbered}
 
+The key ingredient of a stepwise forward regression is to find the single most powerful predictor that improves your linear regression model the best. To do so, you first have to find a way to compare all possible models and then pick the best predictor. Your task is to write a reproducible script that includes the following steps:
 
-```{r}
-df <- readr::read_csv("data/df_for_stepwise_regression.csv")
-```
-
-*Hints*:
-
--   Really try to think of the blueprint (*pseudo-code*) first: How to go through different models in each forward step? How to store predictors added to the model and how to update candidate predictors?
-
--   You will have to add predictors sequentally to your final model as you search through all predictors. You can use `new_list <- list()` to create an empty vector, and then add elements to that list by `new_list <- c(new_list, new_element)`.
-
--   It may be helpful to explicitly define a set of "candidate predictors" that are potentially added to the model (e.g., `preds_candidate`), and define predictors retained in the model from the previous step in a separate vector (e.g., `preds_retained`). In each step, search through `preds_candidate`, select the best predictor, add it to `preds_retained` and remove it from `preds_candidate`.
-
--   At each step, record the metrics and store them in a data frame for later plots. As in the first "warm-up" exercise, you may record metrics at each step as a single-row data frame and sequentially stack (bind) them together.
-
--   You will have to create new formulas for models dynamically, based on the candidate predictors. A clever way how to construct formulas dynamically is described in [this stackoverflow post](https://stackoverflow.com/questions/4951442/formula-with-dynamic-number-of-variables).
-
-<!-- -   The metrics for each model are assessed *after* the order of added variables is determined. To be able to determine the metrics, the models can be saved by constructing a list of models and sequentially add elements to that list (`mylist[[ name_new_element ]] <- new_element`). You can also fit the model again after determining which predictor worked best. -->
-
-<!-- -   Your code will most certainly have bugs at first. To debug efficiently, write code first in a simple R script and use the debugging options in RStudio (see [here](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio)). -->
+-   Download and load this data `https://raw.githubusercontent.com/geco-bern/agds/main/data/df_for_stepwise_regression.csv`
+-   Define the target variable `GPP_NT_VUT_REF` and use all remaining numerical variables as predictors.
+-   Calculate all possible bivariate linear regression models and compare them using your model metric of choice. 
+-   Communicate your finding with your diplay item of choice.
+-   Write an interpretation of your results, discussing why some predictors are better than others.
 
 
--   For visualising: To display a table nicely as part of the RMarkdown html output, use the function `knitr::kable()`. To avoid reordering the list of variable names when plotting, change the type of variable names from "character" to "factor" by `pred <- factor(pred, levels = pred)`
+> Hint: Some variables may hold more `NA` than others, messing with your model metrics. What do you need to do to be able to make the next best model comparable to the current one, when adding a new variable?
 
-### Warm-Up Exercises
+> Hint: To better discuss your results, you might want to look up what each variable stands for.
 
-#### Nested loops and if-statements
+##### Full stepwise regression {.unnumbered}
 
-Given a matrix A and a vector B (see below), do the following tasks:
+The next part of this exercise is to expand your algorithm to perform a full stepwise regression. We do not expect that all of you solve this exercise without any issues - which is completely fine! Therefore, in your report, you will add the code up to the point you got stuck **and** you will have to add a minimum reproducible example (MRE), following [this guideline](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example). Write this MRE as if you were addressing an online audience; describe in detail what you goal is, where you got stuck, what the error message is, provide a code example that is runnable without needing the .csv files that you have locally (e.g., `dput()` or reading data from the web), etc. If you can solve this exercise without issues, congratulations! But it is likely that faced some error messages along the way. So, take one of these errors to write the MRE you have to submit.
 
--   Replace the missing values (`NA`) in the first row of A by the largest value of B. After using that element of B for imputing A, drop that element from the vector B and proceed with imputing the second row of A, using the (now) largest value of the updated vector B, and drop that element from B after using it for imputing A. Repeat the same procedure for all four rows in A.
+Code errors can break knitting your RMarkdown to HTML. To avoid having issues, make sure that you set the chunks that hold erroneous code, to `eror = TRUE`, or skip running them entirely using `eval = FALSE` (more info [here](https://bookdown.org/yihui/rmarkdown-cookbook/opts-error.html)).
 
--   After imputing (replacing) in each step, calculate the mean of the remaining values in B and record it as a single-row data frame with two columns `row_number` and `avg`, where `row_number` is the row number of A where the value was imputed, and `avg` is the mean of remaining values in B. As the algorithm proceeds through rows in A, sequentially bind the single-row data frame together so that after completion of the algorithm, the data frame contains four rows (corresponding to the number of rows in A).
+Now, re-read the section on stepwise regression of this tutorial and write a "pseudo-code" for how you would encode a stepwise regression, write-out using coding terms like "I have to loop over all predictors and for each predictor I have to check...". Find a way to sequentally add the next best variable to your model and save that variable's name and the model metric. Visualise the result of the step-wise regression so that it shows how the chosen metric varies with the number of predictors, preferably showing the name of the additional predictor. What does your result suggest? Did you expect that form the interpetation of finding the best single predictor? What dynamics of the model metrics can you see and can you explain them using the theory from the tutorial?
 
-```{r}
-A <- matrix(c(6, 7, 3, NA, 15, 6, 7, 
-              8, 9, 12, 6, 11, NA, 3, 
-              9, 4, 7, 3, 21, NA, 6, 
-              7, 19, 6, NA, 15, 8, 10),
-            nrow = 4, byrow = TRUE)
-B <- c(8, 4, 12, 9, 15, 6)
-```
+> Hint: Consider using loops and [dynamic formula creation](https://stackoverflow.com/questions/4951442/formula-with-dynamic-number-of-variables) to make your code shorter and easier to read.
 
-Before implementing these tasks, try to write down a pseudo code. This is code-like text that may not be executable, but describes the structure of real code and details where and how major steps are implemented. Next, you'll need to write actual R code. For this, you will need to find answers to the following questions:
 
--   How to go through each of the element in matrix?
--   How to detect NA value?
--   How to drop an element of a given value from a vector?
--   How to add a row to an existing data frame?
+<!-- ```{r} -->
+<!-- df <- readr::read_csv("data/df_for_stepwise_regression.csv") -->
+<!-- ``` -->
 
-#### Find the single best predictor
+<!-- *Hints*: -->
 
-The first step of a stepwise forward regression is to find the single most powerful predictor in a univariate linear regression model for the target variable `GPP_NT_VUT_REF` among all available predictors in our data set (all except those of type `date` or `character`). Implement this first part of the search, using the definition of the stepwise-forward algorithm below. Remove all rows with at least one missing value before starting the predictor search.
+<!-- -   Really try to think of the blueprint (*pseudo-code*) first: How to go through different models in each forward step? How to store predictors added to the model and how to update candidate predictors? -->
 
-*Algorithm:*
+<!-- -   You will have to add predictors sequentally to your final model as you search through all predictors. You can use `new_list <- list()` to create an empty vector, and then add elements to that list by `new_list <- c(new_list, new_element)`. -->
 
-1.  Let $\mathcal{M_0}$ denote the null model, which contains no predictors.
+<!-- -   It may be helpful to explicitly define a set of "candidate predictors" that are potentially added to the model (e.g., `preds_candidate`), and define predictors retained in the model from the previous step in a separate vector (e.g., `preds_retained`). In each step, search through `preds_candidate`, select the best predictor, add it to `preds_retained` and remove it from `preds_candidate`. -->
 
-2.  For $k=0,..,p-1$:
-    (a) Consider all $p − k$ models that augment $\mathcal{M}_k$ with one additional predictor.
-    (b) Choose the best model among these $p − k$ models, and call it $\mathcal{M}_{k+1}$. Here *best* is defined as having the highest $R^2$ .
+<!-- -   At each step, record the metrics and store them in a data frame for later plots. As in the first "warm-up" exercise, you may record metrics at each step as a single-row data frame and sequentially stack (bind) them together. -->
 
-*Hints*:
+<!-- -   You will have to create new formulas for models dynamically, based on the candidate predictors. A clever way how to construct formulas dynamically is described in [this stackoverflow post](https://stackoverflow.com/questions/4951442/formula-with-dynamic-number-of-variables). -->
 
--   The "counter" variables in the for loop can be provided as a vector, and the counter will sequentially take on the value of each element in that vector. For example:
+<!-- <!-- -   The metrics for each model are assessed *after* the order of added variables is determined. To be able to determine the metrics, the models can be saved by constructing a list of models and sequentially add elements to that list (`mylist[[ name_new_element ]] <- new_element`). You can also fit the model again after determining which predictor worked best. --> -->
 
-```{r}
-all_predictors <- 
-  df |>
-  dplyr::select(-GPP_NT_VUT_REF) |>
-  names()
+<!-- <!-- -   Your code will most certainly have bugs at first. To debug efficiently, write code first in a simple R script and use the debugging options in RStudio (see [here](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio)). --> -->
 
-cat("Predictor variables and their first 3 entries in df: \n")
 
-for (var in all_predictors){
-  cat("\n", var, ": ")
-  cat(head(df[[var]], 3))
-  # cat("\n")
-}
-```
+<!-- -   For visualising: To display a table nicely as part of the RMarkdown html output, use the function `knitr::kable()`. To avoid reordering the list of variable names when plotting, change the type of variable names from "character" to "factor" by `pred <- factor(pred, levels = pred)` -->
 
--   To record $R^2$ values for the different models, you may start by creating an empty vector (`vec <- c()`) before the loop and then sequentially add elements to that vector inside the loop (`vec <- c(vec, new_element)`). Alternatively, you can do something similar, but with a data frame (initialising with `df_rsq <- data.frame()` before the loop, and adding rows by `df_rsq <- bind_rows(df_rsq, data.frame(pred = predictor_name, rsq = rsq_result))` inside the loop).
+<!-- #### Warm-Up Exercises {-} -->
+
+<!-- #### Nested loops and if-statements -->
+
+<!-- Given a matrix A and a vector B (see below), do the following tasks: -->
+
+<!-- -   Replace the missing values (`NA`) in the first row of A by the largest value of B. After using that element of B for imputing A, drop that element from the vector B and proceed with imputing the second row of A, using the (now) largest value of the updated vector B, and drop that element from B after using it for imputing A. Repeat the same procedure for all four rows in A. -->
+
+<!-- -   After imputing (replacing) in each step, calculate the mean of the remaining values in B and record it as a single-row data frame with two columns `row_number` and `avg`, where `row_number` is the row number of A where the value was imputed, and `avg` is the mean of remaining values in B. As the algorithm proceeds through rows in A, sequentially bind the single-row data frame together so that after completion of the algorithm, the data frame contains four rows (corresponding to the number of rows in A). -->
+
+<!-- ```{r} -->
+<!-- A <- matrix(c(6, 7, 3, NA, 15, 6, 7,  -->
+<!--               8, 9, 12, 6, 11, NA, 3,  -->
+<!--               9, 4, 7, 3, 21, NA, 6,  -->
+<!--               7, 19, 6, NA, 15, 8, 10), -->
+<!--             nrow = 4, byrow = TRUE) -->
+<!-- B <- c(8, 4, 12, 9, 15, 6) -->
+<!-- ``` -->
+
+<!-- Before implementing these tasks, try to write down a pseudo code. This is code-like text that may not be executable, but describes the structure of real code and details where and how major steps are implemented. Next, you'll need to write actual R code. For this, you will need to find answers to the following questions: -->
+
+<!-- -   How to go through each of the element in matrix? -->
+<!-- -   How to detect NA value? -->
+<!-- -   How to drop an element of a given value from a vector? -->
+<!-- -   How to add a row to an existing data frame? -->
+

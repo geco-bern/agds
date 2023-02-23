@@ -1,3 +1,12 @@
+#' Evaluate model performance
+#'
+#' @param mod the model formulation
+#' @param df_train the training data
+#' @param df_test the testing data
+#' @param return_metrics the metrics / figures returned
+#'
+#' @return model metrics
+ 
 eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
   
   # add predictions to the data frames----

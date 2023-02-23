@@ -4,6 +4,15 @@
 
 ## Learning objectives
 
+In this chapter you will learn how to visualize data for exploration or publication.
+
+You will learn among others the:
+
+- grammar of graphics, i.e. using the {ggplot2} library
+- construct plots in a intuitive way
+- represent the same data in a variety of ways
+- the proper use of colours in visualization
+
 ## Tutorial
 
 Visualizations often take the center stage of publications and are often the main vehicles for transporting information in scientific publications and (ever more often) in the media. Visualizations communicate data and its patterns in visual form. Visualizing data is also an integral part of the exploratory data analysis cycle. Visually understanding the data guides its transformation and the identification of suitable models and analysis methods.
@@ -14,13 +23,13 @@ This tutorial is inspired by the comprehensive and online available textbook Fun
 
 ### The grammar of graphics
 
-In Chapter \@ref(datawrangling), we learned about axes of variation in the data. For example, time is an axis of variation in our example data `hhdf`, or site identity and the date are axes of variation in our example data `ddf`. We have also learned that we can aggregate over axes of variation, and that we can often separate an axis of variation into a hierarchy of subordinate axes of variation (e.g., years, months, days, and a half-hourly time axis).
+In Chapter \@ref(datawrangling), we learned about axes of variation in the data. For example, time is an axis of variation in our example data `half_hourly_fluxes`, or site identity and the date are axes of variation in our example data `daily_fluxes`. We have also learned that we can aggregate over axes of variation, and that we can often separate an axis of variation into a hierarchy of subordinate axes of variation (e.g., years, months, days, and a half-hourly time axis).
 
 In this chapter, we will be working mainly with the same half-hourly time series data of ecosystem-atmosphere fluxes and parallel measurements of meteorological variables - as in Chapters \@ref(gettingstarted) and \@ref(datawrangling). For time series data, the entry point of the exploratory data analysis cycle may be a visualization of some variable of interest (here `GPP_NT_VUT_REF`) against time:
 
-```{r}
-hhdf <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
-plot(hhdf$TIMESTAMP_START, hhdf$GPP_NT_VUT_REF, type = "l")
+```{r results=FALSE, messages=FALSE, warning=FALSE}
+half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006_CLEAN.csv")
+plot(half_hourly_fluxes$TIMESTAMP_START, half_hourly_fluxes$GPP_NT_VUT_REF, type = "l")
 ```
 
 You may notice the spurious-looking values on the left, in the first third of year 2004. We'll revisit this point later in this Chapter.
@@ -34,7 +43,7 @@ Applied to our example, the aesthetics are the x-axis and the y-axis of a cartes
 The notion of mapping data onto aesthetics and using objects whose geometry is defined by the aesthetics gives rise to the *grammar of graphics* and to the {ggplot2} R package for data visualisation (which we will use throughout the remainder of this course). The equivalent {ggplot2} code that follows the philosophy of the grammar of graphics is:
 
 ```{r}
-ggplot(data = hhdf, aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
+ggplot(data = half_hourly_fluxes, aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
   geom_line()
 ```
 
@@ -44,7 +53,7 @@ The data visualisation above is a dense plot and we cannot distinguish patterns 
 
 ```{r}
 # prepare plot data
-plot_data <- hhdf |> 
+plot_data <- half_hourly_fluxes |> 
   dplyr::slice(24000:25000)
 
 # plot figure
@@ -68,10 +77,6 @@ In the above example, we mapped two continuous variables (`TIMESTAMP_START` and 
 -   Continuous variables: position, size, color (a color gradient), line width, etc.
 -   Categorical variables: shape, color (a discrete set of colors), line type, etc.
 
-<!-- https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png -->
-
-<!-- ![test](./figures/common-aesthetics-1.png){#fig:test} \@ref(fig:test -->
-
 ```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types. Figure from [Wilke](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)", fig.align='center'}
 knitr::include_graphics("./figures/common-aesthetics-1.png")
 ```
@@ -80,22 +85,21 @@ Not only the different aesthetics, but also the type of *geometry* (the layers o
 
 #### One value per category
 
-Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `gg2`. Both examples are based on the data frame `ddf` which we created in Chapter \@ref(datawrangling).
+Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `plot_2`. Both examples are based on the data frame `daily_fluxes` which we created in Chapter \@ref(datawrangling).
 
-```{r}
+```{r results=FALSE, messages=FALSE, warning=FALSE}
 # read in demo daily data
 # as saved in the previous chapter
-ddf <- read_csv("data/ddf.csv")
+daily_fluxes <- read_csv("data/daily_fluxes.csv")
 
 # Aggregate to monthly
-mdf <- ddf |> 
+mdf <- daily_fluxes |> 
   dplyr::mutate(month = month(date, label = TRUE)) |> 
   dplyr::group_by(month) |> 
   dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
-
 # Bar plot
-gg1 <- ggplot(
+plot_1 <- ggplot(
   data = mdf,
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_bar(stat = "identity") +
@@ -105,7 +109,7 @@ gg1 <- ggplot(
        y =expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")))
 
 # Custom plot
-gg2 <- ggplot(
+plot_2 <- ggplot(
   data = mdf,
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_segment(aes(x = month, xend = month, y = 0, yend = GPP_NT_VUT_REF), 
@@ -121,22 +125,22 @@ gg2 <- ggplot(
   coord_flip()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2)
+cowplot::plot_grid(plot_1, plot_2)
 ```
 
-Above, we created two objects, `gg1` and `gg2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the {cowplot} library.
+Above, we created two objects, `plot_1` and `plot_2`, that contain the instructions for creating the plots. To combine multiple sub-plots within panels of a single plot, we used `cowplot::plot_grid()` from the {cowplot} library.
 
 Note also the `stat = "identity"` specification within the `geom_bar()` function call. This is required when the bar height is specified by a single value within each category (`month` in the example above). To visualize not a value *per se* but the *count* of values within categories, use `stat = "count"` to get the equivalent result as when aggregating by taking the number of observations within categories explicitly using the function `dplyr::summarise()`. This equivalency is demonstrated below.
 
 ```{r}
 # subset plot data and count occurences of bad data (NEE_VUT_REF_QC == 0)
-df_count <- hhdf |> 
+df_count <- half_hourly_fluxes |> 
   dplyr::filter(NEE_VUT_REF_QC == 0) |> 
   dplyr::group_by(NIGHT) |> 
   dplyr::summarise(count = n())
 
 # separate aggregation  
-gg1 <-ggplot(
+plot_1 <-ggplot(
   data = df_count,
   aes(x = NIGHT, y = count)) +
   geom_bar(stat = "identity") +
@@ -144,19 +148,19 @@ gg1 <-ggplot(
   theme_classic()
 
 # prepare data (not summarizing counts)
-hhdf_bad <- hhdf |> 
+half_hourly_fluxes_bad <- half_hourly_fluxes |> 
   dplyr::filter(NEE_VUT_REF_QC == 0)
 
 # implicit aggregation by 'stat'
-gg2 <- ggplot(
-  data = hhdf_bad,
+plot_2 <- ggplot(
+  data = half_hourly_fluxes_bad,
   aes(x = NIGHT)) +
   geom_bar(stat = "count") +
   labs(subtitle = "Count directly via 'stat = count'") +
   theme_classic()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2)
+cowplot::plot_grid(plot_1, plot_2)
 ```
 
 #### Distribution of one variable
@@ -165,7 +169,7 @@ Examining the distribution of a variable is often the first step of exploratory 
 
 ```{r warning=FALSE}
 ggplot(
-    data = hhdf,
+    data = half_hourly_fluxes,
     aes(x = GPP_NT_VUT_REF, y = ..density..)
     ) +
   geom_histogram(fill = "grey70", color = "black") +
@@ -186,13 +190,13 @@ The box plot is rather reductionist in showing the data (the vector of all value
 ```{r}
 # prepare plot data
 set.seed(1985)  # for random number reproducibility in sample_n() and jitter
-plot_data <- hhdf |> 
+half_hourly_fluxes_subset <- half_hourly_fluxes |> 
   sample_n(300) |> 
   mutate(Night = ifelse(NIGHT == 1, TRUE, FALSE))
 
 # Boxplot
-gg1 <-ggplot(
-  data = plot_data,
+plot_1 <-ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70") +
   labs(title = "Box plot") +
@@ -200,8 +204,8 @@ gg1 <-ggplot(
   theme_classic()
 
 # Box plot + jittered points
-gg2 <-ggplot(
-  data = plot_data,
+plot_2 <-ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70", outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.3) +
@@ -210,8 +214,8 @@ gg2 <-ggplot(
   theme_classic()
 
 # Violin plot
-gg3 <- ggplot(
-  data = plot_data,
+plot_3 <- ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_violin(fill = "grey70") +
   labs(title = "Violin plot") +
@@ -219,23 +223,23 @@ gg3 <- ggplot(
   theme_classic()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2, gg3, ncol = 3)
+cowplot::plot_grid(plot_1, plot_2, plot_3, ncol = 3)
 ```
 
 #### Regression of two continuous variables
 
 Scatter plots visualize how two variables co-vary. The position of each point in a scatter plot is given by the simultaneously recorded value of two variables, provided in two columns along the same row in a data frame, and mapped onto two dimensions in a cartesian coordinate system. We can also say that two variables are *regressed* against each other.
 
-In the figure below, we start with a simple scatter plot (a), regressing GPP against shortwave radiation. Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(hhdf$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). (d) is an example for using a continuous color scheme, as explained in the next section.
+In the figure below, we start with a simple scatter plot (a), regressing GPP against shortwave radiation. Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(half_hourly_fluxes$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). (d) is an example for using a continuous color scheme, as explained in the next section.
 
 ```{r}
 # prepare plot data
-hhdf_sub <- hhdf |>
+half_hourly_fluxes_subset <- half_hourly_fluxes |>
   sample_n(1000)
 
 # a
-gg1 <- ggplot(
-  data = hhdf_sub,
+plot_1 <- ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
@@ -243,8 +247,8 @@ gg1 <- ggplot(
   theme_classic()
 
 # b
-gg2 <- ggplot(
-  data = hhdf_sub,
+plot_2 <- ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = NIGHT)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
@@ -252,8 +256,8 @@ gg2 <- ggplot(
   theme_classic()
 
 # c
-gg3 <- ggplot(
-  data = hhdf_sub,
+plot_3 <- ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
@@ -261,8 +265,8 @@ gg3 <- ggplot(
   theme_classic()
 
 # d
-gg4 <- ggplot(
-  data = hhdf_sub,
+plot_4 <- ggplot(
+  data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = TA_F)) +
   geom_point(size = 0.75) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
@@ -271,7 +275,7 @@ gg4 <- ggplot(
   scale_color_viridis_c()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
+cowplot::plot_grid(plot_1, plot_2, plot_3, plot_4, ncol = 2, labels = "auto")
 ```
 
 #### Use of colors
@@ -309,11 +313,11 @@ Hence, let's consider months as the categories to be used for separating the dat
 
 ```{r}
 # prepare data
-ddf_plot <- ddf |>
+daily_fluxes <- daily_fluxes |>
   dplyr::mutate(month = month(date, label = TRUE))
 
 ggplot(
-  data = ddf_plot,
+  data = daily_fluxes,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = month)) +
   geom_point(alpha = 0.5) +
   geom_smooth(formula = y ~ x + 0, method = "lm", se = FALSE) +
@@ -335,7 +339,7 @@ Yet another "mapping" is available with `facet_wrap()`. It separates the visuali
 
 ```{r}
 ggplot(
-  data = ddf_plot, # reusing the previously subset data (see above)
+  data = daily_fluxes, # reusing the previously subset data (see above)
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
   geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
@@ -352,7 +356,7 @@ A time series plot can be regarded as a special case of a regression of two vari
 
 ```{r}
 ggplot(
-  data = ddf,
+  data = daily_fluxes,
   aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
   labs(title = "Line plot", 
@@ -361,13 +365,13 @@ ggplot(
   theme_classic()
 ```
 
-In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter \@ref(datawrangling), we aggregated the half-hourly `hhdf` data frame to a daily data frame `ddf` from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). This yields a "data quality axis". Is there a pattern between `f_measured` and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?
+In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter \@ref(datawrangling), we aggregated the half-hourly `half_hourly_fluxes` data frame to a daily data frame `daily_fluxes` from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (`f_measured`). This yields a "data quality axis". Is there a pattern between `f_measured` and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?
 
 A solution is to "map" `f_measured` to the color axis. When adding such an additional mapping to visualisation dimensions ("aesthetics"), we have to specify it using `aes()`. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write `aes(x = date, y = GPP_NT_VUT_REF)` in the `ggplot()` function call (indicating that all subsequent additions of `geom_` layers share this x-y mapping); while `aes(color = f_measured)` is specified only in the `geom_point()` layer.
 
 ```{r}
 ggplot(
-    data = ddf,
+    data = daily_fluxes,
     aes(x = date, y = GPP_NT_VUT_REF)) +
   geom_line() +
   geom_point(aes(color = f_measured), size = 0.9) +
@@ -381,53 +385,53 @@ We observe the presumably bad data appear in yellow, and are therefore indeed ch
 
 #### Periodic data
 
-The seasons are an important axis of variation in our data. Hence our data are periodic - with a periodicity of 365 days in the `ddf` dataset and with both 12 hours and 365 days in the `hhdf` dataset. A polar coordinate system, instead of a cartesian system, lends itself to displaying periodic data. A polar coordinate system reflects the fact that, for example, January 1st is closer to December 31st, although they are located on the extreme end of a linear spectrum of days in a year. In a polar coordinate system, the x-axis spans the angle (360$^\circ$, like a clock), while the y-axis spans the radius (distance from the center). This is specified by changing the coordinate system of the ggplot object by `+ coord_polar()`.
+The seasons are an important axis of variation in our data. Hence our data are periodic - with a periodicity of 365 days in the `daily_fluxes` dataset and with both 12 hours and 365 days in the `half_hourly_fluxes` dataset. A polar coordinate system, instead of a cartesian system, lends itself to displaying periodic data. A polar coordinate system reflects the fact that, for example, January 1st is closer to December 31st, although they are located on the extreme end of a linear spectrum of days in a year. In a polar coordinate system, the x-axis spans the angle (360$^\circ$, like a clock), while the y-axis spans the radius (distance from the center). This is specified by changing the coordinate system of the ggplot object by `+ coord_polar()`.
 
-Below, we first aggregate the data to get a mean seasonal cycle from `ddf` (a, b), and to get a mean diurnal (daily) cycle from June data in `hhdf` (c, d). To get the mean seasonal cycle, we first determine the day-of-year (counting from 1 for January first to 365 for December 31st) using the {lubridate} function `yday()`.
+Below, we first aggregate the data to get a mean seasonal cycle from `daily_fluxes` (a, b), and to get a mean diurnal (daily) cycle from June data in `half_hourly_fluxes` (c, d). To get the mean seasonal cycle, we first determine the day-of-year (counting from 1 for January first to 365 for December 31st) using the {lubridate} function `yday()`.
 
 ```{r}
 # prepare plot data
-doydf <- ddf |>
+daily_mean_fluxes <- daily_fluxes |>
   mutate(doy = yday(date)) |> 
   group_by(doy) |> 
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # seasonal cycle, cartesian
-gg1 <- ggplot(
-  data = doydf,
+plot_1 <- ggplot(
+  data = daily_mean_fluxes,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # seasonal cycle, polar
-gg2 <- ggplot(
-  data = doydf,
+plot_2 <- ggplot(
+  data = daily_mean_fluxes,
   aes(doy, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()
 
 # prepare plot data (diurnal step)
-daydf <- hhdf |>
+daily_mean_hourly_fluxes <- half_hourly_fluxes |>
   mutate(month = month(TIMESTAMP_START)) |> 
   filter(month == 6) |>  # taking only June data
   mutate(hour = hour(TIMESTAMP_START)) |> 
-  group_by(hour) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
+  dplyr::group_by(hour) |> 
+  dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # diurnal cycle, cartesian
-gg3 <-ggplot(
-    data = daydf,
+plot_3 <-ggplot(
+    data = daily_mean_hourly_fluxes,
     aes(hour, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # diurnal cycle, polar
-gg4 <-ggplot(
-  data = daydf,
+plot_4 <-ggplot(
+  data = daily_mean_hourly_fluxes,
   aes(hour, GPP_NT_VUT_REF)) + 
   geom_line() +
   coord_polar()
 
 # combine plots
-cowplot::plot_grid(gg1, gg2, gg3, gg4, ncol = 2, labels = "auto")
+cowplot::plot_grid(plot_1, plot_2, plot_3, plot_4, ncol = 2, labels = "auto")
 ```
 
 #### Density along two continuous variables
@@ -436,7 +440,7 @@ Scatter plots can appear "overcrowded" when points are plotted on top of each ot
 
 ```{r}
 ggplot(
-    data = hhdf,
+    data = half_hourly_fluxes,
     aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point() +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")),
@@ -449,7 +453,7 @@ To avoid obscuring important details about the data, we may want to visualise th
 ```{r}
 # density raster
 ggplot(
-    data = ddf,
+    data = daily_fluxes,
     aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   stat_density_2d(
     geom = "raster", # the geometric object to display the data
@@ -465,7 +469,7 @@ ggplot(
 
 # density hexagonal bins
 ggplot(
-    data = ddf,
+    data = daily_fluxes,
     aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_hex() +
   scale_fill_viridis_c() +
@@ -516,36 +520,61 @@ Raster data often reflects values in geographic space. Also points and polygons 
 Interested readers can find more content on geospatial data visualisation here:
 
 -   Timo Grossenbacher's blog on geographic data journalism ([link](https://timogrossenbacher.ch/blog/))
--   Koen Hufken's blog containing various worked example XXX
+-   Koen Hufken's blog containing various [worked example](https://bluegreenlabs.org/categories/visualization/).
 
 ## Exercises
 
-**Identifying Outliers**:
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
--   Based on this and previous tutorials, read the half-hourly dataset for site CH-Lae, drop entries with `-9999` and aggregate `GPP_NT_VUT_REF` and `PPFD_IN` to daily means. 
--   Fit a linear relationship between `GPP_NT_VUT_REF` and `PPFD_IN`, using `lm()`.
--   The function returns a list of objects which you can access using the `$` syntax. Access the fitted `residuals` and use them in `boxplot.stats()` to get box plot statistics to determine outliers.
--   The output of `boxplot.stats()` is a list with the object `out`, a named vector where the names are the row number of the `residuals` in your original dataframe and the values are the entries for that row. Use `out_boxplot$out |> names() |> as.integer()` to get all row numbers.
--   Create a new variable in the daily-aggregated dataset, which defines whether a datapoint is an outlier or not.
+### Identifying Outliers {-}
 
-**Visualising diurnal and seasonal cycles:** 
+A key part of data cleaning is to detect and understand where outliers are coming from. Visualisations make this task often informative. Your task here is to find outliers in `PPFD_IN`
 
--   Using the half-hourly dataset for site CH-Lae (after dropping `-9999` entries), visualise how GPP (`GPP_NT_VUT_REF`) varies on two time scales: diurnal (within-day at hourly time scale) and seasonal. To implement this, follow the following steps:
-- Summarise half-hourly data for each hour and day across multiple years to get a mean seasonality with a mean diurnal cycle for each day of the year. To deal with date-time objects, use the {lubridate} package. Use the functions `lubridate::yday()` and `lubridate::hour()` to extract the day of year and hour of day across entries. See `?yday` to get more hints.
--   Create a raster plot (`geom_raster()`), mapping the hour of the day to the x-axis, the day of the year to the y-axis, and the magnitude of `GPP_NT_VUT_REF` to color (use the `fill` argument).
--   Make this figure ready for publication by adding nice labels and choosing a good color scale.
+-   Based on this and previous tutorials, read the half-hourly dataset for site CH-Lae, labels entries with `-9999` as `NA` and aggregate `GPP_NT_VUT_REF` and `PPFD_IN` to daily means. 
+-   Fit a linear relationship between `GPP_NT_VUT_REF` and `PPFD_IN`
+-   The function for fitting a linear model returns a list of objects which you can access using the `$` syntax.
+    -   Access the fitted `residuals` and use them as argument in `boxplot.stats()` to quickly get box plot statistics that are useful to determine outliers.
+    -   The output of `boxplot.stats()` is a list with the object `out`, a named vector where the names are the row numbers of the `residuals` in your original dataframe. The values are the entries for that row. Use `out_boxplot$out |> names() |> as.integer()` to get all row numbers.
+-   Use these row numbers to create a new variable in the daily-aggregated dataset.
+-   Create a plot that visualises the relationship between `GPP_NT_VUT_REF` and `PPFD_IN` and shows whether any given datapoint is an outlier or not.
 
-<!-- -   Remove data in `ddf` based on `f_measured`. Visualize data removal, fill missing data with the respective day's value of the mean seasonal cycle, visualize good data, bad removed data, and filled data in one plot using different colors. -->
+### Visualising diurnal and seasonal cycles of GPP {-}
 
+As explored in the previous Chapter's exercises, GPP varies strongly with the diurnal and seasonal cycle. Create a publication-ready figure showing both cycles in one single plot that is fully labelled, easy to read, and colorblind-friendly:
+
+-   Again, start with the cleaned the half-hourly dataset for site CH-Lae.
+-   To get the diurnal and seasonal trend, summarise the half-hourly data by the hour of the day and the day of the year simultaneously and calculate mean values for GPP for each group.
+-   Create a plot with {ggplot2} using the temporal variables as axes and GPP as color.
+-   Make this figure ready for publication: 
+    -   Add a title, maybe a subtitle
+    -   Label axes and legend (don't forget to add units!)
+    -   Pick a colorblind-friendly color scale
+    -   Anything else you want to change? Axes limits, axes ticks, grid lines?
+
+> Hint: The functions to make a suitable plot was introduced in the tutorial.
+
+### Trend in carbon dioxide concentrations {-}
+
+This exercise explores the change of CO$_2$, measured at the famous Mauna Loa observatory. Your task is to calculate and visualise the trend of CO$_2$ from 1958 to 2012, following these steps:
+
+-   Download the `co2_monthly_maunaloa.txt` from [here](https://github.com/geco-bern/agds/blob/main/data/co2_monthly_maunaloa.txt) and look at the data.
+-   Make a simple figure showing the change of average CO$_2$ over time.
+-   Do you need to do any data wrangling before continuing?
+-   Write a function that computes a 12-month running mean of the CO$_2$ time series.
+-   Make nice "publishable" figure that shows the measured and trended timeseries of CO$_2$.
+
+> Hint: You don't need to clean the .txt file, find a suitable function in R.
+> Hint: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
 
 ## Report Exercises
 
-**Running mean of monthly CO2 concentrations:**
+### Telling a story from data {-}
 
--   Read the famous monthly Mauna Loa CO2 record from file `co2_monthly_maunaloa.txt`. Plot the data with x-values from the column `co2_avg` and y-values from the column co2 avg. Plot it as a line graph.
+In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to tell a story about the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console).
 
--   Define a function to compute a 12-month running mean of the monthly CO2 time series. Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken (in this case 12). Plot the running mean on top of the monthly data. Use a different color for the running mean graph.
+Your solution has to include:
+-  At least three publishable figures that show important patterns (e.g., outliers, temporal patterns, scatterplots of correlations, etc.)
+-   A description of the data that includes at least three statistical metrics that are relevant for the problem (argue for why you chose these metrics).
+-   Interpretation and discussion of your results and hypotheses. The text alone should not exceed one A4 page (max. 400 words).
 
-**Data exploration:**
-
--   Tell a story about the `airquality` data (data is directly available in R, just type `airquality` into the console). Apply what you have learned in this Chapter. Explore the data and find suitable ways to display variables. Detect, visualise, and hypothesise patterns that seem interesting to you.
+> Hint: To get more background information on the data, use the help functionalities in RStudio.

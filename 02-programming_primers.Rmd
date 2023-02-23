@@ -179,7 +179,7 @@ Note that information about the author of the script, its creation date, and mod
 
 A good and comprehensive best practices guide is given by the [tidyverse style guide](https://style.tidyverse.org/).
 
-### Where to find help
+### Where to find help {#findinghelp}
 
 The material covered in this course will give you a solid basis for your future projects. Even more so, it provides you with code examples that you can adapt to your own purposes. Naturally, you will face problems we did not cover in the course and you will learn more as you go. Different approaches to getting help can be taken for different types of problems and questions.
 
