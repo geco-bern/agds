@@ -741,6 +741,8 @@ write_rds(
 
 ## Exercises {#exerciseswrangling}
 
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+
 -   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio):
 
 a.  How many pale characters come from the planets Ryloth and Naboo?

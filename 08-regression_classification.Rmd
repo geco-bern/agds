@@ -1340,6 +1340,8 @@ potentially collect more data.
 
 ## Report Exercise
 
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+
 <!-- -   Implement the formula for RMSE using simple "low-level" functions -->
 <!--     like `sqrt()` and `mean()`. Confirm that the function `rmse()` from -->
 <!--     the yardstick package computes the RMSE the same way. -->
