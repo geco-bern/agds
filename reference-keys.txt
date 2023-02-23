@@ -147,9 +147,6 @@ direct-downloads
 apis
 example-environmental-data-repositories
 exercises-3
-files-and-file-formats-1
-api-use
-get-1
 dedicated-library
 openscience
 learning-objectives-6
@@ -164,9 +161,6 @@ referencing-and-finding-files
 limitations
 data-retention
 exercises-4
-external-data
-a-new-project
-tracking-the-state-of-your-project
 codemgmt
 learning-objectives-7
 tutorial-6
@@ -180,9 +174,7 @@ git-clone
 git-fork-and-pull-request
 location-based-code-management---github-templates
 exercises-5
-location-based-code-management
 report-exercises-1
-github
 regressionclassification
 learning-objectives-8
 tutorial-7
@@ -200,11 +192,8 @@ model-evaluation
 model-comparison
 variable-selection-1
 outlier-detection
+exercises-6
 report-exercise-1
-task-statement
-warm-up-exercises
-nested-loops-and-if-statements
-find-the-single-best-predictor
 supervisedmli
 learning-objectives-9
 tutorial-8
@@ -234,6 +223,8 @@ hyperparameters
 resampling
 validation-versus-testing-data
 modeling-with-structured-data
+exercises-7
+implement-a-k-fold-cross-validation-by-hand.
 report-exercises-3
 randomforest
 learning-objectives-11
