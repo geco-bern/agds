@@ -215,9 +215,20 @@ To evaluate model generalisability to a new site or catchment (not just a new ti
 
 This illustrates that the data structure and the modelling aim (generalisability in what respect?) have to be accounted for when designing the data split and resampling strategy. The {caret} function `groupKFold()` offers the solution for such cases, creating folds for cross-validation that respect group delineations. In other cases, such grouping structure may not be evident and may not be reflected by information accessible for modelling. For example, we may be able to separate time series from different sites but we don't know whether sites are sufficiently independent to be able to consider the test metric to reflect the true uncertainty in predicting to an entirely new location which is neither in the test nor training set. In such cases, creative solutions have to be found and appropriate cross-validations have to be implemented with a view to the data structure and modelling aim.
 
-<!-- ## Exercises -->
+## Exercises
 
-<!-- XXX Exercises: implement k-fold cross validation by hand XXX -->
+### Implement a k-fold cross validation by hand.
+
+In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use this package, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Here's a step-by-step guidance that should help you do so:
+
+-   The first steps are the same as done in this tutorial:
+    -   Source the file `eval_model.R`, as done in the tutorial above.
+    -   Load and wrangle the daily-aggregated data from the Davos FLUXNET site, as done in the tutorial above.
+    -   Create a test and train split
+-   Now let's focus on the cross validation
+    -   The functions from {rsample} create a test and train split 
+-   To make your life simpler, wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of $k$'s to test
+-   
 
 ## Report Exercises
 

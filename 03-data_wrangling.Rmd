@@ -714,16 +714,49 @@ write_rds(ddf_allsites_nested_joined, file = "data/ddf_allsites_nested_joined.rd
 
 ## Exercises {#exerciseswrangling}
 
--   {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use the functions `dplyr::filter`, `dplyr::select`, and `dplyr::top_n` to answer the following questions (hint: find the function names online or use the `Help` tab in RStudio):
+<!-- ## Understanding functions -->
+<!-- Put magic trick into a function -->
 
-a.  How many pale characters come from the planets Ryloth and Naboo?
-b.  Who is the oldest of the tallest 5 characters?
-c.  What is the name of the smallest character and their starship in "Return of the Jedi"
+### Aggregation of data in tidy style {-}
 
--   Reuse the code in the tutorial to aggregate the `hhdf` dataset to the daily scale and calculate the following metrics for `VPD_F` using R functions: maximum value, minimum value, median, and standard deviation.
--   The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes not of high quality. Split your dataset into two - one with actually measured data (`NEE_VUT_REF_QC == 0`) and one with only gap-filled data. Compare the means of `GPP_NT_VUT_REF` of all three datasets and interpret your finding. Can you find a connect between the timepoint of an entry and its quality? What does the temporal pattern imply for the mean values that you calculated?
+The tutorial showed how to quickly aggregate data based on a given variable, using the pipeline of `group_by(grouping_variable) |> summarise(new_variable = any_function(input_variable))`. Reuse the code from section "Aggregating data" and do the following steps:
 
-<!-- -   The elevation data in `siteinfo_fluxnet2015` is a continuous numerical variable. Create one ore more variables that turns elevation into a categorical variable with three levels: < 0, 0-1000, 1001-2000, > 2000. Can you find a elegant way to add that this data are in units of `m`? -->
+-   Load the half hourly fluxes and select only the variables that we are interested in
+-   Aggregate the half-hourly dataframe (`half_hourly_fluxes`) to the daily level (`daily_fluxes`) and the following metrics of vapor pressure deficit(`VPD_F`) for each day:
+    -   The maximum value
+    -   The minimum value
+    -   The median
+    -   The mean
+    -   The standard deviation of the mean
+    -   The 33% quantile
+
+> Hint: Do not repeat your code to get the different metrics, there is a cleaner way.
+> Hint: If you don't know the name of a function, look it up in the `Help` tab in RStudio or simply google for it.
+
+### When is GPP actually measured? {-}
+
+The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes not of high quality. Let's find out, where our data is coming from, doing the following steps:
+-   Reuse the dataframe for `half_hourly_fluxes` that you created in the previous exercise.
+-   Split your dataset into two datasets. One with actually measured data (where `NEE_VUT_REF_QC` is 0) and one with only gap-filled data (where `NEE_VUT_REF_QC` is not 0).
+-   Calculate the mean value for `GPP_NT_VUT_REF` for both dataframes.
+-   Interpret your findings:
+    -   Are they the mean values the same? 
+    -   If yes/no, what does this hint towards when gap-filled data is mostly produced?
+
+Now, we want to find out, from what time of the day most of the gap-filled data is from. Follow these steps:
+-   Start with your `half_hourly_fluxes` and use the `TIMESTAMP_START` to create a variable that holds the hour of the day
+-   Then find a way how to group the data by the hour of the day.
+-   For each group, count the data entries that are from measurements or gap-filled.
+-   Plot these counts against the hour of the day
+-   Interpret your result:
+    -   What do you see? 
+    -   Why could that be the case? 
+    -   Can you think of any other timescale on which you could see a similar pattern (minutes, days, weeks, months, ...)?
+
+> Hint: Have a look at the {lubridate} package, it may hold a useful function to extract the hour of a date-time object.
+> Hint: If you want to append one dataframe to another, you can use `rbind()`.
+> Hint: Your knowledge on loops and filtering could be useful for this exercise.
+> Bonus: Instead of using loops, you may make use of functional programming - applying the same function to multiple nested dataframes.
 
 ## Report Exercise
 
@@ -731,4 +764,4 @@ Great science is surely always easy to reproduce... right? Well, the truth is th
 
 Download the .xlsx-file from the supplementary material of this paper: Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO 2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.
 
-Open the file and have a look - not quite tidy, right? Your task is to clean this file up so that it can easily be read into RStudio. Follow the principles that you learned in this tutorial and actually try to load the file into RStudio to see whether you've done a proper job. For your performance assessment, you have to upload your cleaned dataset to your report repository on GitHub and include a code-chunk in your report that loads the cleaned dataset and prints its first six rows.
+Open the file and have a look - not quite tidy, right? Your task is to clean this file up so that it can easily be read into RStudio. Follow the principles that you learned in this tutorial and actually try to load the file into RStudio to see whether you've done a proper job. For your performance assessment, you have to upload your cleaned dataset to your report repository on GitHub and include a code-chunk in your report that loads the cleaned dataset and prints its first six rows (e.g., with `head()`.
