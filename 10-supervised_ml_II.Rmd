@@ -77,14 +77,18 @@ For KNN, `k` is the (only) hyperparameter. It specifies the number of neighbours
 
 Hyperparameters usually have to be "tuned". The optimal setting depends on the data and can therefore not be known *a priori*.
 
-```{r}
+```{r eval=TRUE}
 # load our custom evaluation function
 source("R/eval_model.R")
 
 # specify the set of K
 df_k <- data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)) |> 
   mutate(idx = 1:n())
+```
 
+<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
+<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
+```{r eval=FALSE}
 # model training for the specified set of K
 list_mod_knn <- purrr::map(
   df_k$k,
@@ -94,14 +98,27 @@ list_mod_knn <- purrr::map(
                 trControl = caret::trainControl(method = "none"),
                 tuneGrid = data.frame(k = .),   # '.' evaulates k
                 metric = "RMSE"))
+```
 
+```{r include=FALSE, eval=FALSE}
+# Use this only to by-pass running cross-validation when rendering book online
+saveRDS(list_mod_knn, "data/tutorials/smlii_list_mod_knn.rds")
+```
+
+```{r include=FALSE}
+# Load data when rendering book online
+list_mod_knn <- readRDS("data/tutorials/smlii_list_mod_knn.rds")
+```
+<!-- >>> END OF CHECK <<< -->
+
+```{r}
+# Evaluate all models
 list_metrics <- purrr::map(
   list_mod_knn,
   ~eval_model(., 
               daily_fluxes_train |> drop_na(), 
               daily_fluxes_test, 
               return_metrics = TRUE))
-
 # extract metrics on training data
 list_metrics_train <- purrr::map(
   list_metrics,
@@ -119,7 +136,10 @@ list_metrics_test <- purrr::map(
   bind_rows(.id = "idx") |> 
   mutate(idx = as.numeric(idx)) |> 
   left_join(df_k, by = "idx")
+```
 
+
+```{r}
 # prepare for visualisation
 df_mae <- list_metrics_train |> 
   filter(.metric == "mae") |> 
@@ -157,7 +177,10 @@ knitr::include_graphics("figures/cv.png")
 
 To do a k-fold cross validation during model training in R, we don't have to implement the loops around folds ourselves. The resampling procedure can be specified in the {caret} function `train()` with the argument `trControl`. The object that this argument takes is the output of a function call to `trainControl()`. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:
 
-```{r}
+<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
+<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
+
+```{r eval=FALSE}
 set.seed(1982)
 mod_cv <- caret::train(pp, 
                        data = daily_fluxes_train |> drop_na(), 
@@ -165,7 +188,20 @@ mod_cv <- caret::train(pp,
                        trControl = caret::trainControl(method = "cv", number = 10),
                        tuneGrid = data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100)),
                        metric = "MAE")
+```
 
+```{r include=FALSE, eval=FALSE}
+# Use this only to by-pass running cross-validation when rendering book online
+saveRDS(mod_cv, "data/tutorials/smlii_mod_cv.rds")
+```
+
+```{r include=FALSE}
+# Load data when rendering book online
+mod_cv <- readRDS("data/tutorials/smlii_mod_cv.rds")
+```
+<!-- >>> END OF CHECK <<< -->
+
+```{r}
 # generic plot of the caret model object
 ggplot(mod_cv)
 
