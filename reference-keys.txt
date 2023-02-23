@@ -40,6 +40,8 @@ fig:mlingredients
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
+tab:unnamed-chunk-240
+tab:unnamed-chunk-275
 gettingstarted
 learning-objectives-1
 tutorial
@@ -213,6 +215,7 @@ one-hot-encoding
 zero-variance-predictors
 target-engineering
 putting-it-all-together-half-way
+exercises-7
 report-exercises-2
 supervisedmlii
 learning-objectives-10
@@ -223,8 +226,7 @@ hyperparameters
 resampling
 validation-versus-testing-data
 modeling-with-structured-data
-exercises-7
-implement-a-k-fold-cross-validation-by-hand.
+exercises-8
 report-exercises-3
 randomforest
 learning-objectives-11
@@ -235,4 +237,14 @@ from-trees-to-a-forest
 solutions
 getting-started
 programming-primers
+data-wrangling
+data-visualisation
+data-variety
+open-science
+code-management
+regression-and-classification
+supervised-ml-i
+supervised-ml-ii
+interpretation-of-results
+random-forests
 references
