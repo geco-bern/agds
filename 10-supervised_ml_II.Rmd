@@ -236,7 +236,7 @@ In the tutorial we "built on shoulder of giants" - people that went through the 
 
 ## Report Exercises
 
-### Testing the generalisability of a model {-}
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
 In this tutorial's exercise, you will explore the key idea of generalisability. The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
 

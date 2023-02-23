@@ -741,8 +741,7 @@ write_rds(
 
 ## Exercises {#exerciseswrangling}
 
-<!-- ## Understanding functions -->
-<!-- Put magic trick into a function -->
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
 ### Aggregation of data in tidy style {-}
 

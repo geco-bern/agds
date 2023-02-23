@@ -1336,7 +1336,8 @@ potentially collect more data.
 
 There are no exercises with provided solutions for this Chapter.
 
-<!-- XXX Exercises: Fit regression (NIGHT ~ SW), vary tau, plot TPR vs FPR. Fit second regression (NIGHT ~ TEMPERATURE), do the same. Interpret ROC curves. -->
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+
 <!-- -   Implement the formula for RMSE using simple "low-level" functions -->
 <!--     like `sqrt()` and `mean()`. Confirm that the function `rmse()` from -->
 <!--     the yardstick package computes the RMSE the same way. -->

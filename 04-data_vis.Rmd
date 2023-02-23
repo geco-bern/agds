@@ -524,6 +524,8 @@ Interested readers can find more content on geospatial data visualisation here:
 
 ## Exercises
 
+> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+
 ### Identifying Outliers {-}
 
 A key part of data cleaning is to detect and understand where outliers are coming from. Visualisations make this task often informative. Your task here is to find outliers in `PPFD_IN`
