@@ -227,6 +227,7 @@ In the tutorial we "built on shoulder of giants" - people that went through the 
 -  Train your final model, report its estimated error and evaluate it against the test set.
 -  Compare your results to the ones from using {caret}, using the same setup (trainin data, number of folds, $k$).
 -  Interpret your results
+    - What is the optimal $k$ that you find? Does it depend on the model metric you pick for cross-validation?
     - Is the error on the test set within the estimated error? Why so, wy not?
     - What are the differences between your implementation of a cross-validation and the one in {caret}?
 
@@ -240,6 +241,6 @@ In the tutorial we "built on shoulder of giants" - people that went through the 
 
 In this tutorial's exercise, you will explore the key idea of generalisability. The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
 
--   How do the model metric on the test set change, when you are training and testing on the same or on different datasets?
+-   How do the model metric on the test set change when you are train and test on the same or on different datasets?
 -   What are the differences between Davos and Laegern that could cause the pattern that you found?
 -   What do you expect when training and testing on Davos and Laegern simultaneously? Is this a valid approach? Use your new knowledge to reason for or against a situation where you would train on both sites.
