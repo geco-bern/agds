@@ -566,7 +566,7 @@ This exercise explores the change of CO$_2$, measured at the famous Mauna Loa ob
 
 ## Report Exercises
 
-### Data exploration {-}
+### Telling a story from data {-}
 
 In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to tell a story about the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console).
 
