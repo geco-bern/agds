@@ -77,14 +77,18 @@ For KNN, `k` is the (only) hyperparameter. It specifies the number of neighbours
 
 Hyperparameters usually have to be "tuned". The optimal setting depends on the data and can therefore not be known *a priori*.
 
-```{r}
+```{r eval=TRUE}
 # load our custom evaluation function
 source("R/eval_model.R")
 
 # specify the set of K
 df_k <- data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)) |> 
   mutate(idx = 1:n())
+```
 
+<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
+<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
+```{r eval=FALSE}
 # model training for the specified set of K
 list_mod_knn <- purrr::map(
   df_k$k,
@@ -94,14 +98,27 @@ list_mod_knn <- purrr::map(
                 trControl = caret::trainControl(method = "none"),
                 tuneGrid = data.frame(k = .),   # '.' evaulates k
                 metric = "RMSE"))
+```
 
+```{r include=FALSE, eval=FALSE}
+# Use this only to by-pass running cross-validation when rendering book online
+saveRDS(list_mod_knn, "data/tutorials/smlii_list_mod_knn.rds")
+```
+
+```{r include=FALSE}
+# Load data when rendering book online
+list_mod_knn <- readRDS("data/tutorials/smlii_list_mod_knn.rds")
+```
+<!-- >>> END OF CHECK <<< -->
+
+```{r}
+# Evaluate all models
 list_metrics <- purrr::map(
   list_mod_knn,
   ~eval_model(., 
               daily_fluxes_train |> drop_na(), 
               daily_fluxes_test, 
               return_metrics = TRUE))
-
 # extract metrics on training data
 list_metrics_train <- purrr::map(
   list_metrics,
@@ -119,7 +136,10 @@ list_metrics_test <- purrr::map(
   bind_rows(.id = "idx") |> 
   mutate(idx = as.numeric(idx)) |> 
   left_join(df_k, by = "idx")
+```
 
+
+```{r}
 # prepare for visualisation
 df_mae <- list_metrics_train |> 
   filter(.metric == "mae") |> 
@@ -157,7 +177,10 @@ knitr::include_graphics("figures/cv.png")
 
 To do a k-fold cross validation during model training in R, we don't have to implement the loops around folds ourselves. The resampling procedure can be specified in the {caret} function `train()` with the argument `trControl`. The object that this argument takes is the output of a function call to `trainControl()`. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:
 
-```{r}
+<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
+<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
+
+```{r eval=FALSE}
 set.seed(1982)
 mod_cv <- caret::train(pp, 
                        data = daily_fluxes_train |> drop_na(), 
@@ -165,7 +188,20 @@ mod_cv <- caret::train(pp,
                        trControl = caret::trainControl(method = "cv", number = 10),
                        tuneGrid = data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100)),
                        metric = "MAE")
+```
 
+```{r include=FALSE, eval=FALSE}
+# Use this only to by-pass running cross-validation when rendering book online
+saveRDS(mod_cv, "data/tutorials/smlii_mod_cv.rds")
+```
+
+```{r include=FALSE}
+# Load data when rendering book online
+mod_cv <- readRDS("data/tutorials/smlii_mod_cv.rds")
+```
+<!-- >>> END OF CHECK <<< -->
+
+```{r}
 # generic plot of the caret model object
 ggplot(mod_cv)
 
@@ -217,27 +253,30 @@ This illustrates that the data structure and the modelling aim (generalisability
 
 ## Exercises
 
-### Implement a k-fold cross validation by hand.
+### Cross-validation by hand {-}
 
-In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use this package, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Here's a step-by-step guidance that should help you do so:
+In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Can your algorithm achieve the same result as returned by `caret::train()` function?
 
--   The first steps are the same as done in this tutorial:
-    -   Source the file `eval_model.R`, as done in the tutorial above.
-    -   Load and wrangle the daily-aggregated data from the Davos FLUXNET site, as done in the tutorial above.
-    -   Create a test and train split
--   Now let's focus on the cross validation
-    -   The functions from {rsample} create a test and train split 
--   To make your life simpler, wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of $k$'s to test
--   
+-  Load, wrangle and split the data from the Davos FLUXNET site as done in the tutorial.
+-  Carefully read the tutorial's explanation for how to conduct a cross validation and put it into code.
+-  Use your cross-validation algorithm to find the best $k$.
+-  Train your final model, report its estimated error and evaluate it against the test set.
+-  Compare your results to the ones from using {caret}, using the same setup (trainin data, number of folds, $k$).
+-  Interpret your results
+    - What is the optimal $k$ that you find? Does it depend on the model metric you pick for cross-validation?
+    - Is the error on the test set within the estimated error? Why so, wy not?
+    - What are the differences between your implementation of a cross-validation and the one in {caret}?
+
+> Hint: Wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of $k$'s to test
+> Hint: Use the script `eval_model.R` (downloadable [here](https://raw.githubusercontent.com/geco-bern/agds/main/R/eval_model.R)).
+
 
 ## Report Exercises
 
 > *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
-In this tutorial's exercise, you will explore the key idea of generalisability!
+In this tutorial's exercise, you will explore the key idea of generalisability. The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
 
-The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
-
--   How do the model metric on the test set change, when you are training and testing on the same or on different datasets?
+-   How do the model metric on the test set change when you are train and test on the same or on different datasets?
 -   What are the differences between Davos and Laegern that could cause the pattern that you found?
 -   What do you expect when training and testing on Davos and Laegern simultaneously? Is this a valid approach? Use your new knowledge to reason for or against a situation where you would train on both sites.

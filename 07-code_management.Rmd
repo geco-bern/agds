@@ -150,12 +150,7 @@ knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/mater
 
 Git pull compares your local git repository with the remote one and implements more recent changes if there are any. Note, that if you make changes on both sides, i.e. your remote and local repository, at the same time you will generate a *merge conflict*. A merge conflict states that remote and local changes can't be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.
 
-    <<<<<<< HEAD
-    Adding some content to mess with it later
-    Append this text to initial commit
-    =======
     Changing the contents of text file from new branch
-    >>>>>>> new_branch_for_merge_conflict
 
 You will need to remove the \<\<\<, === and \>\>\> brackets and retain the changes you want to resolve the conflict before committing the changes again. Content which is currently on file is separated by === to that which provides a conflict and to be merged.
 
@@ -200,7 +195,7 @@ Both code (and data) management require you to be conscientious about where you 
 
 In our [R project template](https://github.com/geco-bern/R_proj_template) we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.
 
-You can use the template in combination with a github based version (\@ref(gitworkflow)) control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be tracked by the workflows described above.
+You can use the template in combination with a github based version control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be tracked by the workflows described above.
 
 To use the template create a new repository on github, as you otherwise would using the big green button. If you are in the project on github you can hit the green button top right (Use this template).
 

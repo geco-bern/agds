@@ -220,8 +220,6 @@ predictors. If this is not given, one can resort to step-wise forward
 regression, where predictors are sequentially added based on which
 predictor adds the most additional information at each step. 
 
-<!-- XXXexercises XXX. -->
-
 When multiple predictors are linearly correlated, then linear regression
 cannot discern individual effects and individual predictors may appear
 statistically insignificant when they would be significant if covarying
@@ -635,8 +633,6 @@ The slope refers to the slope of the linear regression line between predicted an
 coef(lm(y ~ y_fitted, data = df))[2]
 ```
 
-<!-- XXX Exercise: In supervised machine learning, a certain metric is chosen to guide the model training (fitting). Which metric would you chose as a target for optimisation. Discuss why. XXX -->
-
 #### Metrics for regression model comparison
 
 In general, the aim of regression modelling is to find a model that best explains
@@ -973,8 +969,6 @@ imbalanced classes and interpreting your results.
 ```{r roccurve, echo = FALSE, fig.cap = "ROC curves and how they compare, from [Wikipedia](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)."}
 knitr::include_graphics("figures/Roc_curve.png")
 ```
-
-<!-- XXX Exercises: Fit regression (NIGHT ~ SW), vary tau, plot TPR vs FPR. Fit second regression (NIGHT ~ TEMPERATURE), do the same. Interpret ROC curves. -->
 
 -   **AUC**: The "area under the curve" is defined as the area left
     below the ROC curve. For a random classifier we would have AUC=0.5

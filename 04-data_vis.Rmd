@@ -542,7 +542,7 @@ A key part of data cleaning is to detect and understand where outliers are comin
 
 As explored in the previous Chapter's exercises, GPP varies strongly with the diurnal and seasonal cycle. Create a publication-ready figure showing both cycles in one single plot that is fully labelled, easy to read, and colorblind-friendly:
 
--   Again, start with the cleand the half-hourly dataset for site CH-Lae.
+-   Again, start with the cleaned the half-hourly dataset for site CH-Lae.
 -   To get the diurnal and seasonal trend, summarise the half-hourly data by the hour of the day and the day of the year simultaneously and calculate mean values for GPP for each group.
 -   Create a plot with {ggplot2} using the temporal variables as axes and GPP as color.
 -   Make this figure ready for publication: 
@@ -571,5 +571,10 @@ This exercise explores the change of CO$_2$, measured at the famous Mauna Loa ob
 ### Telling a story from data {-}
 
 In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to tell a story about the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console).
+
+Your solution has to include:
+-  At least three publishable figures that show important patterns (e.g., outliers, temporal patterns, scatterplots of correlations, etc.)
+-   A description of the data that includes at least three statistical metrics that are relevant for the problem (argue for why you chose these metrics).
+-   Interpretation and discussion of your results and hypotheses. The text alone should not exceed one A4 page (max. 400 words).
 
 > Hint: To get more background information on the data, use the help functionalities in RStudio.
