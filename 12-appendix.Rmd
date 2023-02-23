@@ -1044,6 +1044,8 @@ my_folds <- 10
 ```
 
 
+<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
+<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r eval=FALSE, message=FALSE}
 # Run cross validation
 df_cv <- cross_validation_by_hand(
@@ -1086,13 +1088,12 @@ df_best <-
 saveRDS(df_best, "data/solutions/smlii_dfbest.rds")
 saveRDS(df_long, "data/solutions/smlii_dflong.rds")
 ```
-
-
 ```{r include=FALSE}
 # Load data when rendering book online
 df_best <- readRDS("data/solutions/smlii_dfbest.rds")
 df_long <- readRDS("data/solutions/smlii_dflong.rds")
 ```
+<!-- >>> END OF CHECK <<< -->
 
 ```{r}
 # Check what out our dataframes look like
@@ -1147,6 +1148,8 @@ Therefore, we now train our model again with the average optimal $k$ found but t
 
 #### Teseting our hypothesis {.unnumbered}
 
+<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
+<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r eval=FALSE, message=FALSE}
 # Get the optimal k from our cross-validation exercise 
 my_k <- mean(df_best$k) |> round()
@@ -1218,16 +1221,16 @@ saveRDS(mycv_eval, "data/solutions/smlii_mycv_eval.rds")
 saveRDS(caretcv_knn, "data/solutions/smlii_caretcv_knn.rds")
 saveRDS(caretcv_eval, "data/solutions/smlii_caretcv_eval.rds")
 ```
-
-
 ```{r include=FALSE}
 # Load data when rendering book online
 metrics_final_model <- readRDS("data/solutions/smlii_metrics_final_model.rds")
 mycv_knn <- readRDS("data/solutions/smlii_mycv_knn.rds")
-mycv_eva <- readRDS("data/solutions/smlii_mycv_eval.rds")
-caretcv_kn <- readRDS("data/solutions/smlii_caretcv_knn.rds")
+mycv_eval <- readRDS("data/solutions/smlii_mycv_eval.rds")
+caretcv_knn <- readRDS("data/solutions/smlii_caretcv_knn.rds")
 caretcv_eval <- readRDS("data/solutions/smlii_caretcv_eval.rds")
 ```
+
+<!-- >>> END OF CHECK <<< -->
 
 ```{r}
 # Finally, compare the cross-validated metrics against the metrics on the test set
@@ -1246,7 +1249,7 @@ cat("\nCross-Validated Metrics by hand: \n",
     " R^2: ",  round(mycv_eval$test$.estimate[2], 3) ,"\n",
     " MAE: ",  round(mycv_eval$test$.estimate[3], 3) ,"\n",
     
-    "\nMetrics on Test Set by {caret}?:\n",
+    "\nMetrics on Test Set by {caret}:\n",
     " RMSE: ", round(caretcv_eval$test$.estimate[1], 3) ,"\n",
     " R^2: ",  round(caretcv_eval$test$.estimate[2], 3) ,"\n",
     " MAE: ",  round(caretcv_eval$test$.estimate[3], 3) ,"\n")
@@ -1258,7 +1261,7 @@ Nice, these number look good! They give us two key results:
 
 1.  The cross-validated estimated model metrics are very similar between using our own algorithm and the {caret} package, suggesting that our implementation is correct. Also, the metrics on the test set of the our and {caret}'s model are identical!
 
-2.  When testing our final model, the model that was was trained on the full training set, against the test data, it shows model metrics that are within the range of our estimated cross-validated metrics. For example, the cross-validation shows that if we are training a model on the full dataset and test it on unseen data, we expect that the MAE would fall within `r round(df_long$mean[3], 3)` +/- `r round(df_long$sd[3], 3)`. We found an MAE on the test set of `r round(eval$test$.estimate[3], 3)`, which is within the expected range. Therefore, we can assume that our model would predict on unseen data with a similar uncertainty.
+2.  When testing our final model, the model that was was trained on the full training set, against the test data, it shows model metrics that are within the range of our estimated cross-validated metrics. For example, the cross-validation shows that if we are training a model on the full dataset and test it on unseen data, we expect that the MAE would fall within 1.148  +/- 0.075. We found an MAE on the test set of 1.149, which is within the expected range. Therefore, we can assume that our model would predict on unseen data with a similar uncertainty.
 
 <!-- Exercise Improvements:
 - The splitting between train and validation data does not account for distributions of variables. This could be improved.
