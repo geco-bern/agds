@@ -220,11 +220,11 @@ To ensure long term storage of code and data, outside of commercial for profit s
 
 > *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
-### External data
+### External data {-}
 
 You inherit a project folder which contains the following files.
 
-``` bash
+```
 ~/project/
 ├─ survey.xlsx
 ├─ xls conversion.csv
@@ -242,7 +242,7 @@ You inherit a project folder which contains the following files.
 
 What are your steps to make this project more reproducible? Write down how and why you would organize your project.
 
-### A new project
+### A new project {-}
 
 What are the basic steps to create a reproducible workflow from a file management perspective? Create your own R project using these principles and provide details the on steps involved and why they matter.
 
@@ -256,7 +256,7 @@ The project should be a reproducible workflow:
 
 -   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
 
-### Tracking the state of your project
+### Tracking the state of your project {-}
 
 -   Track the packages you use in the project you created using {renv}
 

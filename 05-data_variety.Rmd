@@ -447,7 +447,7 @@ Below you find a list of common environmental data repositories which provide ma
 
 > *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
-### Files and file formats
+### Files and file formats {-}
 
 #### Reading and writing human readable files {.unnumbered}
 
@@ -461,9 +461,6 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_3.csv
 
 Once loaded into your R environment, combine and save all data as a **temporary** `CSV` file. Read in the new temporary `CSV` file, and save it as a `JSON` file in your current working directory.
 
-``` r
-# Your solution script
-```
 
 #### Reading and writing binary files {.unnumbered}
 
@@ -477,26 +474,12 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
 2.  What library would you use to read this kind of data?
 3.  What does this file contain?
 4.  Write this file to disk in a different geospatial format you desire (use the R documentation of the library used to read the file and the chapter information).
+5.  Download and open the following file:  `https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif`. Does this data seem familiar, and how can you tell? What are your conclusions?
 
-``` r
-# Your solution script
-```
 
-Download and open the following file:
+### API use {-}
 
-``` r
-https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif
-```
-
-1.  Does this data seem familiar, and how can you tell? What are your conclusions?
-
-``` r
-# Your solution script
-```
-
-### API use
-
-#### GET
+#### GET {.unnumbered}
 
 1.  Download the HWSD total sand content data for the extent of Switzerland following the tutorial example. Visualize/plot the data as a simple map.
 2.  Download the HWSD topsoil silt content for the extent of Switzerland.
