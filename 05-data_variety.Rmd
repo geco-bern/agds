@@ -472,18 +472,7 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
 2.  What library would you use to read this kind of data?
 3.  What does this file contain?
 4.  Write this file to disk in a different geospatial format you desire (use the R documentation of the library used to read the file and the chapter information).
-
-``` r
-# Your solution script
-```
-
-Download and open the following file:
-
-``` r
-https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif
-```
-
-1.  Does this data seem familiar, and how can you tell? What are your conclusions?
+5.  Download and open the following file:  `https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif`. Does this data seem familiar, and how can you tell? What are your conclusions?
 
 
 ### API use {-}
