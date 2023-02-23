@@ -248,6 +248,8 @@ dplyr::starwars |>
   slice(1)
 ```
 
+> Use `unnest()` to expand columns that contain lists inside cells. The expansion of such columns creates additional rows in the data frame if the cell contained a list with more than one element. 
+
 ### Aggregating {-}
 
 Reuse the code in the tutorial to read, reduce, clean, and aggregate the `hhdf` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values for each day: maximum value, minimum value, median, and standard deviation.

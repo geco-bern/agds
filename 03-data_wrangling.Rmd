@@ -732,6 +732,8 @@ a.  How many pale characters come from the planets Ryloth and Naboo?
 b.  Who is the oldest of the tallest thirty characters?
 c.  What is the name of the smallest character and their starship in "Return of the Jedi"
 
+> Use `unnest()` to expand columns that contain lists inside cells. The expansion of such columns creates additional rows in the data frame if the cell contained a list with more than one element. 
+
 ### Aggregating {-}
 
 Reuse the code in the tutorial to read, reduce, clean, and aggregate the `hhdf` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values for each day: maximum value, minimum value, median, and standard deviation.
