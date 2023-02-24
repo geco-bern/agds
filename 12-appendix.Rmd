@@ -570,16 +570,28 @@ Beautiful, isn't it? We  nicely see that on practically all days of the year we 
 
 This exercise explores the longest available atmospheric CO$_2$ record, obtained at the Mauna Loa observatory in Hawaii. Atmospheric CO$_2$ in the northern hemisphere is characterised by seasonal swings, caused by the seasonal course of CO$_2$ uptake and release by the terrestrial biosphere. We've explored the seasonality of the CO$_2$ uptake measured at one site (in Switzerland) extensively in this an previous chapters. Your task here is to calculate and visualise the long-term trend of CO$_2$. Follow these steps:
 
--   Download the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
-```{r}
-ml_co2 <- readr::read_csv("data/co2_mm_mlo.csv", skip = 56) |> # Skip metadata till line 56
-  
-  # interpret missing values
+-   Download and read the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
+
+```{r warnings=FALSE, message=FALSE}
+
+# download the file
+download.file(
+  "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv",
+  "data/co2_mm_mlo.csv"
+  )
+
+# read in the data
+ml_co2 <- readr::read_csv(
+  "data/co2_mm_mlo.csv",
+  skip = 56) 
+
+# wrangle the data
+# interpret missing values
+# rename to avoid white space in column name
+ml_co2 <- ml_co2 |>
   dplyr::na_if(-9.99) |> 
   dplyr::na_if(-0.99) |> 
-  dplyr::na_if(-1) |> 
-  
-  # rename to avoid white space in column name
+  dplyr::na_if(-1) |>
   rename(year_dec = `decimal date`)
 ```
 
@@ -593,10 +605,15 @@ ml_co2 |>
 -   Write a function that computes a 12-month running mean of the CO$_2$ time series. The running mean for month $m$ should consider values of $m-5$ to $m+6$. Define arguments for the function that let the user specify the width of the running mean "box" (i.e., setting the $5$ and $6$ to any other integer of choice) 
 ```{r}
 # Write the running mean function
-running_mean <- function(vec,     # Input vector
-                         left,    # Number of elements to the left
-                         right    # Number of elements to the right
-                         ){
+# variables are defined as:
+# Input vector (vec)
+# Number of elements to the left (left)
+# Number of elements to the right (right)
+running_mean <- function(
+    vec,
+    left,
+    right
+) {
   
   # Create an empty vector of the same length as the input data
   vec_out <- rep(NA, length(vec))
@@ -615,7 +632,9 @@ running_mean <- function(vec,     # Input vector
 }
 
 ml_co2 <- ml_co2 |> 
-  mutate(average_12m = running_mean(average, left = 5, right = 6))
+  mutate(
+    average_12m = running_mean(average, left = 5, right = 6)
+    )
 ```
 
 -   Make a publication-ready figure that shows the monthly and the 12-month running mean time series of the CO$_2$ record.
@@ -755,7 +774,9 @@ In R:
 ```{r eval=FALSE}
 # read unknown netcdf file using the {terra} library
 library(terra)
-unknown_netcdf <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc")
+unkown_netcdf <- terra::rast(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc"
+  )
 
 # print the meta-data by calling the variable
 unknown_netcdf
@@ -787,7 +808,9 @@ terra::writeRaster(
 ```{r eval=FALSE}
 # read unknown tif file using the {terra} library
 library(terra)
-unknown_tif <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif")
+unkown_tif <- terra::rast(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif"
+  )
 
 # print the meta-data by calling the variable
 unknown_tif
@@ -839,7 +862,6 @@ This exercise trains your ability to access and wrangle data yourself in a repro
 ### Tracking the state of your project {-}
 
 *No solutions provided.*
-
 
 ## Code Management
 
@@ -1033,9 +1055,6 @@ my_k <- c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)
 my_folds <- 10
 ```
 
-
-<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
-<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r eval=FALSE, message=FALSE}
 # Run cross validation
 df_cv <- cross_validation_by_hand(
@@ -1138,8 +1157,6 @@ Therefore, we now train our model again with the average optimal $k$ found but t
 
 #### Teseting our hypothesis {.unnumbered}
 
-<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
-<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r eval=FALSE, message=FALSE}
 # Get the optimal k from our cross-validation exercise 
 my_k <- mean(df_best$k) |> round()
@@ -1513,10 +1530,12 @@ for(splitrule_value in splitrule_values){
                           .min.node.size = 5,             # best min.node.size
                           .splitrule = splitrule_value),  # modify
     # arguments specific to "ranger" method
+    # keep num.trees keep small for computation
+    # for reproducibility set the seed value
     replace = FALSE,
     sample.fraction = 0.5,
-    num.trees = 100,                                     # keep small for computation
-    seed = 1982                                          # for reproducibility
+    num.trees = 100,
+    seed = 1982
   )
   
   results <- rbind(results, mod$results)
@@ -1539,14 +1558,17 @@ mod <- caret::train(
   metric = "RMSE",
   trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
   # expand grid of tunable hyperparameters
-  tuneGrid = expand.grid( .mtry = mtry_values,             
-                        .min.node.size = min.node.size_values,    
-                        .splitrule = splitrule_values),  
+  tuneGrid = expand.grid(
+    .mtry = mtry_values,             
+    .min.node.size = min.node.size_values,    
+    .splitrule = splitrule_values),
   # arguments specific to "ranger" method
+  # keep num.trees keep small for computation
+  # for reproducibility set the seed value
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 100,                                     # keep small for computation
-  seed = 1982                                          # for reproducibility
+  num.trees = 100,
+  seed = 1982
 )
 ```
 
@@ -1578,16 +1600,22 @@ mod_best <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+    ),
   # expand grid of tunable hyperparameters
   tuneGrid = expand.grid( .mtry = 6,             
                         .min.node.size = 10,    
                         .splitrule = "extratrees"),  
   # arguments specific to "ranger" method
+  # keep num.trees keep small for computation
+  # for reproducibility set the seed value
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 100,                                     # keep small for computation
-  seed = 1982                                          # for reproducibility
+  num.trees = 100,
+  seed = 1982
 )
 
 # Get predictions
@@ -1599,21 +1627,35 @@ mod_worst <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+    ),
   # expand grid of tunable hyperparameters
   tuneGrid = expand.grid( .mtry = 2,             
                         .min.node.size = 20,    
                         .splitrule = "maxstat"),  
   # arguments specific to "ranger" method
+  # keep num.trees keep small for computation
+  # for reproducibility set the seed value
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 100,                                     # keep small for computation
-  seed = 1982                                          # for reproducibility
+  num.trees = 100,
+  seed = 1982
 )
 
 source("R/eval_model.R")
-eval_model(mod_best, daily_fluxes_train, daily_fluxes_test)
-eval_model(mod_worst, daily_fluxes_train, daily_fluxes_test)
+eval_model(
+  mod_best,
+  daily_fluxes_train,
+  daily_fluxes_test
+  )
+eval_model(
+  mod_worst,
+  daily_fluxes_train,
+  daily_fluxes_test
+  )
 ```
 
 The performance on the test set for the best model is still close to the performance on the training set, so the model doesn't seem to overfit. The same goes for the worse model, which leads to worse $R^2$ and RMSE and visually the fit is slightly worse.
