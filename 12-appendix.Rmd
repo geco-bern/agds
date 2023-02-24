@@ -556,9 +556,12 @@ Beautiful, isn't it? We  nicely see that on practically all days of the year we 
 
 This exercise explores the longest available atmospheric CO$_2$ record, obtained at the Mauna Loa observatory in Hawaii. Atmospheric CO$_2$ in the northern hemisphere is characterised by seasonal swings, caused by the seasonal course of CO$_2$ uptake and release by the terrestrial biosphere. We've explored the seasonality of the CO$_2$ uptake measured at one site (in Switzerland) extensively in this an previous chapters. Your task here is to calculate and visualise the long-term trend of CO$_2$. Follow these steps:
 
--   Download the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
-```{r}
-ml_co2 <- readr::read_csv("data/co2_mm_mlo.csv", skip = 56) |>
+-   Download and read the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
+
+```{r warnings=FALSE, message=FALSE}
+ml_co2 <- readr::read_csv(
+  "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv",
+  skip = 56) |>
   
   # interpret missing values
   dplyr::na_if(-9.99) |> 
@@ -724,7 +727,9 @@ jsonlite::write_json(demo_all_new, path = "./my_json_file.json")
 ```{r eval=FALSE}
 # read unknown netcdf file using the {terra} library
 library(terra)
-unkown_netcdf <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc")
+unkown_netcdf <- terra::rast(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc"
+  )
 
 # print the meta-data by calling the variable
 unknown_netcdf
@@ -747,7 +752,9 @@ terra::writeRaster(
 ```{r eval=FALSE}
 # read unknown tif file using the {terra} library
 library(terra)
-unkown_tif <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif")
+unkown_tif <- terra::rast(
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif"
+  )
 
 # print the meta-data by calling the variable
 unknown_tif
@@ -799,7 +806,6 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 ### Tracking the state of your project {-}
 
 *No solutions provided.*
-
 
 ## Code Management
 
