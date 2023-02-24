@@ -596,9 +596,14 @@ daily_fluxes_allsites
 
 A visualisation of missing data indicates that soil water content data (`SWC_F_MDS_*`) are often missing.
 
-```{r}
+```{r }
+# create a subset of the data
+daily_fluxex_subset <- daily_fluxes_allsites |>
+  slice(1:10000)
+
+# visualize missing data
 visdat::vis_miss(
-  daily_fluxes_allsites |> slice(1:10000),
+  daily_fluxex_subset,
   cluster = FALSE,
   warn_large_data = FALSE
   )
@@ -720,13 +725,17 @@ Joining the nested data frame with site meta information results in a substantia
 ```{r}
 daily_fluxes_allsites_nested_joined <- siteinfo_fluxnet2015 |>
   rename(siteid = sitename) |>
-  right_join(select(daily_fluxes_allsites_nested, -linmod, -summ, -rsq),
-             by = "siteid")
+  right_join(
+    select(daily_fluxes_allsites_nested, -linmod, -summ, -rsq),
+    by = "siteid"
+  )
 
 daily_fluxes_allsites_joined <- siteinfo_fluxnet2015 |>
   rename(siteid = sitename) |>
-  right_join(daily_fluxes_allsites,
-             by = "siteid")
+  right_join(
+    daily_fluxes_allsites,
+    by = "siteid"
+  )
 
 print(paste("Flat and joined:", 
             format(object.size(daily_fluxes_allsites_joined),  
