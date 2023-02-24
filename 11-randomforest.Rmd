@@ -173,7 +173,7 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + 
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
-```{r, eval=FALSE}
+```{r}
 # Train the model
 mod <- caret::train(
   pp, 

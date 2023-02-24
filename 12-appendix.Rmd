@@ -347,15 +347,15 @@ daily_fluxes |>
                names_to = "quality", 
                values_to = "fraction") |> 
   ggplot(aes(x = hour_of_day, 
-             y = fraction * 100, # *100 to get percentages 
+             y = fraction * 100,     # *100 to get percentages 
              color = quality)) +
-  geom_line(size = 1.5) +
-  theme_classic() +
-  scale_color_brewer(
-    "Quality",
-    labels = c("Good", "Measured", "Medium", "Poor"),
-    palette = 3,
-    direction = -1
+  geom_line(linewidth = 1.5) +       # make lines bit bigger
+  theme_classic() +                  # Pick a nice theme
+  scale_color_brewer(                # Pick a nice color palette
+    "Quality",                       # Give legend a title
+    labels = c("Good", "Measured", "Medium", "Poor"), # Give legend levels a label
+    palette = 3,                     # Pick color palette
+    direction = -1                   # Inverse order of color palette
   ) +
   labs(
     title = "Temporal pattern of GPP quality",
@@ -572,7 +572,7 @@ This exercise explores the longest available atmospheric CO$_2$ record, obtained
 
 -   Download the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
 ```{r}
-ml_co2 <- readr::read_csv("data/co2_mm_mlo.csv", skip = 56) |>
+ml_co2 <- readr::read_csv("data/co2_mm_mlo.csv", skip = 56) |> # Skip metadata till line 56
   
   # interpret missing values
   dplyr::na_if(-9.99) |> 
@@ -637,7 +637,8 @@ plot_data |>
   geom_line(aes(date, average_12m, color = "12-month running mean")) +
   
   # Style the plot
-  theme(legend.position = c(0.75, 0.25)) + # Move legend into the plot (c(x, y))
+  theme_classic() +
+  theme(legend.position = c(0.25, 0.75)) + # Move legend into the plot (c(x, y))
   scale_color_manual(
     "", # Omit legend title
     values = c("tomato", "black"),
@@ -645,8 +646,7 @@ plot_data |>
   ) +
   labs(title = expression(paste("Atmospheric CO"[2], " concentrations at Manua Lao, Hawaii")),
        y     = expression(paste("CO"[2], "(ppm)")),
-       x     = "Year") +
-  theme_classic()
+       x     = "Year")
 ```
 
 <!-- ### Telling a story from data {-} -->
@@ -1504,7 +1504,6 @@ According to the last round of tuning, we should use `spliturle = "extratrees"`.
 
 ```{r eval=FALSE}
 set.seed(1403)    # for reproducibility
-
 mod <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
@@ -1525,10 +1524,10 @@ mod <- caret::train(
 ```
 
 ```{r, include = FALSE, eval = FALSE}
-saveRDS(mod, "data/tutorials/rf_mod_gridsearch.rds")
+saveRDS(mod, "data/solutions/rf_mod_gridsearch.rds")
 ```
 ```{r, include = FALSE}
-mod <- readRDS("data/tutorials/rf_mod_gridsearch.rds")
+mod <- readRDS("data/solutions/rf_mod_gridsearch.rds")
 ```
 
 ```{r}
