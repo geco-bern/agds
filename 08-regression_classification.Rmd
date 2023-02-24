@@ -501,7 +501,7 @@ bind_rows(list_metrics, .id = "type")
 Classification models predict a categorical target variable. Note that predictors of a classification model may still be, and often are, continuous. We will introduce a classification problem with a binary target, since it's straightforward to generalize to categorical variables with more than two classes. As an example, we use the `CO2` dataset from the [{datasets} package](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html), which contains data from an experiment on the cold tolerance of the grass species *Echinochloa crus-galli*. 
 
 ```{r label="grass", echo=FALSE, fig.cap="*Echinochloa crus-galli*, image from [swbiodiversity.org](https://swbiodiversity.org/seinet/taxa/index.php?taxon=2915)", out.width="60%", fig.align='center'}
-knitr::include_graphics("figures/grass.png")
+knitr::include_graphics("https://swbiodiversity.org/imglib/h_seinet/seinet/genfield/palexander/set003/Echinochloa_c-g_19Aug06_1595.jpg")
 ```
 
 We will try to classify the origin of each plant (categorical variable `Type` with values `Quebec` or `Mississippi`) depending on the carbon dioxide uptake rate of the plant (continuous variable `uptake` measured in $\mu$mol m$^{-2}$s$^{-1}$). More information on the dataset can be obtained by typing `?datasets::CO2` in the console.
