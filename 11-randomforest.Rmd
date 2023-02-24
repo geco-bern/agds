@@ -49,13 +49,15 @@ df_train <- tibble::tibble(
 plot_tree_fit <- function(df, depth){
 
   # fit decision tree
-  mod <- rpart::rpart(y ~ x, 
-               data = df, 
-               control = list(cp = 0, 
-                              minbucket = 5, 
-                              maxdepth = depth
-                              )
-               )
+  mod <- rpart::rpart(
+    y ~ x, 
+    data = df, 
+    control = list(
+      cp = 0, 
+      minbucket = 5, 
+      maxdepth = depth
+    )
+  )
   
   # training results
   df <- df |> 
@@ -209,10 +211,15 @@ mod <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-  tuneGrid = expand.grid( .mtry = floor(6 / 3),
-                          .min.node.size = 5,
-                          .splitrule = "variance"),
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"),
+  tuneGrid = expand.grid(
+    .mtry = floor(6 / 3),
+    .min.node.size = 5,
+    .splitrule = "variance"
+    ),
   # arguments specific to "ranger" method
   replace = FALSE,
   sample.fraction = 0.5,
