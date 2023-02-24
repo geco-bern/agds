@@ -256,9 +256,13 @@ You have learned about aggregating in the {tidyverse}. Let's put it in practice.
 
 - Reuse the code in the tutorial to read, reduce, and aggregate the `half_hourly_fluxes` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values within each day: mean, 25% quantile, and 75% quantile. 
 ```{r message=FALSE, warning=FALSE}
-half_hourly_fluxes <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |>
-  
-  # Select only variables that we are interested in
+# read half hourly fluxes
+half_hourly_fluxes <- readr::read_csv(
+  "data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv"
+  ) 
+
+# Select only variables that we are interested in
+half_hourly_fluxes <- half_hourly_fluxes |>
   dplyr::select(
     starts_with("TIMESTAMP"),
     ends_with("_F"),
@@ -268,18 +272,18 @@ half_hourly_fluxes <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006
     -contains("JSB")
   )
 
+# Clean the datetime objects
+# and aggregate to daily scale
 daily_fluxes <- half_hourly_fluxes |>  
-
-  # Clean the datetime objects
-  dplyr::mutate(date_time = lubridate::ymd_hm(TIMESTAMP_START),
-                date      = lubridate::date(date_time)) |>
-
-  # Aggregate to daily scale
+  dplyr::mutate(
+    date_time = lubridate::ymd_hm(TIMESTAMP_START),
+    date = lubridate::date(date_time)) |>
   dplyr::group_by(date) |> 
-  dplyr::summarise(mean = mean(VPD_F),
-                   q25  = quantile(VPD_F, probs = 0.25),
-                   q75  = quantile(VPD_F, probs = 0.75)
-                   )
+  dplyr::summarise(
+    mean = mean(VPD_F),
+    q25  = quantile(VPD_F, probs = 0.25),
+    q75  = quantile(VPD_F, probs = 0.75)
+  )
 ```
 
 - Retain only the daily data for which the daily mean VPD is among the upper or the lower 10% quantiles.
@@ -308,8 +312,10 @@ daily_fluxes_sub <- daily_fluxes |>
 ```{r}
 daily_fluxes_sub |> 
   group_by(qq) |> 
-  summarise(q25_mean = mean(q25),
-            q75_mean = mean(q75))
+  summarise(
+    q25_mean = mean(q25),
+    q75_mean = mean(q75)
+  )
 ```
 
 
@@ -368,24 +374,38 @@ daily_fluxes |>
 Perform an aggregation of the half-hourly GPP data (variable `GPP_NT_VUT_REF`) to daily means of the unmodified data read from file `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`, and from cleaned data where only measured (not gap-filled) half-hourly data is kept and aggregated. This yields two data frames with daily GPP data. Calculate the overall mean GPP for the two data frames (across all days in the data frame). Are the overall mean GPP values equal? If not, why?
 ```{r message=FALSE, warning=FALSE}
 daily_fluxes_all <- half_hourly_fluxes |>
-  dplyr::mutate(date_time = lubridate::ymd_hm(TIMESTAMP_START),
-                date      = lubridate::date(date_time)) |>
+  dplyr::mutate(
+    date_time = lubridate::ymd_hm(TIMESTAMP_START),
+    date = lubridate::date(date_time)
+  ) |>
   dplyr::group_by(date) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE))
+  dplyr::summarise(
+    GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE)
+  )
 
 daily_fluxes_cleaned <- half_hourly_fluxes |>
-  dplyr::mutate(date_time = lubridate::ymd_hm(TIMESTAMP_START),
-                date      = lubridate::date(date_time)) |>
-  mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC == 0, GPP_NT_VUT_REF, NA)) |> 
+  dplyr::mutate(
+    date_time = lubridate::ymd_hm(TIMESTAMP_START),
+    date = lubridate::date(date_time)
+  ) |>
+  dplyr::mutate(
+    GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC == 0, GPP_NT_VUT_REF, NA)
+    ) |> 
   dplyr::group_by(date) |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE))
+  dplyr::summarise(
+    GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE)
+  )
 
 # overall means
 daily_fluxes_all |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE))
+  summarise(
+    GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE)
+  )
 
 daily_fluxes_cleaned |> 
-  summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE))
+  summarise(
+    GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE)
+  )
 ```
 
 <!-- ### Tidying an Excel-file {-} -->
@@ -583,7 +603,8 @@ download.file(
 # read in the data
 ml_co2 <- readr::read_csv(
   "data/co2_mm_mlo.csv",
-  skip = 56) 
+  skip = 56
+  )
 
 # wrangle the data
 # interpret missing values
@@ -1338,10 +1359,16 @@ rf_12_4 <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-  tuneGrid = expand.grid( .mtry = floor(6 / 3),        # default p/3
-                        .min.node.size = 5,            # default 5
-                        .splitrule = "variance"),      # default "variance"
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+    ),
+  tuneGrid = expand.grid(
+    .mtry = floor(6 / 3),        # default p/3
+    .min.node.size = 5,            # default 5
+    .splitrule = "variance"      # default "variance"
+  ),
   # arguments specific to "ranger" method
   replace = FALSE,
   max.depth = 4,
@@ -1365,16 +1392,22 @@ rf_1000_4 <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-  tuneGrid = expand.grid( .mtry = floor(6 / 3),        # default p/3
-                        .min.node.size = 5,            # default 5
-                        .splitrule = "variance"),      # default "variance"
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+    ),
+  tuneGrid = expand.grid(
+    .mtry = floor(6 / 3),       # default p/3
+    .min.node.size = 5,         # default 5
+    .splitrule = "variance"     # default variance
+    ),
   # arguments specific to "ranger" method
   replace = FALSE,
   max.depth = 4,
   sample.fraction = 0.5,
   num.trees = 1000,       
-  seed = 1982                                          # for reproducibility
+  seed = 1982
 )
 
 # generic print
@@ -1389,16 +1422,22 @@ rf_12_6 <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-  tuneGrid = expand.grid( .mtry = floor(6 / 3),        # default p/3
-                        .min.node.size = 5,            # default 5
-                        .splitrule = "variance"),      # default "variance"
+  trControl = trainControl(
+    method = "cv",
+    number = 5, 
+    savePredictions = "final"
+    ),
+  tuneGrid = expand.grid(
+    .mtry = floor(6 / 3),        # default p/3
+    .min.node.size = 5,          # default 5
+    .splitrule = "variance"      # default "variance"
+  ),
   # arguments specific to "ranger" method
   replace = FALSE,
   max.depth = 6,
   sample.fraction = 0.5,
   num.trees = 12,       
-  seed = 1982                                          # for reproducibility
+  seed = 1982
 )
 
 # generic print
@@ -1461,15 +1500,21 @@ for(mtry_value in mtry_values){
       drop_na(), 
     method = "ranger",
     metric = "RMSE",
-    trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-    tuneGrid = expand.grid( .mtry = mtry_value,           # modify mtry
-                          .min.node.size = 5,            # default 5
-                          .splitrule = "variance"),      # default "variance"
+    trControl = trainControl(
+      method = "cv",
+      number = 5,
+      savePredictions = "final"
+      ),
+    tuneGrid = expand.grid(
+      .mtry = mtry_value,           # modify mtry
+      .min.node.size = 5,           # default 5
+      .splitrule = "variance"       # default "variance"
+      ),
     # arguments specific to "ranger" method
     replace = FALSE,
     sample.fraction = 0.5,
-    num.trees = 100,                                     # keep small for computation
-    seed = 1982                                          # for reproducibility
+    num.trees = 100,
+    seed = 1982
   )
   
   results <- rbind(results, mod$results)
@@ -1494,15 +1539,22 @@ for(min.node.size_value in min.node.size_values){
       drop_na(), 
     method = "ranger",
     metric = "RMSE",
-    trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-    tuneGrid = expand.grid( .mtry = 2,      # best mtry
-                          .min.node.size = min.node.size_value,   # modify
-                          .splitrule = "variance"),      # default "variance"
+    trControl = trainControl(
+      method = "cv",
+      number = 5,
+      savePredictions = "final"
+      ),
+    tuneGrid = expand.grid(
+      .mtry = 2,      # best mtry
+      .min.node.size = min.node.size_value,   # modify
+      .splitrule = "variance"       # default "variance"
+      ),
     # arguments specific to "ranger" method
-    replace = FALSE,
+    # keep num.trees keep small for computation
+    # for reproducibility set the seed value
     sample.fraction = 0.5,
-    num.trees = 100,                                     # keep small for computation
-    seed = 1982                                          # for reproducibility
+    num.trees = 100,
+    seed = 1982
   )
   
   results <- rbind(results, mod$results)
@@ -1525,10 +1577,16 @@ for(splitrule_value in splitrule_values){
       drop_na(), 
     method = "ranger",
     metric = "RMSE",
-    trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
-    tuneGrid = expand.grid( .mtry = 4,                    # best mtry
-                          .min.node.size = 5,             # best min.node.size
-                          .splitrule = splitrule_value),  # modify
+    trControl = trainControl(
+      method = "cv",
+      number = 5,
+      savePredictions = "final"
+      ),
+    tuneGrid = expand.grid(
+      .mtry = 4,                    # best mtry
+      .min.node.size = 5,             # best min.node.size
+      .splitrule = splitrule_value  # modify
+    ),
     # arguments specific to "ranger" method
     # keep num.trees keep small for computation
     # for reproducibility set the seed value
@@ -1556,12 +1614,17 @@ mod <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+  ),
   # expand grid of tunable hyperparameters
   tuneGrid = expand.grid(
     .mtry = mtry_values,             
     .min.node.size = min.node.size_values,    
-    .splitrule = splitrule_values),
+    .splitrule = splitrule_values
+    ),
   # arguments specific to "ranger" method
   # keep num.trees keep small for computation
   # for reproducibility set the seed value
@@ -1606,9 +1669,11 @@ mod_best <- caret::train(
     savePredictions = "final"
     ),
   # expand grid of tunable hyperparameters
-  tuneGrid = expand.grid( .mtry = 6,             
-                        .min.node.size = 10,    
-                        .splitrule = "extratrees"),  
+  tuneGrid = expand.grid(
+    .mtry = 6,             
+    .min.node.size = 10,    
+    .splitrule = "extratrees"
+  ),  
   # arguments specific to "ranger" method
   # keep num.trees keep small for computation
   # for reproducibility set the seed value
@@ -1633,9 +1698,11 @@ mod_worst <- caret::train(
     savePredictions = "final"
     ),
   # expand grid of tunable hyperparameters
-  tuneGrid = expand.grid( .mtry = 2,             
-                        .min.node.size = 20,    
-                        .splitrule = "maxstat"),  
+  tuneGrid = expand.grid(
+    .mtry = 2,             
+    .min.node.size = 20,    
+    .splitrule = "maxstat"
+  ),  
   # arguments specific to "ranger" method
   # keep num.trees keep small for computation
   # for reproducibility set the seed value
