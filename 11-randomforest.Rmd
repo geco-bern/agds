@@ -1,3 +1,11 @@
+```{r include = FALSE}
+RUN_MODEL <- ifelse(
+  length(system("echo $GITHUB_TOKEN", intern=TRUE)) <= 1,
+  TRUE,
+  FALSE
+  )
+```
+
 # Random Forest {#randomforest}
 
 **Chapter lead author: Benjamin Stocker**
@@ -37,11 +45,11 @@ df_train <- tibble::tibble(
   truth = sin(x)
 )
 
-# a function to 
+# a function to plot fit results
 plot_tree_fit <- function(df, depth){
 
   # fit decision tree
-  mod <- rpart(y ~ x, 
+  mod <- rpart::rpart(y ~ x, 
                data = df, 
                control = list(cp = 0, 
                               minbucket = 5, 
@@ -54,7 +62,9 @@ plot_tree_fit <- function(df, depth){
     modelr::add_predictions(mod, var = "y_pred")
   
   ## at equally spaced x
-  df_fit <- tibble(x = seq(from = min(df$x), to = max(df$x), length.out = 100)) |> 
+  df_fit <- tibble::tibble(
+    x = seq(from = min(df$x), to = max(df$x), length.out = 100)
+    ) |> 
     modelr::add_predictions(mod, var = "y_pred")
   
   gg <- ggplot() +
@@ -128,41 +138,45 @@ The number of variables to consider at each split is a hyperparameter of the Ran
 
 A great strength of Random Forest is, inherited by the characteristics of its underlying decision trees, its minimal requirement of data pre-processing, its capability of dealing with continuous and categorical variables, and its robustness to outliers. With the default choices of $m_\text{try}$, Random Forest provides very good out-of-the-box performance. However, the hyperparameters of Random Forest have interactive effects and should be searched systematically.
 
-<<<<<<< HEAD
 ```{r fitrandomforest}
 # Data loading and cleaning
-=======
-```{r message=FALSE}
 source("R/eval_model.R")
 
->>>>>>> cfb2161fd0c4e2603d74d3df0066f9a255613524
-daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
-  
-  # select only the variables we are interested in
-  dplyr::select(TIMESTAMP,
-                GPP_NT_VUT_REF,    # the target
-                ends_with("_QC"),  # quality control info
-                ends_with("_F"),   # includes all all meteorological covariates
-                -contains("JSB")   # weird useless variable
-                ) |>
+# read daily fluxes
+daily_fluxes <- readr::read_csv(
+  "./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv"
+  )
 
-  # convert to a nice date object
+# select only the variables we are interested in
+# such as the target (GPP_NT_VUT_REF), the
+# quality control parameters ending in QC,
+# the meteorological covariates ending in F,
+# while removing (-) a weird useless variable JSB
+# 
+# Subsequently convert dates to a nice date format
+# set all -9999 to NA and only retain values with
+# QC value of > 0.8
+daily_fluxes <- daily_fluxes |>  
+  dplyr::select(
+    TIMESTAMP,
+    GPP_NT_VUT_REF,
+    ends_with("_QC"),
+    ends_with("_F"),
+    -contains("JSB")
+  ) |>
   dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
-
-  # set all -9999 to NA
   dplyr::na_if(-9999) |>
+  dplyr::mutate(
+    GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF),
+    TA_F = ifelse(TA_F_QC < 0.8, NA, TA_F),
+    SW_IN_F = ifelse(SW_IN_F_QC < 0.8, NA, SW_IN_F),
+    LW_IN_F = ifelse(LW_IN_F_QC < 0.8, NA, LW_IN_F),
+    VPD_F = ifelse(VPD_F_QC < 0.8, NA, VPD_F),
+    PA_F = ifelse(PA_F_QC < 0.8, NA, PA_F),
+    P_F = ifelse(P_F_QC < 0.8, NA, P_F),
+    WS_F = ifelse(WS_F_QC < 0.8, NA, WS_F)
+    ) |> 
   
-  # retain only data based on >=80% good-quality measurements
-  # overwrite bad data with NA (not dropping rows)
-  dplyr::mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF),
-                TA_F           = ifelse(TA_F_QC        < 0.8, NA, TA_F),
-                SW_IN_F        = ifelse(SW_IN_F_QC     < 0.8, NA, SW_IN_F),
-                LW_IN_F        = ifelse(LW_IN_F_QC     < 0.8, NA, LW_IN_F),
-                VPD_F          = ifelse(VPD_F_QC       < 0.8, NA, VPD_F),
-                PA_F           = ifelse(PA_F_QC        < 0.8, NA, PA_F),
-                P_F            = ifelse(P_F_QC         < 0.8, NA, P_F),
-                WS_F           = ifelse(WS_F_QC        < 0.8, NA, WS_F)) |> 
-
   # drop QC variables (no longer needed)
   dplyr::select(-ends_with("_QC"))
 
@@ -173,21 +187,24 @@ daily_fluxes_train <- rsample::training(split)
 daily_fluxes_test <- rsample::testing(split)
 
 # The same model formulation is in the previous chapter
-pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
-                      data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+pp <- recipes::recipe(
+  GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
+  data = daily_fluxes_train
+  ) |> 
+  recipes::step_center(
+    all_numeric(),
+    -all_outcomes()
+  ) |>
+  recipes::step_scale(
+    all_numeric(),
+    all_outcomes()
+  )
 ```
 
-<<<<<<< HEAD
-mod <- caret::train(
-=======
-<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
-<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
-```{r}
+
+```{r eval=RUN_MODEL}
 # Train the model
 mod <- train(
->>>>>>> cfb2161fd0c4e2603d74d3df0066f9a255613524
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -205,15 +222,15 @@ mod <- train(
 )
 ```
 
-```{r include=FALSE, eval=FALSE}
+```{r include=FALSE, eval=RUN_MODEL}
 # Use this only to by-pass running cross-validation when rendering book online
 saveRDS(mod, "data/tutorials/rf_mod.rds")
 ```
+
 ```{r include=FALSE}
 # Load data when rendering book online
 mod <- readRDS("data/tutorials/rf_mod.rds")
 ```
-<!-- >>> END OF CHECK <<< -->
 
 
 ```{r}
