@@ -637,6 +637,7 @@ plot_data |>
   geom_line(aes(date, average_12m, color = "12-month running mean")) +
   
   # Style the plot
+  theme_classic() +
   theme(legend.position = c(0.75, 0.25)) + # Move legend into the plot (c(x, y))
   scale_color_manual(
     "", # Omit legend title
@@ -645,8 +646,7 @@ plot_data |>
   ) +
   labs(title = expression(paste("Atmospheric CO"[2], " concentrations at Manua Lao, Hawaii")),
        y     = expression(paste("CO"[2], "(ppm)")),
-       x     = "Year") +
-  theme_classic()
+       x     = "Year")
 ```
 
 <!-- ### Telling a story from data {-} -->
@@ -659,7 +659,9 @@ plot_data |>
 
 #### Reading and writing human readable files {.unnumbered}
 
-The below code shows how to read in the different demo data sets (CSV files). You will note that they all need separate settings, and that a given file extension isn't necessarily a reflection of the content the file. Inspection of your read in data is therefore key.
+While **not leaving your R session**, download and open the files at the following locations:
+
+> The below code shows how to read in the different demo data sets (CSV files). You will note that they all need separate settings, and that a given file extension isn't necessarily a reflection of the content the file. Inspection of your read in data is therefore key.
 
 ```{r}
 # read in the first demo
@@ -696,7 +698,10 @@ identical(demo_02, demo_03)
 # Given transitive properties, demo_01 is identical to demo_03
 ```
 
-You can combine the three datasets using the {dplyr} `bind_rows()` function.
+Once loaded into your R environment, combine and save all data as a **temporary** `CSV` file. Read in the new temporary `CSV` file, and save it as a `JSON` file in your current working directory.
+
+> You can combine the three datasets using the {dplyr} `bind_rows()` function.
+
 ```{r}
 # combining all demo datasets
 demo_all <- dplyr::bind_rows(demo_01, demo_02, demo_03)
@@ -730,14 +735,27 @@ jsonlite::write_json(demo_all_new, path = "./my_json_file.json")
 
 #### Reading and writing binary files {.unnumbered}
 
-1. It is a NetCDF file
-2. the {terra} library (see Table xyz)
-3. Temperature data for Switzerland at noon on 2021-01-01
+Download and open the following file:
 
+``` bash
+https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
+```
+
+1.  What file format are we dealing with?
+
+It is a NetCDF file (ending `.nc`, see Table in Chapter \@ref(datavariety))
+
+2.  What library would you use to read this kind of data?
+
+Different libraries are available, including {terra}, {raster} (the predecessor of {terra}), and {ncdf4}, see Table in Chapter \@ref(datavariety).
+
+3.  What does this file contain?
+
+In R:
 ```{r eval=FALSE}
 # read unknown netcdf file using the {terra} library
 library(terra)
-unkown_netcdf <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc")
+unknown_netcdf <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc")
 
 # print the meta-data by calling the variable
 unknown_netcdf
@@ -746,7 +764,14 @@ unknown_netcdf
 terra::plot(unknown_netcdf)
 ```
 
-5. 
+From your terminal (when the file is located in the current working directory:
+``` bash
+ncdump -h some_data.nc
+```
+
+When printing the object in R, we get: `varname     : t2m (2 metre temperature)`.
+
+4.  Write this file to disk in a different geospatial format you desire (use the R documentation of the library used to read the file and the chapter information).
 
 ```{r eval=FALSE}
 # write the data as a geotiff (other options are possible as well in writeRaster)
@@ -757,10 +782,12 @@ terra::writeRaster(
   )
 ```
 
+5.  Download and open the following file:  `https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif`. Does this data seem familiar, and how can you tell? What are your conclusions?
+
 ```{r eval=FALSE}
 # read unknown tif file using the {terra} library
 library(terra)
-unkown_tif <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif")
+unknown_tif <- terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif")
 
 # print the meta-data by calling the variable
 unknown_tif
@@ -772,10 +799,10 @@ terra::plot(unknown_tif)
 terra::plot(unknown_tif - unknown_netcdf)
 
 # or...
-identical(unkown_netcdf, unkown_tif)
+identical(unkown_netcdf, unknown_tif)
 ```
 
-Looks similar to the NetCDF data, however one pixel is different as shown by taking the difference between both datasets.
+Looks similar to the NetCDF data, but temperature appears to be given in Celsius in the GeoTIFF file and in Kelvin in the NetCDF file.
 
 ## Open Science
 
