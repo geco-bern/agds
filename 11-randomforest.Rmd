@@ -138,7 +138,7 @@ The number of variables to consider at each split is a hyperparameter of the Ran
 
 A great strength of Random Forest is, inherited by the characteristics of its underlying decision trees, its minimal requirement of data pre-processing, its capability of dealing with continuous and categorical variables, and its robustness to outliers. With the default choices of $m_\text{try}$, Random Forest provides very good out-of-the-box performance. However, the hyperparameters of Random Forest have interactive effects and should be searched systematically.
 
-```{r fitrandomforest}
+```{r fitrandomforest, message = FALSE}
 # Data loading and cleaning
 source("R/eval_model.R")
 
@@ -201,10 +201,9 @@ pp <- recipes::recipe(
   )
 ```
 
-
 ```{r eval=RUN_MODEL}
 # Train the model
-mod <- train(
+mod <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -232,7 +231,6 @@ saveRDS(mod, "data/tutorials/rf_mod.rds")
 mod <- readRDS("data/tutorials/rf_mod.rds")
 ```
 
-
 ```{r}
 # generic print
 print(mod)
@@ -241,7 +239,11 @@ print(mod)
 ```{r}
 # Plot model fit
 source("R/eval_model.R")
-eval_model(mod = mod, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
+eval_model(
+  mod = mod,
+  df_train = daily_fluxes_train,
+  df_test = daily_fluxes_test
+)
 ```
 
 ## Exercises

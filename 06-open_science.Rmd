@@ -4,7 +4,7 @@
 
 ## Learning objectives
 
-In this chapter you will learn the reasons for practicing open science, and some of the basic methodological techniques that we can use to facilitate an open science workflow.
+In this chapter, you will learn the reasons for practicing open science and some of the basic methodological techniques that we can use to facilitate an open science workflow.
 
 In this chapter you will learn how to:
 
@@ -12,37 +12,35 @@ In this chapter you will learn how to:
 -   manage a project workflow
 -   capture a session or machine state
 -   use dynamic reporting
--   ensure data/project retention
+-   ensure data and code retention
 
 ## Tutorial
 
-The scientific method relies on repeated testing of a hypothesis. When dealing with data and formal analysis one can reduce this problem to the question: could an independent scientist attain the same results given the described methodology, the data and code.
+The scientific method relies on repeated testing of a hypothesis. When dealing with data and formal analysis, one can reduce this problem to the question: could an independent scientist attain the same results given the described methodology, data and code?
 
-Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications often are insufficiently detailed to really capture the scope of an analysis. Even from this technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem.
+Although this seems trivial, this issue has vexed the scientific community. These days, many scientific publications are based on complex analyses with often large data sets. More so, methods in publications are often insufficiently detailed to really capture the scope of an analysis. Even from a purely technical point of view, the reproducibility crisis or the inability to reproduce experimental results, is a complex problem. This is further compounded by social aspects and incentives. In recent decades, scientific research has seen a steady increase in speed due to the digitization of many fields and the commodification of science.
 
-This is further compounded by social aspects and incentives. The last decades scientific research has seen a steady increase in speed due to the digitization of many fields and the commodification of science.
+Although digitization has opened up new research possibilities, its potential for facilitating, accelerating, and advancing science are often not fully made use of. Historically, research and its output in the form of data and code has been confined to academic journals, data and code has often not been made available, and data were not shared or behind pay-walls. This limits the impact of science also in the public domain. (In many ways, this is still the case today, in year 2023 as we write). Digitization has made research output better visible and accessible, but practical obstacles and weak standards often prevent it from uptake, re-use, and further development by the wider community.
 
-Although digitization has opened up new research possibilities it also had less desired outcomes such as the reproducibility crisis, overall decreasing research quality, or outright fraud. Historically research (output) has been confined to academic journals with a limited reach into the public (civil) domain. Digitization made both the academic output visible, as well as the issues that stem from it (e.g. fraud). In many ways the reproducibility crisis as digital tools have made this position untenable.
+Open and reproducible science is a movement to make scientific research (output) widely accessible to the larger public, increase research transparency and enabling robust and verifiable science. Open science aims to be as open as possible about the whole scientific process, and as closed as desirable (e.g. privacy or security reasons).
 
-Open and reproducible science is in part a counter movement to make scientific research (output) accessible to the larger public, increase research transparency and countering accusations of fraud and limiting disinformation (to some extent). Open science therefore aims to be as open as possible about the whole scientific process, and as closed as desirable (e.g. privacy or security reasons).
-
-It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course and the discussion of open science we focus solely on the practical aspects for reproducible science, i.e. ensuring that given the same data and code the results will be similar.
+It is important to acknowledge that there is a spectrum of reproducible data and code workflows which depends on the state or source of the data and the output of the code (or analysis). Within the context of this course, we focus primarily on the practical aspects for reproducible science, i.e., ensuring that given the same data and code, the results will be similar.
 
 ```{r label="repromatrix", echo=FALSE, fig.cap="The reproducibility matrix by The Turing Way"}
 knitr::include_graphics("https://the-turing-way.netlify.app/_images/reproducible-matrix.jpg")
 ```
 
-The basics of open science coding and data practices rely on a number of simple concepts. The below sections describe a selection of the most important ones. Sticking to these principles and/or tools will increase the reproducibility of your work greatly.
+The basics of open science coding and data practices rely on a number of simple concepts. The sections below describe a selection of the most important ones. Sticking to these principles and tools will increase the reproducibility of your work greatly.
 
 ### Project structure
 
 Reproducible science relies on a number of key components. Data and code management and the tracking of required meta-data is the first step in an open science workflow. 
 
-In Chapter \@ref(gettingstarted) you learned how to setup an R project. This R project gatheres all components of your analysis in a single directory. Although current computers make it easy to "find" your data and are largely file location agnostic this is not the case in many research environments. Projects grow quickly, and often the number of files will flood the this single directory. Therefore, files need a precise and structured location. This structure allows you to determine both the function and or order of a workflow without reading any code.
+In Chapter \@ref(gettingstarted), you learned how to setup an R project. An R project gathers all components of your analysis in a single directory. Although current computers make it easy to "find" your files and are largely file location-agnostic, this is not the case in many research environments. Projects grow quickly, and often, the number of files will flood a single directory. Therefore, files need a precise and structured location. This structure allows you to determine both the function and order of a workflow without reading any code.
 
-It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a [github project]() from this location, or just copy the project to a new drive.
+It is good practice to have a consistent project structure within and between projects. This allows you to find most project components regardless of when you return to a particular project. Structuring a project in one folder also makes projects portable. All parts reside in one location making it easy to create a *git* project from this location (see Chapter \@ref(codemgmt)), or just copy the project to a new drive.
 
-An example data structure for raw data processing is given below and we provided an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust on the lab website. A full description on using the template is provided in the Chapter \@ref(codemgmt).
+An example data structure for raw data processing is given below and we provide an [R project template](https://github.com/geco-bern/R_proj_template) to work from and adjust through our [lab GitHub profile](https://github.com/geco-bern). A full description on using the template is provided in Chapter \@ref(codemgmt).
 
 ``` bash
 data-raw/
@@ -53,11 +51,11 @@ data-raw/
 
 ### Managing workflows
 
-Although some code is agnostic to the order of execution many projects are effectively workflows, where the output of one routine is required for the successful execution of the next routine.
+Although some code is agnostic to the order of execution, many projects are effectively *workflows*, where the output of one routine is required for the successful execution of the next routine.
 
-In order to make sure that a future you, or a collaborator, understands in which order things should be executed it is best to number scripts / code properly. This is the most basic approach to managing workflows.
+In order to make sure that your future self, or a collaborator, understands the order in which things should be executed, it is best to number scripts accordingly. This is the most basic approach to managing workflows.
 
-In the example below all statistics code is stored in the statistics folder in an overall analysis folder (which also includes code for figures). All statistical analysis are numbered, to ensure that the output of a first analysis is available to the following one.
+In the example below, all statistics code is stored in the `statistics` folder in an overall `analysis` folder (which also includes code for figures). All statistical analyses are numbered to ensure that the output of a first analysis is available to the subsequent one.
 
 ``` bash
 analysis/
@@ -71,23 +69,22 @@ analysis/
 
 #### Automating and visualizing workflows with targets
 
-To sidestep some of the manual management in R you can use dedicated pipeline tool like the **{targets} package** in R. The targets package learns how your pipeline fits together, skips tasks that are already up to date, runs only the necessary computation. Given the highly controlled environment {targets} can also visualize the (progress of) your workflow.
+To sidestep some of the manual management in R you can use a dedicated pipeline tool like the {targets} package in R. The package learns how your pipeline fits together, skips tasks that are already up-to-date, and runs only the necessary computation. {targets} can also visualize the progress of your workflow.
 
 ```{r label="targets", echo=FALSE, fig.cap="A targets visualized workflow by rOpenSci"}
 knitr::include_graphics("https://books.ropensci.org/targets/man/figures/tar_watch.png")
 ```
 
-Due to the added complexity of the targets package we won't include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples.
+Due to the added complexity of the {targets} package, we won't include extensive examples of such a workflow but refer to the excellent documentation of the package for simple examples [here](https://books.ropensci.org/targets/walkthrough.html).
 
-<https://books.ropensci.org/targets/walkthrough.html>
 
 ### Capturing your session state
 
-Often code depends on various components, packages or libraries. These libraries and all software come in specific versions, which might or might not alter the behaviour of the cod which relies on them.
+Often, code depends on various components, packages or libraries. These libraries and all software come in specific versions, which might or might not alter the behaviour of the code and the output it produces.
 
 If you want to ensure full reproducibility, especially across several years, you will need to capture the state of the system and libraries with which you ran the original analysis.
 
-In R the [{renv} package](https://rstudio.github.io/renv/) serves this purpose and will provide an index of all the packages used in your project as well as their version.For a particular project it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis, isolated, portable and reproducible. The analogue in python would be the [virtual environments, or venv program](https://docs.python.org/3/library/venv.html).
+In R the [{renv} package](https://rstudio.github.io/renv/) serves this purpose and will provide an index of all the packages used in your project as well as their version. For a particular project, it will create a local library of packages with a static version. These static packages will not be updated over time, and therefore ensure consistent results. This makes your analysis isolated, portable, and reproducible. The analogue in Python would be the [virtual environments, or venv program](https://docs.python.org/3/library/venv.html).
 
 When setting up your project you can run:
 
@@ -114,99 +111,48 @@ When you move your project to a new system, or share a project on github with co
 renv::restore()
 ```
 
-> NOTE: as mentioned in the {renv} documentation. "For development and collaboration, the `.Rprofile`, `renv.lock` and `renv/activate.R` files should be committed to your version control system. But the `renv/library` directory should normally be ignored. Note that renv::init() will attempt to write the requisite ignore statements to the project `.gitignore`." We refer to \@ref(learning-objectives-6) for details on github and its use.
+> NOTE: As mentioned in the {renv} documentation: "For development and collaboration, the `.Rprofile`, `renv.lock` and `renv/activate.R` files should be committed to your version control system. But the `renv/library` directory should normally be ignored. Note that `renv::init()` will attempt to write the requisite ignore statements to the project `.gitignore`." We refer to \@ref(learning-objectives-6) for details on github and its use.
 
 ### Capturing a system state
 
-Although R projects and the use of targets make your workflow consistent the package versions used between various systems (e.g. your home computer, a cluster at the university etc. might vary). To address issues with changes in the versions of package you can use the {renv} package which manages package version (environments) for you. When tasks are even more complex and include components outside of R you can use [**Docker**](https://www.docker.com/) to provide containerization of an operating system and the included ancillary application.
+Although R projects and the use of {targets} make your workflow consistent, the package versions used between various systems (e.g., your home computer or the cluster at the university might vary). To address issues with changes in the versions of package, you can use the {renv} package which manages package version (environments) for you. When tasks are even more complex and include components outside of R, you can use [*Docker*](https://www.docker.com/) to provide containerization of an operating system and the included ancillary application.
 
-The [{rocker} project](https://rocker-project.org/) provides access to some of these features within the context of reproducible R environments. Using these tools you can therefore emulate the state of a machine independent of the machine on which the docker file is run. These days Machine Learning applications are often deployed as docker sessions to limit the complexity of installing required software components. The application of docker based installs is outside the scope of the current course, but feel free to explore these resources as they are widespread in data science.
+The [{rocker} package](https://rocker-project.org/) provides access to some of these features within the context of reproducible R environments. Using these tools, you can therefore emulate the state of a machine, independently of the machine on which the docker file is run. These days, machine learning applications are often deployed as docker sessions to limit the complexity of installing required software components. The application of docker-based installs is outside the scope of the current course, but feel free to explore these resources as they are widespread in data science.
 
 ### Readable reporting using Rmarkdown
 
-Within Rstudio you can use Rmarkdown dynamic documents to combine both text and code. Rmarkdown is ideal for **reporting** i.e., writing your final document presenting your analysis results. A Rmarkdown documents consists of a header document properties, such as how it should be rendered (as an html page, a docx file or a pdf), and the actual content.
+Within Rstudio, you can use Rmarkdown dynamic documents to combine both text and code. Rmarkdown is ideal for *reporting*, i.e., writing your final document and presenting your analysis results. A Rmarkdown document consists of a header that specifies document properties (whether it should be rendered as an html page, a docx file or a pdf), and the actual content. You have encountered RMarkdown already in Chapter \@ref(rmarkdown).
 
-Below you see the header file of an Rmarkdown document that should be rendered as an html page.
+### Project structure
 
-``` r
----
-title: My R Markdown Report
-author: You
-output: html_document
----
-```
-
-The remainder of the document shows a code chunk outlined by \`\`\` quotes and the chunk arguments in {} brackets. Inline operations, the evaluation of code, in text is also possible by using single quotes around a variable or code.
-
-````bash
-``` {r}
-x <- 5  # radius of a circle
-```
-For a circle with the radius `r x`,
-its area is `r pi * x^2`.
-````
-
-The document can be rendered by calling `rmarkdown::render()` on the command line or hitting the "Knit" button in the RStudio IDE. Depending on your settings a html file, pdf or docx file will be generated in your current directory (and or displayed in the IDE viewer).
-
-``` r
-# render the document on the command line
-rmarkdown::render()
-```
-
-#### Referencing and finding files
-
-In R projects all files can be referenced relative to the top most path of the project. When opening `your_project.Rproj` in RStudio you can load data in the console as such `read.table("data/some_data.csv")`, specifying a "soft" relative path for `some_data.csv`.
+In R projects, all files can be referenced relative to the top-most path of the project. When opening `your_project.Rproj` in RStudio, you can load data that is located in a sub-directory of the project directory `./data/` by `read.table("./data/some_data.csv")`. The use of *relative paths* and consistent directory structures across projects, enables that projects can easily be ported across computers and code adopted across projects.
 
 ``` bash
 project/
 ├─ your_project.Rproj
-├─ statistics/
+├─ vignettes/
 │  ├─ your_dynamic_document.Rmd
 ├─ data/
 │  ├─ some_data.csv
 ```
 
-Rmarkdown files are rendered relative to the file path where to document resides. This means that data which resides in `data` can't be accessed by `statistics/your_dynamic_document.Rmd` even when using an R project and soft relative paths (which work for scripts and functions). As such trying to render the `your_dynamic_document.Rmd` will fail as the file `some_data.csv` will not be found.
-
-``` bash
----
-title: Your dynamic document
-author: You
-output: html_document
----
-```
-
+Rmarkdown files commonly reside in a sub-directory `./vignettes/` and are rendered relative to the file path where it is located. This means that to access data which resides in `data/` using code in `./vignettes/your_dynamic_document.Rmd`, we would have to write:
 ```{r eval = FALSE}
-data <- read.table('data/some_data.csv')
+data <- read.table('../data/some_data.csv')
 ```
 
-We need to explicitly take the project's base path into the fold using the [{here} package](https://here.r-lib.org/). The here package gathers the absolute path of files inside an R project. As such, `here::here("data/some_data.csv")` will return the full path of the data (e.g. `/your_computer/project/data/some_data.csv`). This absolute path will be a valid path for the read.table() function, making the Rmarkdown file render correctly. The correct Rmarkdown code to read the data therefore reads:
-
-``` bash
----
-title: Your dynamic document
-author: You
-output: html_document
----
-```
-
+Note the `../` to go one level up. To allow for more flexibility in file locations within your project folder, you may use the [{here} package](https://here.r-lib.org/) package. I gathers the absolute path of the R project and allows for a specification of paths inside scripts and functions that always start from the top project directory, irrespective of where the script that implements the reading-code is located. Therefore, we can just write:
 ```{r eval = FALSE}
 data <- read.table(here::here('data/some_data.csv'))
 ```
 
-But why not use absolute paths to begin with? Portability! When I would run your \*.Rmd file with an absolute path on my computer it would not render as the file `some_data.csv` would then be located at: `/my_computer/project/data/some_data.csv`
+But why not use absolute paths to begin with? Portability! When I would run your `\*.Rmd` file with an absolute path on my computer, it would not render as the file `some_data.csv` would then be located at: `/my_computer/project/data/some_data.csv`
 
-#### Limitations
+#### Limitations of notebooks
 
-The file referencing issue and the common use of Rmarkdown as a one size fits all solution, containing all aspects from data cleaning to reporting, makes Rmarkdown files not portable or reproducible. The one size fits all approach to Rmarkdown also encourages bad project management practices.
+The file referencing issue and the common use of Rmarkdown, and notebooks in general, as a one size fits all solution, containing all aspects from data cleaning to reporting, implies some limitations. RMarkdown documents mix two cognitive tasks, writing text content (i.e. reporting) and writing code. Switching between these two modes comes with undue overhead. If you code, you should not be writing prose, and vise versa.
 
-As illustrated above, if no session management tools such as the package {here} are used this automatically causes files to pile up in the top most level of a project, undoing most efforts to physically structure data and code as highlighted in \@ref(project-structure).
-
-At the heart of this discussion are not only practical considerations but also the fact that R markdown documents mix two cognitive tasks, writing text content (i.e. reporting) and writing code. Switching between these two modes comes with undue overhead. If you code, you should not be writing prose, and vise versa.
-
-If your R markdown file contains more code than it does text, it should be considered an R script or function (with comments or documentation). Conversely, if your markdown file contains more text than code it probably is easier to collaborate on a true word processing file (or cloud based solution). The use case where the notebooks might serve some importance is true reporting of general statistics.
-
-R markdown files have their function for reporting concise results, once generated (through functions or analysis scripts) but should be generally be avoided to develop code & ideas as it encourages bad project management practices.
+If your R markdown file contains more code than it does text, it should be considered an R script or function (with comments or documentation). Conversely, if your RMarkdown file contains more text than code, it probably is easier to collaborate on a true word processing file (or cloud-based solution). Notebooks, such as RMarkdown, are most suitable for communicating implementations, demonstrating functions, and reporting reproducible results. They can also be used like lab notes. They are less suited for code development. 
 
 ### Data retention
 

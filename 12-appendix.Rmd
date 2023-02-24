@@ -105,9 +105,7 @@ datasets::quakes$lat[idx]
 
 ### Workspace {-}
 
-Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
-
-*No solutions provided because part of the final report.*
+*No solutions provided.*
 
 ## Programming primers
 
@@ -318,6 +316,7 @@ daily_fluxes_sub |>
 ### Patterns in data quality {-}
 
 The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes of poor quality. Investigate whether NEE data quality is randomly spread across hours in a day by calculating the proportion of (i) actually measured data, (ii) good quality gap-filled data, (iii) medium quality data, and (iv) poor quality data within each hour-of-day (24 hours per day).
+
 ```{r message=FALSE, warning=FALSE}
 # using half_hourly_fluxes read above
 daily_fluxes <- half_hourly_fluxes |>
@@ -341,14 +340,29 @@ daily_fluxes <- half_hourly_fluxes |>
 Interpret your findings: Are the proportions evenly spread across hours in a day? 
 ```{r}
 # this is not asked for but interesting. More on data visualisation in Chapter 5
+# you can also just look at values of df$f_measured over the course of a day (hod)  
+
 daily_fluxes |> 
   pivot_longer(c(f_measured, f_good, f_medium, f_poor), 
                names_to = "quality", 
                values_to = "fraction") |> 
-  ggplot(aes(x = hour_of_day, y = fraction, color = quality)) +
-  geom_line()
+  ggplot(aes(x = hour_of_day, 
+             y = fraction * 100,     # *100 to get percentages 
+             color = quality)) +
+  geom_line(linewidth = 1.5) +       # make lines bit bigger
+  theme_classic() +                  # Pick a nice theme
+  scale_color_brewer(                # Pick a nice color palette
+    "Quality",                       # Give legend a title
+    labels = c("Good", "Measured", "Medium", "Poor"), # Give legend levels a label
+    palette = 3,                     # Pick color palette
+    direction = -1                   # Inverse order of color palette
+  ) +
+  labs(
+    title = "Temporal pattern of GPP quality",
+    y     = "Fraction of total GPP entries [%]",
+    x     = "Hour of Day"
+  )
 
-# you can also just look at values of df$f_measured over the course of a day (hod)  
 ```
 
 Perform an aggregation of the half-hourly GPP data (variable `GPP_NT_VUT_REF`) to daily means of the unmodified data read from file `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`, and from cleaned data where only measured (not gap-filled) half-hourly data is kept and aggregated. This yields two data frames with daily GPP data. Calculate the overall mean GPP for the two data frames (across all days in the data frame). Are the overall mean GPP values equal? If not, why?
@@ -374,9 +388,9 @@ daily_fluxes_cleaned |>
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE))
 ```
 
-### Tidying an Excel-file {-}
+<!-- ### Tidying an Excel-file {-} -->
 
-*No solutions provided because part of the final report*
+<!-- *No solutions provided because part of the final report* -->
 
 ## Data Visualisation
 
@@ -559,16 +573,25 @@ This exercise explores the longest available atmospheric CO$_2$ record, obtained
 -   Download and read the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
 
 ```{r warnings=FALSE, message=FALSE}
-ml_co2 <- readr::read_csv(
+
+# download the file
+download.file(
   "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv",
-  skip = 56) |>
-  
-  # interpret missing values
+  "data/co2_mm_mlo.csv"
+  )
+
+# read in the data
+ml_co2 <- readr::read_csv(
+  "data/co2_mm_mlo.csv",
+  skip = 56) 
+
+# wrangle the data
+# interpret missing values
+# rename to avoid white space in column name
+ml_co2 <- ml_co2 |>
   dplyr::na_if(-9.99) |> 
   dplyr::na_if(-0.99) |> 
-  dplyr::na_if(-1) |> 
-  
-  # rename to avoid white space in column name
+  dplyr::na_if(-1) |>
   rename(year_dec = `decimal date`)
 ```
 
@@ -582,10 +605,15 @@ ml_co2 |>
 -   Write a function that computes a 12-month running mean of the CO$_2$ time series. The running mean for month $m$ should consider values of $m-5$ to $m+6$. Define arguments for the function that let the user specify the width of the running mean "box" (i.e., setting the $5$ and $6$ to any other integer of choice) 
 ```{r}
 # Write the running mean function
-running_mean <- function(vec,     # Input vector
-                         left,    # Number of elements to the left
-                         right    # Number of elements to the right
-                         ){
+# variables are defined as:
+# Input vector (vec)
+# Number of elements to the left (left)
+# Number of elements to the right (right)
+running_mean <- function(
+    vec,
+    left,
+    right
+) {
   
   # Create an empty vector of the same length as the input data
   vec_out <- rep(NA, length(vec))
@@ -604,7 +632,9 @@ running_mean <- function(vec,     # Input vector
 }
 
 ml_co2 <- ml_co2 |> 
-  mutate(average_12m = running_mean(average, left = 5, right = 6))
+  mutate(
+    average_12m = running_mean(average, left = 5, right = 6)
+    )
 ```
 
 -   Make a publication-ready figure that shows the monthly and the 12-month running mean time series of the CO$_2$ record.
@@ -626,7 +656,8 @@ plot_data |>
   geom_line(aes(date, average_12m, color = "12-month running mean")) +
   
   # Style the plot
-  theme(legend.position = c(0.75, 0.25)) + # Move legend into the plot (c(x, y))
+  theme_classic() +
+  theme(legend.position = c(0.25, 0.75)) + # Move legend into the plot (c(x, y))
   scale_color_manual(
     "", # Omit legend title
     values = c("tomato", "black"),
@@ -634,14 +665,12 @@ plot_data |>
   ) +
   labs(title = expression(paste("Atmospheric CO"[2], " concentrations at Manua Lao, Hawaii")),
        y     = expression(paste("CO"[2], "(ppm)")),
-       x     = "Year") +
-  theme_classic()
+       x     = "Year")
 ```
 
+<!-- ### Telling a story from data {-} -->
 
-### Telling a story from data {-}
-
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Data Variety
 
@@ -649,7 +678,9 @@ plot_data |>
 
 #### Reading and writing human readable files {.unnumbered}
 
-The below code shows how to read in the different demo data sets (CSV files). You will note that they all need separate settings, and that a given file extension isn't necessarily a reflection of the content the file. Inspection of your read in data is therefore key.
+While **not leaving your R session**, download and open the files at the following locations:
+
+> The below code shows how to read in the different demo data sets (CSV files). You will note that they all need separate settings, and that a given file extension isn't necessarily a reflection of the content the file. Inspection of your read in data is therefore key.
 
 ```{r}
 # read in the first demo
@@ -686,7 +717,10 @@ identical(demo_02, demo_03)
 # Given transitive properties, demo_01 is identical to demo_03
 ```
 
-You can combine the three datasets using the {dplyr} `bind_rows()` function.
+Once loaded into your R environment, combine and save all data as a **temporary** `CSV` file. Read in the new temporary `CSV` file, and save it as a `JSON` file in your current working directory.
+
+> You can combine the three datasets using the {dplyr} `bind_rows()` function.
+
 ```{r}
 # combining all demo datasets
 demo_all <- dplyr::bind_rows(demo_01, demo_02, demo_03)
@@ -720,10 +754,23 @@ jsonlite::write_json(demo_all_new, path = "./my_json_file.json")
 
 #### Reading and writing binary files {.unnumbered}
 
-1. It is a NetCDF file
-2. the {terra} library (see Table xyz)
-3. Temperature data for Switzerland at noon on 2021-01-01
+Download and open the following file:
 
+``` bash
+https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
+```
+
+1.  What file format are we dealing with?
+
+It is a NetCDF file (ending `.nc`, see Table in Chapter \@ref(datavariety))
+
+2.  What library would you use to read this kind of data?
+
+Different libraries are available, including {terra}, {raster} (the predecessor of {terra}), and {ncdf4}, see Table in Chapter \@ref(datavariety).
+
+3.  What does this file contain?
+
+In R:
 ```{r eval=FALSE}
 # read unknown netcdf file using the {terra} library
 library(terra)
@@ -738,7 +785,14 @@ unknown_netcdf
 terra::plot(unknown_netcdf)
 ```
 
-5. 
+From your terminal (when the file is located in the current working directory:
+``` bash
+ncdump -h some_data.nc
+```
+
+When printing the object in R, we get: `varname     : t2m (2 metre temperature)`.
+
+4.  Write this file to disk in a different geospatial format you desire (use the R documentation of the library used to read the file and the chapter information).
 
 ```{r eval=FALSE}
 # write the data as a geotiff (other options are possible as well in writeRaster)
@@ -748,6 +802,8 @@ terra::writeRaster(
   overwrite = TRUE
   )
 ```
+
+5.  Download and open the following file:  `https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif`. Does this data seem familiar, and how can you tell? What are your conclusions?
 
 ```{r eval=FALSE}
 # read unknown tif file using the {terra} library
@@ -766,10 +822,10 @@ terra::plot(unknown_tif)
 terra::plot(unknown_tif - unknown_netcdf)
 
 # or...
-identical(unkown_netcdf, unkown_tif)
+identical(unkown_netcdf, unknown_tif)
 ```
 
-Looks similar to the NetCDF data, however one pixel is different as shown by taking the difference between both datasets.
+Looks similar to the NetCDF data, but temperature appears to be given in Celsius in the GeoTIFF file and in Kelvin in the NetCDF file.
 
 ## Open Science
 
@@ -801,7 +857,7 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 
 ### A new project {-}
 
-*No solutions provided.* Note that this exercise trains your ability to access and wrangle data yourself in a reproducible way. The best solution to test whether your you successfully did to is by letting a friend run all of your code on their machine. Resolving the errors you may encounter, helps you to improve you workflow and ensures a streamlined submission of your final report.
+This exercise trains your ability to access and wrangle data yourself in a reproducible way. The best solution to test whether your you successfully did to is by letting a friend run all of your code on their machine. Resolving the errors you may encounter, helps you to improve you workflow and ensures a streamlined submission of your final report.
 
 ### Tracking the state of your project {-}
 
@@ -813,26 +869,27 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 
 *No solutions provided.*
 
-### Collaborative Work on Github {-}
+<!-- ### Collaborative Work on Github {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Regression and Classification
 
-### Stepwise regression and asking for help {-}
+<!-- ### Stepwise regression and asking for help {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Supervised ML I
 
+*No solutions provided*
 
-### Comparison of LM and KNN {-}
+<!-- ### Comparison of LM and KNN {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
-### The role of picking a hyperparameter {-}
+<!-- ### The role of picking a hyperparameter {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Supervised ML II
 
@@ -998,9 +1055,6 @@ my_k <- c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)
 my_folds <- 10
 ```
 
-
-<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
-<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r eval=FALSE, message=FALSE}
 # Run cross validation
 df_cv <- cross_validation_by_hand(
@@ -1103,8 +1157,6 @@ Therefore, we now train our model again with the average optimal $k$ found but t
 
 #### Teseting our hypothesis {.unnumbered}
 
-<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
-<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r eval=FALSE, message=FALSE}
 # Get the optimal k from our cross-validation exercise 
 my_k <- mean(df_best$k) |> round()
@@ -1222,9 +1274,9 @@ Nice, these number look good! They give us two key results:
 - The splitting between train and validation data does not account for distributions of variables. This could be improved.
 -->
 
-### Testing the generalisability of a model {-}
+<!-- ### Testing the generalisability of a model {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Random Forest
 
@@ -1232,7 +1284,7 @@ Nice, these number look good! They give us two key results:
 
 Fit a random forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (`num.trees`), each with a maximum depth of 4 (`max.depth`). You can consult the respective arguments for the `"ranger"` method typing `?ranger`. 
 
-```{}
+```{r message=FALSE}
 # Data loading and cleaning
 daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>
     
@@ -1275,8 +1327,12 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + 
                       data = daily_fluxes_train) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
+```
 
-mod1 <- caret::train(
+
+```{r message=FALSE}
+# Fit the first model of 12 trees and maximum depth 4
+rf_12_4 <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -1295,15 +1351,15 @@ mod1 <- caret::train(
 )
 
 # generic print
-print(mod1)
+print(rf_12_4)
 ```
 
 Repeat the fitting with 1000 decision trees and max depth of 4, then with 12 decision trees and a max depth of 6. Then, discuss the role that the number of decision trees and the maximum depth of a tree play in the bias-variance trade-off and in the computation time. 
 
-```{}
+```{r}
 # Directly fit the model again, with same data and model formulation
-# this time num.trees = 1000
-mod2 <- caret::train(
+# Now train with 1000 trees and maximum depth 4
+rf_1000_4 <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -1322,12 +1378,12 @@ mod2 <- caret::train(
 )
 
 # generic print
-print(mod2)
+print(rf_1000_4)
 ```
 
-```{}
-# Repeat model fit with max.depth = 6
-mod3 <- caret::train(
+```{r}
+# Repeat model fit with 12 trees and maximum depth 6
+rf_12_6 <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -1346,18 +1402,19 @@ mod3 <- caret::train(
 )
 
 # generic print
-print(mod3)
+print(rf_12_6)
 ```
 
 ** Interpretation of results**
 
-```{}
+```{r}
 # check results
 rbind(
-  mod1$results,
-  mod2$results,
-  mod3$results
-)[,- c(1:3)]
+  rf_12_4$results |> mutate(Setup = "12 Trees with depth 4") |> relocate(Setup),
+  rf_1000_4$results |> mutate(Setup = "1000 Trees with depth 4") |> relocate(Setup),
+  rf_12_6$results |> mutate(Setup = "12 Trees with depth 6") |> relocate(Setup)
+)[,- c(2:4)] |>
+  knitr::kable(caption = "Comparison of cross-validated metrics across Random Forest setups.")
 ```
 
 Increasing the number of decision trees leads to a decrease in error (e.g. RMSE) and in error variance in the random forest results, making the model more accurate, robust and generalisable. This can be seen by the smaller values of practically all the metrics above. In the bias-variance trade-off, higher `num.trees` shifts the balance towards both lower bias and lower variance.
@@ -1376,7 +1433,7 @@ Answer the following questions, giving a reason for your responses:
 
 1.   Check the help for the `ranger()` function and identify which values each of the three hyperparameters/arguments can take. Select a sensible range of values for each hyperparameter, that you will use in the hyperparameter search.
 
-```{}
+```{r}
 mtry_values <- c(2, 4, 6)
 min.node.size_values <- c(2, 5, 10, 20)
 splitrule_values <- c("variance", "extratrees", "maxstat")
@@ -1390,7 +1447,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
 > Tip: Keep the number of trees low, otherwise it takes too long to fit each random forest model.
 
-```{}
+```{r}
 # Use data and model formulation created before
 
 results <- c()   # initialise results
@@ -1423,7 +1480,7 @@ results
 
 Based on the first round of hyperparameter tuning, we should take `mtry = 2` because it leads to the smallest RMSE and MAE, and the highest Rsquared. That is, the best fit. Nevertheless, the difference between taking `mtry = 2` or `4` is very small and the second actually leads to smaller variance in the metric estimates. Hence, the decision is not so clear.
 
-```{}
+```{r}
 # Take the previous best model and tune next hyperparameter
 
 results <- c()   # initialise results
@@ -1456,7 +1513,7 @@ results
 
 The second hyperparameter should be either `min.node.size = 2` or `5` because they lead to the best metrics overall. Again, the differences are very small and each metric would lead to a different decision. By increasing `min.node.size`, we get more generalisability, but if it's too high we will lose fit quality. If you change the random seed, you'll see that the tuning results are not robust, so whichever hyperparameter we choose won't make a big difference in the model fit (at least within the ranges searched). Let's take `min.node.size = 5` for the next loop.
 
-```{}
+```{r}
 # Take the previous best models and tune last hyperparameter
 results <- c()
 
@@ -1473,10 +1530,12 @@ for(splitrule_value in splitrule_values){
                           .min.node.size = 5,             # best min.node.size
                           .splitrule = splitrule_value),  # modify
     # arguments specific to "ranger" method
+    # keep num.trees keep small for computation
+    # for reproducibility set the seed value
     replace = FALSE,
     sample.fraction = 0.5,
-    num.trees = 100,                                     # keep small for computation
-    seed = 1982                                          # for reproducibility
+    num.trees = 100,
+    seed = 1982
   )
   
   results <- rbind(results, mod$results)
@@ -1489,9 +1548,8 @@ According to the last round of tuning, we should use `spliturle = "extratrees"`.
 
 4.   *Grid hyperparameter tuning*: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the `expand.grid()` function to create a data.frame of hyperparameter value combinations. This grid will be passed to `train()` via the `tuneGrid` argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of `train()` and the results of the hyperparameter search.
 
-```{}
+```{r eval=FALSE}
 set.seed(1403)    # for reproducibility
-
 mod <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
@@ -1500,16 +1558,28 @@ mod <- caret::train(
   metric = "RMSE",
   trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
   # expand grid of tunable hyperparameters
-  tuneGrid = expand.grid( .mtry = mtry_values,             
-                        .min.node.size = min.node.size_values,    
-                        .splitrule = splitrule_values),  
+  tuneGrid = expand.grid(
+    .mtry = mtry_values,             
+    .min.node.size = min.node.size_values,    
+    .splitrule = splitrule_values),
   # arguments specific to "ranger" method
+  # keep num.trees keep small for computation
+  # for reproducibility set the seed value
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 100,                                     # keep small for computation
-  seed = 1982                                          # for reproducibility
+  num.trees = 100,
+  seed = 1982
 )
+```
 
+```{r, include = FALSE, eval = FALSE}
+saveRDS(mod, "data/solutions/rf_mod_gridsearch.rds")
+```
+```{r, include = FALSE}
+mod <- readRDS("data/solutions/rf_mod_gridsearch.rds")
+```
+
+```{r}
 plot(mod, metric = "RMSE")
 plot(mod, metric = "Rsquared")
 ```
@@ -1522,7 +1592,7 @@ The best model according to the grid search, with lowest RMSE, is the one with `
 
 You have trained several random forest models. Evaluate the model performance on the best model (the one for the tuned hyperparameters) and on one of your worse models. If you compare the RMSE and $R^2$ on the training and the test set, does it show overfitting?
 
-```{}
+```{r}
 # Train best model
 mod_best <- caret::train(
   pp, 
@@ -1530,16 +1600,22 @@ mod_best <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+    ),
   # expand grid of tunable hyperparameters
   tuneGrid = expand.grid( .mtry = 6,             
                         .min.node.size = 10,    
                         .splitrule = "extratrees"),  
   # arguments specific to "ranger" method
+  # keep num.trees keep small for computation
+  # for reproducibility set the seed value
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 100,                                     # keep small for computation
-  seed = 1982                                          # for reproducibility
+  num.trees = 100,
+  seed = 1982
 )
 
 # Get predictions
@@ -1551,21 +1627,35 @@ mod_worst <- caret::train(
     drop_na(), 
   method = "ranger",
   metric = "RMSE",
-  trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
+  trControl = trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = "final"
+    ),
   # expand grid of tunable hyperparameters
   tuneGrid = expand.grid( .mtry = 2,             
                         .min.node.size = 20,    
                         .splitrule = "maxstat"),  
   # arguments specific to "ranger" method
+  # keep num.trees keep small for computation
+  # for reproducibility set the seed value
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 100,                                     # keep small for computation
-  seed = 1982                                          # for reproducibility
+  num.trees = 100,
+  seed = 1982
 )
 
 source("R/eval_model.R")
-eval_model(mod_best, daily_fluxes_train, daily_fluxes_test)
-eval_model(mod_worst, daily_fluxes_train, daily_fluxes_test)
+eval_model(
+  mod_best,
+  daily_fluxes_train,
+  daily_fluxes_test
+  )
+eval_model(
+  mod_worst,
+  daily_fluxes_train,
+  daily_fluxes_test
+  )
 ```
 
 The performance on the test set for the best model is still close to the performance on the training set, so the model doesn't seem to overfit. The same goes for the worse model, which leads to worse $R^2$ and RMSE and visually the fit is slightly worse.
