@@ -4,19 +4,18 @@
 
 ## Learning objectives
 
-As a scientist you will encounter variety of data (formats). In this section you will learn some of the most common formats around, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
+As a scientist you will encounter a variety of data (formats). In this section, you will learn some of the most common formats, their structure, and the advantages and disadvantages of using a particular data format. Only singular files are considered in this section, and [databases](https://en.wikipedia.org/wiki/Database) are not covered although some files (formats) might have a mixed use.
 
-However, more and more data moves toward a cloud server based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered, you will learn basic API usage to query data which is not represented as a file.
+More and more data moves toward a cloud server-based model where data is queried from an online database using an [Application Programming Interface (API)](https://en.wikipedia.org/wiki/API). Although the explicit use of databases is not covered, you will learn basic API usage to query data which is not represented as a file.
 
 In this chapter you will learn:
 
--   how to recognize data/file formats
--   understand data/file format limitations
+-   how to recognize data and file formats
+-   understand data and file format limitations
     -   manipulation wise
     -   content wise
--   how to read and or write data in a particular file format
--   how to query an API
-    -   and store it locally
+-   how to read and/or write data in a particular file format
+-   how to query an API and store its data locally
 
 ## Tutorial
 
@@ -26,13 +25,13 @@ In this chapter you will learn:
 
 In order to manipulate data and make some distinctions on what a data file might contain, files carry a particular [file format extension](https://en.wikipedia.org/wiki/Filename_extension). These file extensions denote the intended content and use of a particular file.
 
-For example a file ending in `.txt` suggests that it contains text. A file extension allows you, or a computer, to assess the content of a file without opening the file.
+For example, a file ending in `.txt` suggests that it contains text. A file extension allows you, or a computer, to anticipate the content of a file without opening the file.
 
-File extensions are therefore an important tool in assessing what data you are dealing with, and what tools you will need to manipulated (read / write) the data.
+File extensions are therefore an important tool in assessing what data you are dealing with, and what tools you will need to manipulate (read and write) the data.
 
-> NOTE: It is important to note that file extensions can be changed. In some cases the file extension does not represent the content and or use case of the data contained within the file.
+> NOTE: File extensions can be changed. In some cases, the file extension does not represent the content of the data contained within the file.
 
-> TIP: If a file doesn't read it is always wise to check the first couple of lines to verify if the data has a structure which corresponds to the file extension.
+> TIP: If a file doesn't read, it is always wise to try to open the file in a text editor and check the first few lines to verify if the data has a structure that corresponds to the file extension.
 >
 > ``` bash
 > # On a linux/macos system you can use the terminal command (using 
@@ -44,13 +43,13 @@ File extensions are therefore an important tool in assessing what data you are d
 > tail your_file
 > ```
 
-#### Human readable data
+#### Human-readable data
 
-One of the most important distinctions in data formats falls along the line of it being human readable or not. Human readable data is, as the term specifies, made up of normal text characters. Human readable text has the advantage that it is easily read, and or edited using conventional text processors. This convenience comes at the cost of the files not being compressed in any way, and file sizes can become unsustainable. However, for many applications where file sizes are limited (\<50MB), human readable formats are the preferred option. Most human readable data falls in two broad categories, tabulated data and structured data.
+One of the most important distinctions in data formats falls along the line of it being human-readable or not. Human-readable data is, as the term specifies, made up of normal text characters. Human-readable text has the advantage that it is easily read and edited using conventional text editors. This convenience comes at the cost of the files not being compressed in any way, and file sizes can become unnecessarily large. However, for many applications where file sizes are limited (\<50MB), human-readable formats are the preferred option. Most human-readable data falls in two broad categories, *tabular* data and *structured* data.
 
-##### Tabulated data {.unnumbered}
+##### Tabular data {.unnumbered}
 
-Often, human readable formats provide data in tabulated form using a consistent delimiter. This delimiter is a character separating columns of a table.
+Often, human-readable formats provide data in tabular form using a consistent delimiter. This delimiter is a character separating columns of a table.
 
     column_one, column_two, column_three
     1, 2, 3
@@ -63,7 +62,7 @@ Common delimiters in this context are the comma (`,`), as shown in the above exa
 
 ##### Structured data {.unnumbered}
 
-Tabulated delimited data is row and column oriented and therefore doesn't allow complex structured content, e.g. tables within tables. This issue is sidestepped by for example the [JSON format](https://www.json.org/json-en.html). The JSON format in particular uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below you see an example of details describing a person, with entries being fo varying length and data content.
+Tabular data is row and column-oriented and therefore doesn't allow complex structured content, e.g. tables within tables. This issue is sidestepped by the [JSON format](https://www.json.org/json-en.html). The JSON format uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below, you see an example of details describing a person, with entries being fo varying length and data types.
 
 ``` json
 {
@@ -96,9 +95,9 @@ Tabulated delimited data is row and column oriented and therefore doesn't allow 
 }
 ```
 
-> NOTE: despite being human readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.
+> NOTE: Despite being human-readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.
 
-Other human readable structured data formats include the eXtensible Markup Language (XML), which is commonly used in web infrastructure. XML is used for storing, transmitting, and reconstructing arbitrary data but uses (text) markup instead of attribute-value pairs.
+Other human-readable structured data formats include the eXtensible Markup Language (XML), which is commonly used in web infrastructure. XML is used for storing, transmitting, and reconstructing arbitrary data but uses (text) markup instead of attribute-value pairs.
 
 ``` xml
 <note>
@@ -109,15 +108,17 @@ Other human readable structured data formats include the eXtensible Markup Langu
 </note>
 ```
 
-#### Writing and reading human readable files in R
+#### Writing and reading human-readable files in R
 
-There are a number of ways to read human readable formats into an R work environment. Here the basic approaches are listed, in particular reading `CSV` and `JSON` data.
+There are a number of ways to read human-readable formats into an R work environment. Here the basic approaches are listed, in particular reading `CSV` and `JSON` data.
 
-Large volumes of data are still available as `CSV` files or similar. Understanding how to read in such data into a programming environment is key. In this context the `read.table()` function is a general purpose tool to read in text data. Depending on the format, additional meta-data or comments, certain parameters need to be specified.
+Large volumes of data are available as `CSV` files or similar. Understanding how to read in such data into a programming environment is key. In this context the `read.table()` function is a general purpose tool to read in text data. Depending on the format, additional meta-data or comments, and certain parameters need to be specified.
 
-Its counterpart is a function to write human readable data to file, called - you guessed it - `write.table()`. Again parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
+Its counterpart is a function to write human-readable data to file, called - you guessed it - `write.table()`. Again, parameters are required for maximum control over how things are written to file, by default though data are separated by a single empty space " ", not a comma.
 
-Below you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.
+> Note: In Chapter \@ref(datawrangling), we used the {readr} (tidyverse) function `read_csv()`. It serves the same purpose as `read.csv()`, but is faster and reads data into a tidyverse-data frame (a *tibble*) which has some useful additional characteristics, on top of a common R data frame. For particularly large data, you may consider even better solutions for fast reading, see [here](https://cran.rstudio.com/web/packages/vroom/vignettes/benchmarks.html).
+
+Below, you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.
 
 ```{r}
 # create a data frame with demo data
@@ -146,13 +147,13 @@ df <- read.table(
 # typing ?write.table or ?read.table in the R console
 ```
 
-In this example a data frame is generated with three columns. This file is then written to a temporary file in the temporary file directory `tempdir()`. Here, `tempdir()` returns the location of the temporary R directory, which you can use to store intermediate files.
+In this example, a data frame is generated with three columns. This file is then written to a temporary file in the temporary file directory `tempdir()`. Here, `tempdir()` returns the location of the temporary R directory, which you can use to store intermediate files.
 
-We use the `file.path()` function to combine the path (`tempdir()`) with the filename (`your_file.csv`). Using `file.path()` is good practice as directory structures are denoted differently between operating systems e.g., using a backslash (`\`) on Windows vs. a slash (`/`) on Unix based systems (Linux/macOS). The `file.path()` function ensures that the correct directory separator is used.
+We use the `file.path()` function to combine the path (`tempdir()`) with the file name (`your_file.csv`). Using `file.path()` is good practice as directory structures are denoted differently between operating systems, e.g., using a backslash (`\`) on Windows vs. a slash (`/`) on Unix-based systems (Linux/macOS). The `file.path()` function ensures that the correct directory separator is used.
 
-Note that in this command we have to manually set the separator (`sep = ","`) and if a header is there (`header = TRUE`). Depending on the content of a file you will have to alter these parameters. Additional parameters of the `read.table()` function allow you to specify comment characters, skip empty lines, etc.
+Note that in this command, we have to manually set the separator (`sep = ","`) and whether a header is present (`header = TRUE`). Depending on the content of a file, you will have to alter these parameters. Additional parameters of the `read.table()` function allow you to specify comment characters, skip empty lines, etc.
 
-Similar to this simple `CSV` file we can generate and read `JSON` files. For this we do need an additional library, as default R install does not provide this capability. However, the rest of the example follows the above workflow.
+Similar to this simple `CSV` file, we can generate and read `JSON` files. For this, we do need an additional library, as default R install does not provide this capability. However, the rest of the example follows the above workflow.
 
 ```{r messages=FALSE, warning=FALSE, results=FALSE}
 # we'll re-use the data frame as generated for the CSV
@@ -183,17 +184,17 @@ df_json <- jsonlite::read_json(
 identical(df, df_json)
 ```
 
-Note that the reading and writing `JSON` data is easier, as the structure of the data (e.g., field separators) are more strictly defined. While reading the data we use the `simplifyVector` argument to return a data frame rather than a nested list. This works as our data has a tabulated structure, this might not always be the case. Finally we compare the original data with the data read in using `identical()`.
+Note that the reading and writing `JSON` data is easier, as the structure of the data (e.g., field separators) are more strictly defined. While reading the data, we use the `simplifyVector` argument to return a data frame rather than a nested list. This works as our data has a tabular structure, but this might not always be the case. Finally, we compare the original data with the data read in using `identical()`.
 
 > TIP: In calling the external library we use the `::` notation. Although by loading the library with `library()` makes all `jsonlite` functions available, the explicit referencing of the origin of the function makes debugging often easier.
 
 #### Binary data
 
-All digital data which is not represented as text characters can be considered binary data. Binary data can vary in its content from an executable, which runs a program, to the digital representation of an image (jpeg images). However, in all cases the data is represented as bytes (made of eight bits) and not text characters.
+All digital data which is not represented as text characters can be considered binary data. Binary data can vary in its content from an executable, which runs a program, to the digital representation of an image (jpeg images). However, in all cases, the data is represented as bytes (made of eight bits) and not text characters.
 
 One of the advantages of binary data is that it is an efficient representation of data, saving space. This comes at the cost of requiring a dedicated software, other than a text editor, to manipulate the data. For example, digital images in a binary format require image manipulation software.
 
-More so than human readable data, the file format (extension) determines how to treat the data. Knowing common data formats and their use cases is therefore key.
+More so than human-readable data, the file format (extension) determines how to treat the data. Knowing common data formats and their use cases is therefore key.
 
 #### Common file formats
 
@@ -201,22 +202,22 @@ Environmental sciences have particular file formats which dominate the field. So
 
 | File format (extension) | Format description                                             | Use case                                                                                                                            | R Library            |
 |---------------|---------------|----------------------------|---------------|
-| \*.csv                  | comma separated tabulated data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
-| \*.txt                  | tabulated data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
-| \*.json                 | structured human readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
+| \*.csv                  | comma separated tabular data                                 | General purpose flat files with row and column oriented data                                                                        | base R               |
+| \*.txt                  | tabular data with various delimiters                         | General purpose flat files with row and column oriented data                                                                        | base R               |
+| \*.json                 | structured human-readable data                                 | General purpose data format. Often used in web application. Has geospatial extensions (geojson).                                    | jsonlite             |
 | \*.nc                   | [NetCDF data](https://en.wikipedia.org/wiki/NetCDF) array data | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs. Alternative to HDF data. | ncdf4, terra, raster |
-| \*.hdf                  | HDF array data                                                 | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store climate data or model outputs.                          | hdf                  |
+| \*.hdf                  | HDF array data                                                 | Array-oriented data (matrices with \> 2 dimensions). Commonly used to store Earth observation data.                          | hdf                  |
 | \*.tiff, \*.geotiff     | Geotiff multi-dimensional raster data (see below)              | Layered (3D) raster (image) data. Commonly used to represent spatial (raster) data.                                                 | terra, raster        |
 | \*.shp                  | Shapefile of vector data (see below)                           | Common vector based geospatial data. Used to describe data which can be captured by location/shape and attribute values.            | sp, sf               |
 
 ### Meta-data
 
-Meta-data, or data which is associated with the main data file is key to understanding the content and context of a data file (or the data set to which the file belongs). In some cases you will find this data only as a general description referencing the file(s) itself. In other cases, meta-data is included in the file itself.
+Meta-data is data that is associated with the main data file and is key to understanding the file content and the context of the data. In some cases, you will find this data only as a general description referencing the file(s) itself. In other cases, meta-data is included in the file itself.
 
 For example, many tabular CSV data files contain a header specifying the content of each column, and at times a couple of lines of data specifying the content of the file itself - or context within which the data should be considered.
 
 ``` bash
-# This is meta-data associated with the tabulated CSV file
+# This is meta-data associated with the tabular CSV file
 # for which the data is listed below.
 # 
 # In addition to some meta-data, the first row of the data
@@ -227,7 +228,7 @@ column_one, column_two, column_three
 1, 2, 3
 ```
 
-In the case of binary files it will not be possible to read the meta-data as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file using the bash.
+In the case of binary files it will not be possible to read the meta-data directly as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file using the bash.
 
 ``` bash
 # list geospatial data for a geotiff file
@@ -242,7 +243,7 @@ gdalinfo your_geotiff.tiff
 >
 > -   manipulations on the data before using the data in a final workflow
 
-Meta-data of data read into R can be accessed by plotting the object itself, i.e. calling the object on the command line. If it is a simple table the first lines of the table will be shown. When it is a more complex object the meta-data will be output as a formatted statement. You can also use the `str` or `summary` commands to summarize data and meta-data. For in depth discussions on meta-data and data wrangling look at Chapter \@ref(datawrangling).
+Meta-data of data read into R can be accessed by printing the object itself, i.e., calling the object in the console. If it is a simple table, the first lines of the table will be shown. If it is a more complex object, the meta data will be output as a formatted statement. You can also use the `str()` or `summary()` functions to summarize data and meta-data.
 
 ### Spatial data representation
 
@@ -252,38 +253,33 @@ In general, we can distinguish two important data models when dealing with spati
 
 #### Raster data model
 
-The basic raster model represents geographic (2D) continuous data as a two-dimensional array, where each position has a geographic (x, y) coordinate, a cell size (or resolution) and a given extent. Using this definition any image adheres to the raster model. However, in most geographic applications, coordinates are referenced and correspond to a geographic position, e.g., a particular latitude longitude. Often, the model is expanded with a time dimension, stacking various two-dimensional arrays into a three-dimensional array.
+The basic raster model represents geographic (2D) continuous data as a two-dimensional array, where each position has a geographic (x, y) coordinate, a cell size (or resolution) and a given extent. Using this definition, any image adheres to the raster model. However, in most geographic applications, coordinates are referenced and correspond to a geographic position, e.g., a particular latitude and longitude. Often, the model is expanded with a time dimension, stacking various two-dimensional arrays into a three-dimensional array.
 
-The raster data model is common for all data sources which use either imaging sensors, such as satellites or unmanned aerial vehicles (UAVs), or model based output which operates on a fixed grid, such as climate and weather models.
+The raster data model is common for all data sources which use either imaging sensors, such as satellites or unmanned aerial vehicles (UAVs), or outputs of models that operate on a cartesian grid, including most climate and numerical weather prediction models.
 
-Additional meta-data stores both the geographic reference system, the time components as well as other data which might be helpful to end users. Within the environmental sciences, NetCDF and GeoTiff are common raster data file formats.
+Additional meta data stores both the geographic reference system, the definition and format of the time information, and well as other data which might be helpful to end users (e.g., variable units). Within the environmental sciences, NetCDF and GeoTiff are common raster data file formats.
 
 #### Vector data model
 
 The vector data model, in contrast to the raster data model, describes (unbound) features using a geometry (location, shape) using coordinates and linked feature attributes. Geometries can be points, lines, polygons, or even volumes.
 
-Vector data does not have a defined resolution, making them scale independent. This makes the vector data model ideal for discrete features such as roads or building outlines. Conversely, vector data is poorly suited for continuous data.
+Vector data does not have a defined resolution, making them scale-independent. This makes the vector data model ideal for discrete features such as roads or building outlines. Conversely, vector data is poorly suited for continuous data.
 
-Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data.
-
-``` r
-# read in an example shape file
-# a common vector format
-```
+Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data. In this course we will focus on raster data only, the most common format within the context of data science.
 
 ### Online data sources
 
 The sections above assume that you have inherited some data from someone, or have data files on disk (in a particular format). Yet, most of the time, gathering data is the first step in any analysis. Depending on where data is hosted you can simply download data through your web browser or use the internal `download.file()` R function to grab data.
 
-But, many of the data described in previous sections are today warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels. These services allow you to access the underlying (original) data using an API, hence programmatically using code. Mastering the use of these services has become key in gathering research data.
+Today, many of the data described in previous sections are warehoused in large cloud facilities. These data (and their underlying data formats) are stored in large databases and displayed through various applications. For example, Google Maps displays remote sensing (satellite) raster image data in addition to street level vector based labels. These services allow you to access the underlying (original) data using an API, hence programmatically using code. Mastering the use of these services has become key in gathering research data.
 
 #### Direct downloads
 
-Before diving into a description of APIs we remind you that some file reading functions in R are web aware, and can not only read local files but also remote ones (i.e., URLs). Getting ahead of ourselves a bit (see tutorials below), the example code shows you how to read the content of a URL directly into your R environment.
+Before diving into a description of APIs, we remind you that some file reading functions in R are web-aware, and can not only read local files but also remote ones (i.e., URLs). Getting ahead of ourselves a bit (see tutorials below), the example code shows you how to read the content of a URL directly into your R environment.
 
 Although using this functionality isn't equivalent to using an API, the concept is the same. I.e., you load a remote data source.
 
-``` r
+```{r eval=FALSE}
 # define a URL with data of interest
 # in this case annual mean CO2 levels at Mauna Loa
 url <- "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv"
@@ -298,13 +294,13 @@ df <- read.table(
 
 #### APIs
 
-Web based Application Programming Interfaces (APIs) offer a way to specify the scope of the returned data, and ultimately, the processing which goes on behind the scene in response to a (data) query. APIs are a way to, in a limited way, control a remote server to execute a certain (data) action. In most (RESTful) APIs, such query takes the form of an HTTP URL via an URL-encoded scheme using an API endpoint (or base URL).
+Web-based Application Programming Interfaces (APIs) offer a way to specify the scope of the returned data, and ultimately, the processing which goes on behind the scene in response to a (data) query. APIs are a way to, in a limited way, control a remote server to execute a certain (data) action. In most (RESTful) APIs, such query takes the form of an HTTP URL via an URL-encoded scheme using an API endpoint (or base URL).
 
-To reduce some of the complexity of APIs, it is common that a wrapper is written around an API in the language of choice (e.g., R, python). These dedicated API libraries make it easier to access data and limit coding overhead, as more concisely written.
+To reduce some of the complexity of APIs, it is common that a wrapper is written around an API in the language of choice (e.g., R, Python). These dedicated API libraries make it easier to access data and limit coding overhead.
 
 ##### Dedicated API libraries {.unnumbered}
 
-As an example of a dedicated library we use the [{MODISTools} R package](https://github.com/bluegreen-labs/MODISTools) which queries remote sensing data generated by the MODIS remote sensing (satellite) mission from the Oak Ridge National Laboratories data archive.
+As an example of a dedicated library, we use the [{MODISTools} R package](https://github.com/bluegreen-labs/MODISTools) which queries remote sensing data generated by the MODIS remote sensing (satellite) mission from the Oak Ridge National Laboratories data archive.
 
 ```{r warning=FALSE, message=FALSE}
 # load the library
@@ -341,13 +337,13 @@ subset <- MODISTools::mt_subset(
 print(head(subset))
 ```
 
-A detailed description of all functions of the MODISTools R package is beyond the scope of this course. However, the listed command show you what a dedicated API package does. It is a shortcut to functional elements of an API. For example `mt_products()` allows you to quickly list all products without any knowledge of an API URL. Although more complex, as requiring parameters, the `mt_subset()` routine allows you to query remote sensing data for a single location (specified with a latitude `lat` and longitude `lon`), and a given date range (e.g. start, end parameters), a physical extent (in km left-right and above-below).
+A detailed description of all functions of the {MODISTools} R package is beyond the scope of this course. However, the listed command show you what a dedicated API package does. It is a shortcut to functional elements of an API. For example `mt_products()` allows you to quickly list all products without any knowledge of an API URL. Although more complex, as requiring parameters, the `mt_subset()` routine allows you to query remote sensing data for a single location (specified with a latitude `lat` and longitude `lon`), and a given date range (e.g., start, end parameters), a physical extent (in km left-right and above-below).
 
 ##### GET {.unnumbered}
 
 Depending on your data source, you will either need to rely on a dedicated R package to query the API or study the API documentation. The general scheme for using an API follows the use of the `GET()` command of the {httr} R library. You define a query using API parameters, as a named list, and then use a `GET()` statement to download the data from the endpoint (`url`).
 
-``` r
+```{r eval=FALSE}
 # formulate a named list query to pass to httr
 query <- list(
   "argument" = "2",
@@ -383,14 +379,14 @@ url <- "https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SAND.nc4"
 
 # formulate query to pass to httr
 query <- list(
-   "var" = "T_SAND",
+  "var" = "T_SAND",
   "south" = 32,
   "west" = -81,
   "east" = -80,
   "north" = 34,
   "disableProjSubset" = "on",
-  "horizStride"= 1,
-  "accept"="netcdf4"
+  "horizStride" = 1,
+  "accept" = "netcdf4"
 )
 
 # download data using the
@@ -408,15 +404,15 @@ status <- httr::GET(
 # we need to load the {terra}
 # library
 library("terra")
-r <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
-terra::plot(r)
+sand <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
+terra::plot(sand)
 ```
 
 ##### Authentication {.unnumbered}
 
 Depending on the API, authentication using a user name and a key or password is required. Then, the template should be slightly altered to accommodate for these requirements. Note that instead of the `GET()` command we use `POST()` as we need to post some authentication data before we can get the data in return.
 
-``` r
+```{r eval=FALSE}
 # an authenticated API query
 status <- httr::POST(
   url = url,
@@ -430,11 +426,11 @@ status <- httr::POST(
 
 ### Example environmental data repositories
 
-Below you find a list of common environmental data repositories which provide manual or automated download access to their data. Note that this list are some example and is far from extensive.
+Below you find a list of common environmental data repositories which provide manual or automated download access to their data. Note that this list contains some example and is far from extensive.
 
 | Data type                                                                 | Website                             | Description                                                                                   | Download                          |
 |----------------------|---------------|-------------------------------|---------------|
-| Copernicus climate data store                                             | <https://cds.climate.copernicus.eu> | Freely available climate data (reanalysis as well as future projections)                      | API                               |
+| Copernicus Climate Data Store                                             | <https://cds.climate.copernicus.eu> | Freely available climate data (reanalysis as well as future projections)                      | API                               |
 | Oak Ridge National Laboratories Digital Active Archive Center (ORNL DAAC) | <https://daac.ornl.gov/>            | Environmental data of varying sources, either remote sensing, field work and or re-analysis.  | multiple APIs or manual downloads |
 | Land Processes Digital Active Archive Center (LP DAAC)                    | <https://lpdaac.usgs.gov/>          | Remote sensing (analysis ready) data products.                                                | Login walled automated downloads  |
 | Environmental Data Initiative                                             | <https://edirepository.org/>        | Generalist data repository for study data, with a strong focus on biology.                    | Manual download                   |
@@ -445,15 +441,13 @@ Below you find a list of common environmental data repositories which provide ma
 
 ## Exercises
 
-> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
-
 ### Files and file formats {-}
 
-#### Reading and writing human readable files {.unnumbered}
+#### Reading and writing human-readable files {.unnumbered}
 
 While **not leaving your R session**, download and open the files at the following locations:
 
-``` r
+``` bash
 https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_1.csv
 https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_2.csv
 https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_3.csv
@@ -475,7 +469,6 @@ https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
 3.  What does this file contain?
 4.  Write this file to disk in a different geospatial format you desire (use the R documentation of the library used to read the file and the chapter information).
 5.  Download and open the following file:  `https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif`. Does this data seem familiar, and how can you tell? What are your conclusions?
-
 
 ### API use {-}
 
