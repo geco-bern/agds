@@ -388,9 +388,9 @@ daily_fluxes_cleaned |>
   summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE))
 ```
 
-### Tidying an Excel-file {-}
+<!-- ### Tidying an Excel-file {-} -->
 
-*No solutions provided because part of the final report*
+<!-- *No solutions provided because part of the final report* -->
 
 ## Data Visualisation
 
@@ -620,9 +620,9 @@ ml_co2 |>
        x     = "Year")
 ```
 
-### Telling a story from data {-}
+<!-- ### Telling a story from data {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Data Variety
 
@@ -778,7 +778,7 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 
 ### A new project {-}
 
-*No solutions provided.* Note that this exercise trains your ability to access and wrangle data yourself in a reproducible way. The best solution to test whether your you successfully did to is by letting a friend run all of your code on their machine. Resolving the errors you may encounter, helps you to improve you workflow and ensures a streamlined submission of your final report.
+This exercise trains your ability to access and wrangle data yourself in a reproducible way. The best solution to test whether your you successfully did to is by letting a friend run all of your code on their machine. Resolving the errors you may encounter, helps you to improve you workflow and ensures a streamlined submission of your final report.
 
 ### Tracking the state of your project {-}
 
@@ -791,26 +791,27 @@ Note that duplicate files are removed, code to cleanup data is numbered and stor
 
 *No solutions provided.*
 
-### Collaborative Work on Github {-}
+<!-- ### Collaborative Work on Github {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Regression and Classification
 
-### Stepwise regression and asking for help {-}
+<!-- ### Stepwise regression and asking for help {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Supervised ML I
 
+*No solutions provided*
 
-### Comparison of LM and KNN {-}
+<!-- ### Comparison of LM and KNN {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
-### The role of picking a hyperparameter {-}
+<!-- ### The role of picking a hyperparameter {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Supervised ML II
 
@@ -1225,9 +1226,8 @@ Nice, these number look good! They give us two key results:
 - The splitting between train and validation data does not account for distributions of variables. This could be improved.
 -->
 
-### Testing the generalisability of a model {-}
+<!-- ### Testing the generalisability of a model {-} -->
 
-*No solutions provided because part of the final report.*
+<!-- *No solutions provided because part of the final report.* -->
 
 ## Random Forests
->>>>>>> 81b9ad7ed75702d88893258a442ddc4568b7c91b
