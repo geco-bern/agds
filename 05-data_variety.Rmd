@@ -264,12 +264,7 @@ The vector data model, in contrast to the raster data model, describes (unbound)
 
 Vector data does not have a defined resolution, making them scale independent. This makes the vector data model ideal for discrete features such as roads or building outlines. Conversely, vector data is poorly suited for continuous data.
 
-Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data.
-
-``` r
-# read in an example shape file
-# a common vector format
-```
+Conversions between the vector and raster model are possible, but limitations apply. For example, when converting vector data to raster data a resolution needs to be specified, as you lose scale independence of the vector format. Conversions from raster to vector are similarly limited by the original resolution of the raster data. In this course we will focus on raster data only, the most common format within the context of data science.
 
 ### Online data sources
 
