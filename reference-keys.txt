@@ -36,13 +36,14 @@ fig:projecttemplate
 fig:newtemplaterepository
 fig:newtemplaterepositoryname
 fig:correlationplots
+fig:grass
 fig:roccurve
 fig:mlingredients
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
-tab:unnamed-chunk-275
-tab:unnamed-chunk-286
+tab:unnamed-chunk-280
+tab:unnamed-chunk-291
 gettingstarted
 learning-objectives-1
 tutorial
@@ -191,8 +192,7 @@ metrics-for-regression-model-comparison
 classification
 logistic-regression
 metrics-for-classification
-model-evaluation
-model-comparison
+model-selection
 variable-selection-1
 outlier-detection
 exercises-6
@@ -242,6 +242,9 @@ programming-primers
 data-wrangling
 data-visualisation
 data-variety
+api-use-1
+get-2
+dedicated-libraries
 open-science
 code-management
 regression-and-classification
