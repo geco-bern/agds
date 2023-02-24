@@ -128,14 +128,8 @@ The number of variables to consider at each split is a hyperparameter of the Ran
 
 A great strength of Random Forest is, inherited by the characteristics of its underlying decision trees, its minimal requirement of data pre-processing, its capability of dealing with continuous and categorical variables, and its robustness to outliers. With the default choices of $m_\text{try}$, Random Forest provides very good out-of-the-box performance. However, the hyperparameters of Random Forest have interactive effects and should be searched systematically.
 
-<<<<<<< HEAD
-```{r fitrandomforest}
+```{r fitrandomforest, message=FALSE}
 # Data loading and cleaning
-=======
-```{r message=FALSE}
-source("R/eval_model.R")
-
->>>>>>> cfb2161fd0c4e2603d74d3df0066f9a255613524
 daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
@@ -179,15 +173,9 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + 
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
-<<<<<<< HEAD
-mod <- caret::train(
-=======
-<!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
-<!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r}
 # Train the model
-mod <- train(
->>>>>>> cfb2161fd0c4e2603d74d3df0066f9a255613524
+mod <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -204,17 +192,6 @@ mod <- train(
   seed = 1982                # for reproducibility
 )
 ```
-
-```{r include=FALSE, eval=FALSE}
-# Use this only to by-pass running cross-validation when rendering book online
-saveRDS(mod, "data/tutorials/rf_mod.rds")
-```
-```{r include=FALSE}
-# Load data when rendering book online
-mod <- readRDS("data/tutorials/rf_mod.rds")
-```
-<!-- >>> END OF CHECK <<< -->
-
 
 ```{r}
 # generic print

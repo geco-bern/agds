@@ -784,24 +784,28 @@ Perform an aggregation of the half-hourly GPP data (variable `GPP_NT_VUT_REF`) t
 
 ## Report Exercise
 
+### Cleaning data from elevated CO$_2$ experiments {-}
+
 Open Science requires that data underlying published research articles is made available upon publication of the article. A separate aspect is the format of the shared data. Is it provided in an open-access data format? How easy is it to use the data for your own analyses? In this exercise, you will encounter data that was made freely available, but not in an open access format. Although it is "nice-looking" data, you will encounter that it is not tidy. 
 
 Download the data file (`.xlsx`) from the Supplementary Material of the following paper: 
 
 *Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.*
 
-Your task is to manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
-
 "Database S1" contains data of soil organic carbon measurements in experiments, where ecosystems are exposed to ambient (low) and elevated (high) CO2 concentrations. The mean soil organic carbon of multiple samples ("n") is recorded within each experiment for different sample dates. Information is provided for the time in years since the start of the experiment ("Time (years)").
 
-A log-response ratio (treatment effect) can be calculated as:
+A log-response ratio (treatment effect on variable $x$) can be calculated as:
+
 $$
 R = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
 $$
 
 Perform the following steps:
 
-- Aggregate data per experiment and calculate the log-response ratio within each experiment.
+- Manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
+
+- In R, aggregate data per experiment and calculate the log-response ratio within each experiment.
+
 - Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (<3 years since start), a mid-phase (3-6 years since start), and a late phase (>6 years since start). Calculate the log-response ratio for each phase.
 
-Document and describe your workflow in R (reading, aggregating) using an RMarkdown file. Present your results as tables using the `knitr::kable()` function.
+Document and describe your workflow step-by-step in an RMarkdown file (cleaning, reading, wrangling, aggregating). Use R code chunks to run your code and present your results as tables using the `knitr::kable()` function. Knit your RMarkdown file to HTML and ensure reproducibility of your code (more on this in later Chapters).
