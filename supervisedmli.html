@@ -260,7 +260,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
 <li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
 <li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
-<li class="chapter" data-level="5.2.5" data-path="datavariety.html"><a href="datavariety.html#example-environmental-data-repositories"><i class="fa fa-check"></i><b>5.2.5</b> Example environmental data repositories</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-3"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
 <ul>
@@ -498,13 +497,13 @@ Figure 9.1: Supervised machine learning ingredients, adopted from Chollet &amp; 
 <p>Let’s assume that there is some true underlying relationship between a single predictor <span class="math inline">\(X\)</span> and the target variable <span class="math inline">\(Y\)</span>. We don’t know this relationship (in the code below, this is <code>true_fun()</code>) and the observations contain a (normally distributed) error (<code>y = true_fun(x) + 0.1 * rnorm(n_samples)</code>). Based on our training data (<code>df_train</code>), we fit three polynomial models that differ with respect to their complexity. We fit a polynomial of degree 1, 4, and 15 to the observations. A polynomial of degree <span class="math inline">\(N\)</span> is given by: <span class="math display">\[
 y = \sum_{n=0}^N a_n x^n
 \]</span> <span class="math inline">\(a_n\)</span> are the coefficients, i.e., model parameters. The goal of the training is to find the coefficients <span class="math inline">\(a_n\)</span> so that the predicted <span class="math inline">\(\hat{Y}\)</span> fits observed <span class="math inline">\(Y\)</span> best. From the above definition, the polynomial of degree 15 has 16 parameters, while the polynomial of degree 1 has two parameters (and corresponds to a simple bivariate linear regression). You can imagine that the polynomial of degree 15 is much more flexible and should thus yield the closest fit to the training data. This is indeed the case.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>We can use the same fitted models on data that was <em>not</em> used for model fitting - the <em>test data</em>. This is what’s done below. Again, the same true underlying relationship is used, but we sample a new set of data points <span class="math inline">\(X\)</span> and add a new sample of errors on top of the true relationship.</p>
 <p><img src="_main_files/figure-html/unnamed-chunk-174-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We can use the same fitted models on data that was <em>not</em> used for model fitting - the <em>test data</em>. This is what’s done below. Again, the same true underlying relationship is used, but we sample a new set of data points <span class="math inline">\(X\)</span> and add a new sample of errors on top of the true relationship.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>You see that, using the test set, we find that “poly4” actually performs the best - it has a much lower RMSE than “poly15”. Apparently, “poly15” was overfitted. Apparently, it used its flexibility to fit not only the shape of the true underlying relationship, but also the observation errors on top of it. This has the implication that, when this model is used for making predictions for data that was not used for training (modl calibration, model fitting), it will yield misguided predictions that are affected by the errors in the training set. This is the reason why “poly15” performed worse on the test set than the other models.</p>
 <p>From the figures above, we can also conclude that “poly1” was underfitted - it performed worse than “poly4” also on the validation set.</p>
 <p>The <em>out-of-sample performance</em> of “poly15” gets even worse when applying the fitted polynomial models to data that extends beyond the range in <span class="math inline">\(X\)</span> that was used for model training. Here, we’re extending just 20% to the right.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-176-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>You see that the RMSE for “poly15” literally explodes. The model is hopelessly overfitted and completely useless for prediction, although it looked like it fitted the data best when we considered only the training results. This is a fundamental challenge in machine learning - finding the model with the best <em>generalisability</em>. That is, a model that not only fits the training data well, but also performs well on unseen data.</p>
 <p>The phenomenon of fitting and overfitting as a function of the <em>model complexity</em> is also referred to as the <em>bias-variance trade-off</em>. The bias describes how well a model matches the training set (average error). A model with low bias will match the data set closely and vice versa. The variance describes how much a model changes when you train it using different portions of your data set. “poly15” has a high variance, but much of its variance is the result of misled training on observation errors. On the other extreme, “poly1” has a high bias. It’s not affected by the noise in observations, but its predictions are also far off the observations. In ML, we are challenged to balance this trade-off.</p>
 <p>This chapter and the next chapter introduce the methods for achieveing the best model <em>generalisability</em> and find the sweet spot between high bias and high variance. One of the key steps of the machine learning modelling process is motivated by the example above: the separation of the data into a <em>training</em> and a <em>testing</em> set (<em>data splitting</em>). Only by withholding part of the data from the model training, we have a good basis for testing the model on that unseen data for evaluating its generalisability. Additional steps that may be required or beneficial for effective model training and their implementation in R are introduced in this and the next Chapter. Depending on your application or research question, it may also be of interest to evaluate the relationships embodied in <span class="math inline">\(f(X)\)</span> or to quantify the <em>importance</em> of different predictors in our model. This is referred to as <em>model interpretation</em> and is introduced in Chapter @ref(interpretable_ml).</p>
@@ -624,7 +623,7 @@ y = \sum_{n=0}^N a_n x^n
 <span id="cb350-6"><a href="supervisedmli.html#cb350-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> value, <span class="at">y =</span> ..density.., <span class="at">color =</span> split)) <span class="sc">+</span></span>
 <span id="cb350-7"><a href="supervisedmli.html#cb350-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
 <span id="cb350-8"><a href="supervisedmli.html#cb350-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>variable, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-181-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-182-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="preprocessing" class="section level3 hasAnchor" number="9.2.7">
 <h3><span class="header-section-number">9.2.7</span> Pre-processing<a href="supervisedmli.html#preprocessing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -693,7 +692,7 @@ y = \sum_{n=0}^N a_n x^n
 <span id="cb359-15"><a href="supervisedmli.html#cb359-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb359-16"><a href="supervisedmli.html#cb359-16" aria-hidden="true" tabindex="-1"></a><span class="co"># combine both plots</span></span>
 <span id="cb359-17"><a href="supervisedmli.html#cb359-17" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(plot_1, plot_2, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-189-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="handling-missing-data-1" class="section level4 hasAnchor" number="9.2.7.2">
 <h4><span class="header-section-number">9.2.7.2</span> Handling missing data<a href="supervisedmli.html#handling-missing-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -704,7 +703,7 @@ y = \sum_{n=0}^N a_n x^n
 <span id="cb360-3"><a href="supervisedmli.html#cb360-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>, </span>
 <span id="cb360-4"><a href="supervisedmli.html#cb360-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
 <span id="cb360-5"><a href="supervisedmli.html#cb360-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-189-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-190-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Here, the variable <code>LW_IN_F</code> (longwave radiation) if affected by a lot of missing data. Note that we applied a data cleaning step along with the data read-in at the very top of this Chapter. There, we applied a filtering criterion where values are only retained if at least 80% of the underlying half-hourly data is actual measured (and not gap-filled) data. Whether to drop the variable for further modelling should be informed also by our understanding of the data and the processes relevant for the modelling task. Here, the modelling target is GPP and the carbon cycle specialists among the readers may know that longwave radiation is not a known important control on GPP (ecosystem photosynthesis). Therefore, we may consider dropping this variable from the dataset for our modelling task. The remaining variables are affected by less frequent missingness with which we will deal otherwise.</p>
 </div>
 <div id="imputation" class="section level4 hasAnchor" number="9.2.7.3">
@@ -829,7 +828,7 @@ y = \sum_{n=0}^N a_n x^n
 <span id="cb375-7"><a href="supervisedmli.html#cb375-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Log-transformed&quot;</span>)</span>
 <span id="cb375-8"><a href="supervisedmli.html#cb375-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb375-9"><a href="supervisedmli.html#cb375-9" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(plot_1, plot_2)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Log transformation as part of the pre-processing is specified using the <code>step_log()</code> function, here applied to the model target variable (<code>all_outcomes()</code>).</p>
 <div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="supervisedmli.html#cb376-1" aria-hidden="true" tabindex="-1"></a>recipes<span class="sc">::</span><span class="fu">recipe</span>(WS_F <span class="sc">~</span> ., <span class="at">data =</span> daily_fluxes) <span class="sc">|&gt;</span>   <span class="co"># it&#39;s of course non-sense to model wind speed like this</span></span>
 <span id="cb376-2"><a href="supervisedmli.html#cb376-2" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_log</span>(<span class="fu">all_outcomes</span>())</span></code></pre></div>
@@ -861,7 +860,7 @@ y(\lambda) = \begin{cases}
 <span id="cb379-4"><a href="supervisedmli.html#cb379-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> WS_F, <span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
 <span id="cb379-5"><a href="supervisedmli.html#cb379-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
 <span id="cb379-6"><a href="supervisedmli.html#cb379-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Box-Cox-transformed&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-199-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Note that the Box-Cox-transformation can only be applied to values that are strictly positive. In our example, wind speed (<code>WS_F</code>) is. If this is not satisfied, a Yeo-Johnson transformation can be applied.</p>
 <div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="supervisedmli.html#cb380-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(WS_F <span class="sc">~</span> ., <span class="at">data =</span> daily_fluxes) <span class="sc">|&gt;</span></span>
 <span id="cb380-2"><a href="supervisedmli.html#cb380-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_outcomes</span>())</span></code></pre></div>
@@ -898,7 +897,7 @@ y(\lambda) = \begin{cases}
 <span id="cb382-3"><a href="supervisedmli.html#cb382-3" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="sc">|&gt;</span> </span>
 <span id="cb382-4"><a href="supervisedmli.html#cb382-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> GPP_NT_VUT_REF, <span class="at">y =</span> ..count..)) <span class="sc">+</span> </span>
 <span id="cb382-5"><a href="supervisedmli.html#cb382-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-201-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="supervisedmli.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
 <span id="cb383-2"><a href="supervisedmli.html#cb383-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>)  <span class="co"># for reproducibility</span></span>
 <span id="cb383-3"><a href="supervisedmli.html#cb383-3" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(daily_fluxes, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
@@ -992,10 +991,10 @@ y(\lambda) = \begin{cases}
 <span id="cb384-59"><a href="supervisedmli.html#cb384-59" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb384-60"><a href="supervisedmli.html#cb384-60" aria-hidden="true" tabindex="-1"></a><span class="co"># linear regression model</span></span>
 <span id="cb384-61"><a href="supervisedmli.html#cb384-61" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_lm, <span class="at">df_train =</span> daily_fluxes_train, <span class="at">df_test =</span> daily_fluxes_test)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-203-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="supervisedmli.html#cb385-1" aria-hidden="true" tabindex="-1"></a><span class="co"># KNN</span></span>
 <span id="cb385-2"><a href="supervisedmli.html#cb385-2" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_knn, <span class="at">df_train =</span> daily_fluxes_train, <span class="at">df_test =</span> daily_fluxes_test)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-202-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-203-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>It is advisable to keep workflow notebooks (this RMarkdown file) light and legible. Therefore, code chunks should not be excessively long and functions should be kept in a <code>./R/*.R</code> file, which can be loaded. This also facilitates debugging code inside the function. Here, the function <code>eval_model()</code> is part of the book’s git repository, stored in the sub-directory <code>./R/</code>, and used also in later chapters.</p>
 </div>
 </div>

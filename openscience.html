@@ -260,7 +260,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
 <li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
 <li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
-<li class="chapter" data-level="5.2.5" data-path="datavariety.html"><a href="datavariety.html#example-environmental-data-repositories"><i class="fa fa-check"></i><b>5.2.5</b> Example environmental data repositories</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-3"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
 <ul>
@@ -576,16 +575,80 @@ Figure 6.2: A targets visualized workflow by rOpenSci
 </div>
 <div id="data-retention" class="section level3 hasAnchor" number="6.2.7">
 <h3><span class="header-section-number">6.2.7</span> Data retention<a href="openscience.html#data-retention" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long term data and code retention and versioning.</p>
-<p>For code online collaboration tools, such as <a href="https://github.com">github</a>, <a href="https://gitlab.com">gitlab</a> or <a href="https://codeberg.org">codeberg</a>, provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly ~2GB). For small projects data can be included in the repository itself, for larger projects this won’t be possible.</p>
-<p>To ensure long term storage of code and data, outside of commercial for profit services (e.g. Dropbox, Google Drive etc), it is best to rely on for example <a href="https://zenodo.org/">Zenodo</a>. Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include <a href="https://datadryad.org/stash">Dryad</a> and the <a href="https://osf.io/">Center for Open Science</a>.</p>
+<p>Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long-term data and code retention and versioning.</p>
+<p>In Chapter <a href="codemgmt.html#codemgmt">7</a>, you will learn more about <em>git</em> for code management and collaboration. Several online make use of <em>git</em> for providing web-based collaboration functionalities and remote storage of your repositories. Examples are <a href="https://github.com">GitHub</a>, <a href="https://gitlab.com">GitLab</a>, <a href="https://codeberg.org">Codeberg</a>, or <a href="https://bitbucket.org/">Bitbucket</a>. However, their remote storage service should only be considered an aid for collaboration, and not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can be stored in a repository (mostly ~2 GB). For small projects, data can be included in the repository itself. For larger projects and for making larger datasets accessible, this won’t be possible.</p>
+<p>To ensure long-term storage of code and data, outside of commercial for profit services (e.g., Dropbox, Google Drive etc), it is best to rely on public permanent repositories, such as <a href="https://zenodo.org/">Zenodo</a>. Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50 GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include <a href="https://datadryad.org/stash">Dryad</a> and the <a href="https://osf.io/">Center for Open Science</a>.</p>
+<p>The broad-purpose permanent data repositories mentioned above are not edited and are therefore not ideal for data discovery. In contrast, edited data repositories often have a specific thematic scope and different repositories are established in different research communities. Below you find a list of widely used data repositories, generalist and others, that provide manual or automated download access to their data. Note that this list contains some example and is far from extensive.</p>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="18%" />
+<col width="37%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data type</th>
+<th>Website</th>
+<th>Description</th>
+<th>Download</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Copernicus Climate Data Store</td>
+<td><a href="https://cds.climate.copernicus.eu" class="uri">https://cds.climate.copernicus.eu</a></td>
+<td>Freely available climate data (reanalysis as well as future projections)</td>
+<td>API</td>
+</tr>
+<tr class="even">
+<td>Oak Ridge National Laboratories Digital Active Archive Center (ORNL DAAC)</td>
+<td><a href="https://daac.ornl.gov/" class="uri">https://daac.ornl.gov/</a></td>
+<td>Environmental data of varying sources, either remote sensing, field work and or re-analysis.</td>
+<td>multiple APIs or manual downloads</td>
+</tr>
+<tr class="odd">
+<td>Land Processes Digital Active Archive Center (LP DAAC)</td>
+<td><a href="https://lpdaac.usgs.gov/" class="uri">https://lpdaac.usgs.gov/</a></td>
+<td>Remote sensing (analysis ready) data products.</td>
+<td>Login walled automated downloads</td>
+</tr>
+<tr class="even">
+<td>Environmental Data Initiative</td>
+<td><a href="https://edirepository.org/" class="uri">https://edirepository.org/</a></td>
+<td>Generalist data repository for study data, with a strong focus on biology.</td>
+<td>Manual download</td>
+</tr>
+<tr class="odd">
+<td>Dryad</td>
+<td><a href="https://datadryad.org" class="uri">https://datadryad.org</a></td>
+<td>Generalist data repository for study data, with a strong focus on biology.</td>
+<td>Manual downloads</td>
+</tr>
+<tr class="even">
+<td>Zenodo</td>
+<td><a href="https://zenodo.org/" class="uri">https://zenodo.org/</a></td>
+<td>Generalist data repository for study data.</td>
+<td>Manual downloads</td>
+</tr>
+<tr class="odd">
+<td>Eurostat</td>
+<td><a href="https://ec.europa.eu/eurostat" class="uri">https://ec.europa.eu/eurostat</a></td>
+<td>Generalist data repository for EU wide (demographic) data.</td>
+<td>Manual downloads</td>
+</tr>
+<tr class="even">
+<td>Swiss Open Government data</td>
+<td><a href="https://opendata.swiss/en/" class="uri">https://opendata.swiss/en/</a></td>
+<td>Generalist data repository from the Swiss Federal statistics office.</td>
+<td>API or manual downloads</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="exercises-4" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Exercises<a href="openscience.html#exercises-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<blockquote>
-<p><em>Hint</em>: For all exercises remember the resources we provided on finding help in section <a href="programmingprimers.html#findinghelp">2.2.3</a>.</p>
-</blockquote>
 <div id="external-data" class="section level3 unnumbered hasAnchor">
 <h3>External data<a href="openscience.html#external-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You inherit a project folder which contains the following files.</p>
@@ -609,21 +672,21 @@ Figure 6.2: A targets visualized workflow by rOpenSci
 <p>What are the basic steps to create a reproducible workflow from a file management perspective? Create your own R project using these principles and provide details the on steps involved and why they matter.</p>
 <p>The project should be a reproducible workflow:</p>
 <ul>
-<li><p>to download and plot a MODIS land cover map for Belgium using skills you learned in <a href="datavariety.html#datavariety">5</a></p></li>
-<li><p>contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in <a href="datawrangling.html#datawrangling">3</a></p></li>
-<li><p>create a plot of the land cover map <a href="datavis.html#datavis">4</a></p></li>
-<li><p>contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow</p></li>
+<li><p>Download and plot a MODIS land cover map for Belgium using skills you learned in Chapter <a href="datavariety.html#datavariety">5</a>.</p></li>
+<li><p>Write a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in Chapter <a href="datawrangling.html#datawrangling">3</a>.</p></li>
+<li><p>Create a plot of the land cover map, see Chapter <a href="datavis.html#datavis">4</a>.</p></li>
+<li><p>Write a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow.</p></li>
 </ul>
 </div>
 <div id="tracking-the-state-of-your-project" class="section level3 unnumbered hasAnchor">
 <h3>Tracking the state of your project<a href="openscience.html#tracking-the-state-of-your-project" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ul>
-<li><p>Track the packages you use in the project you created using {renv}</p></li>
-<li><p>Install any additional library and update the state of your project</p></li>
-<li><p>create a simple {targets} project using the above workflow</p>
+<li><p>Track the packages you use in the project you created using {renv}.</p></li>
+<li><p>Install any additional library and update the state of your project.</p></li>
+<li><p>Create a simple {targets} project using the above workflow</p>
 <ul>
-<li><p>make changes to the API download routine</p></li>
-<li><p>rerun the targets project</p></li>
+<li><p>Make changes to the API download routine.</p></li>
+<li><p>Rerun the targets project.</p></li>
 </ul></li>
 </ul>
 

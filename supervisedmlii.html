@@ -260,7 +260,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
 <li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
 <li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
-<li class="chapter" data-level="5.2.5" data-path="datavariety.html"><a href="datavariety.html#example-environmental-data-repositories"><i class="fa fa-check"></i><b>5.2.5</b> Example environmental data repositories</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-3"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
 <ul>
@@ -588,7 +587,7 @@ Figure 10.1: Visualization of a loss function.
 <span id="cb390-13"><a href="supervisedmlii.html#cb390-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> .estimate, <span class="at">color =</span> set)) <span class="sc">+</span></span>
 <span id="cb390-14"><a href="supervisedmlii.html#cb390-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb390-15"><a href="supervisedmlii.html#cb390-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-209-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The workflow implemented above should remind you of your the exercise in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. It demonstrates that the model performance on the training set keeps improving as the model variance (as opposed to bias) increases - here as we go towards smaller <span class="math inline">\(k\)</span>. However, what counts for measuring out-of-sample model performance is the evaluation on the test set, which deteriorates with increasing model variance beyond a certain point.</p>
 <p>Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?</p>
 </div>
@@ -617,7 +616,7 @@ Figure 10.2: K-fold cross validation. From Boehmke &amp; Greenwell (2020).
 <!-- >>> END OF CHECK <<< -->
 <div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="supervisedmlii.html#cb392-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic plot of the caret model object</span></span>
 <span id="cb392-2"><a href="supervisedmlii.html#cb392-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mod_cv)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-213-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-214-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="supervisedmlii.html#cb393-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
 <span id="cb393-2"><a href="supervisedmlii.html#cb393-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod_cv)</span></code></pre></div>
 <pre><code>## k-Nearest Neighbors 
@@ -658,7 +657,7 @@ Figure 10.2: K-fold cross validation. From Boehmke &amp; Greenwell (2020).
 <div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="supervisedmlii.html#cb397-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_cv, <span class="at">df_train =</span> daily_fluxes_train, <span class="at">df_test =</span> daily_fluxes_test)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-215-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-216-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Remember that in Chapter <a href="supervisedmli.html#supervisedmli">9</a>, we used <span class="math inline">\(k=5\)</span> and got an <span class="math inline">\(R^2=0.74\)</span> on the training set and <span class="math inline">\(R^2=0.61\)</span> on the test set. The results with the optimal choice of <span class="math inline">\(k=25\)</span> yield an <span class="math inline">\(R^2=0.69\)</span> on the training set and <span class="math inline">\(R^2=0.65\)</span> on the test set - poorer than with <span class="math inline">\(k=5\)</span> on the training set but better on the test set.</p>
 </div>
 <div id="validation-versus-testing-data" class="section level3 hasAnchor" number="10.2.5">

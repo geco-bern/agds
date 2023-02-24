@@ -260,7 +260,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
 <li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
 <li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
-<li class="chapter" data-level="5.2.5" data-path="datavariety.html"><a href="datavariety.html#example-environmental-data-repositories"><i class="fa fa-check"></i><b>5.2.5</b> Example environmental data repositories</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-3"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
 <ul>
@@ -1100,11 +1099,16 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## #   SWC_F_MDS_4 &lt;dbl&gt;, SWC_F_MDS_4_QC &lt;dbl&gt;, SWC_F_MDS_5 &lt;dbl&gt;,
 ## #   SWC_F_MDS_5_QC &lt;dbl&gt;, and abbreviated variable name ¹​GPP_NT_VUT_REF</code></pre>
 <p>A visualisation of missing data indicates that soil water content data (<code>SWC_F_MDS_*</code>) are often missing.</p>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="datawrangling.html#cb196-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
-<span id="cb196-2"><a href="datawrangling.html#cb196-2" aria-hidden="true" tabindex="-1"></a>  daily_fluxes_allsites <span class="sc">|&gt;</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>),</span>
-<span id="cb196-3"><a href="datawrangling.html#cb196-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb196-4"><a href="datawrangling.html#cb196-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
-<span id="cb196-5"><a href="datawrangling.html#cb196-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="datawrangling.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a subset of the data</span></span>
+<span id="cb196-2"><a href="datawrangling.html#cb196-2" aria-hidden="true" tabindex="-1"></a>daily_fluxex_subset <span class="ot">&lt;-</span> daily_fluxes_allsites <span class="sc">|&gt;</span></span>
+<span id="cb196-3"><a href="datawrangling.html#cb196-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>)</span>
+<span id="cb196-4"><a href="datawrangling.html#cb196-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-5"><a href="datawrangling.html#cb196-5" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize missing data</span></span>
+<span id="cb196-6"><a href="datawrangling.html#cb196-6" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_miss</span>(</span>
+<span id="cb196-7"><a href="datawrangling.html#cb196-7" aria-hidden="true" tabindex="-1"></a>  daily_fluxex_subset,</span>
+<span id="cb196-8"><a href="datawrangling.html#cb196-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb196-9"><a href="datawrangling.html#cb196-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">warn_large_data =</span> <span class="cn">FALSE</span></span>
+<span id="cb196-10"><a href="datawrangling.html#cb196-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-103-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="strings" class="section level3 hasAnchor" number="3.3.2">
@@ -1233,18 +1237,22 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <p>Joining the nested data frame with site meta information results in a substantially smaller and much handier data frame compared to an alternative, where the site meta information is joined into the un-nested (daily) data frame, and therefore duplicated for each day within sites.</p>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="datawrangling.html#cb216-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_nested_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
 <span id="cb216-2"><a href="datawrangling.html#cb216-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
-<span id="cb216-3"><a href="datawrangling.html#cb216-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(<span class="fu">select</span>(daily_fluxes_allsites_nested, <span class="sc">-</span>linmod, <span class="sc">-</span>summ, <span class="sc">-</span>rsq),</span>
-<span id="cb216-4"><a href="datawrangling.html#cb216-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span>)</span>
-<span id="cb216-5"><a href="datawrangling.html#cb216-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb216-6"><a href="datawrangling.html#cb216-6" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
-<span id="cb216-7"><a href="datawrangling.html#cb216-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
-<span id="cb216-8"><a href="datawrangling.html#cb216-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(daily_fluxes_allsites,</span>
-<span id="cb216-9"><a href="datawrangling.html#cb216-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span>)</span>
-<span id="cb216-10"><a href="datawrangling.html#cb216-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb216-11"><a href="datawrangling.html#cb216-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Flat and joined:&quot;</span>, </span>
-<span id="cb216-12"><a href="datawrangling.html#cb216-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_joined),  </span>
-<span id="cb216-13"><a href="datawrangling.html#cb216-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>, </span>
-<span id="cb216-14"><a href="datawrangling.html#cb216-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">standard =</span> <span class="st">&quot;SI&quot;</span>)))</span></code></pre></div>
+<span id="cb216-3"><a href="datawrangling.html#cb216-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(</span>
+<span id="cb216-4"><a href="datawrangling.html#cb216-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(daily_fluxes_allsites_nested, <span class="sc">-</span>linmod, <span class="sc">-</span>summ, <span class="sc">-</span>rsq),</span>
+<span id="cb216-5"><a href="datawrangling.html#cb216-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span></span>
+<span id="cb216-6"><a href="datawrangling.html#cb216-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb216-7"><a href="datawrangling.html#cb216-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb216-8"><a href="datawrangling.html#cb216-8" aria-hidden="true" tabindex="-1"></a>daily_fluxes_allsites_joined <span class="ot">&lt;-</span> siteinfo_fluxnet2015 <span class="sc">|&gt;</span></span>
+<span id="cb216-9"><a href="datawrangling.html#cb216-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">siteid =</span> sitename) <span class="sc">|&gt;</span></span>
+<span id="cb216-10"><a href="datawrangling.html#cb216-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(</span>
+<span id="cb216-11"><a href="datawrangling.html#cb216-11" aria-hidden="true" tabindex="-1"></a>    daily_fluxes_allsites,</span>
+<span id="cb216-12"><a href="datawrangling.html#cb216-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">&quot;siteid&quot;</span></span>
+<span id="cb216-13"><a href="datawrangling.html#cb216-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb216-14"><a href="datawrangling.html#cb216-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb216-15"><a href="datawrangling.html#cb216-15" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Flat and joined:&quot;</span>, </span>
+<span id="cb216-16"><a href="datawrangling.html#cb216-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_joined),  </span>
+<span id="cb216-17"><a href="datawrangling.html#cb216-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">units =</span> <span class="st">&quot;auto&quot;</span>, </span>
+<span id="cb216-18"><a href="datawrangling.html#cb216-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">standard =</span> <span class="st">&quot;SI&quot;</span>)))</span></code></pre></div>
 <pre><code>## [1] &quot;Flat and joined: 5.8 MB&quot;</code></pre>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="datawrangling.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Nested and joined:&quot;</span>, </span>
 <span id="cb218-2"><a href="datawrangling.html#cb218-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">format</span>(<span class="fu">object.size</span>(daily_fluxes_allsites_nested_joined),  </span>

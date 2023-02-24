@@ -260,7 +260,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
 <li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
 <li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
-<li class="chapter" data-level="5.2.5" data-path="datavariety.html"><a href="datavariety.html#example-environmental-data-repositories"><i class="fa fa-check"></i><b>5.2.5</b> Example environmental data repositories</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-3"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
 <ul>
@@ -465,127 +464,126 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Chapter lead author: Koen Hufkens</strong></p>
 <div id="learning-objectives-7" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Learning objectives<a href="codemgmt.html#learning-objectives-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In this chapter you will learn how to manage your code with common version control tools, i.e. git.</p>
+<p>In this chapter you will learn how to manage your code with common version control tools, i.e., <em>git.</em></p>
 <p>You will learn how to:</p>
 <ul>
-<li>create a git project (new or from a template)</li>
-<li>track changes in your code project</li>
-<li>collaborate with others</li>
-<li>ensure reproducibility of your project by openly sharing your work and progress.</li>
+<li>Create a git project (new or from a template)</li>
+<li>Track changes in your code project</li>
+<li>Collaborate with others</li>
+<li>Ensure reproducibility of your project by openly sharing your work and progress.</li>
 </ul>
 </div>
 <div id="tutorial-6" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Tutorial<a href="codemgmt.html#tutorial-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Code management is a key of managing any data science project, especially when collaborating. Proper code management limits mistakes such as code loss and increases efficiency by structuring projects.</p>
+<p>Code management is key for managing any data science project, especially when collaborating. Proper code management limits mistakes, such as code loss, and increases efficiency by structuring projects.</p>
 <p>In this chapter, we will discuss the management of code in both the location sense, where things are kept, and tracking temporal changes over time using a version control system.</p>
-<p>Current version control of code is dominated by the software tool <code>git</code>. However, version control has a long history and can be found not only in code development practices.For example, whenever you use track changes in a text document you apply a form of version control i.e., you track changes in your text over time and selectively accepted changes. In this respect git, as a tool for version control of code, does not differ much from track changes of a text document, but follows a manual modify –&gt; staged –&gt; commit workflow.</p>
+<p>Current version control of code is dominated by the software tool <em>git</em>. However, version control has a long history and can be found not only in code development practices. For example, whenever you use track changes in a text document, you apply a form of version control. That is, you track changes in your text over time and selectively accept changes. In this respect, <em>git</em>, as a tool for version control of code, does not differ much from track changes of a text document. In contrast to track changes in a text document, with <em>git</em> the user has manual control over <em>staging</em> and <em>committing</em> edits on a file.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:gitworkflow"></span>
 <img src="https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/file_cycle2.png" alt="The git workflow- by Paola Corrales and Elio Campitelli"  />
 <p class="caption">
 Figure 7.1: The git workflow- by Paola Corrales and Elio Campitelli
 </p>
 </div>
-<p>Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as <a href="https://github.com">github</a>, <a href="https://gitlab.com">gitlab</a> and <a href="https://codeberg.org">codeberg</a> which make these collaborative decisions and operations even easier.</p>
+<p><em>Git</em> allows for the collaboration of multiple contributors on the same code and manages the integration of contributions into the repository. Built upon <em>git</em> are cloud-based platforms such as <a href="https://github.com">GitHub</a>, <a href="https://gitlab.com">GitLab</a>, <a href="https://codeberg.org">Codeberg</a>, or <a href="https://bitbucket.org/">Bitbucket</a> which make these collaborative decisions and operations even easier.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:githubworkflow"></span>
 <img src="https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/local_remote.png" alt="The github remote workflow- by Paola Corrales and Elio Campitelli"  />
 <p class="caption">
 Figure 7.2: The github remote workflow- by Paola Corrales and Elio Campitelli
 </p>
 </div>
-<p>In this chapter, you will learn how to use git and github to manage your project and collaborate on code.</p>
+<p>In this chapter, you will learn how to use <em>git</em> and GitHub to manage your project and collaborate on code.</p>
 <blockquote>
-<p>NOTE: Coding style, and documentation practices of the code itself have been covered previously in the Chapter Programming primers. Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as <a href="https://gitlab.com">gitlab</a> and <a href="https://codeberg.org">codeberg</a>.</p>
+<p>NOTE: Coding style, and documentation practices of the code itself have been covered previously in Chapter <a href="programmingprimers.html#programmingprimers">2</a>. Although the tutorial below focuses on GitHub, the jargon and operations are transferable to other platforms such as <a href="https://gitlab.com">GitLab</a> and <a href="https://codeberg.org">Codeberg</a>.</p>
 </blockquote>
 <div id="gitworkflow" class="section level3 hasAnchor" number="7.2.1">
 <h3><span class="header-section-number">7.2.1</span> Git and local version control<a href="codemgmt.html#gitworkflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Git allows for the tracking of changes in code (or any file) within a git project. A git project is defined by the topmost directory in which a git project is created. For example the following project is not tracked for changes using git.</p>
+<p><em>Git</em> allows for the tracking of changes in code (or any file) within a git project. A <em>git</em> project is defined by the topmost directory in which a <em>git</em> project is created. For example, the following project is not tracked for changes using git.</p>
 <div class="sourceCode" id="cb275"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb275-1"><a href="codemgmt.html#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="ex">project/</span></span>
 <span id="cb275-2"><a href="codemgmt.html#cb275-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├─</span> YOUR_PROJECT.Rproj</span></code></pre></div>
-<p>You can start tracking a project by initiating a local git repository using the following code in R. We’ll use the {usethis} package to make some of the setup a project easier.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb276-1"><a href="codemgmt.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initiate a github repository</span></span>
-<span id="cb276-2"><a href="codemgmt.html#cb276-2" aria-hidden="true" tabindex="-1"></a><span class="fu">usethis::use_git()</span></span></code></pre></div>
-<p>This will create a github repository in your project. It will also create a <code>.gitignore</code> file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.</p>
+<p>You can start tracking a project by initiating a local <em>git</em> repository using the following code in R. We’ll use the {usethis} package to make some of the setup a project easier.</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="codemgmt.html#cb276-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_git</span>()</span></code></pre></div>
+<p>This will create a <em>git</em> repository in your project. It will also create a <code>.gitignore</code> file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.</p>
 <div id="git-add" class="section level4 hasAnchor" number="7.2.1.1">
 <h4><span class="header-section-number">7.2.1.1</span> git add<a href="codemgmt.html#git-add" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Before we can track anything we need to tell git which files to track. We therefore have to add them to an index of tracked files. You can either do this on the command line using:</p>
+<p>Before we can track anything, we need to tell <em>git</em> which files to track. In <em>git</em>-speak, we <em>stage</em> the files. We therefore have to <code>add</code> them to an index of tracked files. You can either do this on the command line using:</p>
 <div class="sourceCode" id="cb277"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb277-1"><a href="codemgmt.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add your_file.csv</span></code></pre></div>
-<p>Or using the RStudio git panel. In this panel you will see all un-tracked files or directories highlighted with a yellow question mark.</p>
+<p>Or using the RStudio <strong>Git</strong> panel. In this panel, you will see all un-tracked files or directories highlighted with a yellow question mark.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unstagedfiles"></span>
-<img src="figures/git_unstaged_files.png" alt="Unstaged files in a git enabled R project"  />
+<img src="figures/git_unstaged_files.png" alt="Unstaged files in a git enabled R project." width="80%" />
 <p class="caption">
-Figure 7.3: Unstaged files in a git enabled R project
+Figure 7.3: Unstaged files in a git enabled R project.
 </p>
 </div>
-<p>You select the file tick boxes to the left to stage all files for inclusion into the git repository. Once staged, the next step will be to finally commit these staged files to be included in git tracking.</p>
+<p>You select the file tick boxes to the left to stage all files for inclusion into the <em>git</em> repository. Once staged, the next step will be to finally commit these staged files to be included in <em>git</em> tracking.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:stagedfiles"></span>
-<img src="figures/git_staged_files.png" alt="Staged files in a git enabled R project"  />
+<img src="figures/git_staged_files.png" alt="Staged files in a git enabled R project." width="80%" />
 <p class="caption">
-Figure 7.4: Staged files in a git enabled R project
+Figure 7.4: Staged files in a git enabled R project.
 </p>
 </div>
 </div>
 <div id="git-commit" class="section level4 hasAnchor" number="7.2.1.2">
 <h4><span class="header-section-number">7.2.1.2</span> git commit<a href="codemgmt.html#git-commit" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>To store any changes to the files which were staged we need to commit these changes. We therefore hit the commit button, this will pop up a new window.</p>
+<p>To store any changes to the files which were staged we need to <code>commit</code> these changes. We therefore hit the commit button. A new window will pop up.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:commitmessage"></span>
-<img src="figures/git_commit_message.png" alt="Entering a commit message"  />
+<img src="figures/git_commit_message.png" alt="Entering a commit message." width="80%" />
 <p class="caption">
-Figure 7.5: Entering a commit message
+Figure 7.5: Entering a commit message.
 </p>
 </div>
-<p>Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right. You need to provide this small message before pressing the commit button once more. This will let git track the changes to these files. A message will be shown if the commit is successful.</p>
+<p>Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right. You need to provide this small message before pressing the commit button once more. This will let <em>git</em> track the changes to these files. A message will be shown if the commit is successful.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:commitcompleted"></span>
-<img src="figures/git_commit_completed.png" alt="A completed commit"  />
+<img src="figures/git_commit_completed.png" alt="A completed commit." width="80%" />
 <p class="caption">
-Figure 7.6: A completed commit
+Figure 7.6: A completed commit.
 </p>
 </div>
-<p>With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked, this is a manual step. As with normal documents you are advised to save (commit) your changes to your project frequently. More so, if you create a new file you will need to add it before you can commit it.</p>
-<p>You can commit changes of staged files using the command line as well using the following command.</p>
+<p>With this, you will track all files locally. Any new changes to a file will need to be committed to the <em>git</em> repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked. Instead, this is a manual step. As with normal documents, you are advised to save (commit) your changes to your project frequently. And remember, if you create a new file, you will need to <code>add</code> it before you can <code>commit</code> it.</p>
+<p>You can <code>commit</code> changes of staged files using the command line as well using the following command.</p>
 <div class="sourceCode" id="cb278"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb278-1"><a href="codemgmt.html#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;A message&quot;&quot;</span></span></code></pre></div>
 </div>
 </div>
 <div id="remote-version-control" class="section level3 hasAnchor" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Remote version control<a href="codemgmt.html#remote-version-control" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as <a href="https://github.com">github</a>, <a href="https://gitlab.com">gitlab</a> and <a href="https://codeberg.org">codeberg</a> come in. They provide a cloud based git repository which you can associate with your local project (see figure above).</p>
-<p>To create a remote project and successfully associate it with an R project we first have to specify some details, such as the username and email you used is singing up for <a href="https://github.com">github</a>. To not leave your R session you can use the {usethis} package for this.</p>
+<p>Keeping files and working with <em>git</em> locally limit the extent in which you can collaborate with others. This is where remote cloud-based <em>git</em> solutions, such as <a href="https://github.com">GitHub</a>, <a href="https://gitlab.com">GitLab</a> and <a href="https://codeberg.org">Codeberg</a>, come in. They provide a cloud-based <em>git</em> repository which you can associate with your local project (see figure above).</p>
+<p>To create a remote project and successfully associate it with an R project, we first have to specify some details, such as the user name and email you used is singing up for <a href="https://github.com">GitHub</a>. To not leave your R session, you can use the {usethis} package for this.</p>
 <div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="codemgmt.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure your project</span></span>
 <span id="cb279-2"><a href="codemgmt.html#cb279-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usethis)</span>
 <span id="cb279-3"><a href="codemgmt.html#cb279-3" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_git_config</span>(<span class="at">user.name =</span> <span class="st">&quot;Jane Doe&quot;</span>,</span>
 <span id="cb279-4"><a href="codemgmt.html#cb279-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">user.email =</span> <span class="st">&quot;jane@example.org&quot;</span>)</span></code></pre></div>
-<p>For security reasons the use of your github password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed first generate a github PAT using <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic">these instructions</a>.</p>
-<p>To create a new project on github hit the “+” sign top left on the github main page (once logged in), and select the “new repository” from the dropdown menu.</p>
+<p>For security reasons, the use of your GitHub password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed, first generate a GitHub PAT using <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic">these instructions</a>.</p>
+<p>To create a new project on GitHub, hit the “+” sign top left on the GitHub main page (once logged in), and select the “new repository” from the dropdown menu.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:newgithubrepo"></span>
-<img src="figures/git_new_project.png" alt="Create a new github repository"  />
+<img src="figures/git_new_project.png" alt="Create a new github repository" width="30%" />
 <p class="caption">
 Figure 7.7: Create a new github repository
 </p>
 </div>
 <p>A new interface will open up in which you should not use any template, but specify your own project name and brief description. Make sure your project is public, and all other settings are kept as is before you hit the “Create repository” button.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:newgithubsettings"></span>
-<img src="figures/git_new_project_settings.png" alt="Set the github project name"  />
+<img src="figures/git_new_project_settings.png" alt="Set the github project name" width="60%" />
 <p class="caption">
 Figure 7.8: Set the github project name
 </p>
 </div>
-<p>Note the URL that is generated for your project, you will need it when creating a new RStudio project which is linked to github.</p>
+<p>Note the URL that is generated for your project. You will need it when creating a new RStudio project linked to GitHub.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:githubsetup"></span>
-<img src="figures/git_project_link.png" alt="A repository link you need during the R project wizard"  />
+<img src="figures/git_project_link.png" alt="A repository link you need during the R project wizard" width="80%" />
 <p class="caption">
 Figure 7.9: A repository link you need during the R project wizard
 </p>
 </div>
-<p>Next we’ll setup an R project which is associated with the repository. Use: File &gt; New Project &gt; Version Control &gt; Git.</p>
+<p>Next, we’ll setup an R project which is associated with the repository. Use: File &gt; New Project &gt; Version Control &gt; Git.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:projectwizard"></span>
-<img src="figures/git_project_wizard.png" alt="Linking the github project to a new git enabled R project"  />
+<img src="figures/git_project_wizard.png" alt="Linking the github project to a new git enabled R project" width="40%" />
 <p class="caption">
 Figure 7.10: Linking the github project to a new git enabled R project
 </p>
 </div>
-<p>In the “repository URL” paste the URL of your new GitHub repository, in the example above this would be <a href="https://github.com/khufkens/YOUR_PROJECT.git" class="uri">https://github.com/khufkens/YOUR_PROJECT.git</a>. select a location where to store the project, select the “Open in new session” option and click “Create Project”. A window will pop up, asking for your github username and a password. This password is <em>not</em> your github login password but the PAT described above. After entering your credential, RStudio creates a *.Proj file as well as a .gitignore file (<a href="codemgmt.html#git-add">7.2.1.1</a>). You can add both files as you would otherwise (see <a href="codemgmt.html#git-add">7.2.1.1</a>), and these files are tracked locally.</p>
+<p>In the “repository URL”, paste the URL of your new GitHub repository. In the example above, this would be <code>https://github.com/khufkens/YOUR_PROJECT.git</code>. Select a location where to store the project, select the “Open in new session” option and click “Create Project”. A window will pop up, asking for your GitHub username and a password. This password is <em>not</em> your GitHub login password but the PAT described above. After entering your credential, RStudio creates a <code>\*.Proj</code> file as well as a <code>.gitignore</code> file (Section <a href="codemgmt.html#git-add">7.2.1.1</a>). You can add both files as you would otherwise (see Section <a href="codemgmt.html#git-add">7.2.1.1</a>), and these files are tracked locally.</p>
 <div id="git-push" class="section level4 hasAnchor" number="7.2.2.1">
 <h4><span class="header-section-number">7.2.2.1</span> git push<a href="codemgmt.html#git-push" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Once a remote git service has been configured you can push your local git repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using <code>git push</code>. At the end of a day or a session it is always advised to push your changes to your remote repository to store any changes.</p>
+<p>Once a remote git service has been configured, you can push your local <em>git</em> repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using <code>git push</code>. At the end of a day or a session, it is always advised to <code>push</code> your changes to your remote repository to store any changes.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:remotegithubworkflow"></span>
 <img src="https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png" alt="Remote git workflow - by Paola Corrales and Elio Campitelli"  />
 <p class="caption">
@@ -593,45 +591,49 @@ Figure 7.11: Remote git workflow - by Paola Corrales and Elio Campitelli
 </p>
 </div>
 <blockquote>
-<p>NOTE: Syncing between github and your local repository is a manual task. If not performed the repository will not be synced. To retain all your changes sync both repositories often!</p>
+<p>NOTE: Syncing between GitHub and your local repository is a manual task. If not performed the repository, it will not be synced. To retain all your changes, sync both repositories often!</p>
 </blockquote>
 </div>
 <div id="git-pull-and-merge-conflicts" class="section level4 hasAnchor" number="7.2.2.2">
 <h4><span class="header-section-number">7.2.2.2</span> git pull and merge conflicts<a href="codemgmt.html#git-pull-and-merge-conflicts" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Git pull compares your local git repository with the remote one and implements more recent changes if there are any. Note, that if you make changes on both sides, i.e. your remote and local repository, at the same time you will generate a <em>merge conflict</em>. A merge conflict states that remote and local changes can’t be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.</p>
-<pre><code>Changing the contents of text file from new branch</code></pre>
-<p>You will need to remove the &lt;&lt;&lt;, === and &gt;&gt;&gt; brackets and retain the changes you want to resolve the conflict before committing the changes again. Content which is currently on file is separated by === to that which provides a conflict and to be merged.</p>
+<p><code>git pull</code> compares your local <em>git</em> repository with the remote one and integrates the more recent changes if there are any. Note that if you make changes on the same line in file on both sides, i.e., in the remote (e.g., by another person) and in the local repository at the same time, you will generate a <em>merge conflict</em>. A merge conflict states that the remote and local changes can’t be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb280-1"><a href="codemgmt.html#cb280-1" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span></span>
+<span id="cb280-2"><a href="codemgmt.html#cb280-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Edited</span> line from remote</span>
+<span id="cb280-3"><a href="codemgmt.html#cb280-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">==========</span></span>
+<span id="cb280-4"><a href="codemgmt.html#cb280-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Edited</span> same line locally</span>
+<span id="cb280-5"><a href="codemgmt.html#cb280-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></span></code></pre></div>
+<p>You will need to remove the &lt;&lt;&lt;, === and &gt;&gt;&gt; brackets and retain the changes you want to keep for resolving the conflict. Then, commit the changes again.</p>
 </div>
 <div id="git-clone" class="section level4 hasAnchor" number="7.2.2.3">
 <h4><span class="header-section-number">7.2.2.3</span> git clone<a href="codemgmt.html#git-clone" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>You can create a new copy of your project on github using the <code>git clone</code> command. For example, on the command line, you can use:</p>
+<p>You can create a local copy of your remote repository that’s hosted on GitHub using the <code>git clone</code> command. For example, on the command line, you can use:</p>
 <div class="sourceCode" id="cb281"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb281-1"><a href="codemgmt.html#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a local copy of the remote github repository</span></span>
 <span id="cb281-2"><a href="codemgmt.html#cb281-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/khufkens/YOUR_PROJECT.git</span></code></pre></div>
-<p>to create a local copy of your remote repositories. You can then start working on this repository by using the modify -&gt; staged -&gt; commit -&gt; push workflow.</p>
+<p>You can then start working on this repository by using the modify -&gt; staged -&gt; commit -&gt; push workflow.</p>
 </div>
 <div id="git-fork-and-pull-request" class="section level4 hasAnchor" number="7.2.2.4">
 <h4><span class="header-section-number">7.2.2.4</span> git fork and pull request<a href="codemgmt.html#git-fork-and-pull-request" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>You can also create a copy of any public github project from within your github account by creating a fork. You can create a fork of a project by pressing the fork button top right on any public github project page. The number of forks of a project is displayed next to the button, in case of the {rpmodel} package there are 24 forks of this project.</p>
+<p>You can also create a copy of any public GitHub project from into your own GitHub account by creating a <em>fork</em>. You can create a fork of a project by clicking the <strong>fork</strong> button top right on any public GitHub project page. The number of forks of a project is displayed next to the button. In case of the {rpmodel} package there are currently 24 forks of the project.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:creatingforks"></span>
-<img src="figures/git_fork.png" alt="Creating a fork of an existing project (rpmodel)"  />
+<img src="figures/git_fork.png" alt="Creating a fork of an existing project (rpmodel)" width="80%" />
 <p class="caption">
 Figure 7.12: Creating a fork of an existing project (rpmodel)
 </p>
 </div>
 <p>You can give the forked project a new name and description if so desired.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:forksettings"></span>
-<img src="figures/git_fork_settings.png" alt="Github fork settings"  />
+<img src="figures/git_fork_settings.png" alt="Github fork settings" width="60%" />
 <p class="caption">
 Figure 7.13: Github fork settings
 </p>
 </div>
-<p>A fork allows you to experiment with the code stored in the original project without affecting it. However, the relation to the original project is maintained. If you want to contribute changes to the original project you can do so with a <strong>pull request</strong>.</p>
+<p>A fork allows you to experiment with the code stored in the original project without affecting the original repository. However, the relation to the original project is maintained. If you want to contribute changes to the original project you can do so with a <strong>pull request</strong>.</p>
 <blockquote>
-<p>NOTE: to make changes to a fork project you will first have to clone it to your local system! See workflow above.</p>
+<p>NOTE: To make changes to a forked project, you will first have to <code>clone</code> it to your local system. See workflow above.</p>
 </blockquote>
-<p>In a forked project, go to the “Pull requests” tab and press the green “New pull request” button. You will then have to provide description of the changes you made. This information will be forwarded to the original owner of the project, who can accept these changes and accept the pull request and “pull” in the changes.</p>
+<p>In a forked project, go to the <strong>Pull requests</strong> tab and click the green <strong>New pull request</strong> button. You will then have to provide a description of the changes you made. This information will be forwarded to the original owner of the project, who can accept these changes and accept the pull request and “pull” in the changes.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:pullrequest"></span>
-<img src="figures/git_pull_request.png" alt="Creating a new github pull request"  />
+<img src="figures/git_pull_request.png" alt="Creating a new github pull request" width="60%" />
 <p class="caption">
 Figure 7.14: Creating a new github pull request
 </p>
@@ -640,26 +642,26 @@ Figure 7.14: Creating a new github pull request
 </div>
 <div id="location-based-code-management---github-templates" class="section level3 hasAnchor" number="7.2.3">
 <h3><span class="header-section-number">7.2.3</span> Location based code management - github templates<a href="codemgmt.html#location-based-code-management---github-templates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in the <a href="openscience.html#openscience">6</a> chapter.</p>
-<p>In our <a href="https://github.com/geco-bern/R_proj_template">R project template</a> we provide a project structure for both data and code which removes the mental overhead out of structuring data projects. This project structure sorts code, data and reporting in a consistent way.</p>
-<p>You can use the template in combination with a github based version control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be tracked by the workflows described above.</p>
-<p>To use the template create a new repository on github, as you otherwise would using the big green button. If you are in the project on github you can hit the green button top right (Use this template).</p>
+<p>Both code (and data) management require you to be conscientious about where you store your code (and data). Structuring your projects using the same template will allow you to understand where all pieces of an an analysis are stored. This has been mentioned in Chapter <a href="openscience.html#openscience">6</a>.</p>
+<p>In our <a href="https://github.com/geco-bern/R_proj_template">R project template</a>, we provide a project structure for both data and code which removes the mental overhead of structuring data projects. This project structure sorts code, data and reporting in a consistent way.</p>
+<p>You can use the template in combination with a GitHub-based version control approach to manage your projects. Simply create a new project from this template and clone the project to your local computer. Any changes to the project can be tracked by the workflows described above.</p>
+<p>To use the template, create a new repository on GitHub, as you otherwise would using the big green button. If you are in the project on GitHub, you can hit the green button top right (<strong>Use this template</strong>).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:projecttemplate"></span>
-<img src="https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/green_button.png" alt="Use a github project as a template"  />
+<img src="figures/r_proj_template.png" alt="Use a github project as a template" width="80%" />
 <p class="caption">
 Figure 7.15: Use a github project as a template
 </p>
 </div>
-<p>Otherwise you can select the repository from the template dropdown menu, select <code>geco-bern/R-project-template</code>.</p>
+<p>Otherwise, you can select the repository from the template dropdown menu, select <code>geco-bern/R-project-template</code>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:newtemplaterepository"></span>
-<img src="https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_1.png" alt="Using a new template based repository"  />
+<img src="figures/create_from_template.png" alt="Using a new template based repository" width="60%" />
 <p class="caption">
 Figure 7.16: Using a new template based repository
 </p>
 </div>
 <p>Proceed as usual by naming your repository. However, be careful to select the correct owner of the project if you have multiple identities. Rename the default <code>.Proj</code> file.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:newtemplaterepositoryname"></span>
-<img src="https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png" alt="Assigning a new template based repository"  />
+<img src="https://github.com/bluegreen-labs/environmental_data_science_101/raw/main/images/new_repo_2.png" alt="Assigning a new template based repository" width="60%" />
 <p class="caption">
 Figure 7.17: Assigning a new template based repository
 </p>
@@ -669,16 +671,13 @@ Figure 7.17: Assigning a new template based repository
 </div>
 <div id="exercises-5" class="section level2 hasAnchor" number="7.3">
 <h2><span class="header-section-number">7.3</span> Exercises<a href="codemgmt.html#exercises-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<blockquote>
-<p><em>Hint</em>: For all exercises remember the resources we provided on finding help in section <a href="programmingprimers.html#findinghelp">2.2.3</a>.</p>
-</blockquote>
 <div id="location-based-code-management" class="section level3 unnumbered hasAnchor">
 <h3>Location based code management<a href="codemgmt.html#location-based-code-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Create a new R project using the git R project template.</p>
+<p>Create a new R project using the <em>git</em> R project template shown above.</p>
 <ul>
 <li><p>Make some changes to the README.md</p></li>
-<li><p>Put a small data set in the appropriate directory</p></li>
-<li><p>Make sure that both local and remote repositories (projects) are synced</p></li>
+<li><p>Put a small data set in the appropriate directory.</p></li>
+<li><p>Make sure that both local and remote repositories (projects) are synced.</p></li>
 </ul>
 </div>
 </div>
@@ -686,18 +685,18 @@ Figure 7.17: Assigning a new template based repository
 <h2><span class="header-section-number">7.4</span> Report Exercises<a href="codemgmt.html#report-exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="collaborative-work-on-github" class="section level3 unnumbered hasAnchor">
 <h3>Collaborative Work on Github<a href="codemgmt.html#collaborative-work-on-github" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This is a team exercise, so team up with someone else in the classroom! You will learn about how to collaborate online using git and Github. <strong>Note</strong> that this is part of your final performance assessment. In your report, you have to provide links to your your own and your forked repositories as created in this exercise. We will check your repositories’ commit histories to see whether this pair-coding exercise was done correctly. Therefore, follow these steps precisely:</p>
+<p>This is a team exercise, so team up with someone else in the classroom. You will learn about how to collaborate online using <em>git</em> and Github. <strong>Note</strong> that this is part of your final performance assessment. In your report, you have to provide links to your your own and your forked repositories as created in this exercise. We will check your repositories’ commit histories to see whether this pair-coding exercise was done correctly. Therefore, follow these steps precisely:</p>
 <ul>
 <li><p>Person 1 - Create a new repository (can be the same as you created following the tutorial but should no be the same as the one where you hand in your report)</p></li>
-<li><p>Person 2 - Fork the github project that Person 1 created in Step 1.</p></li>
+<li><p>Person 2 - Fork the GitHub project that Person 1 created in Step 1.</p></li>
 <li><p>Person 2 - Create a new file in this project</p></li>
 <li><p>Person 2 - Commit and push these changes to this project. Create a <strong>pull request</strong> to the original project of Person 1.</p></li>
 <li><p>Person 1 - Review the pull request from Person 2. Provide some comments, accept the pull request, letting it the new code by Person 2 be integrated into the project.</p></li>
-<li><p>Person 1 - Add a new file to your own project, and update the github project.</p></li>
+<li><p>Person 1 - Add a new file to your own project, and update the GitHub project.</p></li>
 <li><p>Person 2 - Sync your forked project to integrate the changes made by Person 1 into your own repository.</p></li>
 <li><p><em>Voluntary:</em> Can you force a merge conflict, for example by editing the same file at once, and resolve?</p></li>
 </ul>
-<p>To complete the exercise, reverse rolls between Person 1 and Person 2!</p>
+<p>To complete the exercise, reverse rolls between Person 1 and Person 2.</p>
 
 </div>
 </div>

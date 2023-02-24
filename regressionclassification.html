@@ -260,7 +260,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2.2" data-path="datavariety.html"><a href="datavariety.html#meta-data"><i class="fa fa-check"></i><b>5.2.2</b> Meta-data</a></li>
 <li class="chapter" data-level="5.2.3" data-path="datavariety.html"><a href="datavariety.html#spatial-data-representation"><i class="fa fa-check"></i><b>5.2.3</b> Spatial data representation</a></li>
 <li class="chapter" data-level="5.2.4" data-path="datavariety.html"><a href="datavariety.html#online-data-sources"><i class="fa fa-check"></i><b>5.2.4</b> Online data sources</a></li>
-<li class="chapter" data-level="5.2.5" data-path="datavariety.html"><a href="datavariety.html#example-environmental-data-repositories"><i class="fa fa-check"></i><b>5.2.5</b> Example environmental data repositories</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="datavariety.html"><a href="datavariety.html#exercises-3"><i class="fa fa-check"></i><b>5.3</b> Exercises</a>
 <ul>
@@ -561,7 +560,7 @@ based on observed shortwave radiation values.</p>
 <span id="cb282-17"><a href="regressionclassification.html#cb282-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> x0, <span class="at">y =</span> y0, <span class="at">xend =</span> x0, <span class="at">yend =</span> y_regr), </span>
 <span id="cb282-18"><a href="regressionclassification.html#cb282-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> segment_points,</span>
 <span id="cb282-19"><a href="regressionclassification.html#cb282-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.2</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-143-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-144-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>We want to find the best straight line that approximates a cloud of data
 points. For this, we assume a linear relationship between a single
 explanatory variable <span class="math inline">\(X\)</span> and our target <span class="math inline">\(Y\)</span>: <span class="math display">\[
@@ -777,7 +776,7 @@ each different month.</p>
 <span id="cb300-6"><a href="regressionclassification.html#cb300-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;SW&quot;</span>, <span class="at">y =</span> <span class="st">&quot;GPP&quot;</span>) <span class="sc">+</span></span>
 <span id="cb300-7"><a href="regressionclassification.html#cb300-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>MONTH_NAME) <span class="sc">+</span></span>
 <span id="cb300-8"><a href="regressionclassification.html#cb300-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-155-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-156-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In the grid image, we can observe that GPP does not increase with SW at
 the same rate every month. For example, the increase in GPP is less
 steep in February than in September. To model this, we should consider a
@@ -880,7 +879,7 @@ improves as we consider higher degree polynomials:</p>
 <span id="cb305-11"><a href="regressionclassification.html#cb305-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">color =</span> <span class="st">&quot;poly4&quot;</span>), <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb305-12"><a href="regressionclassification.html#cb305-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;SW&quot;</span>, <span class="at">y =</span> <span class="st">&quot;GPP&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Regression&quot;</span>) <span class="sc">+</span></span>
 <span id="cb305-13"><a href="regressionclassification.html#cb305-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-158-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-159-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="metrics-for-regression-evaluation" class="section level4 hasAnchor" number="8.2.2.4">
 <h4><span class="header-section-number">8.2.2.4</span> Metrics for regression evaluation<a href="regressionclassification.html#metrics-for-regression-evaluation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -1123,7 +1122,7 @@ measured in <span class="math inline">\(\mu\)</span>mol m<span class="math inlin
 <span id="cb324-4"><a href="regressionclassification.html#cb324-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
 <span id="cb324-5"><a href="regressionclassification.html#cb324-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb324-6"><a href="regressionclassification.html#cb324-6" aria-hidden="true" tabindex="-1"></a>plot_2</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-162-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-163-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>At first sight, it’s easy to see that the carbon uptake is lower for the
 Mississippi type. Note that other predictors can be included in the
 model, but we’ll focus on a single predictor. Using this example, we’ll
@@ -1147,7 +1146,7 @@ the interval <span class="math inline">\([0,1]\)</span> with a <em>link</em> fun
 common to use a <em>logit</em> link function:
 <span class="math display">\[\text{logit}(z) = \frac{\exp(z)}{1+\exp(z)}.\]</span></p>
 <div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="regressionclassification.html#cb325-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(x)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(x)), <span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">ylab =</span> <span class="st">&quot;logit(x)&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-163-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-164-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Combining a linear model (with any type of predictors, like for
 regression) and a logit link function, we arrive to a <strong>logistic
 regression</strong> model:
@@ -1246,7 +1245,7 @@ threshold line). You can see it plotted below:</p>
 <span id="cb332-11"><a href="regressionclassification.html#cb332-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb332-12"><a href="regressionclassification.html#cb332-12" aria-hidden="true" tabindex="-1"></a>plot_2<span class="fl">.1</span></span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-166-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-167-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Most blue points fall to one side of the dashed classification line and
 most red points to the other side; this is what we wanted. The points
 that are in the wrong side of the line are misclassified by the logistic
@@ -1443,7 +1442,7 @@ model we fitted before. The <code>confusionMatrix()</code> function from the
 quite helpful when we work with many classes.</p>
 <div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="regressionclassification.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mosaicplot</span>(conf_matrix<span class="sc">$</span>table,</span>
 <span id="cb336-2"><a href="regressionclassification.html#cb336-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">main =</span> <span class="st">&quot;Confusion matrix&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-168-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="model-evaluation" class="section level3 hasAnchor" number="8.2.4">
@@ -1614,7 +1613,7 @@ if it’s also off, the regression model will be affected greatly.</p>
 <span id="cb337-28"><a href="regressionclassification.html#cb337-28" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(plot_3, plot_4)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-169-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-170-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The first step to identifying outliers is to look at your data, one
 variable at a time. Plot a histogram to see the rough distribution of a
 variable. This will help identify what kind of values to expect. In
@@ -1671,7 +1670,7 @@ should be considered outliers or not.</p>
 <span id="cb339-46"><a href="regressionclassification.html#cb339-46" aria-hidden="true" tabindex="-1"></a>                   <span class="at">align =</span> <span class="st">&#39;v&#39;</span>, <span class="at">axis =</span> <span class="st">&#39;lr&#39;</span>)</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-170-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-171-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>A <strong>Q-Q Plot</strong> depicts the sample quantiles of a variable against the
 theoretical quantiles of a distribution of our choice, usually a normal
 distribution. In the histograms above, GPP looks somewhat Gaussian but
@@ -1699,7 +1698,7 @@ match between the observed values and the theoretical distribution):</p>
 <span id="cb341-17"><a href="regressionclassification.html#cb341-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
 <span id="cb341-18"><a href="regressionclassification.html#cb341-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb341-19"><a href="regressionclassification.html#cb341-19" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(plot_9, plot_10, <span class="at">ncol=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-171-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-172-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>For linear (and logistic) regression, we would like predictor variables
 to look as normal, i.e. gaussian, as possible. You’ve probably learned some of the
 reasons for this in quantitative methods courses, but are beyond the
@@ -1717,7 +1716,7 @@ particular the “Residuals vs Leverage” plot:</p>
 <span id="cb342-3"><a href="regressionclassification.html#cb342-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> <span class="fu">add_row</span>(half_hourly_fluxes_small, <span class="at">SW_IN_F =</span> <span class="dv">2000</span>, <span class="at">GPP_NT_VUT_REF =</span> <span class="sc">-</span><span class="dv">20</span>))</span>
 <span id="cb342-4"><a href="regressionclassification.html#cb342-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb342-5"><a href="regressionclassification.html#cb342-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(linmod_outlier, <span class="dv">5</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-172-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This plot shows the leverage (see the mathematical definition
 <a href="https://en.wikipedia.org/wiki/Leverage_(statistics)">here</a>) of each
 observation against the corresponding residual from the fitted linear

@@ -41,8 +41,8 @@ fig:mlingredients
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
-tab:unnamed-chunk-271
-tab:unnamed-chunk-282
+tab:unnamed-chunk-275
+tab:unnamed-chunk-286
 gettingstarted
 learning-objectives-1
 tutorial
@@ -149,7 +149,6 @@ vector-data-model
 online-data-sources
 direct-downloads
 apis
-example-environmental-data-repositories
 exercises-3
 dedicated-library
 openscience
