@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-23" />
+<meta name="date" content="2023-02-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -226,7 +226,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="datawrangling.html"><a href="datawrangling.html#aggregating"><i class="fa fa-check"></i>Aggregating</a></li>
 <li class="chapter" data-level="" data-path="datawrangling.html"><a href="datawrangling.html#patterns-in-data-quality"><i class="fa fa-check"></i>Patterns in data quality</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#report-exercise"><i class="fa fa-check"></i><b>3.5</b> Report Exercise</a></li>
+<li class="chapter" data-level="3.5" data-path="datawrangling.html"><a href="datawrangling.html#report-exercise"><i class="fa fa-check"></i><b>3.5</b> Report Exercise</a>
+<ul>
+<li class="chapter" data-level="" data-path="datawrangling.html"><a href="datawrangling.html#cleaning-data-from-elevated-co_2-experiments"><i class="fa fa-check"></i>Cleaning data from elevated CO<span class="math inline">\(_2\)</span> experiments</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="datavis.html"><a href="datavis.html"><i class="fa fa-check"></i><b>4</b> Data visualisation</a>
 <ul>
@@ -238,6 +241,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#exercises-2"><i class="fa fa-check"></i><b>4.3</b> Exercises</a>
 <ul>
+<li class="chapter" data-level="" data-path="datavis.html"><a href="datavis.html#spurious-data"><i class="fa fa-check"></i>Spurious data</a></li>
 <li class="chapter" data-level="" data-path="datavis.html"><a href="datavis.html#identifying-outliers"><i class="fa fa-check"></i>Identifying Outliers</a></li>
 <li class="chapter" data-level="" data-path="datavis.html"><a href="datavis.html#visualising-diurnal-and-seasonal-cycles-of-gpp"><i class="fa fa-check"></i>Visualising diurnal and seasonal cycles of GPP</a></li>
 <li class="chapter" data-level="" data-path="datavis.html"><a href="datavis.html#trend-in-carbon-dioxide-concentrations"><i class="fa fa-check"></i>Trend in carbon dioxide concentrations</a></li>
@@ -314,7 +318,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="regressionclassification.html"><a href="regressionclassification.html#exercises-6"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
 <li class="chapter" data-level="8.4" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-1"><i class="fa fa-check"></i><b>8.4</b> Report Exercise</a>
 <ul>
-<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#stepwise-regression-and-asking-for-help"><i class="fa fa-check"></i>Stepwise regression and asking for help</a></li>
+<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#context"><i class="fa fa-check"></i>Context</a></li>
+<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#deliverables-for-the-report"><i class="fa fa-check"></i>Deliverables for the report</a></li>
+<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#find-the-single-best-predictor"><i class="fa fa-check"></i>Find the single best predictor</a></li>
+<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#minimum-reproducible-example"><i class="fa fa-check"></i>Minimum reproducible example</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="supervisedmli.html"><a href="supervisedmli.html"><i class="fa fa-check"></i><b>9</b> Supervised machine learning I</a>
@@ -334,6 +341,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.3" data-path="supervisedmli.html"><a href="supervisedmli.html#exercises-7"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
 <li class="chapter" data-level="9.4" data-path="supervisedmli.html"><a href="supervisedmli.html#report-exercises-2"><i class="fa fa-check"></i><b>9.4</b> Report Exercises</a>
 <ul>
+<li class="chapter" data-level="" data-path="supervisedmli.html"><a href="supervisedmli.html#comparison-of-lm-and-knn"><i class="fa fa-check"></i>Comparison of LM and KNN</a></li>
 <li class="chapter" data-level="" data-path="supervisedmli.html"><a href="supervisedmli.html#the-role-of-picking-a-hyperparameter"><i class="fa fa-check"></i>The role of picking a hyperparameter</a></li>
 </ul></li>
 </ul></li>
@@ -364,6 +372,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.2</b> Bagging</a></li>
 <li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.3</b> From trees to a forest</a></li>
 </ul></li>
+<li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-9"><i class="fa fa-check"></i><b>11.3</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="" data-path="randomforest.html"><a href="randomforest.html#fitting-a-random-forest"><i class="fa fa-check"></i>Fitting a Random Forest</a></li>
+<li class="chapter" data-level="" data-path="randomforest.html"><a href="randomforest.html#hyperparameter-tuning"><i class="fa fa-check"></i>Hyperparameter tuning</a></li>
+<li class="chapter" data-level="" data-path="randomforest.html"><a href="randomforest.html#model-performance"><i class="fa fa-check"></i>Model performance</a></li>
+</ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="solutions.html"><a href="solutions.html"><i class="fa fa-check"></i><b>A</b> Solutions</a>
@@ -389,14 +403,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#star-wars-1"><i class="fa fa-check"></i>Star wars</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#aggregating-1"><i class="fa fa-check"></i>Aggregating</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#patterns-in-data-quality-1"><i class="fa fa-check"></i>Patterns in data quality</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#tidying-an-excel-file"><i class="fa fa-check"></i>Tidying an Excel-file</a></li>
 </ul></li>
 <li class="chapter" data-level="A.4" data-path="solutions.html"><a href="solutions.html#data-visualisation"><i class="fa fa-check"></i><b>A.4</b> Data Visualisation</a>
 <ul>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#spurious-data-1"><i class="fa fa-check"></i>Spurious data</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#identifying-outliers-1"><i class="fa fa-check"></i>Identifying Outliers</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#diurnal-and-seasonal-cycles"><i class="fa fa-check"></i>Diurnal and seasonal cycles</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#visualising-diurnal-and-seasonal-cycles-of-gpp-1"><i class="fa fa-check"></i>Visualising diurnal and seasonal cycles of GPP</a></li>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#trend-in-carbon-dioxide-concentrations-1"><i class="fa fa-check"></i>Trend in carbon dioxide concentrations</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#telling-a-story-from-data-1"><i class="fa fa-check"></i>Telling a story from data</a></li>
 </ul></li>
 <li class="chapter" data-level="A.5" data-path="solutions.html"><a href="solutions.html#data-variety"><i class="fa fa-check"></i><b>A.5</b> Data Variety</a>
 <ul>
@@ -411,23 +424,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="A.7" data-path="solutions.html"><a href="solutions.html#code-management"><i class="fa fa-check"></i><b>A.7</b> Code Management</a>
 <ul>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#location-based-code-management-1"><i class="fa fa-check"></i>Location based code management</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#collaborative-work-on-github-1"><i class="fa fa-check"></i>Collaborative Work on Github</a></li>
 </ul></li>
-<li class="chapter" data-level="A.8" data-path="solutions.html"><a href="solutions.html#regression-and-classification"><i class="fa fa-check"></i><b>A.8</b> Regression and Classification</a>
-<ul>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#stepwise-regression-and-asking-for-help-1"><i class="fa fa-check"></i>Stepwise regression and asking for help</a></li>
-</ul></li>
-<li class="chapter" data-level="A.9" data-path="solutions.html"><a href="solutions.html#supervised-ml-i"><i class="fa fa-check"></i><b>A.9</b> Supervised ML I</a>
-<ul>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#comparison-of-lm-and-knn"><i class="fa fa-check"></i>Comparison of LM and KNN</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#the-role-of-picking-a-hyperparameter-1"><i class="fa fa-check"></i>The role of picking a hyperparameter</a></li>
-</ul></li>
+<li class="chapter" data-level="A.8" data-path="solutions.html"><a href="solutions.html#regression-and-classification"><i class="fa fa-check"></i><b>A.8</b> Regression and Classification</a></li>
+<li class="chapter" data-level="A.9" data-path="solutions.html"><a href="solutions.html#supervised-ml-i"><i class="fa fa-check"></i><b>A.9</b> Supervised ML I</a></li>
 <li class="chapter" data-level="A.10" data-path="solutions.html"><a href="solutions.html#supervised-ml-ii"><i class="fa fa-check"></i><b>A.10</b> Supervised ML II</a>
 <ul>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-by-hand-1"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
-<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#testing-the-generalisability-of-a-model"><i class="fa fa-check"></i>Testing the generalisability of a model</a></li>
 </ul></li>
-<li class="chapter" data-level="A.11" data-path="solutions.html"><a href="solutions.html#random-forests"><i class="fa fa-check"></i><b>A.11</b> Random Forests</a></li>
+<li class="chapter" data-level="A.11" data-path="solutions.html"><a href="solutions.html#random-forest"><i class="fa fa-check"></i><b>A.11</b> Random Forest</a>
+<ul>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#fitting-a-random-forest-1"><i class="fa fa-check"></i>Fitting a Random Forest</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#hyperparameter-tuning-1"><i class="fa fa-check"></i>Hyperparameter tuning</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#model-performance-1"><i class="fa fa-check"></i>Model performance</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="B" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>B</b> References</a>
 <ul>

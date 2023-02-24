@@ -15,6 +15,7 @@ fig:clonerepo
 fig:reportmarkdown
 fig:tidy
 fig:common-aesthetics
+fig:regressionplots
 fig:repromatrix
 fig:targets
 fig:gitworkflow
@@ -40,7 +41,8 @@ fig:mlingredients
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
-tab:unnamed-chunk-276
+tab:unnamed-chunk-272
+tab:unnamed-chunk-283
 gettingstarted
 learning-objectives-1
 tutorial
@@ -103,7 +105,7 @@ tidydata
 aggregating-data
 data-cleaning
 cleaning-formats
-bad-data
+baddata
 handling-missing-data
 writing-data-to-csv
 combining-relational-data
@@ -234,6 +236,7 @@ tutorial-10
 decision-trees
 bagging
 from-trees-to-a-forest
+exercises-9
 solutions
 getting-started
 programming-primers
@@ -246,5 +249,5 @@ regression-and-classification
 supervised-ml-i
 supervised-ml-ii
 interpretation-of-results
-random-forests
+random-forest
 references
