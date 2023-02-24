@@ -424,20 +424,6 @@ status <- httr::POST(
 )
 ```
 
-### Example environmental data repositories
-
-Below you find a list of common environmental data repositories which provide manual or automated download access to their data. Note that this list contains some example and is far from extensive.
-
-| Data type                                                                 | Website                             | Description                                                                                   | Download                          |
-|----------------------|---------------|-------------------------------|---------------|
-| Copernicus Climate Data Store                                             | <https://cds.climate.copernicus.eu> | Freely available climate data (reanalysis as well as future projections)                      | API                               |
-| Oak Ridge National Laboratories Digital Active Archive Center (ORNL DAAC) | <https://daac.ornl.gov/>            | Environmental data of varying sources, either remote sensing, field work and or re-analysis.  | multiple APIs or manual downloads |
-| Land Processes Digital Active Archive Center (LP DAAC)                    | <https://lpdaac.usgs.gov/>          | Remote sensing (analysis ready) data products.                                                | Login walled automated downloads  |
-| Environmental Data Initiative                                             | <https://edirepository.org/>        | Generalist data repository for study data, with a strong focus on biology.                    | Manual download                   |
-| Dryad                                                                     | <https://datadryad.org>             | Generalist data repository for study data, with a strong focus on biology.                    | Manual downloads                  |
-| Zenodo                                                                    | <https://zenodo.org/>               | Generalist data repository for study data.                                                    | Manual downloads                  |
-| Eurostat                                                                  | <https://ec.europa.eu/eurostat>     | Generalist data repository for EU wide (demographic) data.                                    | Manual downloads                  |
-| Swiss Open Government data                                                | <https://opendata.swiss/en/>        | Generalist data repository from the Swiss Federal statistics office.                          | API or manual downloads           |
 
 ## Exercises
 
