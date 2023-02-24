@@ -830,11 +830,11 @@ The project can be re-organized using a simple project structure as such:
      ├─ Figure 1.png
 ```
 
-Note that duplicate files are removed, code to cleanup data is numbered and stored with the data, functions which are accessible for analysis are stored in the R folder, Rmarkdown files are stored in the vignettes folder and the results of the full analysis is stored in a manuscript folder. Some variations on naming is possible.
+Note that duplicate files are removed, code to cleanup data is numbered and stored with the data, functions which are accessible for analysis are stored in the `./R/` folder, Rmarkdown files are stored in the `vignettes` folder and the results of the full analysis is stored in a `manuscript` folder. Some variations on naming is possible.
 
 ### A new project {-}
 
-This exercise trains your ability to access and wrangle data yourself in a reproducible way. The best solution to test whether your you successfully did to is by letting a friend run all of your code on their machine. Resolving the errors you may encounter, helps you to improve you workflow and ensures a streamlined submission of your final report.
+This exercise trains your ability to access and wrangle data yourself in a reproducible way. The best solution to test whether you successfully did so is by letting a friend run all of your code on their machine. Resolving the errors you may encounter helps you to improve your workflow and ensures a streamlined submission of your final report.
 
 ### Tracking the state of your project {-}
 

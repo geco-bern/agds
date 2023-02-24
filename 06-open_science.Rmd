@@ -156,15 +156,27 @@ If your R markdown file contains more code than it does text, it should be consi
 
 ### Data retention
 
-Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long term data and code retention and versioning.
+Coding practices and documenting all moving parts in a coding workflow is only one practical aspect of open science. An additional component is long-term data and code retention and versioning.
 
-For code online collaboration tools, such as [github](https://github.com), [gitlab](https://gitlab.com) or [codeberg](https://codeberg.org), provide a way to provide access to code. However, these tools should only be considered collaborative aids not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can realistically be stored in a repository (mostly \~2GB). For small projects data can be included in the repository itself, for larger projects this won't be possible.
+In Chapter \@ref(codemgmt), you will learn more about *git* for code management and collaboration. Several online make use of *git* for providing web-based collaboration functionalities and remote storage of your repositories. Examples are [GitHub](https://github.com), [GitLab](https://gitlab.com), [Codeberg](https://codeberg.org), or [Bitbucket](https://bitbucket.org/). However, their remote storage service should only be considered an aid for collaboration, and not a place to store code into perpetuity. Furthermore, these services mostly have a limit to how much data can be stored in a repository (mostly \~2 GB). For small projects, data can be included in the repository itself. For larger projects and for making larger datasets accessible, this won't be possible.
 
-To ensure long term storage of code and data, outside of commercial for profit services (e.g. Dropbox, Google Drive etc), it is best to rely on for example [Zenodo](https://zenodo.org/). Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](https://datadryad.org/stash) and the [Center for Open Science](https://osf.io/).
+To ensure long-term storage of code and data, outside of commercial for profit services (e.g., Dropbox, Google Drive etc), it is best to rely on public permanent repositories, such as [Zenodo](https://zenodo.org/). Zenodo is an effort by the European commission, but accessible to all, to facilitate archiving of science projects of all nature (code and data) up to 50 GB. In addition, Zenodo provides a citable digital object identifier or DOI. This allows data and code, even if not formally published in a journal, to be cited. Other noteworthy open science storage options include [Dryad](https://datadryad.org/stash) and the [Center for Open Science](https://osf.io/). 
+
+The broad-purpose permanent data repositories mentioned above are not edited and are therefore not ideal for data discovery. In contrast, edited data repositories often have a specific thematic scope and different repositories are established in different research communities. Below you find a list of widely used data repositories, generalist and others, that provide manual or automated download access to their data. Note that this list contains some example and is far from extensive.
+
+| Data type                                                                 | Website                             | Description                                                                                   | Download                          |
+|----------------------|---------------|-------------------------------|---------------|
+| Copernicus Climate Data Store                                             | <https://cds.climate.copernicus.eu> | Freely available climate data (reanalysis as well as future projections)                      | API                               |
+| Oak Ridge National Laboratories Digital Active Archive Center (ORNL DAAC) | <https://daac.ornl.gov/>            | Environmental data of varying sources, either remote sensing, field work and or re-analysis.  | multiple APIs or manual downloads |
+| Land Processes Digital Active Archive Center (LP DAAC)                    | <https://lpdaac.usgs.gov/>          | Remote sensing (analysis ready) data products.                                                | Login walled automated downloads  |
+| Environmental Data Initiative                                             | <https://edirepository.org/>        | Generalist data repository for study data, with a strong focus on biology.                    | Manual download                   |
+| Dryad                                                                     | <https://datadryad.org>             | Generalist data repository for study data, with a strong focus on biology.                    | Manual downloads                  |
+| Zenodo                                                                    | <https://zenodo.org/>               | Generalist data repository for study data.                                                    | Manual downloads                  |
+| Eurostat                                                                  | <https://ec.europa.eu/eurostat>     | Generalist data repository for EU wide (demographic) data.                                    | Manual downloads                  |
+| Swiss Open Government data                                                | <https://opendata.swiss/en/>        | Generalist data repository from the Swiss Federal statistics office.                          | API or manual downloads           |
+
 
 ## Exercises
-
-> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
 ### External data {-}
 
@@ -194,22 +206,23 @@ What are the basic steps to create a reproducible workflow from a file managemen
 
 The project should be a reproducible workflow:
 
--   to download and plot a MODIS land cover map for Belgium using skills you learned in \@ref(datavariety)
+-   Download and plot a MODIS land cover map for Belgium using skills you learned in Chapter \@ref(datavariety).
 
--   contain a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in \@ref(datawrangling)
+-   Write a function to count the occurrences of land cover classes in the map as a formal function using skills you learned in Chapter \@ref(datawrangling).
 
--   create a plot of the land cover map \@ref(datavis)
+-   Create a plot of the land cover map, see Chapter \@ref(datavis).
 
--   contain a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow
+-   Write a dynamic report describing your answers to the above questions regarding how to structure a reproducible workflow.
+
 
 ### Tracking the state of your project {-}
 
--   Track the packages you use in the project you created using {renv}
+-   Track the packages you use in the project you created using {renv}.
 
--   Install any additional library and update the state of your project
+-   Install any additional library and update the state of your project.
 
--   create a simple {targets} project using the above workflow
+-   Create a simple {targets} project using the above workflow
 
-    -   make changes to the API download routine
+    -   Make changes to the API download routine.
 
-    -   rerun the targets project
+    -   Rerun the targets project.
