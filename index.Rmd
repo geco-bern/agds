@@ -16,8 +16,13 @@ apple-touch-icon: "figures/apple-touch-icon.png"
 apple-touch-icon-size: 120
 ---
 
-```{r}
+```{r include=FALSE}
 knitr::opts_chunk$set(fig.align="center")
+
+
+
+
+
 ```
 
 # Overview {.unnumbered}
