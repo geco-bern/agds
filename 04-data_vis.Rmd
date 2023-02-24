@@ -551,7 +551,7 @@ As explored in the previous Chapter's exercises, GPP varies strongly with the di
     -   Pick a colorblind-friendly color scale
     -   Anything else you want to change? Axes limits, axes ticks, grid lines?
 
-> Hint: The functions to make a suitable plot was introduced in the tutorial.
+> *Hint*: The functions to make a suitable plot was introduced in the tutorial.
 
 ### Trend in carbon dioxide concentrations {-}
 
@@ -563,8 +563,9 @@ This exercise explores the change of CO$_2$, measured at the famous Mauna Loa ob
 -   Write a function that computes a 12-month running mean of the CO$_2$ time series.
 -   Make nice "publishable" figure that shows the measured and trended timeseries of CO$_2$.
 
-> Hint: You don't need to clean the .txt file, find a suitable function in R.
-> Hint: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
+> *Hint*: You don't need to clean the .txt file, find a suitable function in R.
+
+> *Hint*: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
 
 ## Report Exercises
 
@@ -573,8 +574,9 @@ This exercise explores the change of CO$_2$, measured at the famous Mauna Loa ob
 In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to tell a story about the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console).
 
 Your solution has to include:
--  At least three publishable figures that show important patterns (e.g., outliers, temporal patterns, scatterplots of correlations, etc.)
+
+-   At least three publishable figures that show important patterns (e.g., outliers, temporal patterns, scatterplots of correlations, etc.)
 -   A description of the data that includes at least three statistical metrics that are relevant for the problem (argue for why you chose these metrics).
 -   Interpretation and discussion of your results and hypotheses. The text alone should not exceed one A4 page (max. 400 words).
 
-> Hint: To get more background information on the data, use the help functionalities in RStudio.
+> *Hint*: To get more background information on the data, use the help functionalities in RStudio.
