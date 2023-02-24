@@ -4,92 +4,91 @@
 
 ## Learning objectives
 
-In this chapter you will learn how to manage your code with common version control tools, i.e. git.
+In this chapter you will learn how to manage your code with common version control tools, i.e., *git.*
 
 You will learn how to:
 
--   create a git project (new or from a template)
--   track changes in your code project
--   collaborate with others
--   ensure reproducibility of your project by openly sharing your work and progress.
+-   Create a git project (new or from a template)
+-   Track changes in your code project
+-   Collaborate with others
+-   Ensure reproducibility of your project by openly sharing your work and progress.
 
 ## Tutorial
 
-Code management is a key of managing any data science project, especially when collaborating. Proper code management limits mistakes such as code loss and increases efficiency by structuring projects.
+Code management is key for managing any data science project, especially when collaborating. Proper code management limits mistakes, such as code loss, and increases efficiency by structuring projects.
 
 In this chapter, we will discuss the management of code in both the location sense, where things are kept, and tracking temporal changes over time using a version control system.
 
-Current version control of code is dominated by the software tool `git`. However, version control has a long history and can be found not only in code development practices.For example, whenever you use track changes in a text document you apply a form of version control i.e., you track changes in your text over time and selectively accepted changes. In this respect git, as a tool for version control of code, does not differ much from track changes of a text document, but follows a manual modify --\> staged --\> commit workflow.
+Current version control of code is dominated by the software tool *git*. However, version control has a long history and can be found not only in code development practices. For example, whenever you use track changes in a text document, you apply a form of version control. That is, you track changes in your text over time and selectively accept changes. In this respect, *git*, as a tool for version control of code, does not differ much from track changes of a text document. In contrast to track changes in a text document, with *git* the user has manual control over *staging* and *committing* edits on a file.
 
 ```{r label="gitworkflow", echo=FALSE, fig.cap="The git workflow- by Paola Corrales and Elio Campitelli"}
 knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/file_cycle2.png")
 ```
 
-Git allows for the collaboration of multiple people on the same code, while being consistent in how changes are implemented. Built upon git are cloud based platforms such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) which make these collaborative decisions and operations even easier.
+*Git* allows for the collaboration of multiple contributors on the same code and manages the integration of contributions into the repository. Built upon *git* are cloud-based platforms such as [GitHub](https://github.com), [GitLab](https://gitlab.com), [Codeberg](https://codeberg.org), or [Bitbucket](https://bitbucket.org/) which make these collaborative decisions and operations even easier.
 
 ```{r label="githubworkflow", echo=FALSE, fig.cap="The github remote workflow- by Paola Corrales and Elio Campitelli"}
 knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/local_remote.png")
 ```
 
-In this chapter, you will learn how to use git and github to manage your project and collaborate on code.
+In this chapter, you will learn how to use *git* and GitHub to manage your project and collaborate on code.
 
-> NOTE: Coding style, and documentation practices of the code itself have been covered previously in the Chapter Programming primers. Although the tutorial below focuses on github the jargon and operations are transferable to other platforms such as [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org).
+> NOTE: Coding style, and documentation practices of the code itself have been covered previously in Chapter \@ref(programmingprimers). Although the tutorial below focuses on GitHub, the jargon and operations are transferable to other platforms such as [GitLab](https://gitlab.com) and [Codeberg](https://codeberg.org).
 
 ### Git and local version control {#gitworkflow}
 
-Git allows for the tracking of changes in code (or any file) within a git project. A git project is defined by the topmost directory in which a git project is created. For example the following project is not tracked for changes using git.
+*Git* allows for the tracking of changes in code (or any file) within a git project. A *git* project is defined by the topmost directory in which a *git* project is created. For example, the following project is not tracked for changes using git.
 
 ``` bash
 project/
 ├─ YOUR_PROJECT.Rproj
 ```
 
-You can start tracking a project by initiating a local git repository using the following code in R. We'll use the {usethis} package to make some of the setup a project easier.
+You can start tracking a project by initiating a local *git* repository using the following code in R. We'll use the {usethis} package to make some of the setup a project easier.
 
-``` bash
-# initiate a github repository
+```{r eval=FALSE}
 usethis::use_git()
 ```
 
-This will create a github repository in your project. It will also create a `.gitignore` file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.
+This will create a *git* repository in your project. It will also create a `.gitignore` file which specifies which files NOT to track (even if asked to). In addition it will make an first commit.
 
 #### git add
 
-Before we can track anything we need to tell git which files to track. We therefore have to add them to an index of tracked files. You can either do this on the command line using:
+Before we can track anything, we need to tell *git* which files to track. In *git*-speak, we *stage* the files. We therefore have to `add` them to an index of tracked files. You can either do this on the command line using:
 
 ``` bash
 git add your_file.csv
 ```
 
-Or using the RStudio git panel. In this panel you will see all un-tracked files or directories highlighted with a yellow question mark.
+Or using the RStudio **Git** panel. In this panel, you will see all un-tracked files or directories highlighted with a yellow question mark.
 
-```{r label="unstagedfiles", echo=FALSE, fig.cap="Unstaged files in a git enabled R project"}
+```{r label="unstagedfiles", echo=FALSE, fig.cap="Unstaged files in a git enabled R project."}
 knitr::include_graphics("./figures/git_unstaged_files.png")
 ```
 
-You select the file tick boxes to the left to stage all files for inclusion into the git repository. Once staged, the next step will be to finally commit these staged files to be included in git tracking.
+You select the file tick boxes to the left to stage all files for inclusion into the *git* repository. Once staged, the next step will be to finally commit these staged files to be included in *git* tracking.
 
-```{r label="stagedfiles", echo=FALSE, fig.cap="Staged files in a git enabled R project"}
+```{r label="stagedfiles", echo=FALSE, fig.cap="Staged files in a git enabled R project."}
 knitr::include_graphics("./figures/git_staged_files.png")
 ```
 
 #### git commit
 
-To store any changes to the files which were staged we need to commit these changes. We therefore hit the commit button, this will pop up a new window.
+To store any changes to the files which were staged we need to `commit` these changes. We therefore hit the commit button. A new window will pop up.
 
-```{r label="commitmessage", echo=FALSE, fig.cap="Entering a commit message"}
+```{r label="commitmessage", echo=FALSE, fig.cap="Entering a commit message."}
 knitr::include_graphics("./figures/git_commit_message.png")
 ```
 
-Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right. You need to provide this small message before pressing the commit button once more. This will let git track the changes to these files. A message will be shown if the commit is successful.
+Each commit needs a brief message describing what you have included in the staged files, or the commit message, as shown in the panel on the right. You need to provide this small message before pressing the commit button once more. This will let *git* track the changes to these files. A message will be shown if the commit is successful.
 
-```{r label="commitcompleted", echo=FALSE, fig.cap="A completed commit"}
+```{r label="commitcompleted", echo=FALSE, fig.cap="A completed commit."}
 knitr::include_graphics("./figures/git_commit_completed.png")
 ```
 
-With this you will track all files locally. Any new changes to a file will need to be committed to the git repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked, this is a manual step. As with normal documents you are advised to save (commit) your changes to your project frequently. More so, if you create a new file you will need to add it before you can commit it.
+With this, you will track all files locally. Any new changes to a file will need to be committed to the *git* repository once more. So, unlike cloud services such as Dropbox, your files are not automatically tracked. Instead, this is a manual step. As with normal documents, you are advised to save (commit) your changes to your project frequently. And remember, if you create a new file, you will need to `add` it before you can `commit` it.
 
-You can commit changes of staged files using the command line as well using the following command.
+You can `commit` changes of staged files using the command line as well using the following command.
 
 ``` bash
 git commit -m "A message""
@@ -97,9 +96,9 @@ git commit -m "A message""
 
 ### Remote version control
 
-Local files limit the degree in which you can collaborate with people. This is where remote cloud based git solutions such as [github](https://github.com), [gitlab](https://gitlab.com) and [codeberg](https://codeberg.org) come in. They provide a cloud based git repository which you can associate with your local project (see figure above).
+Keeping files and working with *git* locally limit the extent in which you can collaborate with others. This is where remote cloud-based *git* solutions, such as [GitHub](https://github.com), [GitLab](https://gitlab.com) and [Codeberg](https://codeberg.org), come in. They provide a cloud-based *git* repository which you can associate with your local project (see figure above).
 
-To create a remote project and successfully associate it with an R project we first have to specify some details, such as the username and email you used is singing up for [github](https://github.com). To not leave your R session you can use the {usethis} package for this.
+To create a remote project and successfully associate it with an R project, we first have to specify some details, such as the user name and email you used is singing up for [GitHub](https://github.com). To not leave your R session, you can use the {usethis} package for this.
 
 ``` r
 # Configure your project
@@ -108,9 +107,9 @@ usethis::use_git_config(user.name = "Jane Doe",
                user.email = "jane@example.org")
 ```
 
-For security reasons the use of your github password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed first generate a github PAT using [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic).
+For security reasons, the use of your GitHub password is not allowed in remote actions. You therefore need to generate a personal access token (PAT) which can be restricted in time and functionality. To proceed, first generate a GitHub PAT using [these instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic).
 
-To create a new project on github hit the "+" sign top left on the github main page (once logged in), and select the "new repository" from the dropdown menu.
+To create a new project on GitHub, hit the "+" sign top left on the GitHub main page (once logged in), and select the "new repository" from the dropdown menu.
 
 ```{r label="newgithubrepo", echo=FALSE, fig.cap="Create a new github repository"}
 knitr::include_graphics("./figures/git_new_project.png")
@@ -122,37 +121,43 @@ A new interface will open up in which you should not use any template, but speci
 knitr::include_graphics("./figures/git_new_project_settings.png")
 ```
 
-Note the URL that is generated for your project, you will need it when creating a new RStudio project which is linked to github.
+Note the URL that is generated for your project. You will need it when creating a new RStudio project linked to GitHub.
 
 ```{r label="githubsetup", echo=FALSE, fig.cap="A repository link you need during the R project wizard"}
 knitr::include_graphics("./figures/git_project_link.png")
 ```
 
-Next we'll setup an R project which is associated with the repository. Use: File \> New Project \> Version Control \> Git.
+Next, we'll setup an R project which is associated with the repository. Use: File \> New Project \> Version Control \> Git.
 
 ```{r label="projectwizard", echo=FALSE, fig.cap="Linking the github project to a new git enabled R project"}
 knitr::include_graphics("./figures/git_project_wizard.png")
 ```
 
-In the "repository URL" paste the URL of your new GitHub repository, in the example above this would be <https://github.com/khufkens/YOUR_PROJECT.git>. select a location where to store the project, select the "Open in new session" option and click "Create Project". A window will pop up, asking for your github username and a password. This password is *not* your github login password but the PAT described above. After entering your credential, RStudio creates a \*.Proj file as well as a .gitignore file (\@ref(git-add)). You can add both files as you would otherwise (see \@ref(git-add)), and these files are tracked locally.
+In the "repository URL", paste the URL of your new GitHub repository. In the example above, this would be `https://github.com/khufkens/YOUR_PROJECT.git`. Select a location where to store the project, select the "Open in new session" option and click "Create Project". A window will pop up, asking for your GitHub username and a password. This password is *not* your GitHub login password but the PAT described above. After entering your credential, RStudio creates a `\*.Proj` file as well as a `.gitignore` file (Section \@ref(git-add)). You can add both files as you would otherwise (see Section \@ref(git-add)), and these files are tracked locally.
 
 #### git push
 
-Once a remote git service has been configured you can push your local git repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using `git push`. At the end of a day or a session it is always advised to push your changes to your remote repository to store any changes.
+Once a remote git service has been configured, you can push your local *git* repository to this remote repository, i.e. syncing both. You can use both the push buttons in the RStudio panel for this or the command linen using `git push`. At the end of a day or a session, it is always advised to `push` your changes to your remote repository to store any changes.
 
 ```{r label="remotegithubworkflow", echo=FALSE, fig.cap="Remote git workflow - by Paola Corrales and Elio Campitelli"}
 knitr::include_graphics("https://eliocamp.github.io/reproducibility-with-r/materials/day2/02-git/images/pull-request.png")
 ```
 
-> NOTE: Syncing between github and your local repository is a manual task. If not performed the repository will not be synced. To retain all your changes sync both repositories often!
+> NOTE: Syncing between GitHub and your local repository is a manual task. If not performed the repository, it will not be synced. To retain all your changes, sync both repositories often!
 
 #### git pull and merge conflicts
 
-Git pull compares your local git repository with the remote one and implements more recent changes if there are any. Note, that if you make changes on both sides, i.e. your remote and local repository, at the same time you will generate a *merge conflict*. A merge conflict states that remote and local changes can't be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.
+`git pull` compares your local *git* repository with the remote one and integrates the more recent changes if there are any. Note that if you make changes on the same line in file on both sides, i.e., in the remote (e.g., by another person) and in the local repository at the same time, you will generate a *merge conflict*. A merge conflict states that the remote and local changes can't be reconciled without supervised intervention on your part. Changes will be made to your local repository, but the files will include the below syntax for highlighting conflicting differences.
 
-    Changing the contents of text file from new branch
+``` bash
+    <<<<<<<<<<
+    Edited line from remote
+    ==========
+    Edited same line locally
+    >>>>>>>>>>
+```
 
-You will need to remove the \<\<\<, === and \>\>\> brackets and retain the changes you want to resolve the conflict before committing the changes again. Content which is currently on file is separated by === to that which provides a conflict and to be merged.
+You will need to remove the \<\<\<, === and \>\>\> brackets and retain the changes you want to keep for resolving the conflict. Then, commit the changes again.
 
 #### git clone
 
