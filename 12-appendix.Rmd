@@ -1041,7 +1041,19 @@ This exercise trains your ability to access and wrangle data yourself in a repro
 
 ### Tracking the state of your project {-}
 
-*No solutions provided.*
+For your new project created above run {renv} by following the tutorial outline.
+
+In short, in the main project run all project code (or load all require libraries) and execute:
+
+```{r eval=FALSE}
+# Initiate a local index of used libraries
+renv::init()
+
+# Take a snapshot of all used libraries
+renv::snapshot()
+```
+
+You should now find an `renv` folder in your project as well as an `renv.lock` file.
 
 ## Code Management
 
