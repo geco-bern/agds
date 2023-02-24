@@ -678,6 +678,8 @@ There are no exercises with provided solutions for this Chapter.
 
 > *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
+### Comparison of LM and KNN {-}
+
 The last figures of this tutorial show the training of testing of a linear model and a KNN model. Compare the four figures and answer to following questions:
 
 1.  How does the point cloud differ between the two training set plots? Why does the $R^2$ value increase from LM to KNN? Use your knowledge on the fundamental difference between the two fitted models!
