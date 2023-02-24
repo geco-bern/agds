@@ -6,10 +6,10 @@
 
 In this chapter you will learn how to implement a random forest model.
 
-You will learn among others how:
+You will learn among others:
 
 - the principles of a decision tree, and what is bagging
-- decision trees are related to random forest methods
+- how decision trees are related to random forest methods
 
 ## Tutorial
 
@@ -128,9 +128,14 @@ The number of variables to consider at each split is a hyperparameter of the Ran
 
 A great strength of Random Forest is, inherited by the characteristics of its underlying decision trees, its minimal requirement of data pre-processing, its capability of dealing with continuous and categorical variables, and its robustness to outliers. With the default choices of $m_\text{try}$, Random Forest provides very good out-of-the-box performance. However, the hyperparameters of Random Forest have interactive effects and should be searched systematically.
 
+<<<<<<< HEAD
+```{r fitrandomforest}
+# Data loading and cleaning
+=======
 ```{r message=FALSE}
 source("R/eval_model.R")
 
+>>>>>>> cfb2161fd0c4e2603d74d3df0066f9a255613524
 daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
   
   # select only the variables we are interested in
@@ -174,23 +179,28 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + 
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
+<<<<<<< HEAD
+mod <- caret::train(
+=======
 <!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
 <!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
 ```{r}
 # Train the model
 mod <- train(
+>>>>>>> cfb2161fd0c4e2603d74d3df0066f9a255613524
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
   method = "ranger",
+  metric = "RMSE",
   trControl = trainControl(method = "cv", number = 5, savePredictions = "final"),
   tuneGrid = expand.grid( .mtry = floor(6 / 3),
                           .min.node.size = 5,
                           .splitrule = "variance"),
-  metric = "RMSE",
+  # arguments specific to "ranger" method
   replace = FALSE,
   sample.fraction = 0.5,
-  num.trees = 2000,           # high number ok since no hyperparam tuning
+  num.trees = 2000,          # high number ok since no hyperparam tuning
   seed = 1982                # for reproducibility
 )
 ```
@@ -212,29 +222,40 @@ print(mod)
 ```
 
 ```{r}
+# Plot model fit
+source("R/eval_model.R")
 eval_model(mod = mod, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 ```
 
+## Exercises
 
-<!-- ## Exercises -->
+### Fitting a Random Forest {-}
 
-<!-- In a previous tutorial, you learned how to tune the hyperparameter $k$ in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are three hyperparameters in : -->
+Fit a random forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (`num.trees`), each with a maximum depth of 4 (`max.depth`). You can consult the respective arguments for the `"ranger"` method typing `?ranger`. 
 
-<!-- Answer the following questions: -->
+Repeat the fitting with 1000 decision trees and max depth of 4, then with 12 decision trees and a max depth of 6. Then, discuss the role that the number of decision trees and the maximum depth of a tree play in the bias-variance trade-off and in the computation time. 
 
-<!-- -    -->
+### Hyperparameter tuning {-}
 
-<!-- <!-- XXX Exercise: implement bagging 12 decision trees, each with a maximum depth of 4, for the same data as used in the demonstration above. --> -->
+In a previous tutorial, you learned how to tune the hyperparameter $k$ in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are more hyperparameters in a random forest. The {caret} package allows to vary three hyperparameters:
 
+-   `mtry`: The number of variables to consider to make decisions at each node, often taken as $p/3$ for regression, where $p$ is the number of predictors.
+-   `min.node.size`: The number of data points at the "bottom" of each decision tree, i.e. the leaves.
+-   `splitrule`: The function applied to data in each branch of a tree, used for determining the goodness of a decision.
 
+Answer the following questions, giving a reason for your responses:
 
-<!-- XXX Exercise: fit a random forest model to the flux data used in previous chapters. Use a single set of hyperparameters. Same modelling task, different engine. -->
+1.   Check the help for the `ranger()` function and identify which values each of the three hyperparameters/arguments can take. Select a sensible range of values for each hyperparameter, that you will use in the hyperparameter search.
 
-<!-- XXXXXXXXX -->
+2.   In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when `min.node.size = 1` and when `min.node.size = n` (`n` being the number of observations)? For the next questions, it's not necessary to provide the `max.depth` argument to `train()` because `min.node.size` is already limiting the size of the trees in the random forests.
 
-<!-- For random forests from the {ranger} package, hyperparameters are: -->
+3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
+> Tip: Keep the number of trees low, otherwise it takes too long to fit each random forest model.
 
-<!-- -   `mtry`: the number of variables to consider to make decisions, often taken as $p/3$, where $p$ is the number of predictors. -->
-<!-- -   `min.node.size`: the number of data points at the "bottom" of each decision tree -->
-<!-- -   `splitrule`: the function applied to data in each branch of a tree, used for determining the goodness of a decision -->
+4.   *Grid hyperparameter tuning*: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the `expand.grid()` function to create a data.frame of hyperparameter value combinations. This grid will be passed to `train()` via the `tuneGrid` argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of `train()` and the results of the hyperparameter search.
 
+5.   Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?
+
+### Model performance {-}
+
+You have trained several random forest models. Evaluate the model performance on the best model (the one for the tuned hyperparameters) and on one of your worse models. If you compare the RMSE and $R^2$ on the training and the test set, does it show overfitting?

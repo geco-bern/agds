@@ -368,7 +368,7 @@ String manipulations are usually required for cleaning data. The Section \@ref(#
 
 Note that a majority of machine learning algorithms and other statistical model types require all data to be numeric. Methods exist to convert categorical data into numeric data, as we will learn later. We re-visit data cleaning in the form of data *pre-processing* as part of the modelling workflow in Chapter \@ref(supervisedmli).
 
-#### Bad data
+#### Bad data {#baddata}
 
 Data may be "bad" for different reasons, including sensor error, human error, a data point representing a different population, or unsuitable measurement conditions. In this sense, data are "bad" if they don't represent what they are assumed by the user to represent. Its presence in analyses and modelling may undermine the model skill or even lead to spurious results. A goal of data cleaning typically is to remove bad data. But how to detect them? And how safe is it to remove them?
 
