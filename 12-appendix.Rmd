@@ -105,9 +105,7 @@ datasets::quakes$lat[idx]
 
 ### Workspace {-}
 
-Create a new *R project* and create sub-directories in a meaningful way (as described in this Chapter). Create an RMarkdown file in your new project which implements your solutions to above exercises. Give the file a title, implement some structure in the document, and write some text explaining what your code does.
-
-*No solutions provided because part of the final report.*
+*No solutions provided.*
 
 ## Programming primers
 
@@ -318,6 +316,7 @@ daily_fluxes_sub |>
 ### Patterns in data quality {-}
 
 The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes of poor quality. Investigate whether NEE data quality is randomly spread across hours in a day by calculating the proportion of (i) actually measured data, (ii) good quality gap-filled data, (iii) medium quality data, and (iv) poor quality data within each hour-of-day (24 hours per day).
+
 ```{r message=FALSE, warning=FALSE}
 # using half_hourly_fluxes read above
 daily_fluxes <- half_hourly_fluxes |>
@@ -341,14 +340,29 @@ daily_fluxes <- half_hourly_fluxes |>
 Interpret your findings: Are the proportions evenly spread across hours in a day? 
 ```{r}
 # this is not asked for but interesting. More on data visualisation in Chapter 5
+# you can also just look at values of df$f_measured over the course of a day (hod)  
+
 daily_fluxes |> 
   pivot_longer(c(f_measured, f_good, f_medium, f_poor), 
                names_to = "quality", 
                values_to = "fraction") |> 
-  ggplot(aes(x = hour_of_day, y = fraction, color = quality)) +
-  geom_line()
+  ggplot(aes(x = hour_of_day, 
+             y = fraction * 100, # *100 to get percentages 
+             color = quality)) +
+  geom_line(size = 1.5) +
+  theme_classic() +
+  scale_color_brewer(
+    "Quality",
+    labels = c("Good", "Measured", "Medium", "Poor"),
+    palette = 3,
+    direction = -1
+  ) +
+  labs(
+    title = "Temporal pattern of GPP quality",
+    y     = "Fraction of total GPP entries [%]",
+    x     = "Hour of Day"
+  )
 
-# you can also just look at values of df$f_measured over the course of a day (hod)  
 ```
 
 Perform an aggregation of the half-hourly GPP data (variable `GPP_NT_VUT_REF`) to daily means of the unmodified data read from file `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`, and from cleaned data where only measured (not gap-filled) half-hourly data is kept and aggregated. This yields two data frames with daily GPP data. Calculate the overall mean GPP for the two data frames (across all days in the data frame). Are the overall mean GPP values equal? If not, why?
