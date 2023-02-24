@@ -187,7 +187,7 @@ The material covered in this course will give you a solid basis for your future 
 
 "*I know the name of a function that might help solve the problem but I do not know how to use it.*" Typing a `?` in front of the function will open the documentation of the function, giving information about a function's purpose and method, arguments, the returned object, and examples. You have learned a few things about plots but you may not know how to make a boxplot:
 
-```{r eval =F}
+```{r eval=FALSE}
 ?graphics::boxplot
 ```
 
@@ -195,7 +195,7 @@ Running the above code will open the information on making boxplots in R.
 
 "*There must be a function that does task X but I do not know which one.*" Typing `??` will call the function `help.search()`. Maybe you want to save a plot as a JPEG but you do not know how:
 
-```{r eval =F}
+```{r eval=FALSE}
 ??jpeg
 ```
 
@@ -212,7 +212,7 @@ If you do not understand the error message, start by searching for it on the web
 #### Worked examples
 
 Worked examples are implementations of certain workflows that may serve as a template for your own purpose. It is often simpler to adjust existing code to fulfill your purpose than to write it from scratch. *Vignettes* are provided for many packages and serve as example workflows that demonstrate the utility of package functions. You can type ...
-```{r}
+```{r eval=FALSE}
 vignette("caret", package = "caret")
 ```
 

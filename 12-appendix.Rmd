@@ -380,9 +380,11 @@ daily_fluxes_cleaned |>
 
 ## Data Visualisation
 
-### Identifying Outliers {-}
+### Spurious data {-}
 
-```{r message=FALSE}
+In Section \@ref(baddata), we discovered that certain values of `GPP_NT_VUT_REF` in the half-hourly data `half_hourly_fluxes` (to be read from file `data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`) are repeated with a spuriously high frequency. Determine all values of `GPP_NT_VUT_REF` that appear more than once in `half_hourly_fluxes` and label them as being "spurious". Visualise the time series of the first two years of half-hourly GPP, mapping the information whether the data is spurious or not to the *color* aesthetic.
+
+```{r}
 # Read and wrangle data
 half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |> 
   
@@ -392,219 +394,247 @@ half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_20
     # interpret all variables starting with TIMESTAMP as a date-time object
     dplyr::mutate_at(vars(starts_with("TIMESTAMP_")), lubridate::ymd_hm)
 
-# aggregate to daily
+# determine spurious GPP_NT_VUT_REF values as those that are duplicated
+# this creates a logical vector specifying whether the respective row has a 
+# duplicate
+vec_spurious <- half_hourly_fluxes |> 
+  
+  # by keeping only one column, duplicated() determines duplications in 
+  # that variable only 
+  select(GPP_NT_VUT_REF) |>
+  duplicated()
+
+# label spurious half-hourly data
+half_hourly_fluxes <- half_hourly_fluxes |> 
+  mutate(spurious = vec_spurious)
+
+# visualise
+ggplot(
+    data = half_hourly_fluxes |> slice(1:(48*365)),
+    aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) +
+  geom_line() +
+  geom_point(aes(color = spurious), size = 0.9) +
+  labs(x = "Time", 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
+  scale_color_viridis_d() + # inverse color scale is more intuitive here
+  theme_classic()
+```
+
+Then aggregate half-hourly to daily data, taking the mean of `GPP_NT_VUT_REF` and recording the proportion of underlying half-hourly data points that are "spurious". Visualise the time series of daily `GPP_NT_VUT_REF` with the color scale indicating the proportion of spurious half-hourly data that was used for determining the respective date's mean GPP.
+```{r}
+# aggregate
 daily_fluxes <- half_hourly_fluxes |> 
-  
-    # create a date-only object
-    dplyr::mutate(date = lubridate::as_date(TIMESTAMP_START)) |> 
-  
-    # aggregate
-    dplyr::group_by(date) |> 
-    dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF, na.rm = TRUE),
-              PPFD_IN = mean(PPFD_IN, na.rm = TRUE),
-              .groups = 'drop' # not mandatory
-    )
+  mutate(date = lubridate::date(TIMESTAMP_START)) |> 
+  group_by(date) |> 
+  summarise(frac_spurious = sum(spurious)/48,
+            GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
+
+# visualise
+ggplot(
+    data = daily_fluxes,
+    aes(x = date, y = GPP_NT_VUT_REF)) +
+  geom_line() +
+  geom_point(aes(color = frac_spurious), size = 0.9) +
+  labs(x = "Time", 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
+  scale_color_viridis_c(direction = -1) + # inverse color scale is more intuitive here
+  theme_classic()
 ```
 
+### Identifying Outliers {-}
+
+A key part of data cleaning is to detect and understand outliers. Visualisations can help. Your task here is to find outliers in `GPP_NT_VUT_REF`.
+
+First, using the half-hourly fluxes data, determine "outliers" as those values of `GPP_NT_VUT_REF` that fall outside $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Plot `GPP_NT_VUT_REF` versus shortwave radiation and highlight outliers in red.
+
+> Hint: Use `boxplot.stats()` to return a list containing a vector of the data points which lie beyond the extremes of the whiskers of the boxplot.
+
+> Hint: Use `scale_color_manual()` to mannually define the color scale.
 
 ```{r}
-# fit linear regression
-linmod <- lm(GPP_NT_VUT_REF ~ PPFD_IN, data = daily_fluxes)
-linmod
+vec_outliers <- boxplot.stats(half_hourly_fluxes$GPP_NT_VUT_REF)$out
+
+plot_data <- half_hourly_fluxes |> 
+  mutate(outlier = GPP_NT_VUT_REF %in% vec_outliers)
+
+plot_data |> 
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = outlier)) + 
+  geom_point() + 
+  scale_color_manual("Outlier?",                    # Set title of legend
+                     values = c("black", "red"),    # Highlight in red
+                     labels = c("No", "Yes")        # Add labels to the legend
+                     ) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
+  theme_classic()
 ```
 
+Now, we want to "control" for the influence of shortwave radiation on GPP and define outliers with respect to the distribution of *residuals* of the linear regression between the two variables. Relax the definition of what is considered an outlier by setting adjusting their definition to falling outside $( Q_1 - 5 (Q_3 - Q_1)$ to $Q_3 + 5 (Q_3 - Q_1)$. Again, plot `GPP_NT_VUT_REF` versus shortwave radiation and highlight outliers in red.
+
+> Hint: Fit the linear regression model as `lm(GPP_NT_VUT_REF ~ SW_IN_F, data = half_hourly_fluxes)` and obtain the residuals from the object returned by the `lm()` function (see 'Value' in its help page).
+
+> Hint: The output of `boxplot.stats(x)` is a list, containing an element `out`. `out` is a named vector of the oulier values with names referring to the row numbers of `x`. Use `as.integer(names(boxplot.stats(x)$out))` to get row numbers.
 
 ```{r}
-# get box plot statistics for determining "outlying" points
-out_boxplot <- boxplot.stats(linmod$residuals)
+residuals <- lm(GPP_NT_VUT_REF ~ SW_IN_F, data = half_hourly_fluxes)$residuals
 
-# record the row numbers of outlying points based on the output list element 'out'
-# row numbers are the names of elements in out_boxplot$out, provided as strings. 
-# convert them to integers.
-outlier_index <- out_boxplot$out |> names() |> as.integer()
+# # unclear why this doesn't work:
+# vec_outliers <- boxplot.stats(residuals, coef = 5)$out
+# plot_data <- half_hourly_fluxes |> 
+#   mutate(outlier = GPP_NT_VUT_REF %in% vec_outliers)
+
+# this works:
+rowindex_outliers <- as.integer(names(boxplot.stats(residuals, coef = 5)$out))
+plot_data <- half_hourly_fluxes |> 
+  mutate(rowindex = dplyr::row_number()) |>
+  mutate(outlier = rowindex %in% rowindex_outliers)
+
+plot_data |> 
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = outlier)) + 
+  geom_point() + 
+  scale_color_manual("Outlier?",                    # Set title of legend
+                     values = c("black", "red"),    # Highlight in red
+                     labels = c("No", "Yes")        # Add labels to the legend
+                     ) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
+  theme_classic()
 ```
 
+**What do we see in this plot?** We see that the red points, the outliers, fall outside the main point cloud of green points. The distribution of these outliers seems without systematic pattern or deviation. Nonetheless, it is good practice to go a step further and look at these data points in detail to find out whether they should be removed or not in your analysis. In later Chapters you will learn more on what disproportionate role outliers can play and how they may affect your statistical model and analysis.
 
-```{r}
-# Label outliers
+### Visualising diurnal and seasonal cycles of GPP {-}
 
-# In base-R, this could be done as
-daily_fluxes$is_outlier <- FALSE
-daily_fluxes$is_outlier[outlier_index] <- TRUE
+As explored in the previous Chapter's exercises, GPP varies over diurnal and seasonal cycles. Create a publication-ready figure that visualises the mean diurnal cycle of GPP for each day-of-year (mean across multiple years). Make sure that the figure is properly labelled, and legible for readers with a color vision deficiency.
 
-# In tidyverse style:
-daily_fluxes <- daily_fluxes |> 
-  dplyr::mutate(rownumber = dplyr::row_number()) |>    # could also do: dplyr::mutate(rownumber = 1:nrow(.))
-  dplyr::mutate(is_outlier = ifelse(rownumber %in% outlier_index, TRUE, FALSE))
-```
+> Hint: To get the diurnal and seasonal cycles, summarise the half-hourly data by the hour of the day and the day of the year simultaneously using multiple grouping variables within `group_by()` and calculate mean values for GPP for each group.
+
+> Hint: Chose an appropriate visualisation that maps the hour-of-day to the x-axis and the day-of-year to the y-axis.
 
 
-```{r}
-# Create scatterplot
-daily_fluxes |> 
-  tidyr::drop_na() |>
-  ggplot() +
-  
-  # Set variables to use for axes and filling of plots
-  aes(x = PPFD_IN,
-      y = GPP_NT_VUT_REF,
-      fill = is_outlier) +
-  geom_point(size  = 2,  # Increase size of points
-             shape = 21) + # Shape 21 has a "fill" and "color" property
-                           # fill refers to the shape itself
-                           # color refers to the border around the shape
-  theme_classic() +        # Pick a simple theme
-  scale_fill_brewer(        # Pick a nice color scheme
-    "Outlier?",             # Set title of legend
-    palette = "Dark2",      # Pick a nice palette of the scheme
-    labels = c("No", "Yes") # Add labels to the legend
-  ) +
-  labs(title = "Outliers in GPP ~ PPFD",
-       y    = expression("Gross primary production [gC m"^-2 * "s"^-1 * "]"),
-       x    = expression("Photosynthetic photon flux density [" * mu * "mol" ~ m^-2 ~ s^-1 * "]"))
-```
-
-**What do we see in this plot?** We see that the orange points, that is the outliers, actually fall outside the main point cloud of green points. The distribution of these outliers seems without systematic pattern or deviation. Nonetheless, it is good practice to go a step further and look at these data points in detail to find out whether they should be removed or not in your analysis. In later Chapters you will learn more on what disproportionate role outliers can play and how they may affect your statistical model and analysis.
-
-### Diurnal and seasonal cycles {-}
 ```{r message=FALSE, warning=FALSE}
-# Data wrangling
-fluxes_per_hod_doy <-
-  half_hourly_fluxes |>                        # df from previous exercise
+# Aggregate to hours-in-day for each day-in-year
+fluxes_per_hod_doy <- half_hourly_fluxes |>          # df from previous exercise
   dplyr::mutate(
-    hour_day = lubridate::hour(TIMESTAMP_START),     # Save the hour of the day
-    day_year = lubridate::yday(TIMESTAMP_START)) |>  # Save the day of the year
-  dplyr::group_by(hour_day, day_year) |>              # Group by HoD and DoY at once
-  dplyr::summarise(gpp = mean(GPP_NT_VUT_REF, na.rm = TRUE)) # Take mean for GPP, ignore `NA`
-```
+    hour_day = lubridate::hour(TIMESTAMP_START),     # hour of the day
+    day_year = lubridate::yday(TIMESTAMP_START)) |>  # day of the year
+  dplyr::group_by(hour_day, day_year) |>             # multiple grouping
+  dplyr::summarise(gpp = mean(GPP_NT_VUT_REF))
 
-
-```{r}
-# Create a standard raster plot
-fluxes_per_hod_doy |> 
-  ggplot() +
-  aes(x = hour_day, y = day_year, fill = gpp) +
-  geom_raster()
-```
-
-
-```{r}
-# Make raster plot publishable - This is up to your judgement. Below is an example. 
-
+# Publication-ready raster plot
 fluxes_per_hod_doy |> 
   
   # Specify aesthetics
   ggplot(aes(x = hour_day, 
              y = day_year, 
-             fill = gpp)) + # The 'filling' of the raster
+             fill = gpp)) +  # fill color of the raster
+  
   geom_raster() +
   
   # Use a color scale that works also for color-blind people
   scale_fill_viridis_c(option = "magma") +
-  
-  # Change theme and layout a bit 
-  theme(
-    plot.title = element_text(face = "bold", # Make title bold
-                              hjust = 0.5),  # Horizontal adjustment of title to
-                                             # be in the middle (left: 0, right: 1)
-    legend.position = "right"               # Move legend to bottom
-  ) +
-  
+
   # adjust the aspect ratio of the plotting region
-  coord_fixed(ratio=0.075) +
+  coord_fixed(ratio = 0.18) +
   
   # labels of each mapping axis, \n is a line break
-  labs(title = "Diurnal and seasonal cycle of GPP",
+  labs(title = "Gross primary production",
+       subtitle = "Diurnal and seasonal cycle",
        x = "Hour of day", 
        y = "Day of year", 
-       fill = expression("GPP \n[gC m"^-2 * "s"^-1 * "]: ")) + # Legend title for fill scale
-                                                               # The '\n' adds a line break
+       fill = expression(paste(mu,"mol CO"[2], " m"^-2, "s"^-1))) + 
+                                                               
   
   # avoid having a small padding from the lowest values to the end of axes
   scale_x_continuous(expand = c(0,0)) +
   scale_y_continuous(expand = c(0,0))
 ```
 
-Beautiful, isn't it? We  nicely see that on practically all days of the year we have the diurnal cycle of GPP which follows the sun's cycle. And the throughout a year, we see a rapid increase in GPP in the spring when all trees put out their leaves at once. After a highly productive summer, temperatures drop, sensescence kicks in and GPP gradually drops into its winter low.
+Beautiful, isn't it? We  nicely see that on practically all days of the year we have the diurnal cycle of GPP which follows the sun's cycle. And throughout a year, we see a rapid increase in GPP in the spring when all trees put out their leaves at once. After a highly productive summer, temperatures drop, sensescence kicks in and GPP gradually drops into its winter low.
 
 ### Trend in carbon dioxide concentrations {-}
 
+This exercise explores the longest available atmospheric CO$_2$ record, obtained at the Mauna Loa observatory in Hawaii. Atmospheric CO$_2$ in the northern hemisphere is characterised by seasonal swings, caused by the seasonal course of CO$_2$ uptake and release by the terrestrial biosphere. We've explored the seasonality of the CO$_2$ uptake measured at one site (in Switzerland) extensively in this an previous chapters. Your task here is to calculate and visualise the long-term trend of CO$_2$. Follow these steps:
+
+-   Download the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
 ```{r}
-# Read table, set 'header = TRUE' to tell R that the first row are variable names 
-# You could set 'skip = 70' to skip all metadata, but R detects that automatically
-ml_co2 <- read.table("data/co2_monthly_maunaloa.txt", 
-                     header = TRUE,
-                     na.strings = '-99.99' # The dataset specifys that these are missing variables
-                     ) |>
+ml_co2 <- readr::read_csv("data/co2_mm_mlo.csv", skip = 56) |>
   
-  # To get a good timeseries, we need to get a nice date-time variable first
-  dplyr::mutate(date = paste(yr, mo, sep = "-") |> lubridate::ym(), # Imprecise but okay
-         datetime = lubridate::date_decimal(decyr, tz = "UTC")) # Exact second of measurement
+  # interpret missing values
+  dplyr::na_if(-9.99) |> 
+  dplyr::na_if(-0.99) |> 
+  dplyr::na_if(-1) |> 
+  
+  # rename to avoid white space in column name
+  rename(year_dec = `decimal date`)
 ```
 
+-   Make a simple graph for visualizing the monthly CO$_2$ time series.
 ```{r}
-# Simple plot of the trend
-ml_co2 |> ggplot() + geom_line(aes(datetime, co2_avg))
+ml_co2 |> 
+  ggplot() + 
+  geom_line(aes(year_dec, average))
 ```
 
-The data looks reasonable. No outliers, no reamining `-99.99` values that where not dropped.
-
+-   Write a function that computes a 12-month running mean of the CO$_2$ time series. The running mean for month $m$ should consider values of $m-5$ to $m+6$. Define arguments for the function that let the user specify the width of the running mean "box" (i.e., setting the $5$ and $6$ to any other integer of choice) 
 ```{r}
 # Write the running mean function
-running_mean <- function(input_data, # Input vector
-                         box_size    # Number of elements over which to average
+running_mean <- function(vec,     # Input vector
+                         left,    # Number of elements to the left
+                         right    # Number of elements to the right
                          ){
   
   # Create an empty vector of the same length as the input data
-  output_data <- rep(NA, length(input_data))
+  vec_out <- rep(NA, length(vec))
   
   # Loop over each position in the vector
-  for (i in 1:length(input_data)){
+  for (idx in (left+1):(length(vec)-right)){
     
     # Define start and end of the box to average over
-		startbox <- i - box_size / 2
-		endbox   <- i + box_size / 2
+		startbox <- idx - left
+		endbox   <- idx + right
 		
-		# Do not take means at the border of the input_data
-		if (startbox < 1) {
-			output_data[i] <- NA	
-		} else if (endbox > length(input_data)) {
-			output_data[i] <- NA
-		} else {
-		  # Take the mean of values within the box
-			output_data[i] <- mean(input_data[startbox:endbox],
-			                       na.rm = TRUE)
-		}	
+		vec_out[idx] <- mean(vec[startbox:endbox], na.rm = TRUE)
   }
   
-  # Return output_data
-  return(output_data)
+  return(vec_out)
 }
 
-ml_co2$co2_rm <- running_mean(ml_co2$co2_avg, 12)
+ml_co2 <- ml_co2 |> 
+  mutate(average_12m = running_mean(average, left = 5, right = 6))
 ```
 
+-   Make a publication-ready figure that shows the monthly and the 12-month running mean time series of the CO$_2$ record.
+
+> Hint: To automatically render the time axis with ggplot, you can create a time object by combining the year and month columns: `lubridate::ymd(paste(as.character(year), "-", as.character(month), "-15"))`
+
 ```{r}
-# Create a nice plot
-ml_co2 |>
+# create a date object for nice plotting
+plot_data <- ml_co2 |> 
+  mutate(date = lubridate::ymd(paste(as.character(year), "-", as.character(month), "-15")))
+
+plot_data |>
   ggplot() +
   
   # First plot the measurements
-  geom_line(aes(datetime, co2_avg, color = "Measured")) +
+  geom_line(aes(date, average, color = "Measured")) +
+  
   # Add running mean on top
-  geom_line(aes(datetime, co2_rm, color = "Running Mean")) +
+  geom_line(aes(date, average_12m, color = "12-month running mean")) +
+  
   # Style the plot
-  theme_classic() +
   theme(legend.position = c(0.75, 0.25)) + # Move legend into the plot (c(x, y))
   scale_color_manual(
     "", # Omit legend title
-    values = c("black", "tomato"),
-    labels = c("Measured", "Running Mean")
+    values = c("tomato", "black"),
+    labels = c("Running mean", "Monthly mean")
   ) +
-  labs(title = "Carbon dioxide concentrations at Manua Lao",
-       y     = expression("CO"[2] ~ "[ppm]"),
-       x     = "Year")
+  labs(title = expression(paste("Atmospheric CO"[2], " concentrations at Manua Lao, Hawaii")),
+       y     = expression(paste("CO"[2], "(ppm)")),
+       x     = "Year") +
+  theme_classic()
 ```
+
 
 ### Telling a story from data {-}
 
@@ -878,10 +908,10 @@ cross_validation_by_hand <- function(df_train,
   for (k in vec_k) {
     
     # Create a loop that goes through each fold
-    for (i in 1:n_folds) {
+    for (idx in 1:n_folds) {
   
       # Get current fold's starting and ending position in the training set 
-      index_start <- (i - 1) * fold_size + 1
+      index_start <- (idx - 1) * fold_size + 1
       index_end   <- (i) * fold_size
       
       # Split test set into training and validation set

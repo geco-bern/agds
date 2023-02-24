@@ -8,9 +8,8 @@ In this chapter you will learn how to visualize data for exploration or publicat
 
 You will learn among others the:
 
-- grammar of graphics, i.e. using the {ggplot2} library
-- construct plots in a intuitive way
-- represent the same data in a variety of ways
+- appropriate choice of visualisations for different data types and different aspects of the data
+- grammar of graphics, i.e., using the {ggplot2} library
 - the proper use of colours in visualization
 
 ## Tutorial
@@ -32,7 +31,7 @@ half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_20
 plot(half_hourly_fluxes$TIMESTAMP_START, half_hourly_fluxes$GPP_NT_VUT_REF, type = "l")
 ```
 
-You may notice the spurious-looking values on the left, in the first third of year 2004. We'll revisit this point later in this Chapter.
+> You may notice the spurious-looking values on the left, in the first third of year 2004. This demonstrates the role of visualisation in understanding the data and its quality. We'll revisit this point later in this Chapter.
 
 From [(Wilke)](https://clauswilke.com/dataviz/):
 
@@ -47,7 +46,7 @@ ggplot(data = half_hourly_fluxes, aes(x = TIMESTAMP_START, y = GPP_NT_VUT_REF)) 
   geom_line()
 ```
 
-The argument provided by the `aes()` statement specifies the aesthetics (`x`, and `y`) and which variables in `data` are mapped onto them. Once this is specified, we can use any suitable geometrical object that is defined by these aesthetics. Here, we used a line plot specified by `+ geom_line()`.
+The argument provided by the `aes()` statement specifies the aesthetics (`x`, and `y`) and which variables in `data` are mapped onto them. Once this is specified, we can use any suitable geometrical object that is defined by these aesthetics. Here, we used a line plot specified by `geom_line()`. Note also that the different objects to creating a ggplot graph are connected with a `+`, which takes a similar role as the pipe (`|>`).
 
 The data visualisation above is a dense plot and we cannot distinguish patterns because variations in GPP happen at time scales that are too narrow for displaying three years of half-hourly data in one plot. GPP varies throughout a day just as much as it varies throughout a season. To see this, we can focus on a narrower time span (selecting rows by index using `dplyr::slice()` in the code below). Visual clarity is also facilitated by an appropriate labeling (title and axes labels using `labs()`) and by a reduction of displayed elements to a minimum (therefore, the changing of the formatting theme by `theme_classic()`):
 
@@ -77,7 +76,7 @@ In the above example, we mapped two continuous variables (`TIMESTAMP_START` and 
 -   Continuous variables: position, size, color (a color gradient), line width, etc.
 -   Categorical variables: shape, color (a discrete set of colors), line type, etc.
 
-```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types. Figure from [Wilke](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)", fig.align='center'}
+```{r common-aesthetics, echo=FALSE, fig.cap="Common aesthetics to display different variable types. Figure from [Wilke](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png).", fig.align='center'}
 knitr::include_graphics("./figures/common-aesthetics-1.png")
 ```
 
@@ -85,7 +84,7 @@ Not only the different aesthetics, but also the type of *geometry* (the layers o
 
 #### One value per category
 
-Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for within each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `plot_2`. Both examples are based on the data frame `daily_fluxes` which we created in Chapter \@ref(datawrangling).
+Probably the simplest case of data visualization is where a single value is shown across a categorical variable. This calls for a bar plot (`geom_bar()`). In the example below, we plot the mean GPP for each month. The "custom plot" shown below is a demonstration for what you can do by combining different elements with {ggplot2}. Try to understand the command for creating the object `plot_2`. Both examples are based on the data frame `daily_fluxes` which we created in Chapter \@ref(datawrangling).
 
 ```{r results=FALSE, messages=FALSE, warning=FALSE}
 # read in demo daily data
@@ -114,7 +113,7 @@ plot_2 <- ggplot(
   aes(x = month, y = GPP_NT_VUT_REF)) +
   geom_segment(aes(x = month, xend = month, y = 0, yend = GPP_NT_VUT_REF), 
                size = 3, color = "grey40") +
-  geom_point(aes(x = month, y = GPP_NT_VUT_REF), size = 8, color = "grey40") +
+  geom_point(aes(x = month, y = GPP_NT_VUT_REF), size = 8, color = "tomato") +
   geom_text(aes(x = month, y = GPP_NT_VUT_REF, label = format(GPP_NT_VUT_REF, digits = 2)),
             size = 3, color = "white") +
   theme_classic() +
@@ -167,7 +166,7 @@ cowplot::plot_grid(plot_1, plot_2)
 
 Examining the distribution of a variable is often the first step of exploratory data analysis. A *histogram* displays the distribution of numerical data by mapping the frequency (or count) of values within discrete bins (equally spaced ranges along the full range values of a given variable) onto the "height" of a bar, and the range of values within bins onto the position of the bar. In other words, it shows the count of how many points of a certain variable (below `GPP_NT_VUT_REF`) fall into a discrete set of bins. When normalizing (scaling) the "bars" of the histogram to unity, we get a *density histogram*. To specify the y-axis position of the upper end of the histogram bar as the density, use `y = ..density..` in the `aes()` call. To show counts, use `y = ..count..`.
 
-```{r warning=FALSE}
+```{r warning=FALSE, out.width="80%"}
 ggplot(
     data = half_hourly_fluxes,
     aes(x = GPP_NT_VUT_REF, y = ..density..)
@@ -185,7 +184,7 @@ Note that the red line plotted by `geom_density()` on top of the density histogr
 
 To visualize distributions of a single continuous variable within categories, perhaps the most common visualization type is the *box plot*. As described in Chapter \@ref(datawrangling), it shows the median (bold line in the center), the upper and lower quartiles, corresponding to the 25% and the 75% quantiles, often referred to as $Q_1$ and $Q_3$ , and given by the upper and lower edge of the box plot. The lines extending from the box edges visualize the range of $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Any point outside this range is plotted by a point.
 
-The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, $Q_1$ , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution and does not reflect information about the data volume. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to each box. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The form of their edge is given by the density distribution of the points they represent.
+The box plot is rather reductionist in showing the data (the vector of all values is reduced to the median, $Q_1$ , $Q_3$, and outlying points) and may yield a distorted picture of the data distribution and does not reflect information about the data volume. For this reason, several journals are now requiring individual data points or at least the number of data points to be shown in addition to each box. Below, points are added by `geom_jitter()` , where points are "jittered", that is, randomly spread out along the x-axis. Violin plots are a hybrid of a density plot and a box plot. The shape of their edge is given by the density distribution of the points they represent.
 
 ```{r}
 # prepare plot data
@@ -194,22 +193,22 @@ half_hourly_fluxes_subset <- half_hourly_fluxes |>
   sample_n(300) |> 
   mutate(Night = ifelse(NIGHT == 1, TRUE, FALSE))
 
-# Boxplot
-plot_1 <-ggplot(
+# Boxplot 
+plot_1 <- ggplot(
   data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70") +
-  labs(title = "Box plot") +
+  labs(title = "Boxplot") +
   labs(y = "VPD (hPa)") +
   theme_classic()
 
 # Box plot + jittered points
-plot_2 <-ggplot(
+plot_2 <- ggplot(
   data = half_hourly_fluxes_subset,
   aes(x = Night, y = VPD_F)) +
   geom_boxplot(fill = "grey70", outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.3) +
-  labs(title = "Boxplot + jittered points") +
+  labs(title = "Boxplot + jitter points") +
   labs(y = "VPD (hPa)") +
   theme_classic()
 
@@ -230,9 +229,11 @@ cowplot::plot_grid(plot_1, plot_2, plot_3, ncol = 3)
 
 Scatter plots visualize how two variables co-vary. The position of each point in a scatter plot is given by the simultaneously recorded value of two variables, provided in two columns along the same row in a data frame, and mapped onto two dimensions in a cartesian coordinate system. We can also say that two variables are *regressed* against each other.
 
-In the figure below, we start with a simple scatter plot (a), regressing GPP against shortwave radiation. Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(half_hourly_fluxes$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). (d) is an example for using a continuous color scheme, as explained in the next section.
+In the figure below, we start with a simple scatter plot (a), regressing GPP against shortwave radiation. A visualization is supposed to tell a story with data. The positive and largely linear relationship between shortwave radiation and GPP is expected from theory and our process understanding of the dominant controls on photosynthesis - it's mainly solar (shortwave) radiation (However, strictly speaking, this is supposed to emerge only at longer time scales, not in half-hourly data). The linear regression line, added by `geom_smooth(method = "lm")` in (a), indicates that relationship. You will learn more about linear regression in Chapter \@ref(regressionclassification).
 
-```{r}
+Are there additional variables that modify the relationship between solar radiation and GPP? To visually investigate this, we can map additional variables in our data set onto additional aesthetics. For example, at night, photosynthesis ceases as shown in (b). Here, the variable `NIGHT` was mapped onto the aesthetic `color` of same geometry (`geom_point()`). By default, `ggplot()` used a *continuous color scale*, as indicated by the color key on the right. It did so although `NIGHT` is a categorical (a binary) variable because in the data frame, `NIGHT` is stored as a numeric value (as can be checked by `class(half_hourly_fluxes$NIGHT)`). To avoid this, and automatically trigger the use of a color scheme that is suitable for categorical variables, we specify `aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = as.factor(NIGHT))` in (c). In (d), temperature, a continuous variable, is mapped onto a continuous color scheme.
+
+```{r label="regressionplots", fig.cap="Regression plots."}
 # prepare plot data
 half_hourly_fluxes_subset <- half_hourly_fluxes |>
   sample_n(1000)
@@ -242,6 +243,7 @@ plot_1 <- ggplot(
   data = half_hourly_fluxes_subset,
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
+  geom_smooth(method = "lm", color = "red") +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
        y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic()
@@ -283,8 +285,8 @@ cowplot::plot_grid(plot_1, plot_2, plot_3, plot_4, ncol = 2, labels = "auto")
 The above example demonstrates that color schemes have to be chosen depending on the nature of the data. Mapping a continuous variable onto the aesthetics `color` requires a continuous color scheme to be applied, categorical data requires discrete color schemes. More distinctions should be considered:
 
 -   Continuous variables should be distinguished further if they span a range that includes zero or not. If so, *diverging* color schemes should be used, where zero appears neutral (e.g., white). If zero is not contained within the range of values in the data, diverging color schemes should be avoided.
--   Continuous or ordinal variables may be *cyclic* in nature. For example, hours in a day are cyclic, although there are twelve discrete numbers. The time 00:00 is nearer to 23:59 than it is from, for example, 01:00. The cyclical, or periodical nature of the data should be reflected in the choice of a color scheme where the edges of the range are more similar to one another than they are to the center of the range (see example below XXX)
--   *Multisequential* color schemes reflect that there is a natural distinction between two parts of the range of continuous values (see example below XXX).
+-   Continuous or ordinal variables may be *cyclic* in nature. For example, hours in a day are cyclic, although there are twelve discrete numbers. The time 00:00 is nearer to 23:59 than it is from, for example, 01:00. The cyclical, or periodical nature of the data should be reflected in the choice of a color scheme where the edges of the range are more similar to one another than they are to the center of the range (see example below)
+-   *Multisequential* color schemes reflect that there is a natural distinction between two parts of the range of continuous values (see example below).
 
 Choices of colors and their combination is far from trivial. Colors in color schemes (or "scales") should be:
 
@@ -321,13 +323,13 @@ ggplot(
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF, color = month)) +
   geom_point(alpha = 0.5) +
   geom_smooth(formula = y ~ x + 0, method = "lm", se = FALSE) +
-  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
        y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   theme_classic() +
   scico::scale_color_scico_d(palette = "romaO")
 ```
 
-Note three aspects here. First, the color-mapping is specified within `aes()` in the `ggplot()` function call and then adopted for all subsequent additions of geoms. Hence, also the `geom_smooth()` thus takes the color information, and not by a "hard-coded" specification of `color =` inside the `geom_smooth()` call as done in Fig. XXX.
+Note three aspects here. First, the color-mapping is specified within `aes()` in the `ggplot()` function call and then adopted for all subsequent additions of geoms. Hence, also the `geom_smooth()` thus takes the color information, and not by a "hard-coded" specification of `color =` inside the `geom_smooth()` call as done in Fig. \@ref(fig:regressionplots).
 
 Second, we specified a formula for the linear regression "smooting curve" to force the lines through the origin (`y ~ x + 0`). This is motivated by our a priori understanding of the process generating the data: when solar radiation is zero, photosynthesis (and hence GPP) should be zero.
 
@@ -343,7 +345,7 @@ ggplot(
   aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(alpha = 0.4) +
   geom_smooth(formula = y ~ x + 0, method = "lm", color = "red", se = FALSE) +
-  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
        y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   facet_wrap(~month)
 ```
@@ -418,13 +420,13 @@ daily_mean_hourly_fluxes <- half_hourly_fluxes |>
   dplyr::summarise(GPP_NT_VUT_REF = mean(GPP_NT_VUT_REF))
 
 # diurnal cycle, cartesian
-plot_3 <-ggplot(
+plot_3 <- ggplot(
     data = daily_mean_hourly_fluxes,
     aes(hour, GPP_NT_VUT_REF)) + 
   geom_line()
 
 # diurnal cycle, polar
-plot_4 <-ggplot(
+plot_4 <- ggplot(
   data = daily_mean_hourly_fluxes,
   aes(hour, GPP_NT_VUT_REF)) + 
   geom_line() +
@@ -448,7 +450,7 @@ ggplot(
   theme_classic()
 ```
 
-To avoid obscuring important details about the data, we may want to visualise the *density* of points. We want to plot how many points fall within bins of a certain range values in GPP and shortwave radiation, or, in other words, within grid cells in the GPP-radiation space. We can visualize the data, for example, with a raster plot that measures the density using `stat_density_2d()` or with a binning into hexagonal cells using the simple `geom_hex()` layer.
+To avoid obscuring important details about the data, we may want to visualise the *density* of points. We want to plot how many points fall within bins of a certain range of values in GPP and shortwave radiation, or, in other words, within grid cells in the GPP-radiation space. We can visualize the data, for example, with a raster plot that measures the density using `stat_density_2d()` or with a binning into hexagonal cells using the simple `geom_hex()` layer.
 
 ```{r}
 # density raster
@@ -461,10 +463,10 @@ ggplot(
     contour = FALSE 
     ) +
   scale_fill_viridis_c() +
-  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
-       y =expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
   theme_classic() + 
-  scale_x_continuous(expand = c(0, 0)) +  # avoid gap between plotting ara and axis
+  scale_x_continuous(expand = c(0, 0)) +  # avoid gap between plotting area and axis
   scale_y_continuous(expand = c(0, 0))
 
 # density hexagonal bins
@@ -473,11 +475,9 @@ ggplot(
     aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_hex() +
   scale_fill_viridis_c() +
-  labs(x = expression(paste("PPFD (", mu, "mol m"^-2, "s"^-1, ")")), 
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
        y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
-  theme_classic() + 
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
+  theme_classic()
 ```
 
 An alternative solution to "overplotting" points is described in [this blog post](https://geco-group.org/post/lsd/).
@@ -524,47 +524,49 @@ Interested readers can find more content on geospatial data visualisation here:
 
 ## Exercises
 
-> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+### Spurious data {-}
+
+In Section \@ref(baddata), we discovered that certain values of `GPP_NT_VUT_REF` in the half-hourly data `half_hourly_fluxes` (to be read from file `data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`) are repeated with a spuriously high frequency. Determine all values of `GPP_NT_VUT_REF` that appear more than once in `half_hourly_fluxes` and label them as being "spurious". Visualise the time series of the first year of half-hourly GPP, mapping the information whether the data is spurious or not to the *color* aesthetic.
+
+Then aggregate half-hourly to daily data, taking the mean of `GPP_NT_VUT_REF` and recording the proportion of underlying half-hourly data points that are "spurious". Visualise the time series of daily `GPP_NT_VUT_REF` with the color scale indicating the proportion of spurious half-hourly data that was used for determining the respective date's mean GPP.
+
+> Hint: The base-R function `duplicated(df, ...)` takes a data frame `df` as input and returns a logical vector of length `nrow(df)` specifying whether a row has an exact duplicate in the same data frame.
 
 ### Identifying Outliers {-}
 
-A key part of data cleaning is to detect and understand where outliers are coming from. Visualisations make this task often informative. Your task here is to find outliers in `PPFD_IN`
+A key part of data cleaning is to detect and understand outliers. Visualisations can help. Your task here is to find outliers in `GPP_NT_VUT_REF`.
 
--   Based on this and previous tutorials, read the half-hourly dataset for site CH-Lae, labels entries with `-9999` as `NA` and aggregate `GPP_NT_VUT_REF` and `PPFD_IN` to daily means. 
--   Fit a linear relationship between `GPP_NT_VUT_REF` and `PPFD_IN`
--   The function for fitting a linear model returns a list of objects which you can access using the `$` syntax.
-    -   Access the fitted `residuals` and use them as argument in `boxplot.stats()` to quickly get box plot statistics that are useful to determine outliers.
-    -   The output of `boxplot.stats()` is a list with the object `out`, a named vector where the names are the row numbers of the `residuals` in your original dataframe. The values are the entries for that row. Use `out_boxplot$out |> names() |> as.integer()` to get all row numbers.
--   Use these row numbers to create a new variable in the daily-aggregated dataset.
--   Create a plot that visualises the relationship between `GPP_NT_VUT_REF` and `PPFD_IN` and shows whether any given datapoint is an outlier or not.
+First, using the half-hourly fluxes data, determine "outliers" as those values of `GPP_NT_VUT_REF` that fall outside $( Q_1 - 1.5 (Q_3 - Q_1)$ to $Q_3 + 1.5 (Q_3 - Q_1)$. Plot `GPP_NT_VUT_REF` versus shortwave radiation and highlight outliers in red.
+
+> Hint: Use `boxplot.stats()` to return a list containing a vector of the data points which lie beyond the extremes of the whiskers of the boxplot.
+
+> Hint: Use `scale_color_manual()` to mannually define the color scale.
+
+Now, we want to "control" for the influence of shortwave radiation on GPP and define outliers with respect to the distribution of *residuals* of the linear regression between the two variables. Relax the definition of what is considered an outlier by setting adjusting their definition to falling outside $( Q_1 - 5 (Q_3 - Q_1)$ to $Q_3 + 5 (Q_3 - Q_1)$. Again, plot `GPP_NT_VUT_REF` versus shortwave radiation and highlight outliers in red.
+
+> Hint: Fit the linear regression model as `lm(GPP_NT_VUT_REF ~ SW_IN_F, data = half_hourly_fluxes)` and obtain the residuals from the object returned by the `lm()` function (see 'Value' in its help page).
+
+> Hint: The output of `boxplot.stats(x)` is a list, containing an element `out`. `out` is a named vector of the oulier values with names referring to the row numbers of `x`. Use `as.integer(names(boxplot.stats(x)$out))` to get row numbers.
+
 
 ### Visualising diurnal and seasonal cycles of GPP {-}
 
-As explored in the previous Chapter's exercises, GPP varies strongly with the diurnal and seasonal cycle. Create a publication-ready figure showing both cycles in one single plot that is fully labelled, easy to read, and colorblind-friendly:
+As explored in the previous Chapter's exercises, GPP varies over diurnal and seasonal cycles. Create a publication-ready figure that visualises the mean diurnal cycle of GPP for each day-of-year (mean across multiple years). Make sure that the figure is properly labelled, and legible for readers with a color vision deficiency.
 
--   Again, start with the cleaned the half-hourly dataset for site CH-Lae.
--   To get the diurnal and seasonal trend, summarise the half-hourly data by the hour of the day and the day of the year simultaneously and calculate mean values for GPP for each group.
--   Create a plot with {ggplot2} using the temporal variables as axes and GPP as color.
--   Make this figure ready for publication: 
-    -   Add a title, maybe a subtitle
-    -   Label axes and legend (don't forget to add units!)
-    -   Pick a colorblind-friendly color scale
-    -   Anything else you want to change? Axes limits, axes ticks, grid lines?
+> Hint: To get the diurnal and seasonal cycles, summarise the half-hourly data by the hour of the day and the day of the year simultaneously using multiple grouping variables within `group_by()` and calculate mean values for GPP for each group.
 
-> Hint: The functions to make a suitable plot was introduced in the tutorial.
+> Hint: Chose an appropriate visualisation that maps the hour-of-day to the x-axis and the day-of-year to the y-axis.
 
 ### Trend in carbon dioxide concentrations {-}
 
-This exercise explores the change of CO$_2$, measured at the famous Mauna Loa observatory. Your task is to calculate and visualise the trend of CO$_2$ from 1958 to 2012, following these steps:
+This exercise explores the longest available atmospheric CO$_2$ record, obtained at the Mauna Loa observatory in Hawaii. Atmospheric CO$_2$ in the northern hemisphere is characterised by seasonal swings, caused by the seasonal course of CO$_2$ uptake and release by the terrestrial biosphere. We've explored the seasonality of the CO$_2$ uptake measured at one site (in Switzerland) extensively in this an previous chapters. Your task here is to calculate and visualise the long-term trend of CO$_2$. Follow these steps:
 
--   Download the `co2_monthly_maunaloa.txt` from [here](https://github.com/geco-bern/agds/blob/main/data/co2_monthly_maunaloa.txt) and look at the data.
--   Make a simple figure showing the change of average CO$_2$ over time.
--   Do you need to do any data wrangling before continuing?
--   Write a function that computes a 12-month running mean of the CO$_2$ time series.
--   Make nice "publishable" figure that shows the measured and trended timeseries of CO$_2$.
+-   Download the monthly mean CO2$_2$ data as a CSV file from [here](https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv) and read it into R.
+-   Make a simple graph for visualizing the monthly CO$_2$ time series.
+-   Write a function that computes a 12-month running mean of the CO$_2$ time series. The running mean for month $m$ should consider values of $m-5$ to $m+6$. Define arguments for the function that let the user specify the width of the running mean "box" (i.e., setting the $5$ and $6$ to any other integer of choice) 
+-   Make a publication-ready figure that shows the monthly and the 12-month running mean time series of the CO$_2$ record.
 
-> Hint: You don't need to clean the .txt file, find a suitable function in R.
-> Hint: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
+> Hint: To automatically render the time axis with ggplot, you can create a time object by combining the year and month columns: `lubridate::ymd(paste(as.character(year), "-", as.character(month), "-15"))`
 
 ## Report Exercises
 
