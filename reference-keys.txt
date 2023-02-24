@@ -41,8 +41,8 @@ fig:mlingredients
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
-tab:unnamed-chunk-272
-tab:unnamed-chunk-283
+tab:unnamed-chunk-271
+tab:unnamed-chunk-282
 gettingstarted
 learning-objectives-1
 tutorial
@@ -161,8 +161,8 @@ automating-and-visualizing-workflows-with-targets
 capturing-your-session-state
 capturing-a-system-state
 readable-reporting-using-rmarkdown
-referencing-and-finding-files
-limitations
+project-structure-1
+limitations-of-notebooks
 data-retention
 exercises-4
 codemgmt
