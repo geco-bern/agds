@@ -225,7 +225,10 @@ plot(vec)
 - How many pale characters come from the planets Ryloth or Naboo?
 ```{r message=FALSE}
 dplyr::starwars |> 
-  dplyr::filter(skin_color == "pale" & (homeworld == "Naboo" | homeworld == "Ryloth")) |> 
+  dplyr::filter(
+    skin_color == "pale" & 
+      (homeworld == "Naboo" | homeworld == "Ryloth")
+    ) |> 
   nrow()   
 ```
 
@@ -665,28 +668,53 @@ ml_co2 <- ml_co2 |>
 ```{r}
 # create a date object for nice plotting
 plot_data <- ml_co2 |> 
-  mutate(date = lubridate::ymd(paste(as.character(year), "-", as.character(month), "-15")))
+  mutate(
+    date = lubridate::ymd(
+      paste(as.character(year),
+            "-",
+            as.character(month), "-15")
+      )
+    )
 
 plot_data |>
   ggplot() +
   
   # First plot the measurements
-  geom_line(aes(date, average, color = "Measured")) +
+  geom_line(
+    aes(
+      date,
+      average,
+      color = "Measured"
+      )
+  ) +
   
   # Add running mean on top
-  geom_line(aes(date, average_12m, color = "12-month running mean")) +
+  geom_line(
+    aes(
+      date,
+      average_12m,
+      color = "12-month running mean"
+      )
+  ) +
   
   # Style the plot
   theme_classic() +
-  theme(legend.position = c(0.25, 0.75)) + # Move legend into the plot (c(x, y))
+  theme(
+    legend.position = c(0.25, 0.75) # Move legend into the plot
+    ) + 
   scale_color_manual(
     "", # Omit legend title
     values = c("tomato", "black"),
     labels = c("Running mean", "Monthly mean")
   ) +
-  labs(title = expression(paste("Atmospheric CO"[2], " concentrations at Manua Lao, Hawaii")),
-       y     = expression(paste("CO"[2], "(ppm)")),
-       x     = "Year")
+  labs(
+    title = expression(
+      paste("Atmospheric CO"[2],
+            " concentrations at Manua Lao, Hawaii")
+    ),
+    y     = expression(paste("CO"[2], "(ppm)")),
+    x     = "Year"
+  )
 ```
 
 <!-- ### Telling a story from data {-} -->
@@ -847,6 +875,137 @@ identical(unkown_netcdf, unknown_tif)
 ```
 
 Looks similar to the NetCDF data, but temperature appears to be given in Celsius in the GeoTIFF file and in Kelvin in the NetCDF file.
+
+### API Use
+
+#### Get
+
+1. We can get the total sand content using the tutorial using new coodinates outlining Switzerland.
+
+```{r}
+# set API URL endpoint
+# for the total sand content
+url <- "https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SAND.nc4"
+
+# formulate query to pass to httr
+query <- list(
+  "var" = "T_SAND",
+  "south" = 45.5,
+  "west" =  5.9,
+  "east" =  10.7,
+  "north" = 48,
+  "disableProjSubset" = "on",
+  "horizStride" = 1,
+  "accept" = "netcdf4"
+)
+
+# download data using the
+# API endpoint and query data
+status <- httr::GET(
+  url = url,
+  query = query,
+  httr::write_disk(
+    path = file.path(tempdir(), "T_SAND.nc"),
+    overwrite = TRUE
+  )
+)
+
+# to visualize the data
+# we need to load the {terra}
+# library
+sand <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
+terra::plot(sand)
+```
+
+2. Consulting the original data pages or the package help files one can determine that the parameter "T_SAND" needs to be replaced by "T_SILT" in both the URL and the query.
+
+```{r}
+# set API URL endpoint
+# for the total sand content
+url <- "https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SILT.nc4"
+
+# formulate query to pass to httr
+query <- list(
+  "var" = "T_SILT",
+  "south" = 45.5,
+  "west" =  5.9,
+  "east" =  10.7,
+  "north" = 48,
+  "disableProjSubset" = "on",
+  "horizStride" = 1,
+  "accept" = "netcdf4"
+)
+
+# download data using the
+# API endpoint and query data
+status <- httr::GET(
+  url = url,
+  query = query,
+  httr::write_disk(
+    path = file.path(tempdir(), "T_SAND.nc"),
+    overwrite = TRUE
+  )
+)
+
+# to visualize the data
+# we need to load the {terra}
+# library
+sand <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
+terra::plot(sand)
+```
+
+#### Dedicated libraries
+
+2. Using the {hwsdr} package this simplifies to:
+
+```{r}
+# Download a soil fraction map
+# of sand for a given bounding box
+hwsdr::ws_subset(
+  location = c(45.5, 5.9, 48, 10.7),
+  param = "T_SAND",
+  path = tempdir()
+)
+
+# to visualize the data
+# we need to load the {terra}
+# library
+sand <- terra::rast(file.path(tempdir(), "T_SAND.nc"))
+terra::plot(sand)
+```
+
+2. You can easily list all {MODISTools} products using:
+
+```{r}
+# list all products
+products <- MODISTools::mt_products()
+
+# We count
+nrow(products)
+```
+
+3. You can use the {MODISTools} package to easily query the land cover data. Use the `MODISTools::mt_products()` and `MODISTools::mt_bands()` functions to determine products to use (i.e. MCD12Q1). Note that MODISTools does not use a bounding box but km left/right and top/bottom - an approximation is therefore good enough.
+
+```{r}
+# download land cover data (for a single year to speed things up)
+land_cover <- MODISTools::mt_subset(
+  product = "MCD12Q1",
+  site_name = "Swiss",
+  lat = 46.6756,
+  lon = 7.85480,
+  band = "LC_Type1",
+  start = "2012-01-01",
+  end = "2012-12-31",
+  km_lr = 50,
+  km_ab = 50,
+  internal = TRUE,
+  progress = TRUE
+)
+
+# convert to a raster map for plotting
+land_cover <- MODISTools::mt_to_terra(land_cover)
+terra::plot(land_cover)
+```
 
 ## Open Science
 
