@@ -686,31 +686,33 @@ One must be careful not to keep training or improving models until they fit the 
 
 Let's think of variable selection in the context of linear regression. A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g., AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models. This can be very computationally expensive.
 
-Instead, take a hierarchical, or "greedy", approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called **stepwise (forward) regression**. The algorithm goes as follows:
+Instead, take a hierarchical, or "greedy", approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called *stepwise forward regression*. The algorithm goes as follows
 
--   First, you fit all regression models with just one variable and compute the $R^2$.
--   Then, select the one predictor leading to a model with the greatest $R^2$ (best fitting model) and compute the AIC (or BIC).
--   In the next step, compare remaining predictors to be added as a second variable in the model and calculating the model's $R^2$.
--   Choose as second predictor the one leading to the best $R^2$ and compute the model's AIC. 
--   If the AIC (which accounts for model fit and complexity) is worse, that is, bigger, stop and keep the univariate linear model. If the AIC is better, that is, smaller, add the second variable and repeat the previous steps to include a third variable. The method finishes once you cannot reduce the AIC anymore, or when you run out of variables. In the end, you'll have more or less the best possible linear regression model. The function `step()` implements the stepwise algorithm in R.
+1. Set the number of predictors to be considered to $p=1$.
+2. Fit all regression models with $p$ predictors and compute their $R^2$.
+3. Select the model with $p$ predictors that achieves the highest $R^2$ (best fitting model) and compute its AIC.
+4. Increment to $p+1$. Fit all regression models with $p+1$ predictors and compute their $R^2$. Select the best fitting model and compute its AIC.
+6. If the AIC of the model with $p+1$ predictors is poorer than the AIC of the model with $p$ predictors, retain the model with $p$ predictors and quit. You have found the (presumably) optimal model. Otherwise, continue with with step 4.
+
+Instead of the AIC, you may also use the BIC for model comparison. Note that algorithm doesn't consider all possible combinations of predictors and it is possible that the globally optimal model is thus not found. The function `stats::step()` implements the stepwise algorithm in R.
 
 This stepwise approach can also be done backwards, starting with a full model (all available variables) and removing one at a time. Or even with a back-and-forth approach, where you look at both including a new or removing an existing variable at each step (optimizing AIC). Furthermore, this algorithm can be applied to fitting a polynomial regression. We want to increase the degree of the polynomials unit by unit. For a model with categorical variables, interaction terms should only be considered after having the involved variables as "intercept only".
 
-**Multicollinearity** exists when there is a correlation between multiple predictors in a multivariate regression model. This is problematic because it makes the estimated coefficients corresponding to the variables that are highly correlated very unstable. Since two highly correlated variables explain almost the same, it doesn't matter whether we include one or the other in the model (the performance metrics will be similar) or even if we include both of them. Hence, it becomes difficult to say which variables actually influence the target.
+**Multicollinearity** exists when there is a correlation between multiple predictors in a multivariate regression model. This is problematic because it makes the estimated coefficients corresponding to the correlated variables unstable. Since correlated variables contain similar information, it doesn't matter whether we include one or the other in the model or even if we include both of them. The performance metrics will be similar. Hence, it becomes difficult to conclude which variables actually influence the target.
 
-The **variance inflation factor (VIF)** is a score from economics that measures the amount of multicollinearity in regression, based on how the estimated variance of a coefficient is inflated due to its correlation with another predictor. It's calculated as $$\text{VIF}_i = \frac{1}{1 - R^2_i},$$ where $R^2_i$ is the coefficient of determination for regressing the i$^{th}$ predictor on the remaining ones. A VIF$_i$ is computed for each predictor in the multivariate regression model we are evaluating, meaning: if $\text{VIF}_i = 1$ variables are not correlated; if $1 < \text{VIF}_i < 5$ there is moderate collinearity; and if $\text{VIF}_i \geq 5$ they are highly correlated. Because they can be almost fully explained by all the other predictors (high $R^2_i$), these variables are redundant in our final model.
+The **variance inflation factor (VIF)** is a score from economics that measures the amount of multicollinearity in regression based on how the estimated variance of a coefficient is inflated due to its correlation with another predictor. It's calculated as $$\text{VIF}_i = \frac{1}{1 - R^2_i},$$ where $R^2_i$ is the coefficient of determination for regressing the i$^{th}$ predictor on the remaining ones. A VIF$_i$ is computed for each predictor in the multivariate regression model we are evaluating, meaning: if $\text{VIF}_i = 1$ variables are not correlated; if $1 < \text{VIF}_i < 5$ there is moderate collinearity; and if $\text{VIF}_i \geq 5$ they are highly correlated. Because they can be almost fully explained by all the other predictors (high $R^2_i$), these variables are redundant in our final model.
 
-To remedy collinearity, you may choose to use only one or two of those correlated variables. Another option would be to use *Principal Component Analysis* (PCA), which you may read more about [here](https://www.r-bloggers.com/2021/05/principal-component-analysis-pca-in-r/). What PCA does is to map the space of predictors into another of smaller dimension, leading to a smaller set of predictor variables $\{Z_1, ... , Z_q\}$, each of them being a linear combination of all the initial available predictors, that is $Z_1 = \alpha^1_0 + \alpha^1_1 X_1 + ... + \alpha^1_p X_p$, etc. If you have collinearity, those highly correlated variables would be summarized into one single new variable, called *principal component*.
+To remedy collinearity, you may choose to use only one or two of those correlated variables. Another option would be to use *Principal Component Analysis* (PCA), which you may read more about [here](https://www.r-bloggers.com/2021/05/principal-component-analysis-pca-in-r/). What PCA does is to map the space of predictors into another space of smaller dimension, leading to a smaller set of predictor variables $\{Z_1, ... , Z_q\}$, each of them being a linear combination of all the initial available predictors, that is $Z_1 = \alpha^1_0 + \alpha^1_1 X_1 + ... + \alpha^1_p X_p$, etc. If you have collinearity, those highly correlated variables would be summarized into one single new variable, called *principal component*.
 
 When we work with high-dimensional data (that is, we have more variables than observations) there are better techniques to do variable selection than stepwise regression. Since the predictors space is so large, we could fit a line that passes through all the observations (a perfect fit), but does the model generalize? We don't know. For example, Lasso and Ridge regression incorporate variable selection in the fitting process (you can check [this post](https://www.r-bloggers.com/2020/06/understanding-lasso-and-ridge-regression/) if you're curious).
 
 ### Outlier detection
 
-Detecting outliers is important, because they can affect the fit of a model and render the model fitting not robust. When the data is large, individual points have less influence on the model fitting. Therefore only outliers that are very far from normal values will affect the model fit (see below). Outliers are particularly problematic in the context of small data, because every value has a big influence on the fitted model.
+Detecting outliers is important, because they can affect the fit of a model and render the model fitting not robust. When the data is large, individual points have less influence on the model fitting. Therefore, only outliers that are very far from normal values will affect the model fit (see below). Outliers are particularly problematic in the context of small data, because every value has a big influence on the fitted model.
 
-Take a look at the two linear regressions below and how one single weird observation can throw off the fit. Whenever an observation is very distant from the center of the predictor's distribution, it becomes very influential (it has a big *leverage*). If the observed response for that data point is in harmony with the rest of points, nothing happens, but if it's also off, the regression model will be affected greatly.
+Take a look at the two linear regressions below and how one single point can strongly influence the fit. the added point (red circle around black dot) lies clearly outside the "cloud" of remaining points and doesn't seem to follow the same pattern in the data.
 
-```{r warning=FALSE}
+```{r label = "outlier", warning=FALSE, fig.cap="The influence of an outlier on a regression fit."}
 set.seed(2023)
 half_hourly_fluxes_small <- half_hourly_fluxes |>
   sample_n(100) |> # reduce dataset
@@ -721,32 +723,32 @@ plot_3 <- half_hourly_fluxes_small |>
   geom_point(size = 0.75) +
   geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic() +
   ylim(-20, 40) + 
-  xlim(0, 2000)
+  xlim(0, 1100)
 
 plot_4 <- half_hourly_fluxes_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20) |> # add outlier
+  add_row(SW_IN_F = 1100, GPP_NT_VUT_REF = -20) |> # add outlier
   ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
   geom_point(size = 0.75) +
   geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
   theme_classic() +
-  geom_point(aes(x = 2000, y = -20), colour='blue') +
+  geom_point(aes(x = 1100, y = -20), colour = 'red', shape = 1, size = 3) +
   ylim(-20, 40) + 
-  xlim(0, 2000)
+  xlim(0, 1100)
   
 cowplot::plot_grid(plot_3, plot_4)
 ```
 
-The first step to identifying outliers is to look at your data, one variable at a time. Plot a histogram to see the rough distribution of a variable. This will help identify what kind of values to expect. In Chapters \@ref(datawrangling) and \@ref(datavis) it was introduced how to identify values that fell out of this distribution using histograms and boxplots. Checking in the histogram if the distribution has fat tails helps to discern whether the values that pop out of a boxplot should be considered outliers or not.
+The first step to identifying outliers is usually to look at the data, one variable at a time. Plot a histogram to check the distribution of a variable. The shape of the distribution is very informative for what can be considered an *outlier*. In Chapters \@ref(datawrangling) and \@ref(datavis) it was introduced how to identify values that fall "outside" a distribution using histograms and boxplots. Checking in the histogram if the distribution has fat tails helps to discern whether the values that pop out of a boxplot should be considered outliers or not.
 
 ```{r}
 # create an outlier for demonstration purposes
 half_hourly_fluxes_outlier <- half_hourly_fluxes_small |>
-  add_row(SW_IN_F = 2000, GPP_NT_VUT_REF = -20)
+  add_row(SW_IN_F = 1100, GPP_NT_VUT_REF = -20)
 
 # Various ways to identify the outlier using graphs
 plot_5 <- ggplot(
@@ -792,7 +794,7 @@ cowplot::plot_grid(plot_5, plot_7, plot_6, plot_8,
                    align = 'v', axis = 'lr')
 ```
 
-A **Q-Q Plot** depicts the sample quantiles of a variable against the theoretical quantiles of a distribution of our choice, usually a normal distribution. In the histograms above, GPP looks somewhat Gaussian but with fatter tails and slightly skewed to the right, while shortwave radiation is skewed to the right, resembling an exponential distribution. This is also visible in the Q-Q plots below, because outliers deviate greatly from the straight line (which represents a match between the observed values and the theoretical distribution):
+A **Q-Q Plot** depicts the sample quantiles of a variable against the theoretical quantiles of a distribution that is assumed to uderly the data. In the histograms above, GPP looks somewhat Gaussian (normally distributed) but with fatter tails and slightly skewed to the right, while shortwave radiation is clearly skewed to the right, resembling an exponential distribution. The Q-Q plots below reveal that both variables are clearly not normally distributed.
 
 ```{r}
 plot_9 <- ggplot(
@@ -813,22 +815,24 @@ plot_10 <- ggplot(
        x = "Theoretical normal quantiles") +
   theme_classic()
 
-cowplot::plot_grid(plot_9, plot_10, ncol=2)
+cowplot::plot_grid(plot_9, plot_10, ncol = 2)
 ```
 
-For linear (and logistic) regression, we would like predictor variables to look as normal, i.e. gaussian, as possible. You've probably learned some of the reasons for this in quantitative methods courses, but are beyond the scope of this class. It's common to study the distribution of the regression residuals with QQ-plots to assess if model assumptions are met.
+QQ-plots serve to investigate whether the data follows an assumed theoretical distribution. For linear and logistic regression, we would like predictor variables to look as normal, i.e. Gaussian, as possible. You've probably learned some of the reasons for this in the *Quantitative Methods* course (or a similar classical Statistics course), and we will not discuss this further here.
 
-Above, you can see the distributions of our target and predictor (with outliers). And it's very easy to see the weird value for the shortwave radiation but for GPP it doesn't stick out so much. This already points to how important it is to check their multivariate distribution. R provides some useful plots from the fitted regression objects, in particular the "Residuals vs Leverage" plot:
+Note however, that neither the histograms, nor the boxplots, or the QQ-plots revealed any evidently suspicious pattern of the added point (shortwave radiation = 1100 W m$^{-2}$ s$^{-1}$, and GPP = -20 $\mu$mol CO$_2$ m$^{-2}$ s$^{-1}$) compared to the *individual* distributions of the two variables. Yet, in Fig. \@ref(fig:outlier), the influence of the outlying point on the fit was clear. Because the suspicious observation is off the multivariate pattern in the remaining data, it becomes very influential. That is, it has a big *leverage*. R provides some useful plots from the fitted regression objects, in particular the "Residuals vs. Leverage" plot:
 
 ```{r}
 # Fit regression with outlier
 linmod_outlier <- lm(GPP_NT_VUT_REF ~ SW_IN_F, 
-                     data = add_row(half_hourly_fluxes_small, SW_IN_F = 2000, GPP_NT_VUT_REF = -20))
+                     data = add_row(half_hourly_fluxes_small, 
+                                    SW_IN_F = 1100, 
+                                    GPP_NT_VUT_REF = -20))
 
 plot(linmod_outlier, 5)
 ```
 
-This plot shows the leverage (see the mathematical definition [here](https://en.wikipedia.org/wiki/Leverage_(statistics))) of each observation against the corresponding residual from the fitted linear regression. Points with high leverage, i.e., points that are far from the center of the predictor distribution, and large residuals, i.e., points that are far from the fitted regression line, are very influential. **Cook's distance** (definition [here](https://en.wikipedia.org/wiki/Cook%27s_distance)) is an estimate of the influence of a data point in a linear regression and observations with Cook's distance \> 1 are candidates for being outliers. See in the plot above how the point with index 101 (our added outlier) has a very large Cook's distance. Boundary regions for Cook's distance equal to 0.5 (suspicious) and 1 (certainly influential) are drawn with a dashed line.
+This plot shows the leverage (see the mathematical definition [here](https://en.wikipedia.org/wiki/Leverage_(statistics))) of each observation against the corresponding residual from the fitted linear regression. Points with high leverage, i.e., points that are far from the center of the predictor distribution, and large residuals, i.e., points that are far from the fitted regression line, are very influential. The **Cook's distance** (definition [here](https://en.wikipedia.org/wiki/Cook%27s_distance)) is an estimate of the influence of a data point in a linear regression and observations with Cook's distance \> 1 are candidates for being outliers. See in the plot above how the point with index 101 (our added outlier) has a very large Cook's distance. Boundary regions for Cook's distance equal to 0.5 (suspicious) and 1 (certainly influential) are drawn with a dashed line.
 
 Finally, it's very important that, before you remove a value because it may be an outlier, you understand where the data came from and if such an abnormal observation is possible. If it depicts an extraordinary but possible situation, this information can be very valuable and it's wiser to keep it in the model. Interesting research questions arise when data doesn't align with our preconceptions, so keep looking into it and potentially collect more data.
 
