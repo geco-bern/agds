@@ -1,22 +1,22 @@
-# Supervised machine learning I {#supervisedmli}
+# Supervised machine learning I {#supervisedmachine learningi}
 
 **Chapter lead author: Benjamin Stocker**
 
 ## Learning objectives
 
-Machine learning may appear magical. The ability of machine learning algorithms to detect patterns and make predictions is fascinating. However, several challenges have to be met in the process of formulating, training, and evaluating the models. In this and the next chapter (Chapter \@ref(supervisedmlii)), we will discuss some basics of supervised machine learning and how to achieve best predictive results.
+Machine learning may appear magical. The ability of machine learning algorithms to detect patterns and make predictions is fascinating. However, several challenges have to be met in the process of formulating, training, and evaluating the models. In this and the next chapter (Chapter \@ref(supervisedmachine learningii)), we will discuss some basics of supervised machine learning and how to achieve best predictive results.
 
 Basic steps of the implementation of supervised machine learning are introduced, including data splitting, pre-processing, model formulation, and the implementation of these steps using the {caret} and {recipes} R packages. A focus is put on learning the concept of the bias-variance trade-off and overfitting.
 
-Contents of this Chapter are inspired and partly adopted by the excellent book [Hands-On Machine Learning in R by Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/).
+Contents of this Chapter are inspired and partly adopted by the excellent book [Hands-On Machine Learning in R by Boehmke & Greenwell](https://bradleyboehmke.github.io/HOmachine learning/).
 
 ## Tutorial
 
 ### What is supervised machine learning?
 
-Supervised machine learning is a type of machine learning where the model is trained using *labeled* data and the goal is to predict the output for new, unseen data. In contrast, *unsupervised machine learning* is a type of machine learning where the algorithms learn from data without being provided with labeled targets. The algorithms aim to identify patterns and relationships in the data without any guidance. Examples include clustering and dimensionality reduction.
+Supervised machine learning is a type of machine learning where the model is trained using *labeled* data and the goal is to predict the output for new, unseen data. This corresponds to the approach of model fitting that we've seen in Chapter \@ref(regressionclassification). In contrast, *unsupervised machine learning* is a type of machine learning where the algorithms learn from data without being provided with labeled targets. The algorithms aim to identify patterns and relationships in the data without any guidance. Examples include clustering and dimensionality reduction.
 
-In supervised machine learning, we use a set of *predictors* $X$ (also known as *features*, or *labels*, or *independent variables*) and observed values of a target variable $Y$ that are recorded in parallel, to find a model $f(X) = \hat{Y}$ that yields a good match between $Y$ and $\hat{Y}$ and that can be used for reliably predicting $Y$ for new ("unseen") data points $X_\text{new}$ - data that has not been used during model fitting/training. The hat on $\hat{Y}$ denotes an estimate. Some algorithms can even handle predictions of multiple target variables simultaneously (e.g., neural networks).
+In supervised machine learning, we use a set of *predictors* $X$ (also known as *features*, or *independent variables*) and observed values of a target variable $Y$ that are recorded in parallel, to find a model $f(X) = \hat{Y}$ that yields a good match between $Y$ and $\hat{Y}$ and that can be used for reliably predicting $Y$ for new ("unseen") data points $X_\text{new}$ - data that has not been used during model fitting/training. The hat on $\hat{Y}$ denotes an estimate. Some algorithms can even handle predictions of multiple target variables simultaneously (e.g., neural networks).
 
 From above definitions, we can note a few key ingredients of supervised machine learning:
 
@@ -26,19 +26,19 @@ From above definitions, we can note a few key ingredients of supervised machine 
 -   A metric measuring how good the match between $Y$ and $\hat{Y}$ is - the *loss* function
 -   An algorithm (the *optimiser*) to find the best set of parameters that minimize the loss
 
-```{r mlingredients, echo = FALSE, fig.cap="Supervised machine learning ingredients, adopted from Chollet & Allaire (2018) Deep Learning with R"}
+```{r machine learningingredients, echo = FALSE, fig.cap = "Supervised machine learning ingredients, adopted from [Chollet and Allaire (2018)](https://www.manning.com/books/deep-learning-with-r).", out.width = "60%", fig.align='center'}
 knitr::include_graphics("figures/supervised_ml.png")
 ```
 
-The type of modelling approach of supervised machine learning is very similar to fitting regression models as we did in Chapter \@ref{#regressionclassification}. In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Furthermore, machine learning differs from traditional statistical modelling methods in that it makes no assumptions regarding the data generation process and underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)).
+The type of modelling approach of supervised machine learning is very similar to fitting regression models as we did in Chapter \@ref{regressionclassification}. In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Furthermore, machine learning differs from traditional statistical modelling methods in that it makes no assumptions regarding the data generation process and underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)).
 
 Nevertheless, contrasting a bivariate linear regression model with a complex machine learning algorithm is instructive. Also linear regression provides a prediction $\hat{Y} = f(X)$, just like other (proper) machine learning algorithms do. The functional form of a bivariate linear regression is not particularly flexible (just a straight line for the best fit between predictors and targets) and it has only two parameters (slope and intercept). At the other extreme are, for example, deep neural networks. They are extremely flexible, can learn highly non-linear relationships and deal with interactions between a large number of predictors. They also contain very large numbers of parameters (typically on the order of $10^4 - 10^7$). You can imagine that their high flexibility allows these types of algorithms to very effectively learn from the data, but also bears the risk of *overfitting*. What is overfitting?
 
 ### Overfitting {#overfitting}
 
-*This example is based on [this example from scikit-learn](https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.html).*
+*This example is based on [this example from scikit-learn](https://scikit-learn.org/stable/auto_examples/model_selection/plot_underfitting_overfitting.htmachine learning).*
 
-Let's assume that there is some true underlying relationship between a single predictor $X$ and the target variable $Y$. We don't know this relationship (in the code below, this is `true_fun()`) and the observations contain a (normally distributed) error (`y = true_fun(x) + 0.1 * rnorm(n_samples)`). Based on our training data (`df_train`), we fit three polynomial models that differ with respect to their complexity. We fit a polynomial of degree 1, 4, and 15 to the observations. A polynomial of degree $N$ is given by: $$
+Let's assume that there is some true underlying relationship between a single predictor $X$ and the target variable $Y$. We don't know this relationship and the observations contain a (normally distributed) error. Based on our training data, we fit three polynomial models that differ with respect to their complexity. We fit a polynomial of degree 1, 4, and 15 to the observations. A polynomial of degree $N$ is given by: $$
 y = \sum_{n=0}^N a_n x^n
 $$ $a_n$ are the coefficients, i.e., model parameters. The goal of the training is to find the coefficients $a_n$ so that the predicted $\hat{Y}$ fits observed $Y$ best. From the above definition, the polynomial of degree 15 has 16 parameters, while the polynomial of degree 1 has two parameters (and corresponds to a simple bivariate linear regression). You can imagine that the polynomial of degree 15 is much more flexible and should thus yield the closest fit to the training data. This is indeed the case.
 
@@ -138,7 +138,7 @@ gg +
   theme_classic()
 ```
 
-We can use the same fitted models on data that was *not* used for model fitting - the *test data*. This is what's done below. Again, the same true underlying relationship is used, but we sample a new set of data points $X$ and add a new sample of errors on top of the true relationship.
+We can use the same fitted models on data that was *not* used for model fitting - the *test data*. This is what's done below. Again, the same true underlying relationship is used, but we sample a new set of data points $X_\text{new}$ and add a new sample of errors on top of the true relationship.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 set.seed(1)
@@ -154,7 +154,7 @@ gg +
   theme_classic()
 ```
 
-You see that, using the test set, we find that "poly4" actually performs the best - it has a much lower RMSE than "poly15". Apparently, "poly15" was overfitted. Apparently, it used its flexibility to fit not only the shape of the true underlying relationship, but also the observation errors on top of it. This has the implication that, when this model is used for making predictions for data that was not used for training (modl calibration, model fitting), it will yield misguided predictions that are affected by the errors in the training set. This is the reason why "poly15" performed worse on the test set than the other models.
+You see that, using the test set, we find that "poly4" actually performs best - it has a much lower RMSE than "poly15". Apparently, "poly15" was *overfitted*. Apparently, it used its flexibility to fit not only the shape of the true underlying relationship, but also the observation errors on top of it. This has the implication that, when this model is used for making predictions for data that was not used for training, it will yield misguided predictions that are affected by the errors in the training set. This is the reason why "poly15" performed worse on the test set than the other models.
 
 From the figures above, we can also conclude that "poly1" was underfitted - it performed worse than "poly4" also on the validation set.
 
@@ -176,19 +176,19 @@ gg +
 
 You see that the RMSE for "poly15" literally explodes. The model is hopelessly overfitted and completely useless for prediction, although it looked like it fitted the data best when we considered only the training results. This is a fundamental challenge in machine learning - finding the model with the best *generalisability*. That is, a model that not only fits the training data well, but also performs well on unseen data.
 
-The phenomenon of fitting and overfitting as a function of the *model complexity* is also referred to as the *bias-variance trade-off*. The bias describes how well a model matches the training set (average error). A model with low bias will match the data set closely and vice versa. The variance describes how much a model changes when you train it using different portions of your data set. "poly15" has a high variance, but much of its variance is the result of misled training on observation errors. On the other extreme, "poly1" has a high bias. It's not affected by the noise in observations, but its predictions are also far off the observations. In ML, we are challenged to balance this trade-off.
+The phenomenon of fitting and overfitting as a function of the *model complexity* is also referred to as the *bias-variance trade-off*. The bias describes how well a model matches the training set (average error). A model with low bias will match the data set closely and vice versa. The variance describes how much a model changes when you train it using different portions of your data set. "poly15" has a high variance. On the other extreme, "poly1" has a high bias. It's not affected by the noise in observations, but its predictions are also far off the observations. In machine learning (as in all statistical modelling), we are challenged to balance this trade-off.
 
-This chapter and the next chapter introduce the methods for achieveing the best model *generalisability* and find the sweet spot between high bias and high variance. One of the key steps of the machine learning modelling process is motivated by the example above: the separation of the data into a *training* and a *testing* set (*data splitting*). Only by withholding part of the data from the model training, we have a good basis for testing the model on that unseen data for evaluating its generalisability. Additional steps that may be required or beneficial for effective model training and their implementation in R are introduced in this and the next Chapter. Depending on your application or research question, it may also be of interest to evaluate the relationships embodied in $f(X)$ or to quantify the *importance* of different predictors in our model. This is referred to as *model interpretation* and is introduced in Chapter \@ref(interpretable_ml).
+This Chapter and Chapter \@ref(supervisedmachine learningii) introduce the methods for achieving the best model *generalisability* and find the sweet spot between high bias and high variance. One of the key steps of the machine learning modelling process is motivated by the example above: the separation of the data into a *training* and a *testing* set (*data splitting*). Only by withholding part of the data from the model training, we have a good basis for testing the model on that unseen data for evaluating its generalisability. Additional steps that may be required or beneficial for effective model training and their implementation in R are introduced in this and the next Chapter. Depending on your application or research question, it may also be of interest to evaluate the relationships embodied in $f(X)$ or to quantify the *importance* of different predictors in our model. This is referred to as *model interpretation* and is not (currently) included in this book.
 
-Of course, a plethora of algorithms exist that do the job of $y = f(X)$. Each of them has its own strengths and limitations. It is beyond the scope of this course to introduce a larger number of ML algorithms. For illustration purposes in this chapter, we will use and introduce the K-nearest-Neighbors (KNN) algorithm and compare its performance to a multivariate linear regression for illustration purposes. Chapter \@ref(supervised_ml_b) introduces Random Forest.
+Of course, a plethora of algorithms exist that do the job of $Y = f(X)$. Each of them has its own strengths and limitations. It is beyond the scope of this course to introduce a larger number of machine learning algorithms. For illustration purposes in this chapter, we will use and introduce the K-nearest-Neighbors (KNN) algorithm and compare its performance to a multivariate linear regression for illustration purposes. Chapter \@ref(randomforest) introduces Random Forest.
 
 ### Data and the modelling challenge
 
-We're returning to ecosystem flux data that we've used Chapters \@ref(data_wrangling) and \@ref(data_vis). Here, we're using daily data from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects of seasonally varying foliage cover for which the data does not contain information. To address such additional effects, we would have to, for example, combine the flux and meteorological data with remotely sensed surface greenness data.
+We're returning to ecosystem flux data that we've used in Chapters \@ref(datawrangling) and \@ref(datavis). Here, we're using daily data from the evergreen site in Davos, Switzerland (CH-Dav) to avoid effects of seasonally varying foliage cover for which the data does not contain information. To address such additional effects, we would have to, for example, combine the flux and meteorological data with remotely sensed surface greenness data.
 
 The data set `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` contains a time series of the ecosystem gross primary production (GPP) and a range of meteorological variables, measured in parallel. In this chapter, we formulate a model for predicting GPP from a set of *covariates* (other variables that vary in parallel, here the meteorological variables). This is to say that `GPP_NT_VUT_REF` is the *target* variable, and other variables that are available in our dataset are the *predictors.*
 
-Let's read the data, select suitable variables, and interpret missing value codes, and select only good-quality data (where at least 80% of the underlying half-hourly data was good quality measured data, and not gap-filled).
+Let's read the data, select suitable variables, interpret missing value codes, and select only good-quality data (where at least 80% of the underlying half-hourly data was good quality measured data, and not gap-filled).
 
 ```{r warning=FALSE, message=FALSE}
 daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
@@ -222,27 +222,27 @@ daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3
   dplyr::select(-ends_with("_QC"))
 ```
 
-The steps above are considered data *wrangling* and are *not* part of the modelling process. After completing this tutorial, you will understand this distinction. (-\> exercise explain the distinction)
+The steps above are considered data *wrangling* and are *not* part of the modelling process. After completing this tutorial, you will understand this distinction.
 
 ### K-nearest neighbours
 
-Before we start with the model training workflow, let's introduce the K-nearest neighbour (KNN) algorithm which is used here for demonstration purposes. It serves the purpose of demonstrating the bias-variance trade-off (see below). As the name suggests, KNN uses the $k$ observations that are "nearest" to the new record for which we want to make a prediction. It then calculates their average (for regression) or most frequent value (for classification) and uses it as the prediction of the target value. "Nearest" is determined by some distance metric evaluated based on the values of the predictors. In our example (`GPP_NT_VUT_REF ~ .`), KNN would determine the $k$ days where conditions, given by our set of predictors, were most similar (nearest) to the day for which we seek a prediction. Then, it calculates the prediction as the average (mean) GPP value of these days. Determining "nearest" neighbors is commonly based on either the *Euclidean* or *Manhattan* distances between two data points $x_a$ and $x_b$, considering all $P$ predictors $j$.
+Before we start with the model training workflow, let's introduce the K-nearest neighbour (KNN) algorithm. It serves the purpose of demonstrating the bias-variance trade-off. As the name suggests, KNN uses the $k$ observations that are "nearest" to the new record for which we want to make a prediction. It then calculates their average (for regression) or most frequent value (for classification) and uses it as the prediction of the target value. "Nearest" is determined by some distance metric evaluated based on the values of the predictors. In our example (`GPP_NT_VUT_REF ~ .`), KNN would determine the $k$ days (rows in a data frame) where conditions, given by our set of predictors, were most similar (nearest) to the day for which we seek a prediction. Then, it calculates the prediction as the average (mean) GPP value of these days. Determining "nearest" neighbors is commonly based on either the *Euclidean* or *Manhattan* distances between two data points $X_a$ and $X_b$, considering all $P$ predictors $j$.
 
 Euclidean distance: $$
-\sqrt{ \sum_{j=1}^P (x_{a,j} - x_{b,j})^2  } \\
+\sqrt{ \sum_{j=1}^P (X_{a,j} - X_{b,j})^2  } \\
 $$
 
 Manhattan distance: $$
-\sum_{j=1}^P | x_{a,j} - x_{b,j} |
+\sum_{j=1}^P | X_{a,j} - X_{b,j} |
 $$
 
 In two-dimensional space, the Euclidean distance measures the length of a straight line between two points (remember Pythagoras!). The Manhattan distance is called this way because it measures the distance you would have to walk to get from point $a$ to point $b$ in Manhattan, New York, where you cannot cut corners but have to follow a rectangular grid of streets. $|x|$ is the absolute value of $X$ ( $|-x| = x$).
 
-KNN is a simple algorithm that uses knowledge of the "local" data structure for prediction. A drawback is that the model training has to be done for each prediction step and the computation time of the training increases with $x \times p$. KNNs are used, for example, to impute values (fill missing values) and have the advantage that predicted values are always within the range of observed values of the target variable.
+KNN is a simple algorithm that uses knowledge of the "local" data structure for prediction. A drawback is that the model "training" has to be done for each prediction step and the computation time of the training increases with $x \times p$. KNNs are often used, for example, to impute values (fill missing values, see also below) and have the advantage that predicted values are always within the range of observed values of the target variable.
 
 ### Model formulation
 
-The aim of supervised ML is to find a model $\hat{Y} = f(X)$ so that $\hat{Y}$ agrees well with observations $Y$. We typically start with a research question where $Y$ is given - naturally - by the problem we are addressing and we have a data set at hand where one or multiple predictors (or "features") $X$ are recorded along with $Y$. From our data, we have information about how GPP (ecosystem-level photosynthesis) depends on set of abiotic factors, mostly meteorological measurements.
+The aim of supervised machine learning is to find a model $\hat{Y} = f(X)$ so that $\hat{Y}$ agrees well with observations $Y$. We typically start with a research question where $Y$ is given - naturally - by the problem we are addressing and we have a data set at hand where one or multiple predictors (or "features") $X$ are recorded along with $Y$. From our data, we have information about how GPP (ecosystem-level photosynthesis) depends on a set of abiotic factors, mostly meteorological measurements.
 
 #### Formula notation
 
@@ -254,7 +254,7 @@ lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_fluxes)
 
 #### The generic `train()`
 
-The way we formulate a model can be understood as being independent of the algorithm, or *engine*, that takes care of fitting $f(X)$. The R package [*caret*](https://topepo.github.io/caret/) provides a unified interface for using different ML algorithms implemented in separate packages. In other words, it acts as a *wrapper* for multiple different model fitting, or ML algorithms. This has the advantage that it unifies the interface - the way arguments are provided and outputs are returned. *caret* also provides implementations for a set of commonly used tools for data processing, model training, and evaluation. We'll use *caret* here for model training with the function `train()`. Note however, that using a specific algorithm, which is implemented in a specific package outside *caret*, also requires that the respective package be installed and loaded. Using *caret* for specifying the same linear regression model as above, the base-R `lm()` function, can be done with caret in a generalized form as:
+The way we formulate a model can be understood as being independent of the algorithm, or *engine*, that takes care of fitting $f(X)$. The R package [{caret}](https://topepo.github.io/caret/) provides a unified interface for using different machine learning algorithms implemented in separate packages. In other words, it acts as a *wrapper* for multiple different model fitting, or machine learning algorithms. This has the advantage that it unifies the interface - the way arguments are provided and outputs are returned. {caret} also provides implementations for a set of commonly used tools for data processing, model training, and evaluation. We'll use {caret} here for model training with the function `train()`. Note however, that using a specific algorithm, which is implemented in a specific package outside {caret}, also requires that the respective package be installed and loaded. Using {caret} for specifying the same linear regression model as above, the base-R `lm()` function, can be done with {caret} in a generalized form as: 
 
 ```{r class.source = 'fold-show'}
 caret::train(
@@ -265,9 +265,9 @@ caret::train(
 )
 ```
 
-Note the argument specified as `trControl = trainControl(method = "none")`. This suppresses the default approach to model fitting in *caret* - to *resample* using *bootstrapping.* More on that below. Note also that we dropped all rows that contained at least one missing value - necessary to apply the least squares method for the linear regression model fitting. It's advisable to apply this data removal step only at the very last point of the data processing and modelling workflow. Alternative algorithms may be able to deal with missing values and we want to avoid losing information along the workflow.
+Note the argument specified as `trControl = trainControl(method = "none")`. This suppresses the default approach to model fitting in {caret} - to *resample* using *bootstrapping*. More on that in Chapter \@ref(supervisedmlii). Note also that we dropped all rows that contained at least one missing value - necessary to apply the least squares method for the linear regression model fitting. It's advisable to apply this data removal step only at the very last point of the data processing and modelling workflow. Alternative algorithms may be able to deal with missing values and we want to avoid losing information along the workflow.
 
-Of course, it is an overkill compared to write this as in the chunk above compared to just writing `lm(...)`. But the advantage of the unified interface is that we can simply replace the `method` argument to use a different model fitting algorithm. For example, to use KNN, we just can write:
+Of course, it is an overkill to write this as in the code chunk above compared to just writing `lm(...)`. The advantage of the unified interface is that we can simply replace the `method` argument to use a different model fitting algorithm. For example, to use KNN, we just can write:
 
 ```{r class.source = 'fold-show'}
 caret::train(
@@ -285,7 +285,7 @@ The introductory example demonstrated the importance of validating the fitted mo
 There is no fixed rule for how much data are to be used for training and testing, respectively. We have to balance a trade-off:
 
 -   Spending too much data for training will leave us with too little data for testing and the test results may not be robust. In this case, the sample size for getting robust validation statistics is not sufficiently large and we don't know for sure whether we are safe from an over-fit model.
--   Spending too much data for validation will leave us with too little data for training. In this case, the ML algorithm may not be successful at finding real relationships due to insufficient amounts of training data.
+-   Spending too much data for validation will leave us with too little data for training. In this case, the machine learning algorithm may not be successful at finding real relationships due to insufficient amounts of training data.
 
 Typical splits are between 60-80% for training. However, in cases where the number of data points is very large, the gains from having more training data are marginal, but come at the cost of adding to the already high computational burden of model training.
 
@@ -305,11 +305,13 @@ daily_fluxes_test <- rsample::testing(split)
 Plot the distribution of values in the training and testing sets.
 
 ```{r warning=FALSE, message=FALSE}
-daily_fluxes_train |> 
+plot_data <- daily_fluxes_train |> 
   dplyr::mutate(split = "train") |> 
   dplyr::bind_rows(daily_fluxes_test |> 
-    dplyr::mutate(split = "test")) |> 
-  tidyr::pivot_longer(cols = 2:9, names_to = "variable", values_to = "value") |> 
+  dplyr::mutate(split = "test")) |> 
+  tidyr::pivot_longer(cols = 2:9, names_to = "variable", values_to = "value")
+
+plot_data |> 
   ggplot(aes(x = value, y = ..density.., color = split)) +
   geom_density() +
   facet_wrap(~variable, scales = "free")
@@ -319,11 +321,11 @@ daily_fluxes_train |>
 
 Data pre-processing is aimed at preparing the data for use in a specific model fitting procedure and at improving the effectiveness of model training. The splitting of the data into a training and test set makes sure that no information from the test set is used during or before model training. It is important that absolutely no information from the test set finds its way into the training set (*data leakage*).
 
-In a general sense, pre-processing involve data transformations where the transformation functions use parameters that are determined on the data itself. Consider, for example, the *standardization*. That is, the linear transformation of a vector of values to have zero mean (data is *centered*, $\mu = 0$) and a standard deviation of 1 (data is *scaled* to $\sigma = 1$). In order to avoid data leakage, the mean and standard deviation have to be determined on the training set only. Then, the normalization of the training and the test sets both use set of ($\mu, \sigma$) determined on the training set. Data leakage would occur if the ($\mu, \sigma$) would be determined on data containing values from the test set.
+In a general sense, pre-processing involve data transformations where the transformation functions use parameters that are determined on the data itself. Consider, for example, the *standardization*. That is, the linear transformation of a vector of values to have zero mean (data is *centered*, $\mu = 0$) and a standard deviation of 1 (data is *scaled* to $\sigma = 1$). In order to avoid data leakage, the mean and standard deviation have to be determined on the training set only. Then, the normalization of the training and the test sets both use the set of ($\mu, \sigma$) determined on the training set. Data leakage would occur if the ($\mu, \sigma$) would be determined on data containing values from the test set.
 
-Often, multiple splits of the data are considered during model training. Hence, an even larger number of data transformation parameters ($\mu, \sigma$ in the example of normalization) have to be determined and transformations applied to the multiple splits of the data. *caret* deals with this for you and the transformations do not have to be "manually" applied before applying the `train()` function call. Instead, the data pre-processing is considered an integral step of model training and instructions are specified as part of the `train()` function call and along with the un-transformed data.
+Often, multiple splits of the data are considered during model training. Hence, an even larger number of data transformation parameters ($\mu, \sigma$ in the example of normalization) have to be determined and transformations applied to the multiple splits of the data. {caret} deals with this for you and the transformations do not have to be "manually" applied before applying the `train()` function call. Instead, the data pre-processing is considered an integral step of model training and instructions are specified as part of the `train()` function call and along with the un-transformed data.
 
-The [*recipes*](https://recipes.tidymodels.org/) package provides an even more powerful way for specifying the *formula* and pre-processing steps in one go. It is compatible with the `train()` function of {caret}. For the same formula as above, and an example where the data `daily_fluxes_train` is to be normalized (centered and scaled), we can specify a "recipe" using the pipe operator as:
+The [{recipes}](https://recipes.tidymodels.org/) package provides an even more powerful way for specifying the *formula* and pre-processing steps in one go. It is compatible with the `train()` function of {caret}. For the same formula as above, and an example where the data `daily_fluxes_train` is to be normalized (centered and scaled), we can specify a "recipe" using the pipe operator as:
 
 ```{r warning=FALSE, message=FALSE}
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_fluxes_train) |> 
@@ -331,7 +333,7 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_flux
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
-The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "{recipes} speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `daily_fluxes_train`, but rather the information that allows us to apply a specific set of pre-processing steps also to any data set.
+The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "{recipes} speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `daily_fluxes_train`, but rather the information that allows us to apply a specific set of pre-processing steps also to any other data set.
 
 The object `pp` can then be supplied to `train()` as its first argument:
 
@@ -348,7 +350,7 @@ The example above showed data standardization as a data pre-processing step. Dat
 
 #### Standardization
 
-Several algorithms explicitly require data to be standardized so that values of all predictors vary within a comparable range. The necessity of this step becomes obvious when considering KNN, where the magnitude of the distance is strongly influenced by the order of magnitude of the predictor values. To get a quick overview of the distribution of all variables (columns) in our data frame, we can use the {skimr} package.
+Several algorithms explicitly require data to be standardized so that values of all predictors vary within a comparable range. The necessity of this step becomes obvious when considering KNN, where the magnitude of the distance is strongly influenced by the order of magnitude of the predictor values. Here are the ranges and quantiles of the available variables.
 
 ```{r warning=FALSE, message=FALSE}
 daily_fluxes |> 
@@ -378,10 +380,12 @@ Finally we can actually transform the data. That is, "juice" the prepared recipe
 daily_fluxes_juiced <- recipes::juice(pp_prep)
 ```
 
-Note, if we are to apply the prepared recipe to new data, we'll have to `bake()` it.
+Note, if we are to apply the prepared recipe to *new* data, we'll have to `bake()` it.
 
 ```{r}
 daily_fluxes_baked <- recipes::bake(pp_prep, new_data = daily_fluxes_train)
+
+# confirm that juice and bake return identical objects when given the same data
 all_equal(daily_fluxes_juiced, daily_fluxes_baked)
 ```
 
@@ -389,17 +393,21 @@ The effect is of standardization is illustrated by comparing original and transf
 
 ```{r warning=FALSE, message=FALSE}
 # prepare data for plotting
-daily_fluxes_train_plot <- daily_fluxes_train |> 
+plot_data_original <- daily_fluxes_train |> 
+  dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
+  tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val")
+
+plot_data_juiced <- daily_fluxes_juiced |> 
   dplyr::select(one_of(c("SW_IN_F", "VPD_F", "TA_F"))) |> 
   tidyr::pivot_longer(cols = c(SW_IN_F, VPD_F, TA_F), names_to = "var", values_to = "val")
 
 # plot density
-plot_1 <- ggplot(data = daily_fluxes_train_plot, aes(val, ..density..)) +
+plot_1 <- ggplot(data = plot_data_original, aes(val, ..density..)) +
   geom_density() +
   facet_wrap(~var)
 
 # plot density by var
-plot_2 <- ggplot(data = daily_fluxes_train_plot, aes(val, ..density..)) +
+plot_2 <- ggplot(data = plot_data_juiced, aes(val, ..density..)) +
   geom_density() +
   facet_wrap(~var)
 
@@ -425,14 +433,14 @@ Here, the variable `LW_IN_F` (longwave radiation) if affected by a lot of missin
 
 #### Imputation
 
-Imputation refers to the replacement of missing values with with a "best guess" value ([Boehmke & Greenwell](https://bradleyboehmke.github.io/HOML/)). Different approaches exist for determining that best guess. The most basic approach is to impute missing values with the mean or median of the available values of the same variable, which can be implemented using `step_impute_*()` from the {recipes} package. For example, to impute the median for all predictors separately:
+Imputation refers to the replacement of missing values with with a "best guess" value ([Boehmke and Greenwell](https://bradleyboehmke.github.io/HOmachine learning/)). Different approaches exist for determining that best guess. The most basic approach is to impute missing values with the mean or median of the available values of the same variable, which can be implemented using `step_impute_*()` from the {recipes} package. For example, to impute the median for all predictors separately:
 
 ```{r warning=FALSE, message=FALSE}
 pp |> 
   step_impute_median(all_predictors())
 ```
 
-Imputing by the mean or median is "uninformative". We may use information about the co-variation of multiple variables for imputing missing values. For example, for imputing missing VPD values, we may consider the fact that VPD tends to be high when air temperature is high. Therefore, missing VPD values can be modeled as a function of other co-variates (predictors). Several approaches to modelling missing values are available through the recipes package (see [here](https://recipes.tidymodels.org/reference/index.html#step-functions-imputation)). For example, we can use KNN with five neighbors as:
+Imputing by the mean or median is "uninformative". We may use information about the co-variation of multiple variables for imputing missing values. For example, for imputing missing VPD values, we may consider the fact that VPD tends to be high when air temperature is high. Therefore, missing VPD values can be modeled as a function of other co-variates (predictors). Several approaches to modelling missing values are available through the {recipes} package (see [here](https://recipes.tidymodels.org/reference/index.htmachine learning#step-functions-imputation)). For example, we can use KNN with five neighbors as:
 
 ```{r warning=FALSE, message=FALSE}
 pp |> 
@@ -441,7 +449,7 @@ pp |>
 
 #### One-hot encoding
 
-For ML algorithms that require that all predictors be numerical (e.g., neural networks, or KNN), categorical predictors have to be pre-processed and converted into new numerical predictors. The most common such transformation is *one-hot encoding*, where a categorical predictor variable that has $N$ levels is replaced by $N$ new variables that contain either zeros or ones depending whether the value of the categorical feature corresponds to the respective column. Because this creates perfect collinearity between these new column, we can also drop one of them. This is referred to as *dummy encoding*.
+For machine learning algorithms that require that all predictors be numerical (e.g., neural networks, or KNN), categorical predictors have to be pre-processed and converted into new numerical predictors. The most common such transformation is *one-hot encoding*, where a categorical predictor variable that has $N$ levels is replaced by $N$ new variables that contain either zeros or ones depending whether the value of the categorical feature corresponds to the respective column. Because this creates perfect collinearity between these new column, we can also drop one of them. This is referred to as *dummy encoding*. The example below demonstrates what one-hot encoding does.
 
 ```{r warning=FALSE, message=FALSE}
 # original data frame
@@ -552,10 +560,12 @@ Let's recap. We have a dataset `daily_fluxes` and we want to predict ecosystem G
 -   Imputation: We drop rows with missing data for model training, instead of imputing them.
 -   Some of the predictors are distintively not normally distributed. Let's Box-Cox transform all predictors as a pre-processing step.
 -   We have to standardize the data in order to use it for KNN.
--   We have no variable where zero-variance was detected and we have no categorical variables that have to be transformed by one-hot encoding to be used in KNN. We use a data split, whithholding 30% for testing.
+-   We have no variable where zero-variance was detected and we have no categorical variables that have to be transformed by one-hot encoding to be used in KNN. 
+-   We use a data split, whithholding 30% for testing.
+-   Fit two models: a linear regression model and KNN.
 -   Take $k=10$ for the KNN model. Other choices are possible and will affect the prediction error on the training and the testing data in different manners. We'll learn more about the optimal choice of $k$ (*hyperparameter tuning*) in the next chapter.
 -   Fit models to minimize the root mean square error (RMSE) between predictions and observations. More on the choice of the `metric` argument in `train()` (*loss function*) in the next chapter.
--   For the KNN model, use $k=5$.
+-   For the KNN model, use $k=15$.
 
 These steps are implemented by the code below.
 
@@ -594,14 +604,14 @@ mod_knn <- caret::train(
   data = daily_fluxes_train |> drop_na(), 
   method = "knn",
   trControl = caret::trainControl(method = "none"),
-  tuneGrid = data.frame(k = 5),
+  tuneGrid = data.frame(k = 15),
   metric = "RMSE"
 )
 ```
 
-We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training data and add the predicted values to the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into one function - `eval_model()` - which we will re-use for each fitted model object.
+We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training and the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into one function - `eval_model()` - which we will re-use for each fitted model object.
 
-```{r warning=FALSE, message=FALSE}
+```{r label="lmknn", warning=FALSE, message=FALSE, fig.cap="Evaluation of the linear regression and the KNN models on the training and the test set."}
 # make model evaluation into a function to reuse code
 eval_model <- function(mod, df_train, df_test){
   
@@ -668,7 +678,7 @@ eval_model(mod = mod_lm, df_train = daily_fluxes_train, df_test = daily_fluxes_t
 eval_model(mod = mod_knn, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 ```
 
-It is advisable to keep workflow notebooks (this RMarkdown file) light and legible. Therefore, code chunks should not be excessively long and functions should be kept in a `./R/*.R` file, which can be loaded. This also facilitates debugging code inside the function. Here, the function `eval_model()` is part of the book's git repository, stored in the sub-directory `./R/`, and used also in later chapters.
+It is advisable to keep workflow notebooks (this RMarkdown file) light and legible. Therefore, code chunks should not be excessively long and functions should be kept in a `./R/*.R` file, which can be loaded. This also facilitates debugging code inside the function. Here, the function `eval_model()` is part of the book's *git* repository, stored in the sub-directory `./R/`, and used also in later chapters.
 
 ## Exercises
 
@@ -676,24 +686,36 @@ There are no exercises with provided solutions for this Chapter.
 
 ## Report Exercises
 
-> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
+### Comparison of the linear regression and KNN models {-}
 
-### Comparison of LM and KNN {-}
+The figures above show the evaluation of the model performances of the linear regression and the KNN model, evaluated on the training and test set. This exercise is to interpret and understand the observed differences. Implement the following points:
 
-The last figures of this tutorial show the training of testing of a linear model and a KNN model. Compare the four figures and answer to following questions:
+1.  Adopt the code from this Chapter for fitting and evaluating the linear regression model and the KNN into your own RMarkdown notebook. Name the file `./vignettes/re_ml_01.Rmd`. Keep larger functions in a separate file in an appropriate directory and load the function definition as part of the RMarkdown notebook.
+2.  Interpret observed differences in the context of the bias-variance trade-off:
+  - Why is the difference between the evaluation on the training and the test set larger for the KNN model than for the linear regression model?
+  - Why is the does the evaluation on the test set indicate a better model performance of the KNN model than the linear regression model?
+  - How would you position the KNN and the linear regression model along the spectrum of the bias-variance trade-off?
+3.  Visualise temporal variations of observed and modelled GPP for both models, covering all available dates.
 
-1.  How does the point cloud differ between the two training set plots? Why does the $R^2$ value increase from LM to KNN? Use your knowledge on the fundamental difference between the two fitted models!
 
-2.  How does the performance of both models (LM and KNN) change when predicting onto the test set? Why do they change in that manner?
-
-3.  The test set plots for both models show a tendency to have more points on the right side of the dotted one-to-one line. What does that tell you about the performance of the model? How do you interpret this model performance in an ecophysiological manner? Note that we are comparing predicted (y-axis) against observed (x-axis) values of gross primary production.
-
-### The role of picking a hyperparameter {-}
+### The role of k {-}
 
 Let's look at the role of $k$ in a KNN. Answer the following questions:
 
-1.  Write a hypothesis based on the following questions: What do you expect, how do the model metrics of both sets, the training set **and** the test set, change if you increase or decrease $k$? Connect this question to what you learned about the bias-variance trade-off!
+1. Based on you understanding of KNN (and without running code), state a hypothesis for how the $R^2$ and the RMSE evaluated on the test and on the training set would change for $k$ approaching 1 and for $k$ approaching $N$ (the number of observations in the data). Explain your hypothesis, referring to the bias-variance trade-off.
 
-2.  Put your hypothesis to the test! Write a code script that repeats fitting different values for $k$ as done in the tutorial. Use a simple bivariate model, regressing temperature against the day-of-year in the `daily_fluxes` dataset (`DOY ~ TA_F`). **Visualise** your results in an intuitive plot that is understandable without additional explanation.
+2.  Put your hypothesis to the test! Write code that repeats model fitting and evaluation for different values for $k$. Visualise results showing model generalisability as a function of model complexity. Describe how a "region" of overfitting and underfitting can be determined in your visualisation.
 
-3.  Compare your results against your hypothesis from above. Is the result as you expected? If your hypothesis was right, can you explain further, why your hypothesis was correct, using the results. If your hypothesis was wrong, can you explain why? What surprised you, what did you not expect to see?
+3.  Is there an "optimal" $k$ in terms of model generalisability? Modify your code to determine an optimal $k$.
+
+Add code and text for addressing this exercise to the file `./vignettes/re_ml_01.Rmd` and give the notebook a suitable structure for easy navigation with a table of content (`toc`) by modifying its YAML header:
+
+``` bash
+---
+title: "Report Exercise Chapter 10"
+author: "Ziggy Stardust"
+output:
+  html_document:
+    toc: true
+---
+```
