@@ -67,7 +67,7 @@ Let's say the machine learning model contains two parameters and predictions can
 knitr::include_graphics("figures/loss_plane.png")
 ```
 
-Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter \@ref(#supervisedmli), the {caret} package provides "wrappers" that handle a large selection of different machine learning model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The {caret} function `train()` is the center piece also in terms of specifying the loss function as the argument `metric`. It defaults to the RMSE for regression models and the accuracy for classification.
+Model training is implemented in R for different machine learning algorithms in different packages. Some algorithms are even implemented by multiple packages. As described in Chapter \@ref(#supervisedmli), the {caret} package provides "wrappers" that handle a large selection of different machine learning model implementations in different packages with a unified interface (see [here](https://topepo.github.io/caret/available-models.html) for an overview of available models). The {caret} function `train()` is the center piece also in terms of specifying the loss function as the argument `metric`. It defaults to the RMSE for regression models and the accuracy for classification. 
 
 ### Hyperparameters
 

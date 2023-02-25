@@ -609,7 +609,7 @@ mod_knn <- caret::train(
 )
 ```
 
-We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training and the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into one function - `eval_model()` - which we will re-use for each fitted model object.
+We can use the model objects `mod_lm` and `mod_knn` to add the fitted values to the training and the test data, both using the generic function `predict(..., newdata = ...)`. The code below implements the prediction step, the measuring of the prediction skill, and the visualisation of predicted versus observed values on the test and training sets, bundled into one function - `eval_model()` - which we will re-use for each fitted model object. 
 
 ```{r label="lmknn", warning=FALSE, message=FALSE, fig.cap="Evaluation of the linear regression and the KNN models on the training and the test set."}
 # make model evaluation into a function to reuse code

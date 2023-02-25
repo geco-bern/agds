@@ -774,7 +774,7 @@ Nevertheless, logistic regression relies on statistical assumptions to fit the p
 
 #### Metrics for classification
 
-Measuring the quality of a classification model is based on counting how many observations were correctly classified, rather than the distance between the values predicted by a regression and the true observed values. These can be represented in a *confusion matrix*:
+Measuring the quality of a classification model is based on counting how many observations were correctly classified, rather than the distance between the values predicted by a regression and the true observed values. These can be represented in a *confusion matrix*: 
 
 |               |       $Y = 1$        |       $Y = 0$        |
 |---------------|:--------------------:|:--------------------:|
