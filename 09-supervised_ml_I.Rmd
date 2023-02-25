@@ -30,7 +30,7 @@ From above definitions, we can note a few key ingredients of supervised machine 
 knitr::include_graphics("figures/supervised_ml.png")
 ```
 
-The type of modelling approach of supervised machine learning is very similar to fitting regression models as we did in Chapter \@ref{regressionclassification}. In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Furthermore, machine learning differs from traditional statistical modelling methods in that it makes no assumptions regarding the data generation process and underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)).
+The type of modelling approach of supervised machine learning is very similar to fitting regression models as we did in Chapter \@ref(regressionclassification). In a sense, supervised machine learning is just another empirical (or statistical) modelling approach. However, you may not want to call linear regression a machine learning algorithm because there is no iterative learning involved. Furthermore, machine learning differs from traditional statistical modelling methods in that it makes no assumptions regarding the data generation process and underlying distributions ([Breiman, 2001](https://projecteuclid.org/journals/statistical-science/volume-16/issue-3/Statistical-Modeling--The-Two-Cultures-with-comments-and-a/10.1214/ss/1009213726.full)).
 
 Nevertheless, contrasting a bivariate linear regression model with a complex machine learning algorithm is instructive. Also linear regression provides a prediction $\hat{Y} = f(X)$, just like other (proper) machine learning algorithms do. The functional form of a bivariate linear regression is not particularly flexible (just a straight line for the best fit between predictors and targets) and it has only two parameters (slope and intercept). At the other extreme are, for example, deep neural networks. They are extremely flexible, can learn highly non-linear relationships and deal with interactions between a large number of predictors. They also contain very large numbers of parameters (typically on the order of $10^4 - 10^7$). You can imagine that their high flexibility allows these types of algorithms to very effectively learn from the data, but also bears the risk of *overfitting*. What is overfitting?
 
@@ -565,7 +565,7 @@ Let's recap. We have a dataset `daily_fluxes` and we want to predict ecosystem G
 -   Fit two models: a linear regression model and KNN.
 -   Take $k=10$ for the KNN model. Other choices are possible and will affect the prediction error on the training and the testing data in different manners. We'll learn more about the optimal choice of $k$ (*hyperparameter tuning*) in the next chapter.
 -   Fit models to minimize the root mean square error (RMSE) between predictions and observations. More on the choice of the `metric` argument in `train()` (*loss function*) in the next chapter.
--   For the KNN model, use $k=15$.
+-   For the KNN model, use $k=8$.
 
 These steps are implemented by the code below.
 
@@ -604,7 +604,7 @@ mod_knn <- caret::train(
   data = daily_fluxes_train |> drop_na(), 
   method = "knn",
   trControl = caret::trainControl(method = "none"),
-  tuneGrid = data.frame(k = 15),
+  tuneGrid = data.frame(k = 8),
   metric = "RMSE"
 )
 ```
