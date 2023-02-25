@@ -91,14 +91,14 @@ df <- half_hourly_fluxes |>
 linmod1 <- lm(GPP_NT_VUT_REF ~ SW_IN_F, data = df)
 ```
 
-Here, `GPP_NT_VUT_REF` is $Y$, and `SW_IN_F` is $X$. We can include multiple predictors for a multivariate regression, for example as:
+Here, `GPP_NT_VUT_REF` is $Y$, and `SW_IN_F` is $X$. The *formula* notation `GPP_NT_VUT_REF ~ SW_IN_F` is common in R and can be used for a most functions in different packages. The (single) variable to the left of the `~` is the target variable ($Y$). The variable to its right is the predictor. Of course, we can include multiple predictors for a multivariate regression, for example as:
 
 ```{r}
 # fit multivariate linear regression
 linmod2 <- lm(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = df)
 ```
 
-or all available features in our data set (all columns other than `GPP_NT_VUT_REF` in `df`) as:
+The shorthand for including all predictors that are available in the data (here, all columns other than `GPP_NT_VUT_REF` in `df`), we can write:
 
 ```{r}
 linmod3 <- lm(GPP_NT_VUT_REF ~ ., data = df)
@@ -496,6 +496,177 @@ names(list_metrics) <- c("Linear model",
 bind_rows(list_metrics, .id = "type")
 ```
 
+
+### Model selection
+
+Model selection refers to several techniques that help you compare models and select the one that best explains the data. Here, concepts will be explained using regression as an example, but are directly translated to classification problems.
+
+First, be systematic with model comparisons. Three key ideas in model selection are:
+
+-   Comparisons should be hierarchical: compare a model to another that "contains it", i.e. compare `y ~ x1` to `y ~ x1 + x2`, and not `y ~ x1` to `y ~ x2 + x3`.
+-   Complexity must be increased slowly: add one variable at a time, not three variables all at once. This helps avoid collinearity in the predictors.
+-   Choose the most appropriate metric: if possible, a metric that accounts for model complexity and represents the goal of your analysis (e.g., recall for a classification where you don't want to miss any positives).
+
+If you're considering different model approaches for the same task, you should first fit the best possible model for each approach, and then compare those optimized models to each other. For example, fit the best linear regression with your available data, the best KNN non-parametric regression model and a random forest. Then compare those three final models and choose the one that answers your research question the best.
+
+One must be careful not to keep training or improving models until they fit the data perfectly, but maintain the models' ability to generalize to newly available data. Chapter \@ref(supervisedmli) introduces the concept of *overfitting*, which is central to data science. Think of model interpretation and generalization when comparing them, not only of performance. Simple models can be more valuable than very complex ones because they tell a better story about the data (e.g., by having few very good predictors rather than thousands of mediocre ones, from which we cannot learn the underlying relationships).
+
+#### Variable selection {#variableselection}
+
+Let's think of variable selection in the context of linear regression. A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g., AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models. This can be very computationally expensive.
+
+Instead, take a hierarchical, or "greedy", approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called *stepwise forward regression*. The algorithm goes as follows
+
+1. Set the number of predictors to be considered to $p=1$.
+2. Fit all regression models with $p$ predictors and compute their $R^2$.
+3. Select the model with $p$ predictors that achieves the highest $R^2$ (best fitting model) and compute its AIC.
+4. Increment to $p+1$. Fit all regression models with $p+1$ predictors and compute their $R^2$. Select the best fitting model and compute its AIC.
+6. If the AIC of the model with $p+1$ predictors is poorer than the AIC of the model with $p$ predictors, retain the model with $p$ predictors and quit. You have found the (presumably) optimal model. Otherwise, continue with with step 4.
+
+Instead of the AIC, you may also use the BIC for model comparison. Note that algorithm doesn't consider all possible combinations of predictors and it is possible that the globally optimal model is thus not found. The function `stats::step()` implements the stepwise algorithm in R.
+
+This stepwise approach can also be done backwards, starting with a full model (all available variables) and removing one at a time. Or even with a back-and-forth approach, where you look at both including a new or removing an existing variable at each step (optimizing AIC). Furthermore, this algorithm can be applied to fitting a polynomial regression. We want to increase the degree of the polynomials unit by unit. For a model with categorical variables, interaction terms should only be considered after having the involved variables as "intercept only".
+
+**Multicollinearity** exists when there is a correlation between multiple predictors in a multivariate regression model. This is problematic because it makes the estimated coefficients corresponding to the correlated variables unstable. Since correlated variables contain similar information, it doesn't matter whether we include one or the other in the model or even if we include both of them. The performance metrics will be similar. Hence, it becomes difficult to conclude which variables actually influence the target.
+
+The **variance inflation factor (VIF)** is a score from economics that measures the amount of multicollinearity in regression based on how the estimated variance of a coefficient is inflated due to its correlation with another predictor. It's calculated as $$\text{VIF}_i = \frac{1}{1 - R^2_i},$$ where $R^2_i$ is the coefficient of determination for regressing the i$^{th}$ predictor on the remaining ones. A VIF$_i$ is computed for each predictor in the multivariate regression model we are evaluating, meaning: if $\text{VIF}_i = 1$ variables are not correlated; if $1 < \text{VIF}_i < 5$ there is moderate collinearity; and if $\text{VIF}_i \geq 5$ they are highly correlated. Because they can be almost fully explained by all the other predictors (high $R^2_i$), these variables are redundant in our final model.
+
+To remedy collinearity, you may choose to use only one or two of those correlated variables. Another option would be to use *Principal Component Analysis* (PCA), which you may read more about [here](https://www.r-bloggers.com/2021/05/principal-component-analysis-pca-in-r/). What PCA does is to map the space of predictors into another space of smaller dimension, leading to a smaller set of predictor variables $\{Z_1, ... , Z_q\}$, each of them being a linear combination of all the initial available predictors, that is $Z_1 = \alpha^1_0 + \alpha^1_1 X_1 + ... + \alpha^1_p X_p$, etc. If you have collinearity, those highly correlated variables would be summarized into one single new variable, called *principal component*.
+
+When we work with high-dimensional data (that is, we have more variables than observations) there are better techniques to do variable selection than stepwise regression. Since the predictors space is so large, we could fit a line that passes through all the observations (a perfect fit), but does the model generalize? We don't know. For example, Lasso and Ridge regression incorporate variable selection in the fitting process (you can check [this post](https://www.r-bloggers.com/2020/06/understanding-lasso-and-ridge-regression/) if you're curious).
+
+### Outlier detection
+
+Detecting outliers is important, because they can affect the fit of a model and render the model fitting not robust. When the data is large, individual points have less influence on the model fitting. Therefore, only outliers that are very far from normal values will affect the model fit (see below). Outliers are particularly problematic in the context of small data, because every value has a big influence on the fitted model.
+
+Take a look at the two linear regressions below and how one single point can strongly influence the fit. the added point (red circle around black dot) lies clearly outside the "cloud" of remaining points and doesn't seem to follow the same pattern in the data.
+
+```{r label = "outlier", warning=FALSE, fig.cap="The influence of an outlier on a regression fit."}
+set.seed(2023)
+half_hourly_fluxes_small <- half_hourly_fluxes |>
+  sample_n(100) |> # reduce dataset
+  select(SW_IN_F, GPP_NT_VUT_REF)
+
+plot_3 <- half_hourly_fluxes_small |>
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+  geom_point(size = 0.75) +
+  geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
+  theme_classic() +
+  ylim(-20, 40) + 
+  xlim(0, 1100)
+
+plot_4 <- half_hourly_fluxes_small |>
+  add_row(SW_IN_F = 1100, GPP_NT_VUT_REF = -20) |> # add outlier
+  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
+  geom_point(size = 0.75) +
+  geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
+  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
+       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
+  theme_classic() +
+  geom_point(aes(x = 1100, y = -20), colour = 'red', shape = 1, size = 3) +
+  ylim(-20, 40) + 
+  xlim(0, 1100)
+  
+cowplot::plot_grid(plot_3, plot_4)
+```
+
+The first step to identifying outliers is usually to look at the data, one variable at a time. Plot a histogram to check the distribution of a variable. The shape of the distribution is very informative for what can be considered an *outlier*. In Chapters \@ref(datawrangling) and \@ref(datavis) it was introduced how to identify values that fall "outside" a distribution using histograms and boxplots. Checking in the histogram if the distribution has fat tails helps to discern whether the values that pop out of a boxplot should be considered outliers or not.
+
+```{r}
+# create an outlier for demonstration purposes
+half_hourly_fluxes_outlier <- half_hourly_fluxes_small |>
+  add_row(SW_IN_F = 1100, GPP_NT_VUT_REF = -20)
+
+# Various ways to identify the outlier using graphs
+plot_5 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
+  geom_histogram(fill = "grey70", color = "black") +
+  geom_density(color = 'red')+
+  labs(title = 'Histogram, density and boxplot', 
+       x = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
+  theme_classic()
+
+plot_6 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = "", y = GPP_NT_VUT_REF)) +
+  geom_boxplot(fill = "grey70", color = "black") +
+  coord_flip() +
+  theme_classic() +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")))
+
+plot_7 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = SW_IN_F, y = after_stat(density))) +
+  geom_histogram(fill = "grey70", color = "black") +
+  geom_density(color = 'red')+
+  labs(title = 'Histogram, density and boxplot', 
+       x = expression(paste("Shortwave radiation (W m"^-2, ")"))) +
+  theme_classic()
+
+plot_8 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(x = "", y = SW_IN_F)) +
+  geom_boxplot(fill = "grey70", color = "black") +
+  coord_flip() +
+  theme_classic() +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")))
+
+cowplot::plot_grid(plot_5, plot_7, plot_6, plot_8,
+                   ncol = 2, rel_heights = c(2,1),
+                   align = 'v', axis = 'lr')
+```
+
+A **Q-Q Plot** depicts the sample quantiles of a variable against the theoretical quantiles of a distribution that is assumed to uderly the data. In the histograms above, GPP looks somewhat Gaussian (normally distributed) but with fatter tails and slightly skewed to the right, while shortwave radiation is clearly skewed to the right, resembling an exponential distribution. The Q-Q plots below reveal that both variables are clearly not normally distributed.
+
+```{r}
+plot_9 <- ggplot(
+    data = half_hourly_fluxes_outlier,
+    aes(sample = GPP_NT_VUT_REF)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")),
+       x = "Theoretical normal quantiles") +
+  theme_classic()
+
+plot_10 <- ggplot(
+  data = half_hourly_fluxes_outlier,
+  aes(sample = SW_IN_F)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")),
+       x = "Theoretical normal quantiles") +
+  theme_classic()
+
+cowplot::plot_grid(plot_9, plot_10, ncol = 2)
+```
+
+QQ-plots serve to investigate whether the data follows an assumed theoretical distribution. For linear and logistic regression, we would like predictor variables to look as normal, i.e. Gaussian, as possible. You've probably learned some of the reasons for this in the *Quantitative Methods* course (or a similar classical Statistics course), and we will not discuss this further here.
+
+Note however, that neither the histograms, nor the boxplots, or the QQ-plots revealed any evidently suspicious pattern of the added point (shortwave radiation = 1100 W m$^{-2}$ s$^{-1}$, and GPP = -20 $\mu$mol CO$_2$ m$^{-2}$ s$^{-1}$) compared to the *individual* distributions of the two variables. Yet, in Fig. \@ref(fig:outlier), the influence of the outlying point on the fit was clear. Because the suspicious observation is off the multivariate pattern in the remaining data, it becomes very influential. That is, it has a big *leverage*. R provides some useful plots from the fitted regression objects, in particular the "Residuals vs. Leverage" plot:
+
+```{r}
+# Fit regression with outlier
+linmod_outlier <- lm(GPP_NT_VUT_REF ~ SW_IN_F, 
+                     data = add_row(half_hourly_fluxes_small, 
+                                    SW_IN_F = 1100, 
+                                    GPP_NT_VUT_REF = -20))
+
+plot(linmod_outlier, 5)
+```
+
+This plot shows the leverage (see the mathematical definition [here](https://en.wikipedia.org/wiki/Leverage_(statistics))) of each observation against the corresponding residual from the fitted linear regression. Points with high leverage, i.e., points that are far from the center of the predictor distribution, and large residuals, i.e., points that are far from the fitted regression line, are very influential. The **Cook's distance** (definition [here](https://en.wikipedia.org/wiki/Cook%27s_distance)) is an estimate of the influence of a data point in a linear regression and observations with Cook's distance \> 1 are candidates for being outliers. See in the plot above how the point with index 101 (our added outlier) has a very large Cook's distance. Boundary regions for Cook's distance equal to 0.5 (suspicious) and 1 (certainly influential) are drawn with a dashed line.
+
+Finally, it's very important that, before you remove a value because it may be an outlier, you understand where the data came from and if such an abnormal observation is possible. If it depicts an extraordinary but possible situation, this information can be very valuable and it's wiser to keep it in the model. Interesting research questions arise when data doesn't align with our preconceptions, so keep looking into it and potentially collect more data.
+
+## Extra material
+
 ### Classification
 
 Classification models predict a categorical target variable. Note that predictors of a classification model may still be, and often are, continuous. We will introduce a classification problem with a binary target, since it's straightforward to generalize to categorical variables with more than two classes. As an example, we use the `CO2` dataset from the [{datasets} package](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/zCO2.html), which contains data from an experiment on the cold tolerance of the grass species *Echinochloa crus-galli*. 
@@ -668,179 +839,9 @@ mosaicplot(conf_matrix$table,
            main = "Confusion matrix")
 ```
 
-### Model selection
-
-Model selection refers to several techniques that help you compare models and select the one that best explains the data. Here, concepts will be explained using regression as an example, but are directly translated to classification problems.
-
-First, be systematic with model comparisons. Three key ideas in model selection are:
-
--   Comparisons should be hierarchical: compare a model to another that "contains it", i.e. compare `y ~ x1` to `y ~ x1 + x2`, and not `y ~ x1` to `y ~ x2 + x3`.
--   Complexity must be increased slowly: add one variable at a time, not three variables all at once. This helps avoid collinearity in the predictors.
--   Choose the most appropriate metric: if possible, a metric that accounts for model complexity and represents the goal of your analysis (e.g., recall for a classification where you don't want to miss any positives).
-
-If you're considering different model approaches for the same task, you should first fit the best possible model for each approach, and then compare those optimized models to each other. For example, fit the best linear regression with your available data, the best KNN non-parametric regression model and a random forest. Then compare those three final models and choose the one that answers your research question the best.
-
-One must be careful not to keep training or improving models until they fit the data perfectly, but maintain the models' ability to generalize to newly available data. Chapter \@ref(supervisedmli) introduces the concept of *overfitting*, which is central to data science. Think of model interpretation and generalization when comparing them, not only of performance. Simple models can be more valuable than very complex ones because they tell a better story about the data (e.g., by having few very good predictors rather than thousands of mediocre ones, from which we cannot learn the underlying relationships).
-
-#### Variable selection
-
-Let's think of variable selection in the context of linear regression. A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g., AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models. This can be very computationally expensive.
-
-Instead, take a hierarchical, or "greedy", approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called *stepwise forward regression*. The algorithm goes as follows
-
-1. Set the number of predictors to be considered to $p=1$.
-2. Fit all regression models with $p$ predictors and compute their $R^2$.
-3. Select the model with $p$ predictors that achieves the highest $R^2$ (best fitting model) and compute its AIC.
-4. Increment to $p+1$. Fit all regression models with $p+1$ predictors and compute their $R^2$. Select the best fitting model and compute its AIC.
-6. If the AIC of the model with $p+1$ predictors is poorer than the AIC of the model with $p$ predictors, retain the model with $p$ predictors and quit. You have found the (presumably) optimal model. Otherwise, continue with with step 4.
-
-Instead of the AIC, you may also use the BIC for model comparison. Note that algorithm doesn't consider all possible combinations of predictors and it is possible that the globally optimal model is thus not found. The function `stats::step()` implements the stepwise algorithm in R.
-
-This stepwise approach can also be done backwards, starting with a full model (all available variables) and removing one at a time. Or even with a back-and-forth approach, where you look at both including a new or removing an existing variable at each step (optimizing AIC). Furthermore, this algorithm can be applied to fitting a polynomial regression. We want to increase the degree of the polynomials unit by unit. For a model with categorical variables, interaction terms should only be considered after having the involved variables as "intercept only".
-
-**Multicollinearity** exists when there is a correlation between multiple predictors in a multivariate regression model. This is problematic because it makes the estimated coefficients corresponding to the correlated variables unstable. Since correlated variables contain similar information, it doesn't matter whether we include one or the other in the model or even if we include both of them. The performance metrics will be similar. Hence, it becomes difficult to conclude which variables actually influence the target.
-
-The **variance inflation factor (VIF)** is a score from economics that measures the amount of multicollinearity in regression based on how the estimated variance of a coefficient is inflated due to its correlation with another predictor. It's calculated as $$\text{VIF}_i = \frac{1}{1 - R^2_i},$$ where $R^2_i$ is the coefficient of determination for regressing the i$^{th}$ predictor on the remaining ones. A VIF$_i$ is computed for each predictor in the multivariate regression model we are evaluating, meaning: if $\text{VIF}_i = 1$ variables are not correlated; if $1 < \text{VIF}_i < 5$ there is moderate collinearity; and if $\text{VIF}_i \geq 5$ they are highly correlated. Because they can be almost fully explained by all the other predictors (high $R^2_i$), these variables are redundant in our final model.
-
-To remedy collinearity, you may choose to use only one or two of those correlated variables. Another option would be to use *Principal Component Analysis* (PCA), which you may read more about [here](https://www.r-bloggers.com/2021/05/principal-component-analysis-pca-in-r/). What PCA does is to map the space of predictors into another space of smaller dimension, leading to a smaller set of predictor variables $\{Z_1, ... , Z_q\}$, each of them being a linear combination of all the initial available predictors, that is $Z_1 = \alpha^1_0 + \alpha^1_1 X_1 + ... + \alpha^1_p X_p$, etc. If you have collinearity, those highly correlated variables would be summarized into one single new variable, called *principal component*.
-
-When we work with high-dimensional data (that is, we have more variables than observations) there are better techniques to do variable selection than stepwise regression. Since the predictors space is so large, we could fit a line that passes through all the observations (a perfect fit), but does the model generalize? We don't know. For example, Lasso and Ridge regression incorporate variable selection in the fitting process (you can check [this post](https://www.r-bloggers.com/2020/06/understanding-lasso-and-ridge-regression/) if you're curious).
-
-### Outlier detection
-
-Detecting outliers is important, because they can affect the fit of a model and render the model fitting not robust. When the data is large, individual points have less influence on the model fitting. Therefore, only outliers that are very far from normal values will affect the model fit (see below). Outliers are particularly problematic in the context of small data, because every value has a big influence on the fitted model.
-
-Take a look at the two linear regressions below and how one single point can strongly influence the fit. the added point (red circle around black dot) lies clearly outside the "cloud" of remaining points and doesn't seem to follow the same pattern in the data.
-
-```{r label = "outlier", warning=FALSE, fig.cap="The influence of an outlier on a regression fit."}
-set.seed(2023)
-half_hourly_fluxes_small <- half_hourly_fluxes |>
-  sample_n(100) |> # reduce dataset
-  select(SW_IN_F, GPP_NT_VUT_REF)
-
-plot_3 <- half_hourly_fluxes_small |>
-  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
-  geom_point(size = 0.75) +
-  geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
-  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
-  theme_classic() +
-  ylim(-20, 40) + 
-  xlim(0, 1100)
-
-plot_4 <- half_hourly_fluxes_small |>
-  add_row(SW_IN_F = 1100, GPP_NT_VUT_REF = -20) |> # add outlier
-  ggplot(aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
-  geom_point(size = 0.75) +
-  geom_smooth(method = "lm", color = "red", fullrange = TRUE) +
-  labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
-       y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")"))) +
-  theme_classic() +
-  geom_point(aes(x = 1100, y = -20), colour = 'red', shape = 1, size = 3) +
-  ylim(-20, 40) + 
-  xlim(0, 1100)
-  
-cowplot::plot_grid(plot_3, plot_4)
-```
-
-The first step to identifying outliers is usually to look at the data, one variable at a time. Plot a histogram to check the distribution of a variable. The shape of the distribution is very informative for what can be considered an *outlier*. In Chapters \@ref(datawrangling) and \@ref(datavis) it was introduced how to identify values that fall "outside" a distribution using histograms and boxplots. Checking in the histogram if the distribution has fat tails helps to discern whether the values that pop out of a boxplot should be considered outliers or not.
-
-```{r}
-# create an outlier for demonstration purposes
-half_hourly_fluxes_outlier <- half_hourly_fluxes_small |>
-  add_row(SW_IN_F = 1100, GPP_NT_VUT_REF = -20)
-
-# Various ways to identify the outlier using graphs
-plot_5 <- ggplot(
-  data = half_hourly_fluxes_outlier,
-  aes(x = GPP_NT_VUT_REF, y = after_stat(density))) +
-  geom_histogram(fill = "grey70", color = "black") +
-  geom_density(color = 'red')+
-  labs(title = 'Histogram, density and boxplot', 
-       x = expression(paste("GPP (gC m"^-2, "s"^-1, ")"))) +
-  theme_classic()
-
-plot_6 <- ggplot(
-  data = half_hourly_fluxes_outlier,
-  aes(x = "", y = GPP_NT_VUT_REF)) +
-  geom_boxplot(fill = "grey70", color = "black") +
-  coord_flip() +
-  theme_classic() +
-  theme(axis.text.y=element_blank(),
-        axis.ticks.y=element_blank()) +
-  labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")))
-
-plot_7 <- ggplot(
-  data = half_hourly_fluxes_outlier,
-  aes(x = SW_IN_F, y = after_stat(density))) +
-  geom_histogram(fill = "grey70", color = "black") +
-  geom_density(color = 'red')+
-  labs(title = 'Histogram, density and boxplot', 
-       x = expression(paste("Shortwave radiation (W m"^-2, ")"))) +
-  theme_classic()
-
-plot_8 <- ggplot(
-  data = half_hourly_fluxes_outlier,
-  aes(x = "", y = SW_IN_F)) +
-  geom_boxplot(fill = "grey70", color = "black") +
-  coord_flip() +
-  theme_classic() +
-  theme(axis.text.y=element_blank(),
-        axis.ticks.y=element_blank()) +
-  labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")))
-
-cowplot::plot_grid(plot_5, plot_7, plot_6, plot_8,
-                   ncol = 2, rel_heights = c(2,1),
-                   align = 'v', axis = 'lr')
-```
-
-A **Q-Q Plot** depicts the sample quantiles of a variable against the theoretical quantiles of a distribution that is assumed to uderly the data. In the histograms above, GPP looks somewhat Gaussian (normally distributed) but with fatter tails and slightly skewed to the right, while shortwave radiation is clearly skewed to the right, resembling an exponential distribution. The Q-Q plots below reveal that both variables are clearly not normally distributed.
-
-```{r}
-plot_9 <- ggplot(
-    data = half_hourly_fluxes_outlier,
-    aes(sample = GPP_NT_VUT_REF)) +
-  geom_qq() +
-  geom_qq_line() +
-  labs(y = expression(paste("GPP (gC m"^-2, "s"^-1, ")")),
-       x = "Theoretical normal quantiles") +
-  theme_classic()
-
-plot_10 <- ggplot(
-  data = half_hourly_fluxes_outlier,
-  aes(sample = SW_IN_F)) +
-  geom_qq() +
-  geom_qq_line() +
-  labs(y = expression(paste("Shortwave radiation (W m"^-2, ")")),
-       x = "Theoretical normal quantiles") +
-  theme_classic()
-
-cowplot::plot_grid(plot_9, plot_10, ncol = 2)
-```
-
-QQ-plots serve to investigate whether the data follows an assumed theoretical distribution. For linear and logistic regression, we would like predictor variables to look as normal, i.e. Gaussian, as possible. You've probably learned some of the reasons for this in the *Quantitative Methods* course (or a similar classical Statistics course), and we will not discuss this further here.
-
-Note however, that neither the histograms, nor the boxplots, or the QQ-plots revealed any evidently suspicious pattern of the added point (shortwave radiation = 1100 W m$^{-2}$ s$^{-1}$, and GPP = -20 $\mu$mol CO$_2$ m$^{-2}$ s$^{-1}$) compared to the *individual* distributions of the two variables. Yet, in Fig. \@ref(fig:outlier), the influence of the outlying point on the fit was clear. Because the suspicious observation is off the multivariate pattern in the remaining data, it becomes very influential. That is, it has a big *leverage*. R provides some useful plots from the fitted regression objects, in particular the "Residuals vs. Leverage" plot:
-
-```{r}
-# Fit regression with outlier
-linmod_outlier <- lm(GPP_NT_VUT_REF ~ SW_IN_F, 
-                     data = add_row(half_hourly_fluxes_small, 
-                                    SW_IN_F = 1100, 
-                                    GPP_NT_VUT_REF = -20))
-
-plot(linmod_outlier, 5)
-```
-
-This plot shows the leverage (see the mathematical definition [here](https://en.wikipedia.org/wiki/Leverage_(statistics))) of each observation against the corresponding residual from the fitted linear regression. Points with high leverage, i.e., points that are far from the center of the predictor distribution, and large residuals, i.e., points that are far from the fitted regression line, are very influential. The **Cook's distance** (definition [here](https://en.wikipedia.org/wiki/Cook%27s_distance)) is an estimate of the influence of a data point in a linear regression and observations with Cook's distance \> 1 are candidates for being outliers. See in the plot above how the point with index 101 (our added outlier) has a very large Cook's distance. Boundary regions for Cook's distance equal to 0.5 (suspicious) and 1 (certainly influential) are drawn with a dashed line.
-
-Finally, it's very important that, before you remove a value because it may be an outlier, you understand where the data came from and if such an abnormal observation is possible. If it depicts an extraordinary but possible situation, this information can be very valuable and it's wiser to keep it in the model. Interesting research questions arise when data doesn't align with our preconceptions, so keep looking into it and potentially collect more data.
-
 ## Exercises
 
 There are no exercises with provided solutions for this Chapter.
-
-> *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
 <!-- -   Implement the formula for RMSE using simple "low-level" functions -->
 
@@ -866,41 +867,25 @@ There are no exercises with provided solutions for this Chapter.
 
 ## Report Exercise
 
-### Context {.unnumbered}
+Although there are a lot of helpful packages and user-friendly functions available, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are crucial parts of this process (see \@ref(findinghelp) for more on getting help).
 
-Although there is a lot of helpful information out there, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are crucial parts of this process (see \@ref(findinghelp) for more on getting help). To learn these skills, you will attempt to write your own stepwise forward regression from scratch using the theory and code provided in this and previous chapters.
+In this Report Exercise, stepwise forward regression is to be performed for the task of modelling GPP as a function of predictors available in the dataset of half-hourly ecosystem fluxes. To learn the skills mentioned above, you will (attempt to) write your own stepwise forward regression from scratch based on the algorithm description of stepwise forward regression in Section \@ref(variableselection). The data of half-hourly fluxes can be downloaded from [here](https://raw.githubusercontent.com/geco-bern/agds/main/data/df_for_stepwise_regression.csv).
 
 ### Deliverables for the report {.unnumbered}
 
-**Important:** For your final report you have to hand in the following two parts:
+The complete workflow of reading the data, performing the stepwise forward regression, visualising and discussing the results should be implemented in an RMarkdown notebook file and added as file `./vignettes/re_stepwise.Rmd` to your *git* repository. You will then point us to the URL of your repository. We will fork your repository and reproduce the workflow implemented in your notebook. The following aspects should be covered in your notebook:
 
-1.  A comparison of all bivariate models, showing which predictor is the best single predictor and an interpretation of these results.
+1. An evaluation of all bivariate models (single predictor), implementing just steps 1-3 of the algorithm described in \@ref(variableselection). This should be complemented by visualisation and brief discussion the results.
 
-2.  A minimum reproducible example of an error that you faced when attempting to write a full stepwise regression.
+2. An implementation of stepwise forward regression, and a visualisation and discussion of its results. If you face unsurmountable challenges and/or errors you didn't manage to resolve, your notebook may implement a minimum reproducible example of your code that produces the error or of your *attempted* implementation of stepwise forward regression.
 
-### Find the single best predictor {.unnumbered}
+### Guide for your implementation {.unnumbered}
 
-The key ingredient of a stepwise forward regression is to find the single most powerful predictor that improves your linear regression model the best. To do so, you first have to find a way to compare all possible models and then pick the best predictor. Your task is to write a reproducible script that includes the following steps:
-
--   Download and load this data `https://raw.githubusercontent.com/geco-bern/agds/main/data/df_for_stepwise_regression.csv`
--   Define the target variable `GPP_NT_VUT_REF` and use all remaining numerical variables as predictors.
--   Calculate all possible bivariate linear regression models and compare them using your model metric of choice.
--   Communicate your finding with your display item of choice.
--   Write an interpretation of your results, discussing why some predictors perform similarly well, whilst some perform substantially worse.
--   Create a hypothesis: When performing a stepwise regression, what variables do you think would be included in the best model and which ones not? Make arguments based on your statistical and ecophysiological knowledge!
-
-> *Hint*: Some variables may hold more `NA` than others, messing with your model metrics. What do you need to do to be able to make the next best model comparable to the current one, when adding a new variable?
-
-> *Hint*: To better discuss your results, you might want to look up what each variable stands for.
-
-### Minimum reproducible example {.unnumbered}
-
-The next part of this exercise is to expand your algorithm to perform a full stepwise regression. We do not expect that all of you solve this exercise without any issues - which is completely fine! Therefore, in your report, you will add the code up to the point you got stuck **and** you will have to add a minimum reproducible example (MRE), following [this guideline](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example). Write this MRE as if you were addressing an online audience; describe in detail what you goal is, where you got stuck, what the error message is, provide a code example that is runnable without needing the .csv files that you have locally (e.g., `dput()` or reading data from the web), etc. If you can solve this exercise without issues, congratulations! But it is likely that faced some error messages along the way. So, take one of these errors to write the MRE you have to submit.
-
-Code errors can break knitting your RMarkdown to HTML. To avoid having issues, make sure that you set the chunks that hold erroneous code, to `eror = TRUE`, or skip running them entirely using `eval = FALSE` (more info [here](https://bookdown.org/yihui/rmarkdown-cookbook/opts-error.html)).
-
-Now, re-read the section on stepwise regression of this tutorial and implement it in R. For such complex tasks, it is helpful to write a "pseudo-code" for your code, writing it out using coding terms like "I have to loop over all predictors and for each predictor I have to create a model that is...". Find a way to sequentially add the next best variable to your model and save that variable's name and the model metric.
-
-If you manage to write a full stepwise regression, interpret your results: Visualise the result of the stepwise regression so that it shows how the chosen metric varies with the number of predictors, preferably showing the name of the additional predictor. What do your results suggest? Do your result match your hypothesis from comparing all bivariate models? How do the model metrics change with adding variables? Can you explain their patterns with your statistical knowledge?
-
-> *Hint*: Consider using loops and [dynamic formula creation](https://stackoverflow.com/questions/4951442/formula-with-dynamic-number-of-variables) to make your code shorter and easier to read.
+- Remember the structure of the loops implemented for the Exercise *Nested loops* in Chapter \@ref(programmingprimers).
+- It may be helpful to write a "pseudo-code" that defines the structure of loops and conditionals and defines the points at which certain evaluations and function calls are performed, but cannot be actually run.
+- [This Stackoverflow post](https://stackoverflow.com/questions/4951442/formula-with-dynamic-number-of-variables) may be helpful for dynamically creating formulas, given a character vector or variable names, 
+- When discussing results, consider why a certain variable was not chosen in the final model. How do non-included variables relate to variables that are included? How do the model metrics change when adding variables? Can you explain their patterns with your statistical knowledge?
+- To better discuss your results, you might want to look up what each variable stands for. More information can be found [here](https://fluxnet.org/data/fluxnet2015-dataset/fullset-data-product/).
+- Chose an appropriate visualisation for communicating results.
+- If you hand in a minimum reproducible example of an unsuccessful implementation of stepwise regression, follow [this guideline](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example). Write a minimum reproducible example as if you were addressing an online audience; describe in detail what you goal is, where you got stuck, what the error message is, provide a code example that is runnable without needing any local files.
+- Code errors can break knitting your RMarkdown to HTML. To prevent an entire RMarkdown from failing to render because of erroneous code, you can set the respective code chunk as `error = TRUE` to avoid render failure while including the error message in the output, or `eval = FALSE` to avoid running the chunk altogether. More can be found [here](https://bookdown.org/yihui/rmarkdown-cookbook/opts-error.html).
