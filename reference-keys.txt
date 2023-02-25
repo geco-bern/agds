@@ -200,7 +200,7 @@ logistic-regression
 metrics-for-classification
 exercises-6
 report-exercise-1
-supervised-machine-learning-i-supervisedmachine-learningi
+supervisedmli
 learning-objectives-9
 tutorial-8
 what-is-supervised-machine-learning
