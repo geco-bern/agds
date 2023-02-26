@@ -1087,388 +1087,215 @@ You should now find an `renv` folder in your project as well as an `renv.lock` f
 
 ### Cross-validation by hand {-}
 
-The goal of this exercise is to create a script that explicitly runs a cross-validation by hand. In Chapter \@ref(supervisedmlii), we used the function `caret::train()` and specified the argument `trControl = caret::trainControl(method = "cv", number = 10)` to let it conduct a 10-fold cross-validation under the hood. Now, we want to actually understand this process in detail by reproducing Figure \@ref(fig:kfoldcv) in code. 
+In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail. 
 
-#### Source necessary functions  {.unnumbered}
-```{r, eval=FALSE}
-source("R/eval_model.R")
-```
+Write a function that implements *n*-fold cross-validation for KNN with $k=30$. (We write 'n-fold CV' here to avoid confusion with the k in KNN, but mean the same as described in Section \@ref(resampling).) The function should take as arguments the training data object, *n* for specifying the number of folds (use $n=60$), the name of the target variable, the names of the predictor variables as a character vector, and the $k$ for KNN. The function should return a vector of length *n*, containing the MAE evaluated on the *n* folds. To randomize the split of data points into folds, first "re-shuffle" the rows in the training data as part of the function. Centering and scaling of the training and validation data should be applied manually before getting the KNN model object within each fold.
 
-#### Get data and clean it {.unnumbered}
-```{r eval=FALSE, message=FALSE}
-# Load daily dataframe from Davos
-df_org <- readr::read_csv("data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv") |>  
+As data, use daily ecosystem flux data from [here](./data/df_daily_exercise_supervisedmlii.csv). As target variable, use `"GPP_NT_VUT_REF"`. As predictor variables, use `c("TA_F", "SW_IN_F", "VPD_F")`.
 
-  # drop QC variables (no longer needed)
-  dplyr::select(-ends_with("_QC"))
-```
+Visualise the distribution of the validation errors (MAE) across folds.
 
-#### Create training and test sets {.unnumbered}
-```{r, eval=FALSE}
-# Data splitting
-set.seed(123)  # for reproducibility
-split      <- rsample::initial_split(df_org, prop = 0.7, strata = "VPD_F")
-df_train   <- rsample::training(split)
-df_test    <- rsample::testing(split)
-```
-
-#### Write functions to facilitate repeated cross-validation {.unnumbered}
 ```{r eval=FALSE}
-## Function to run cross validation
-cross_validation_by_hand <- function(df_train,
-                                     n_folds,
-                                     vec_k
-) {
+# read data provided for this exercise
+daily_fluxes <- read.csv("data/df_daily_exercise_supervisedmlii.csv")
 
-  # Pre-process data
+nam_target <- "GPP_NT_VUT_REF"
+nams_predictors <- c("TA_F", "SW_IN_F", "VPD_F")
+
+# function returning the MAE for each fold, given the indices of the 
+# rows to be used as the validation set.
+get_mae_byfold <- function(df,              
+                           idx_fold,        # row indices for validation set
+                           nam_target,      # character string for target variables
+                           nams_predictors, # vector of character strings for predictors
+                           use_k            # k for KNN
+                           ){
   
-  # The function does not know if we are sampling from a randomly distributed 
-  # training set! For example, our df_train is structured in time, causing data
-  # leakage. Thus, we first have to randomize the df_train that is fed into
-  # the function.
+  # validation set
+  df_valid <- df[idx_fold, c(nam_target, nams_predictors)]
   
-  rand <- sample(nrow(df_train)) # Get a vector of random indeces
-  df_rnd <- df_train[rand, ] # Reorder df_train using random indeces
+  # remaining training set
+  df_train <- df[-idx_fold, c(nam_target, nams_predictors)]
   
-  # Prepare variables used in the loops
-  fold_size <- nrow(df_rnd) / n_folds # Specify size of each df in each fold
-  df_cv <- list() # Create empty dataframe to capture model performance per fold
+  # center and scale based on training data parameters
+  mean_byvar <- c()
+  sd_byvar <- c()
+  df_train_cs <- df_train * NA
+  df_valid_cs <- df_valid * NA
+  
+  # center and scale each predictor
+  for (ivar in nams_predictors){
     
-  # Loop over k's
-  for (k in vec_k) {
+    # determine mean and sd for centering and scaling
+    mean_byvar[ivar]   <- mean(df_train[,ivar], na.rm = TRUE)
+    sd_byvar[ivar]     <- sd(df_train[,ivar], na.rm = TRUE)
     
-    # Create a loop that goes through each fold
-    for (idx in 1:n_folds) {
-  
-      # Get current fold's starting and ending position in the training set 
-      index_start <- (idx - 1) * fold_size + 1
-      index_end   <- (i) * fold_size
-      
-      # Split test set into training and validation set
-      i_df_val   <- df_rnd |> dplyr::slice(index_start : index_end) # Keep 1 fold out
-      i_df_train <- df_rnd |> dplyr::slice(-(index_start : index_end)) # Keep n-1 fold
-      
-      # Check if data was not split properly
-      # Check if there is at least one date in train that is in validation set
-      # If so, promp error
-      qc <- any(i_df_train$TIMESTAMP %in% i_df_val$TIMESTAMP)
-      if (qc) stop("Error: Data was not split properly!")
-      
-      # Create recipe based on the ith train set
-      i_pp <- 
-        recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
-                        data = i_df_train) |>
-        recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
-        recipes::step_scale( recipes::all_numeric(), -recipes::all_outcomes())
-      
-      # Train the model
-      i_knn <- 
-        caret::train(i_pp, 
-                      data = i_df_train |> tidyr::drop_na(), 
-                      method = "knn",
-                      trControl = caret::trainControl(method = "none"),
-                      tuneGrid = data.frame(k = k),
-                      metric = "RMSE")
-      
-      # Extract evaluation on validation set
-      i_eval <- 
-        eval_model(i_knn, 
-                    i_df_train |> tidyr::drop_na(), 
-                    i_df_val, 
-                    return_metrics = TRUE)
-      
-      # Create df for metrics
-      i_metrics <- 
-        tidyr::tibble(
-          k    = k,
-          fold = i,
-          rmse = i_eval$test$.estimate[1],
-          rsq  = i_eval$test$.estimate[2],
-          mae  = i_eval$test$.estimate[3]
-      )
-        
-      # Append metrics to df
-      df_cv <- rbind(df_cv, i_metrics)
-    }
+    # center and scale training data
+    df_train_cs[,ivar] <- df_train[,ivar] - mean_byvar[ivar]
+    df_train_cs[,ivar] <- df_train_cs[,ivar] / sd_byvar[ivar]
     
-    # Add some verbose output to know where the loops are at
-    cat("\nDone: ", round(match(k, vec_k)/length(vec_k) * 100), " %")
+    # center and scale validation data 
+    # important: use parameters (mean and sd) determined on training data
+    df_valid_cs[,ivar] <- df_valid[,ivar] - mean_byvar[ivar]
+    df_valid_cs[,ivar] <- df_valid_cs[,ivar] / sd_byvar[ivar]
   }
   
-  # Return df_cv
-  return(df_cv)
+  # add unmodified target variable
+  df_valid_cs[,nam_target] <- df_valid[,nam_target] 
+  df_train_cs[,nam_target] <- df_train[,nam_target] 
+  
+  # train using the scaled training data
+  mod <- caret::knnreg(df_train_cs[,nams_predictors], 
+                       df_train_cs[,nam_target], 
+                       k = use_k
+                       )
+  
+  # predict using the scaled validation data
+  df_valid_cs$pred <- predict(mod, newdata = df_valid_cs[,nams_predictors])
+  
+  # calculate MAE on validation data
+  out <- mean(abs(df_valid_cs$pred - df_valid_cs[,nam_target]))
+  
+  return(out)
+  
 }
-```
 
+# function reshuffling data, creating folds (list of row indices), and 
+# calling function to calculate MAE on each fold. Returns vector of MAE for each fold.
+get_mae_cv <- function(df, 
+                       nam_target,       # character string for target variables
+                       nams_predictors,  # vector of character strings for predictors
+                       n_folds,          # number of folds for cross-validation
+                       use_k             # k for KNN
+                       ){
 
-```{r eval=FALSE}
-# Function to aggregate cross-validation output to a nice long table
-aggregate_cv_metrics <- function(df_cv){
+  # re-shuffle rows in data frame
+  df <- df[sample(nrow(df)),]
+
+  # determine row indices to be allocated to each fold
+  # each fold takes in 1/n_folds of the total number of rows
+  nrows_per_fold <- ceiling(nrow(df) / n_folds)
+  idx <- rep(seq(1:n_folds), each = nrows_per_fold)
+  folds_1 <- split(1:nrow(df), idx[1:nrow(df)])
   
-  # We must aggregate twice, once for means and once for standard deviations.
-  df_agg <- 
-    df_cv |> 
-    dplyr::group_by(k) |> 
-    dplyr::summarise(mean_rmse   = mean(rmse),
-              mean_rsq    = mean(rsq),
-              mean_mae    = mean(mae),
-              sd_rmse    = sd(rmse),
-              sd_rsq     = sd(rsq),
-              sd_mae     = sd(mae))
+  # alternative option
+  n_folds <- 5
+  idx <-  (1:nrow(df) - 1) %/% (nrow(df) / n_folds)
+  folds_2 <- split(1:nrow(df), idx)
   
-  df_long <-
-    left_join(
-      df_agg |> 
-        dplyr::select(k, 
-                      starts_with("mean_")) |> 
-        tidyr::pivot_longer(cols = starts_with("mean_"),
-               names_to = "metric",
-               values_to = "mean",
-               names_prefix = "mean_"),
-        df_agg |> 
-          dplyr::select(k, 
-                        starts_with("sd_")) |> 
-          tidyr::pivot_longer(
-            cols = starts_with("sd_"),
-            names_to = "metric",
-            values_to = "sd",
-            names_prefix = "sd_"
-            )
-      )
+  # using caret built-in function
+  folds_3 <- caret::createFolds(1:nrow(df), k = n_folds)
   
-  return(df_long)
-}
-```
-
-#### Run the cross-validation {.unnumbered}
-```{r}
-# Pick parameters for cross-validation
-my_k <- c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)
-my_folds <- 10
-```
-
-```{r eval=FALSE, message=FALSE}
-# Run cross validation
-df_cv <- cross_validation_by_hand(
-  df_train = df_train,
-  n_folds  = my_folds,
-  vec_k    = my_k
-)
-
-# Extract metrics and prepare df for plotting
-# Aggregate the metrics plot to the mean values for each metric
-df_long <- aggregate_cv_metrics(df_cv)
-
-# Extract value and k for each best metric
-df_best <- 
-  rbind(
-    df_long |> dplyr::filter(metric == "rmse") |> arrange(mean) |> slice(1),
-    df_long |> dplyr::filter(metric == "mae") |> arrange(mean) |> slice(1),
-    df_long |> dplyr::filter(metric == "rsq") |> arrange(desc(mean)) |> slice(1)
+  # loop over folds and get MAE determined on each validation set
+  mae_list <- purrr::map(
+    folds_1,
+    ~get_mae_byfold(df, ., nam_target, nams_predictors, use_k)
   )
-```
+  
+  # return a vector of MAE in each fold
+  return(unlist(mae_list))
+}
 
-```
-## Done:  8  %
-## Done:  15  %
-## Done:  23  %
-## Done:  31  %
-## Done:  38  %
-## Done:  46  %
-## Done:  54  %
-## Done:  62  %
-## Done:  69  %
-## Done:  77  %
-## Done:  85  %
-## Done:  92  %
-## Done:  100  %
+# get MAE for each fold of the cross-validation
+vec_mae_byhand <- get_mae_cv(daily_fluxes, 
+                             nam_target, 
+                             nams_predictors, 
+                             n_folds = 60, 
+                             use_k = 30
+                             )
 ```
 
 ```{r include=FALSE, eval=FALSE}
 # Use this only to by-pass running cross-validation when rendering book online
-saveRDS(df_best, "data/solutions/smlii_dfbest.rds")
-saveRDS(df_long, "data/solutions/smlii_dflong.rds")
+saveRDS(vec_mae_byhand, "data/solutions/smlii_vec_mae_byhand.rds")
 ```
+
 ```{r include=FALSE}
 # Load data when rendering book online
-df_best <- readRDS("data/solutions/smlii_dfbest.rds")
-df_long <- readRDS("data/solutions/smlii_dflong.rds")
+vec_mae_byhand <- readRDS("data/solutions/smlii_vec_mae_byhand.rds")
 ```
-<!-- >>> END OF CHECK <<< -->
 
 ```{r}
-# Check what out our dataframes look like
-head(df_best)
-head(df_long)
+tibble(mae = vec_mae_byhand) |> 
+  ggplot(aes(mae, ..count..)) +
+  geom_histogram(fill = "grey70", color = "black", bins = 10) +
+  theme_classic()
 ```
 
-#### Create output {.unnumbered}
+### Cross-validation vs. test error  {-}
 
-```{r fig.width=6, fig.height=6, fig.align='center'}
-# Make a nice facet plot showing how each metric changes with k and 
-# with vertical bar showing the optimal k for that parameter
-ggplot() +
-  geom_line(data = df_long, aes(k, mean)) +
-  geom_point(data = df_long, aes(k, mean)) +
-  geom_vline(data = df_best,
-             aes(xintercept = k),
-             color = "red") +    
-  facet_wrap(~metric, 
-             ncol = 1,
-             scales = "free_y",
-             labeller = as_labeller(c(
-               "rmse" = "RMSE",
-               "mae" =  "MAE",
-               "rsq" =  "R^2"
-             ))) +
-  labs(title = "Cross-Validated Hyperparameter Tuning",
-       y = "Mean Cross-Validated Metric Value",
-       x = "Number of Neighbours (k)") +
-  theme_linedraw() +
-  theme(plot.title = element_text(face = "bold"))
-```
+Now, you can use the user-friendly `caret::train()` for KNN with 60-fold cross-validation and tuning the hyperparameter k. Use the MAE as the loss metric. Use the same data as in the Exercise above and withhold 20% of the data for the test set. Visually compare the reported mean MAE from the cross-validation folds with the MAE determined on a test set.
 
+In your visual comparison, add a plot layer showing the distribution of validation errors from you manual implementation of cross-validation (Exercise above).
 
-```{r fig.width=6, fig.height=6}
-knitr::kable(df_best, 
-             digits = 2, 
-             caption = "Mean and standard deviation for cross-validated metrics and their best k.")
-```
+```{r eval = FALSE}
+daily_fluxes <- read.csv("data/df_daily_exercise_supervisedmlii.csv")
 
-#### Interpretation of results
+set.seed(1982)  # for reproducibility
+split <- rsample::initial_split(daily_fluxes, prop = 0.8)
+daily_fluxes_train <- rsample::training(split)
+daily_fluxes_test <- rsample::testing(split)
 
-**What do we see?**
-The plot above shows how the cross-validated values for MAE, RMSE, and adj. $R^2$ changes with the number of neighours, $k$. We see that for each metric, we can find a best value at a distinct optimal $k$. Increasing or decreasing $k$ worsens model performance. We can also see that there is some plateauing going on between a $k$ of 15-40, where there are no substantial changes for all metrics.
-
-**What does that imply?**
-The pattern of cross-validated metric versus $k$ shows that we should use a value between 15-40 in order to get the best model performance. Alternatively, we could also rerun our analysis with a finer array of $k$ like `seq(20, 40, 1)` to get an even better estimate for $k$.
-
-**How do we continue from here?**
-Our goal is to get the best model and report on what is to be expected if we apply this model to unseen data.
-Therefore, we now train our model again with the average optimal $k$ found but this time we include all training data. We do this because we want to utilize all available data to create our final model. Then we evaluate this final model against our test data. In theory, the model performance metrics on the test data should fall within the mean and standard deviation from the cross-validated model training. Is that the case here?
-
-#### Teseting our hypothesis {.unnumbered}
-
-```{r eval=FALSE, message=FALSE}
-# Get the optimal k from our cross-validation exercise 
-my_k <- mean(df_best$k) |> round()
-
-# Run cross validation
-df_cv <- cross_validation_by_hand(
-  df_train = df_train,
-  n_folds  = my_folds, 
-  vec_k    = my_k
-)
-
-# Aggregate cv-metrics
-metrics_final_model <- aggregate_cv_metrics(df_cv)
-```
-```
-## Done:  100  %
-```
-
-```{r eval=FALSE}
-# Now we train a new model with the same model setup but on the entire training set
-# Let's re-use the code from the tutorials!
+# The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
-                      data = df_train) |> 
-  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
-  recipes::step_scale( recipes::all_numeric(), -recipes::all_outcomes())
+                      data = daily_fluxes_train) |> 
+  recipes::step_center(all_numeric(), -all_outcomes()) |>
+  recipes::step_scale(all_numeric(), -all_outcomes())
 
-mycv_knn <- 
-  caret::train(
-    pp, 
-    data = df_train |> tidyr::drop_na(), 
-    method = "knn",
-    trControl = caret::trainControl(method = "none"),
-    tuneGrid = data.frame(k = my_k),
-    metric = "RMSE"
-)
+mod <- caret::train(pp, 
+                    data = daily_fluxes_train |> drop_na(), 
+                    method = "knn",
+                    trControl = caret::trainControl(method = "cv", 
+                                                    number = 60
+                                                    ),
+                    tuneGrid = data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100)),
+                    metric = "MAE"
+                    )
 
-# Evaluate model against test set
-mycv_eval <- eval_model(mycv_knn, 
-                        df_train |> tidyr::drop_na(), 
-                        df_test, 
-                        return_metrics = TRUE)
-```
+# data frame containing metrics on validation set by fold
+metrics_byfold <- mod$resample
 
+# MAE on test set
+daily_fluxes_test <- daily_fluxes_test |> 
+  drop_na() %>%  # use magrittr-pipe here for the dot evaluation
+  mutate(fitted =  predict(mod, newdata = .))  
 
-```{r eval=FALSE}
-# Let's see what caret::train() estimates
-caretcv_knn <- 
-  caret::train(
-    pp, 
-    data = df_train |> tidyr::drop_na(), 
-    method = "knn",
-    trControl = caret::trainControl(method = "cv", 
-                                    number = my_folds),
-    tuneGrid = data.frame(k = my_k),
-    metric = "RMSE"
-)
-
-caretcv_eval <- eval_model(caretcv_knn, 
-                           df_train |> tidyr::drop_na(), 
-                           df_test, 
-                           return_metrics = TRUE)
+mae_test <- mean(abs(daily_fluxes_test$fitted - daily_fluxes_test$GPP_NT_VUT_REF))
 ```
 
 ```{r include=FALSE, eval=FALSE}
 # Use this only to by-pass running cross-validation when rendering book online
-saveRDS(metrics_final_model, "data/solutions/smlii_metrics_final_model.rds")
-saveRDS(mycv_knn, "data/solutions/smlii_mycv_knn.rds")
-saveRDS(mycv_eval, "data/solutions/smlii_mycv_eval.rds")
-saveRDS(caretcv_knn, "data/solutions/smlii_caretcv_knn.rds")
-saveRDS(caretcv_eval, "data/solutions/smlii_caretcv_eval.rds")
+saveRDS(metrics_byfold, "data/solutions/smlii_metrics_byfold.rds")
+saveRDS(mae_test, "data/solutions/smlii_mae_test.rds")
 ```
+
 ```{r include=FALSE}
 # Load data when rendering book online
-metrics_final_model <- readRDS("data/solutions/smlii_metrics_final_model.rds")
-mycv_knn <- readRDS("data/solutions/smlii_mycv_knn.rds")
-mycv_eval <- readRDS("data/solutions/smlii_mycv_eval.rds")
-caretcv_knn <- readRDS("data/solutions/smlii_caretcv_knn.rds")
-caretcv_eval <- readRDS("data/solutions/smlii_caretcv_eval.rds")
+metrics_byfold <- readRDS("data/solutions/smlii_metrics_byfold.rds")
+mae_test <- readRDS("data/solutions/smlii_mae_test.rds")
 ```
-
-<!-- >>> END OF CHECK <<< -->
 
 ```{r}
-# Finally, compare the cross-validated metrics against the metrics on the test set
-cat("\nCross-Validated Metrics by hand: \n",
-    " RMSE: ", round(metrics_final_model$mean[1], 3), " +/- ", round(metrics_final_model$sd[1], 3), "\n",
-    " R^2: ",  round(metrics_final_model$mean[2], 3), " +/- ", round(metrics_final_model$sd[2], 3), "\n",
-    " MAE: ",  round(metrics_final_model$mean[3], 3), " +/- ", round(metrics_final_model$sd[3], 3), "\n",
-    
-    "\nCross-Validated Metrics by {caret}: \n",
-    " RMSE: ", round(caretcv_knn$results[[2]], 3), " +/- ", round(caretcv_knn$results[[5]], 3), "\n",
-    " R^2: ",  round(caretcv_knn$results[[3]], 3), " +/- ", round(caretcv_knn$results[[6]], 3), "\n",
-    " MAE: ",  round(caretcv_knn$results[[4]], 3), " +/- ", round(caretcv_knn$results[[7]], 3), "\n",
-    
-    "\nMetrics on Test Set by hand:\n",
-    " RMSE: ", round(mycv_eval$test$.estimate[1], 3) ,"\n",
-    " R^2: ",  round(mycv_eval$test$.estimate[2], 3) ,"\n",
-    " MAE: ",  round(mycv_eval$test$.estimate[3], 3) ,"\n",
-    
-    "\nMetrics on Test Set by {caret}:\n",
-    " RMSE: ", round(caretcv_eval$test$.estimate[1], 3) ,"\n",
-    " R^2: ",  round(caretcv_eval$test$.estimate[2], 3) ,"\n",
-    " MAE: ",  round(caretcv_eval$test$.estimate[3], 3) ,"\n")
+plot_data <- metrics_byfold |> 
+  select(caret = MAE) |> 
+  bind_cols(
+    tibble(byhand = vec_mae_byhand)
+  ) |> 
+  pivot_longer(cols = c(caret, byhand), 
+               names_to = "implementation", 
+               values_to = "MAE")
+
+plot_data |> 
+  ggplot(aes(x = MAE, y = ..count.., fill = implementation)) +
+  geom_density(alpha = 0.5) +
+  
+  # test error
+  geom_vline(xintercept = mae_test, color = "red", size = 2) +
+  
+  scale_fill_manual(values = c("darkgoldenrod", "royalblue")) +
+  theme_classic()
 ```
 
-#### Interpretation of results {.unnumbered}
-
-Nice, these number look good! They give us two key results:
-
-1.  The cross-validated estimated model metrics are very similar between using our own algorithm and the {caret} package, suggesting that our implementation is correct. Also, the metrics on the test set of the our and {caret}'s model are identical!
-
-2.  When testing our final model, the model that was was trained on the full training set, against the test data, it shows model metrics that are within the range of our estimated cross-validated metrics. For example, the cross-validation shows that if we are training a model on the full dataset and test it on unseen data, we expect that the MAE would fall within 1.148  +/- 0.075. We found an MAE on the test set of 1.149, which is within the expected range. Therefore, we can assume that our model would predict on unseen data with a similar uncertainty.
-
-<!-- Exercise Improvements:
-- The splitting between train and validation data does not account for distributions of variables. This could be improved.
--->
-
-<!-- ### Testing the generalisability of a model {-} -->
-
-<!-- *No solutions provided because part of the final report.* -->
 
 ## Random Forest
 

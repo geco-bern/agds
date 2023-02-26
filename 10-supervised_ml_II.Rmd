@@ -52,7 +52,8 @@ daily_fluxes_train <- rsample::training(split)
 daily_fluxes_test <- rsample::testing(split)
 
 # The same model formulation is in the previous chapter
-pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_fluxes_train) |> 
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
+                      data = daily_fluxes_train) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
@@ -161,7 +162,7 @@ This illustrates that the model performance on the training set keeps improving 
 
 Although decisive for the generalisability of the model, we cannot evaluate its performance on the test set during model training. We have set that data aside and must leave it untouched to have a basis for evaluating the model performance on unseen data after training. What can we do to determine the optimal hyperparameter choice during model training, estimating its performance on the test set?
 
-### Resampling
+### Resampling {#resampling}
 
 The solution is to split the training data again - now into a training and a *validation* set. Using the validation set, we can "mimick" out-of-sample predictions during training by determining the loss on the validation set and use that for guiding the model training. However, depending on the volume of data we have access to, evaluation metrics determined on the validation set may not be robust. Results may vary depending on the split into training and validation data. This makes it challenging for reliably estimating out-of-sample performance.
 
@@ -203,7 +204,7 @@ mod_cv <- readRDS("data/tutorials/smlii_mod_cv.rds")
 ```
 <!-- >>> END OF CHECK <<< -->
 
-```{r}
+```{r out.width="80%"}
 # generic plot of the caret model object
 ggplot(mod_cv)
 
@@ -219,7 +220,7 @@ df_mae |>
   filter(.estimate == min(.estimate))
 ```
 
-The evaluation on the test set suggests that $k=30$ is optimal, while 10-fold cross-validation yielded an optimal $k = 25$. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is a result of randomness in the data.
+The evaluation on the test set suggests that $k=30$ is optimal, while 10-fold cross-validation yielded an optimal $k = 25$. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is probably a result of randomness in the data.
 
 Let's look at the results as we did in Chapter \@ref(supervisedmli). The model object `mod_cv` contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the `predict()` function (as used inside `eval_model()`), it automatically uses the model trained with the optimal $k$.
 
@@ -227,7 +228,7 @@ Let's look at the results as we did in Chapter \@ref(supervisedmli). The model o
 eval_model(mod = mod_cv, df_train = daily_fluxes_train, df_test = daily_fluxes_test)
 ```
 
-Remember that in Chapter \@ref(supervisedmli), we used $k=8$ and got an $R^2=0.72$ on the training set and $R^2=0.63$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=8$ on the training set but better on the test set.
+Remember that in Chapter \@ref(supervisedmli), we used $k=8$ and got an $R^2=0.72$ on the training set and $R^2=0.64$ on the test set. The results with the optimal choice of $k=25$ yield an $R^2=0.69$ on the training set and $R^2=0.65$ on the test set - poorer than with $k=8$ on the training set but slightly better on the test set.
 
 ### Validation versus testing data
 
@@ -257,26 +258,42 @@ This illustrates that the data structure and the modelling aim (generalisability
 
 ### Cross-validation by hand {-}
 
-In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Can your algorithm achieve the same result as returned by `caret::train()` function?
+In the tutorial we "built on shoulder of giants" - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail. 
 
--  Load, wrangle and split the data from the Davos FLUXNET site as done in the tutorial.
--  Carefully read the tutorial's explanation for how to conduct a cross validation and put it into code.
--  Use your cross-validation algorithm to find the best $k$.
--  Train your final model, report its estimated error and evaluate it against the test set.
--  Compare your results to the ones from using {caret}, using the same setup (trainin data, number of folds, $k$).
--  Interpret your results
-    - What is the optimal $k$ that you find? Does it depend on the model metric you pick for cross-validation?
-    - Is the error on the test set within the estimated error? Why so, wy not?
-    - What are the differences between your implementation of a cross-validation and the one in {caret}?
+Write a function that implements *n*-fold cross-validation for KNN with $k=30$. (We write 'n-fold CV' here to avoid confusion with the k in KNN, but mean the same as described in Section \@ref(resampling).) The function should take as arguments the training data object, *n* for specifying the number of folds (use $n=60$), the name of the target variable, the names of the predictor variables as a character vector, and the $k$ for KNN. The function should return a vector of length *n*, containing the MAE evaluated on the *n* folds. To randomize the split of data points into folds, first "re-shuffle" the rows in the training data as part of the function. Centering and scaling of the training and validation data should be applied manually before getting the KNN model object within each fold.
 
-> Hint: Wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of $k$'s to test
-> Hint: Use the script `eval_model.R` (downloadable [here](https://raw.githubusercontent.com/geco-bern/agds/main/R/eval_model.R)).
+As data, use daily ecosystem flux data from [here](./data/df_daily_exercise_supervisedmlii.csv). As target variable, use `"GPP_NT_VUT_REF"`. As predictor variables, use `c("TA_F", "SW_IN_F", "VPD_F")`.
+
+Visualise the distribution of the validation errors (MAE) across folds.
+
+> Hint: Center and scale the predictors (but not the target data) within each fold.
+
+> Hint: Use `read.csv()` to obtain a "nude" data frame (not a tibble) and use the syntax `df[,"variable_name"]` to extract a vector from a data frame. This makes your life easier.
+
+> Hint: To determine the row indices to be allocated to each fold, you may find a solution using the base-R function `split()` or you may use `caret::createFolds()`.
+
+> Hint: Write two functions: One as asked for above and one that implements steps that are carried out repeatedly for each fold, given row indices of the validation set of the respective fold.
+
+> Hint: Since you are doing the cross-validation "by hand" and perform no hyperparameter tuning, we don't need the `caret::train()` function. Instead, use `caret::knnreg(x, y, ...)` for creating the model object on the training data (with `x` and `y` being data frames) and the generic `predict()` for predicting on the validation set within each fold.
+
+### Cross-validation vs. test error
+
+Now, you can use the user-friendly `caret::train()` for KNN with 60-fold cross-validation and tuning the hyperparameter k. Use the MAE as the loss metric. Use the same data as in the Exercise above and withhold 20% of the data for the test set. Visually compare the reported mean MAE from the cross-validation folds with the MAE determined on a test set.
+
+In your visual comparison, add a plot layer showing the distribution of validation errors from you manual implementation of cross-validation (Exercise above).
+
+> Hint: The returned model object from a `caret::train()` call is a list with fold-wise metrics in its element `results`.
 
 
 ## Report Exercises
 
-In this tutorial's exercise, you will explore the key idea of generalisability. The tutorial holds all steps to train and test on data from the [Davos](https://fluxnet.org/sites/siteinfo/CH-Dav) FLUXNET site (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`). Repeat these steps but with data from the [Laegern](https://fluxnet.org/sites/siteinfo/CH-Lae) site (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:
+Here, we explore the role of structure in the data for model generalisability and how to best estimate a "true" out-of-sample error that corresponds to the prediction task. The task here is to train a model on ecosystem flux observations from one site and predict to another site (spatially upscaling). In previous examples and exercises, we always trained and predicted within the same site. How well is a model generalisable to a new site?
 
--   How do the model metric on the test set change when you are train and test on the same or on different datasets?
--   What are the differences between Davos and Laegern that could cause the pattern that you found?
--   What do you expect when training and testing on Davos and Laegern simultaneously? Is this a valid approach? Use your new knowledge to reason for or against a situation where you would train on both sites.
+We investigate this question using ecosystem flux data from two distinct sites: [Davos (CH-Dav)](https://fluxnet.org/sites/siteinfo/CH-Dav) (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`), and  [Laegern (CH-Lae)](https://fluxnet.org/sites/siteinfo/CH-Lae) (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Again, use KNN and tune K for each model. Both sites are registered in the FLUXNET network.
+
+Proceed as follows:
+
+- Set aside 20% of the data of each site for testing.
+- Compare within-site predictions and across-site predictions on the test set for both sites, considering different metrics. For across-site predictions, make sure to implement a train and test setup that enables a true out-of-sample prediction test.
+- Train a single model with training data pooled from both sites and predict with this single model on the test data of both sites. How do the model metrics on the test set compare to the true out-of-sample setup above? Interpret differences. Is it a valid approach to perform model training like this? Use your knowledge about structure in the data and its relevance for the model training setup.
+- Get information about the characteristics of the two sites. What are the differences in terms of climate, vegetation, altitude, etc. between the Davos and Laegern sites? Interpret biases of the out-of-sample predictions with a view to the site characteristics.

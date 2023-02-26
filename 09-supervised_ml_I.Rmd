@@ -583,7 +583,7 @@ daily_fluxes_train <- rsample::training(split)
 daily_fluxes_test <- rsample::testing(split)
 
 # Model and pre-processing formulation, use all variables but LW_IN_F
-pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F + PA_F + P_F + WS_F, 
+pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
                       data = daily_fluxes_train |> drop_na()) |> 
   recipes::step_BoxCox(all_predictors()) |> 
   recipes::step_center(all_numeric(), -all_outcomes()) |>
@@ -702,11 +702,11 @@ The figures above show the evaluation of the model performances of the linear re
 
 Let's look at the role of $k$ in a KNN. Answer the following questions:
 
-1. Based on you understanding of KNN (and without running code), state a hypothesis for how the $R^2$ and the RMSE evaluated on the test and on the training set would change for $k$ approaching 1 and for $k$ approaching $N$ (the number of observations in the data). Explain your hypothesis, referring to the bias-variance trade-off.
+1. Based on your understanding of KNN (and without running code), state a hypothesis for how the $R^2$ and the MAE evaluated on the test and on the training set would change for $k$ approaching 1 and for $k$ approaching $N$ (the number of observations in the data). Explain your hypothesis, referring to the bias-variance trade-off.
 
-2.  Put your hypothesis to the test! Write code that repeats model fitting and evaluation for different values for $k$. Visualise results showing model generalisability as a function of model complexity. Describe how a "region" of overfitting and underfitting can be determined in your visualisation.
+2.  Put your hypothesis to the test! Write code that splits the data into a training and a test set and repeats model fitting and evaluation for different values for $k$. Visualise results, showing model generalisability as a function of model complexity. Describe how a "region" of overfitting and underfitting can be determined in your visualisation. Write (some of your) code into a function that takes $k$ as an input and and returns the MAE determined on the test set.
 
-3.  Is there an "optimal" $k$ in terms of model generalisability? Modify your code to determine an optimal $k$.
+3.  Is there an "optimal" $k$ in terms of model generalisability? Edit your code to determine an optimal $k$.
 
 Add code and text for addressing this exercise to the file `./vignettes/re_ml_01.Rmd` and give the notebook a suitable structure for easy navigation with a table of content (`toc`) by modifying its YAML header:
 
