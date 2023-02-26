@@ -44,8 +44,7 @@ fig:lmknn-2
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
-tab:unnamed-chunk-278
-tab:unnamed-chunk-289
+tab:unnamed-chunk-279
 gettingstarted
 learning-objectives-1
 tutorial
@@ -231,6 +230,7 @@ resampling
 validation-versus-testing-data
 modeling-with-structured-data
 exercises-8
+cross-validation-vs.-test-error
 report-exercises-3
 randomforest
 learning-objectives-11
@@ -253,6 +253,5 @@ code-management
 regression-and-classification
 supervised-ml-i
 supervised-ml-ii
-interpretation-of-results
 random-forest
 references

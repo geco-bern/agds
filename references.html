@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-25" />
+<meta name="date" content="2023-02-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -362,6 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#exercises-8"><i class="fa fa-check"></i><b>10.3</b> Exercises</a>
 <ul>
 <li class="chapter" data-level="" data-path="supervisedmlii.html"><a href="supervisedmlii.html#cross-validation-by-hand"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
+<li class="chapter" data-level="10.3.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#cross-validation-vs.-test-error"><i class="fa fa-check"></i><b>10.3.1</b> Cross-validation vs. test error</a></li>
 </ul></li>
 <li class="chapter" data-level="10.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#report-exercises-3"><i class="fa fa-check"></i><b>10.4</b> Report Exercises</a></li>
 </ul></li>
@@ -433,6 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="A.10" data-path="solutions.html"><a href="solutions.html#supervised-ml-ii"><i class="fa fa-check"></i><b>A.10</b> Supervised ML II</a>
 <ul>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-by-hand-1"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-vs.-test-error-1"><i class="fa fa-check"></i>Cross-validation vs. test error</a></li>
 </ul></li>
 <li class="chapter" data-level="A.11" data-path="solutions.html"><a href="solutions.html#random-forest"><i class="fa fa-check"></i><b>A.11</b> Random Forest</a>
 <ul>
@@ -467,7 +469,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="system-information-and-package-list" class="section level2 unnumbered hasAnchor">
 <h2>System information and package list<a href="references.html#system-information-and-package-list" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This book was compiled with the following environment:</p>
-<div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb537-1"><a href="references.html#cb537-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb521-1"><a href="references.html#cb521-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div>
 <pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
 ##  setting  value
 ##  version  R version 4.2.2 (2022-10-31)
@@ -478,7 +480,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  collate  C.UTF-8
 ##  ctype    C.UTF-8
 ##  tz       UTC
-##  date     2023-02-25
+##  date     2023-02-26
 ##  pandoc   2.19.2 @ /usr/bin/ (via rmarkdown)
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────

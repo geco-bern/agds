@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-25" />
+<meta name="date" content="2023-02-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -362,6 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#exercises-8"><i class="fa fa-check"></i><b>10.3</b> Exercises</a>
 <ul>
 <li class="chapter" data-level="" data-path="supervisedmlii.html"><a href="supervisedmlii.html#cross-validation-by-hand"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
+<li class="chapter" data-level="10.3.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#cross-validation-vs.-test-error"><i class="fa fa-check"></i><b>10.3.1</b> Cross-validation vs. test error</a></li>
 </ul></li>
 <li class="chapter" data-level="10.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#report-exercises-3"><i class="fa fa-check"></i><b>10.4</b> Report Exercises</a></li>
 </ul></li>
@@ -433,6 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="A.10" data-path="solutions.html"><a href="solutions.html#supervised-ml-ii"><i class="fa fa-check"></i><b>A.10</b> Supervised ML II</a>
 <ul>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-by-hand-1"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-vs.-test-error-1"><i class="fa fa-check"></i>Cross-validation vs. test error</a></li>
 </ul></li>
 <li class="chapter" data-level="A.11" data-path="solutions.html"><a href="solutions.html#random-forest"><i class="fa fa-check"></i><b>A.11</b> Random Forest</a>
 <ul>
@@ -918,7 +920,7 @@ y(\lambda) = \begin{cases}
 <span id="cb380-5"><a href="supervisedmli.html#cb380-5" aria-hidden="true" tabindex="-1"></a>daily_fluxes_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
 <span id="cb380-6"><a href="supervisedmli.html#cb380-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb380-7"><a href="supervisedmli.html#cb380-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Model and pre-processing formulation, use all variables but LW_IN_F</span></span>
-<span id="cb380-8"><a href="supervisedmli.html#cb380-8" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F <span class="sc">+</span> PA_F <span class="sc">+</span> P_F <span class="sc">+</span> WS_F, </span>
+<span id="cb380-8"><a href="supervisedmli.html#cb380-8" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
 <span id="cb380-9"><a href="supervisedmli.html#cb380-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> daily_fluxes_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>()) <span class="sc">|&gt;</span> </span>
 <span id="cb380-10"><a href="supervisedmli.html#cb380-10" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_BoxCox</span>(<span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span> </span>
 <span id="cb380-11"><a href="supervisedmli.html#cb380-11" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
@@ -1047,9 +1049,9 @@ Figure 9.2: Evaluation of the linear regression and the KNN models on the traini
 <h3>The role of k<a href="supervisedmli.html#the-role-of-k" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s look at the role of <span class="math inline">\(k\)</span> in a KNN. Answer the following questions:</p>
 <ol style="list-style-type: decimal">
-<li><p>Based on you understanding of KNN (and without running code), state a hypothesis for how the <span class="math inline">\(R^2\)</span> and the RMSE evaluated on the test and on the training set would change for <span class="math inline">\(k\)</span> approaching 1 and for <span class="math inline">\(k\)</span> approaching <span class="math inline">\(N\)</span> (the number of observations in the data). Explain your hypothesis, referring to the bias-variance trade-off.</p></li>
-<li><p>Put your hypothesis to the test! Write code that repeats model fitting and evaluation for different values for <span class="math inline">\(k\)</span>. Visualise results showing model generalisability as a function of model complexity. Describe how a “region” of overfitting and underfitting can be determined in your visualisation.</p></li>
-<li><p>Is there an “optimal” <span class="math inline">\(k\)</span> in terms of model generalisability? Modify your code to determine an optimal <span class="math inline">\(k\)</span>.</p></li>
+<li><p>Based on your understanding of KNN (and without running code), state a hypothesis for how the <span class="math inline">\(R^2\)</span> and the MAE evaluated on the test and on the training set would change for <span class="math inline">\(k\)</span> approaching 1 and for <span class="math inline">\(k\)</span> approaching <span class="math inline">\(N\)</span> (the number of observations in the data). Explain your hypothesis, referring to the bias-variance trade-off.</p></li>
+<li><p>Put your hypothesis to the test! Write code that splits the data into a training and a test set and repeats model fitting and evaluation for different values for <span class="math inline">\(k\)</span>. Visualise results, showing model generalisability as a function of model complexity. Describe how a “region” of overfitting and underfitting can be determined in your visualisation. Write (some of your) code into a function that takes <span class="math inline">\(k\)</span> as an input and and returns the MAE determined on the test set.</p></li>
+<li><p>Is there an “optimal” <span class="math inline">\(k\)</span> in terms of model generalisability? Edit your code to determine an optimal <span class="math inline">\(k\)</span>.</p></li>
 </ol>
 <p>Add code and text for addressing this exercise to the file <code>./vignettes/re_ml_01.Rmd</code> and give the notebook a suitable structure for easy navigation with a table of content (<code>toc</code>) by modifying its YAML header:</p>
 <div class="sourceCode" id="cb383"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb383-1"><a href="supervisedmli.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>

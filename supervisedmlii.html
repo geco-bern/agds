@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
 
 
-<meta name="date" content="2023-02-25" />
+<meta name="date" content="2023-02-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -362,6 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3" data-path="supervisedmlii.html"><a href="supervisedmlii.html#exercises-8"><i class="fa fa-check"></i><b>10.3</b> Exercises</a>
 <ul>
 <li class="chapter" data-level="" data-path="supervisedmlii.html"><a href="supervisedmlii.html#cross-validation-by-hand"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
+<li class="chapter" data-level="10.3.1" data-path="supervisedmlii.html"><a href="supervisedmlii.html#cross-validation-vs.-test-error"><i class="fa fa-check"></i><b>10.3.1</b> Cross-validation vs. test error</a></li>
 </ul></li>
 <li class="chapter" data-level="10.4" data-path="supervisedmlii.html"><a href="supervisedmlii.html#report-exercises-3"><i class="fa fa-check"></i><b>10.4</b> Report Exercises</a></li>
 </ul></li>
@@ -433,6 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="A.10" data-path="solutions.html"><a href="solutions.html#supervised-ml-ii"><i class="fa fa-check"></i><b>A.10</b> Supervised ML II</a>
 <ul>
 <li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-by-hand-1"><i class="fa fa-check"></i>Cross-validation by hand</a></li>
+<li class="chapter" data-level="" data-path="solutions.html"><a href="solutions.html#cross-validation-vs.-test-error-1"><i class="fa fa-check"></i>Cross-validation vs. test error</a></li>
 </ul></li>
 <li class="chapter" data-level="A.11" data-path="solutions.html"><a href="solutions.html#random-forest"><i class="fa fa-check"></i><b>A.11</b> Random Forest</a>
 <ul>
@@ -512,9 +514,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb384-35"><a href="supervisedmlii.html#cb384-35" aria-hidden="true" tabindex="-1"></a>daily_fluxes_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
 <span id="cb384-36"><a href="supervisedmlii.html#cb384-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb384-37"><a href="supervisedmlii.html#cb384-37" aria-hidden="true" tabindex="-1"></a><span class="co"># The same model formulation is in the previous chapter</span></span>
-<span id="cb384-38"><a href="supervisedmlii.html#cb384-38" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, <span class="at">data =</span> daily_fluxes_train) <span class="sc">|&gt;</span> </span>
-<span id="cb384-39"><a href="supervisedmlii.html#cb384-39" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb384-40"><a href="supervisedmlii.html#cb384-40" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
+<span id="cb384-38"><a href="supervisedmlii.html#cb384-38" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
+<span id="cb384-39"><a href="supervisedmlii.html#cb384-39" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> daily_fluxes_train) <span class="sc">|&gt;</span> </span>
+<span id="cb384-40"><a href="supervisedmlii.html#cb384-40" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb384-41"><a href="supervisedmlii.html#cb384-41" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
 </div>
 <div id="training" class="section level3 hasAnchor" number="10.2.2">
 <h3><span class="header-section-number">10.2.2</span> Loss function<a href="supervisedmlii.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -566,7 +569,7 @@ Figure 10.2: K-fold cross validation. From Boehmke and Greenwell (2020).
 <!-- >>> END OF CHECK <<< -->
 <div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="supervisedmlii.html#cb386-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic plot of the caret model object</span></span>
 <span id="cb386-2"><a href="supervisedmlii.html#cb386-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mod_cv)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-211-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-211-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="supervisedmlii.html#cb387-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
 <span id="cb387-2"><a href="supervisedmlii.html#cb387-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod_cv)</span></code></pre></div>
 <pre><code>## k-Nearest Neighbors 
@@ -602,13 +605,13 @@ Figure 10.2: K-fold cross validation. From Boehmke and Greenwell (2020).
 ##     idx .metric .estimator .estimate     k set  
 ##   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
 ## 1     7 mae     standard        1.15    30 test</code></pre>
-<p>The evaluation on the test set suggests that <span class="math inline">\(k=30\)</span> is optimal, while 10-fold cross-validation yielded an optimal <span class="math inline">\(k = 25\)</span>. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is a result of randomness in the data.</p>
+<p>The evaluation on the test set suggests that <span class="math inline">\(k=30\)</span> is optimal, while 10-fold cross-validation yielded an optimal <span class="math inline">\(k = 25\)</span>. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is probably a result of randomness in the data.</p>
 <p>Let’s look at the results as we did in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. The model object <code>mod_cv</code> contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the <code>predict()</code> function (as used inside <code>eval_model()</code>), it automatically uses the model trained with the optimal <span class="math inline">\(k\)</span>.</p>
 <div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="supervisedmlii.html#cb391-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_cv, <span class="at">df_train =</span> daily_fluxes_train, <span class="at">df_test =</span> daily_fluxes_test)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-213-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Remember that in Chapter <a href="supervisedmli.html#supervisedmli">9</a>, we used <span class="math inline">\(k=8\)</span> and got an <span class="math inline">\(R^2=0.72\)</span> on the training set and <span class="math inline">\(R^2=0.63\)</span> on the test set. The results with the optimal choice of <span class="math inline">\(k=25\)</span> yield an <span class="math inline">\(R^2=0.69\)</span> on the training set and <span class="math inline">\(R^2=0.65\)</span> on the test set - poorer than with <span class="math inline">\(k=8\)</span> on the training set but better on the test set.</p>
+<p>Remember that in Chapter <a href="supervisedmli.html#supervisedmli">9</a>, we used <span class="math inline">\(k=8\)</span> and got an <span class="math inline">\(R^2=0.72\)</span> on the training set and <span class="math inline">\(R^2=0.64\)</span> on the test set. The results with the optimal choice of <span class="math inline">\(k=25\)</span> yield an <span class="math inline">\(R^2=0.69\)</span> on the training set and <span class="math inline">\(R^2=0.65\)</span> on the test set - poorer than with <span class="math inline">\(k=8\)</span> on the training set but slightly better on the test set.</p>
 </div>
 <div id="validation-versus-testing-data" class="section level3 hasAnchor" number="10.2.5">
 <h3><span class="header-section-number">10.2.5</span> Validation versus testing data<a href="supervisedmlii.html#validation-versus-testing-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -635,33 +638,45 @@ Figure 10.3: Figure adopted form <a href="https://developers.google.com/machine-
 <h2><span class="header-section-number">10.3</span> Exercises<a href="supervisedmlii.html#exercises-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="cross-validation-by-hand" class="section level3 unnumbered hasAnchor">
 <h3>Cross-validation by hand<a href="supervisedmlii.html#cross-validation-by-hand" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>In the tutorial we “built on shoulder of giants” - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail. To learn this, you will have to write a cross validation by hand and interpret its output. Can your algorithm achieve the same result as returned by <code>caret::train()</code> function?</p>
-<ul>
-<li>Load, wrangle and split the data from the Davos FLUXNET site as done in the tutorial.</li>
-<li>Carefully read the tutorial’s explanation for how to conduct a cross validation and put it into code.</li>
-<li>Use your cross-validation algorithm to find the best <span class="math inline">\(k\)</span>.</li>
-<li>Train your final model, report its estimated error and evaluate it against the test set.</li>
-<li>Compare your results to the ones from using {caret}, using the same setup (trainin data, number of folds, <span class="math inline">\(k\)</span>).</li>
-<li>Interpret your results
-<ul>
-<li>What is the optimal <span class="math inline">\(k\)</span> that you find? Does it depend on the model metric you pick for cross-validation?</li>
-<li>Is the error on the test set within the estimated error? Why so, wy not?</li>
-<li>What are the differences between your implementation of a cross-validation and the one in {caret}?</li>
-</ul></li>
-</ul>
+<p>In the tutorial we “built on shoulder of giants” - people that went through the struggle of writing a robust package to implement a cross validation. Although we can and should use such packages, we still have to understand how a cross validation works in detail.</p>
+<p>Write a function that implements <em>n</em>-fold cross-validation for KNN with <span class="math inline">\(k=30\)</span>. (We write ‘n-fold CV’ here to avoid confusion with the k in KNN, but mean the same as described in Section <a href="supervisedmlii.html#resampling">10.2.4</a>.) The function should take as arguments the training data object, <em>n</em> for specifying the number of folds (use <span class="math inline">\(n=60\)</span>), the name of the target variable, the names of the predictor variables as a character vector, and the <span class="math inline">\(k\)</span> for KNN. The function should return a vector of length <em>n</em>, containing the MAE evaluated on the <em>n</em> folds. To randomize the split of data points into folds, first “re-shuffle” the rows in the training data as part of the function. Centering and scaling of the training and validation data should be applied manually before getting the KNN model object within each fold.</p>
+<p>As data, use daily ecosystem flux data from <a href="./data/df_daily_exercise_supervisedmlii.csv">here</a>. As target variable, use <code>"GPP_NT_VUT_REF"</code>. As predictor variables, use <code>c("TA_F", "SW_IN_F", "VPD_F")</code>.</p>
+<p>Visualise the distribution of the validation errors (MAE) across folds.</p>
 <blockquote>
-<p>Hint: Wrap your cross validation into a function with three arguments: training dataset, number of folds, vector of <span class="math inline">\(k\)</span>’s to test
-Hint: Use the script <code>eval_model.R</code> (downloadable <a href="https://raw.githubusercontent.com/geco-bern/agds/main/R/eval_model.R">here</a>).</p>
+<p>Hint: Center and scale the predictors (but not the target data) within each fold.</p>
+</blockquote>
+<blockquote>
+<p>Hint: Use <code>read.csv()</code> to obtain a “nude” data frame (not a tibble) and use the syntax <code>df[,"variable_name"]</code> to extract a vector from a data frame. This makes your life easier.</p>
+</blockquote>
+<blockquote>
+<p>Hint: To determine the row indices to be allocated to each fold, you may find a solution using the base-R function <code>split()</code> or you may use <code>caret::createFolds()</code>.</p>
+</blockquote>
+<blockquote>
+<p>Hint: Write two functions: One as asked for above and one that implements steps that are carried out repeatedly for each fold, given row indices of the validation set of the respective fold.</p>
+</blockquote>
+<blockquote>
+<p>Hint: Since you are doing the cross-validation “by hand” and perform no hyperparameter tuning, we don’t need the <code>caret::train()</code> function. Instead, use <code>caret::knnreg(x, y, ...)</code> for creating the model object on the training data (with <code>x</code> and <code>y</code> being data frames) and the generic <code>predict()</code> for predicting on the validation set within each fold.</p>
+</blockquote>
+</div>
+<div id="cross-validation-vs.-test-error" class="section level3 hasAnchor" number="10.3.1">
+<h3><span class="header-section-number">10.3.1</span> Cross-validation vs. test error<a href="supervisedmlii.html#cross-validation-vs.-test-error" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Now, you can use the user-friendly <code>caret::train()</code> for KNN with 60-fold cross-validation and tuning the hyperparameter k. Use the MAE as the loss metric. Use the same data as in the Exercise above and withhold 20% of the data for the test set. Visually compare the reported mean MAE from the cross-validation folds with the MAE determined on a test set.</p>
+<p>In your visual comparison, add a plot layer showing the distribution of validation errors from you manual implementation of cross-validation (Exercise above).</p>
+<blockquote>
+<p>Hint: The returned model object from a <code>caret::train()</code> call is a list with fold-wise metrics in its element <code>results</code>.</p>
 </blockquote>
 </div>
 </div>
 <div id="report-exercises-3" class="section level2 hasAnchor" number="10.4">
 <h2><span class="header-section-number">10.4</span> Report Exercises<a href="supervisedmlii.html#report-exercises-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In this tutorial’s exercise, you will explore the key idea of generalisability. The tutorial holds all steps to train and test on data from the <a href="https://fluxnet.org/sites/siteinfo/CH-Dav">Davos</a> FLUXNET site (<code>FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv</code>). Repeat these steps but with data from the <a href="https://fluxnet.org/sites/siteinfo/CH-Lae">Laegern</a> site (<code>FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv</code>). Now, train a model on the Davos site and test it on the Laegern site, and vice versa (train on Laegern, test on Davos). Answer the following questions:</p>
+<p>Here, we explore the role of structure in the data for model generalisability and how to best estimate a “true” out-of-sample error that corresponds to the prediction task. The task here is to train a model on ecosystem flux observations from one site and predict to another site (spatially upscaling). In previous examples and exercises, we always trained and predicted within the same site. How well is a model generalisable to a new site?</p>
+<p>We investigate this question using ecosystem flux data from two distinct sites: <a href="https://fluxnet.org/sites/siteinfo/CH-Dav">Davos (CH-Dav)</a> (<code>FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv</code>), and <a href="https://fluxnet.org/sites/siteinfo/CH-Lae">Laegern (CH-Lae)</a> (<code>FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv</code>). Again, use KNN and tune K for each model. Both sites are registered in the FLUXNET network.</p>
+<p>Proceed as follows:</p>
 <ul>
-<li>How do the model metric on the test set change when you are train and test on the same or on different datasets?</li>
-<li>What are the differences between Davos and Laegern that could cause the pattern that you found?</li>
-<li>What do you expect when training and testing on Davos and Laegern simultaneously? Is this a valid approach? Use your new knowledge to reason for or against a situation where you would train on both sites.</li>
+<li>Set aside 20% of the data of each site for testing.</li>
+<li>Compare within-site predictions and across-site predictions on the test set for both sites, considering different metrics. For across-site predictions, make sure to implement a train and test setup that enables a true out-of-sample prediction test.</li>
+<li>Train a single model with training data pooled from both sites and predict with this single model on the test data of both sites. How do the model metrics on the test set compare to the true out-of-sample setup above? Interpret differences. Is it a valid approach to perform model training like this? Use your knowledge about structure in the data and its relevance for the model training setup.</li>
+<li>Get information about the characteristics of the two sites. What are the differences in terms of climate, vegetation, altitude, etc. between the Davos and Laegern sites? Interpret biases of the out-of-sample predictions with a view to the site characteristics.</li>
 </ul>
 
 </div>
