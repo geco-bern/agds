@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
   
 
-<meta name="author" content="Benjamin Stocker (lead), Koen Hufkens (contributing), Pepa Arán (contributing), Pascal Schneider (contributing)" />
+<meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
 <meta name="date" content="2023-02-26" />
@@ -469,11 +469,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Chapter lead author: Benjamin Stocker</strong></p>
 <div id="learning-objectives-11" class="section level2 hasAnchor" number="11.1">
 <h2><span class="header-section-number">11.1</span> Learning objectives<a href="randomforest.html#learning-objectives-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In this chapter you will learn how to implement a random forest model.</p>
-<p>You will learn among others:</p>
+<p>In this chapter you will learn how to implement a Random Forest model.</p>
+<p>You will learn:</p>
 <ul>
-<li>the principles of a decision tree, and what is bagging</li>
-<li>how decision trees are related to random forest methods</li>
+<li>the principles of a <em>decision tree</em>, and purpose of <em>bagging</em></li>
+<li>how decision trees make up a Random Forest</li>
 </ul>
 </div>
 <div id="tutorial-10" class="section level2 hasAnchor" number="11.2">
@@ -485,31 +485,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>For regression problems, the <em>sum of square errors</em> is minimized.</li>
 </ul>
 <p><span class="math display">\[
-    \text{SSE} = \sum_i{(\hat{Y_i}-Y_i)^2}
+    \text{SSE} = \sum_i{(c_i-Y_i)^2}
 \]</span></p>
 <ul>
 <li>For classification problems, the <em>cross-entropy</em> or the <em>Gini index</em> are typically maximized. Both are measures of the difference between probability distributions (main ideas in <a href="https://towardsdatascience.com/cross-entropy-for-classification-d98e7f974451">this blogpost</a>).</li>
 </ul>
-<p><img src="_main_files/figure-html/unnamed-chunk-215-1.png" width="672" style="display: block; margin: auto;" /><img src="_main_files/figure-html/unnamed-chunk-215-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-215-1"></span>
+<img src="_main_files/figure-html/unnamed-chunk-215-1.png" alt="A (very) shallow decision tree." width="80%" />
+<p class="caption">
+Figure 11.1: A (very) shallow decision tree.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-215-2"></span>
+<img src="_main_files/figure-html/unnamed-chunk-215-2.png" alt="A (very) shallow decision tree." width="80%" />
+<p class="caption">
+Figure 11.2: A (very) shallow decision tree.
+</p>
+</div>
 <p>As a tree grows, splits are recursively added. In our example, only one predictor variable is available. The splits are therefore performed always on the same variable, splitting up <span class="math inline">\(X\)</span> further.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-216-1.png" width="672" style="display: block; margin: auto;" /><img src="_main_files/figure-html/unnamed-chunk-216-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-216-1"></span>
+<img src="_main_files/figure-html/unnamed-chunk-216-1.png" alt="A  decision tree of depth 3." width="80%" />
+<p class="caption">
+Figure 11.3: A decision tree of depth 3.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-216-2"></span>
+<img src="_main_files/figure-html/unnamed-chunk-216-2.png" alt="A  decision tree of depth 3." width="80%" />
+<p class="caption">
+Figure 11.4: A decision tree of depth 3.
+</p>
+</div>
 <p>In the visualisation of the decision tree above, the uppermost decision is the <em>root node</em>. From there, two branches connect to <em>internal nodes</em>, and at the bottom of the tree are the <em>leaf nodes</em>. (The nature-aware reader may note that leaves are typically at the top, and roots at the bottom of a tree. Nevermind.)</p>
 <p>Typically, multiple predictor variables are available. For each split, the variable and the location of the split along that variable is determined to satisfy the respective criteria for regression and classification.</p>
-<p>Decision trees are high variance learners. That is, as the maximum tree depth is increased, the variance of predictions increases. In other words, the depth of a tree controls the model complexity and the bias-variance trade-off. With excessive depth, decision trees tend to overfit.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-217-1.png" width="672" style="display: block; margin: auto;" /><img src="_main_files/figure-html/unnamed-chunk-217-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Decision trees are <em>high variance learners</em>. That is, as the maximum tree depth is increased, the variance of predictions increases continuously. In other words, the depth of a tree controls the model complexity and the bias-variance trade-off. With excessive depth, decision trees tend to overfit.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-217-1"></span>
+<img src="_main_files/figure-html/unnamed-chunk-217-1.png" alt="An overfitting decision tree." width="80%" />
+<p class="caption">
+Figure 11.5: An overfitting decision tree.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-217-2"></span>
+<img src="_main_files/figure-html/unnamed-chunk-217-2.png" alt="An overfitting decision tree." width="80%" />
+<p class="caption">
+Figure 11.6: An overfitting decision tree.
+</p>
+</div>
 <p>An advantage of decision trees is that they require minimal pre-processing of the data and they are robust to outliers. This is thanks to their approach of converting continuous variables into binary classes for predictions. Hence, they can naturally handle a mix of continuous and categorical predictor variables. Furthermore, predictions are not sensitive to the distance of a predictor variable’s value to a respective variable’s split location. This makes decision trees robust to outliers. It also implies that predictions to unseen data points that lie outside the range of values in the training data (<em>extrapolation</em>) are conservative.</p>
 <p>The disadvantage is, as demonstrated above, the tendency towards high variance of predictions when models get complex (deep trees). And thus, decision trees tend to be outperformed by other algorithms.</p>
 </div>
 <div id="bagging" class="section level3 hasAnchor" number="11.2.2">
 <h3><span class="header-section-number">11.2.2</span> Bagging<a href="randomforest.html#bagging" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The approach of <em>bagging</em> is to smooth out the high variance of decision tree predictions by averaging over multiple, slightly differet trees. Differences between the trees are introduced by bagging, that is, by training each individual tree only on a bootstrapped sample of the full training data. Here, a decision tree has the role of a <em>base learner</em> and bagging takes an ensemble approach. Final predictions are then taken as the average (for regression) or the most frequent class (for classification) across all trees’ predictions.</p>
-<p>Bagging is particularly effective when the base learner tends to have a high variance. The variance of predictions is continuously reduced with an increasing number of decision trees, over which averages are taken, and no tendency to overfit results from increasing the number of trees. However, the computational cost linearly increases with the number of trees and the gain in model performance levels out. Bagging also limits the interpretability. We can no longer visualise the fitted model with an intuitive graphical decision tree as done above.</p>
+<p>The approach of <em>bagging</em> is to smooth out the high variance of decision tree predictions by averaging over multiple, slightly differet trees. Differences between the trees are introduced by bagging, that is, by training each individual tree only on a bootstrapped sample of the full training data. Here, a decision tree has the role of a <em>base learner</em> and bagging takes an <em>ensemble</em> approach. Final predictions are then taken as the average (for regression) or the most frequent class (for classification) across all trees’ predictions.</p>
+<p>Bagging is particularly effective when the base learner tends to have a high variance. The variance of predictions is continuously reduced with an increasing number of decision trees over which averages are taken and no tendency to overfit results from increasing the number of trees. However, the computational cost linearly increases with the number of trees and the gain in model performance levels out relatively quickly. Bagging also limits the interpretability. We can no longer visualise the fitted model with an intuitive graphical decision tree as done above.</p>
 </div>
 <div id="from-trees-to-a-forest" class="section level3 hasAnchor" number="11.2.3">
 <h3><span class="header-section-number">11.2.3</span> From trees to a forest<a href="randomforest.html#from-trees-to-a-forest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>While bagging reduces the variance in predictions, limits to predictive performance remain. This is linked to the fact that, although a certain degree of randomness is introduced by sub-sampling the training data for each tree, individual trees often remain relatively similar. This is particularly expressed if variations in the target variable are controlled primarily by variations in a small number of predictor variables. In this case, decision trees tend to be built by splits on the same variable, irrespective of which bootstrapped sample the individual tree is trained with.</p>
 <p>Random Forest solves this problem by introducing an additional source of randomness: Only a subset of the predictor variables are considered at each split. This strongly reduces the similarity of individual trees (and also reduces computational costs) and leads to improved predictive performance.</p>
-<p>The number of variables to consider at each split is a hyperparameter of the Random Forest algorithm, commonly named <span class="math inline">\(m_\text{try}\)</span>. In the example below, we use the implementation in the {ranger} package (wrapped with {caret}), where the respective model fitting function has a hyperparameter <code>mtry</code>. Common default values are <span class="math inline">\(m_\text{try} = P/3\)</span> for regression and <span class="math inline">\(m_\text{try} = \sqrt{P}\)</span> for classification, where <span class="math inline">\(P\)</span> is the number of predictors. Model complexity is controlled by the depth of the trees. Depending on the implementation of the Random Forest algorithm, this is governed not by explicitly specifying the tree depth, but by setting the number of observations in the leaf node. In the {ranger} package, the respective hyperparamter is <code>min.node.size</code>. The number of trees is another hyperparameter and affects predictions similarly as described above for bagging.</p>
+<p>The number of variables to consider at each split is a hyperparameter of the Random Forest algorithm, commonly named <span class="math inline">\(m_\text{try}\)</span>. In the example below, we use the implementation in the {ranger} package (wrapped with {caret}), where the respective model fitting function has a hyperparameter <code>mtry</code>. Common default values are <span class="math inline">\(m_\text{try} = p/3\)</span> for regression and <span class="math inline">\(m_\text{try} = \sqrt{p}\)</span> for classification, where <span class="math inline">\(p\)</span> is the number of predictors. Model complexity is controlled by the depth of the trees. Depending on the implementation of the Random Forest algorithm, this is governed not by explicitly specifying the tree depth, but by setting the number of observations in the leaf node. In the {ranger} package, the respective hyperparamter is <code>min.node.size</code>. The number of trees is another hyperparameter and affects predictions similarly as described above for bagging.</p>
 <p>A great strength of Random Forest is, inherited by the characteristics of its underlying decision trees, its minimal requirement of data pre-processing, its capability of dealing with continuous and categorical variables, and its robustness to outliers. With the default choices of <span class="math inline">\(m_\text{try}\)</span>, Random Forest provides very good out-of-the-box performance. However, the hyperparameters of Random Forest have interactive effects and should be searched systematically.</p>
 <div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="randomforest.html#cb393-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data loading and cleaning</span></span>
 <span id="cb393-2"><a href="randomforest.html#cb393-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/eval_model.R&quot;</span>)</span>
@@ -529,80 +562,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb393-16"><a href="randomforest.html#cb393-16" aria-hidden="true" tabindex="-1"></a><span class="co"># set all -9999 to NA and only retain values with</span></span>
 <span id="cb393-17"><a href="randomforest.html#cb393-17" aria-hidden="true" tabindex="-1"></a><span class="co"># QC value of &gt; 0.8</span></span>
 <span id="cb393-18"><a href="randomforest.html#cb393-18" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> daily_fluxes <span class="sc">|&gt;</span>  </span>
-<span id="cb393-19"><a href="randomforest.html#cb393-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
-<span id="cb393-20"><a href="randomforest.html#cb393-20" aria-hidden="true" tabindex="-1"></a>    TIMESTAMP,</span>
-<span id="cb393-21"><a href="randomforest.html#cb393-21" aria-hidden="true" tabindex="-1"></a>    GPP_NT_VUT_REF,</span>
-<span id="cb393-22"><a href="randomforest.html#cb393-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>),</span>
-<span id="cb393-23"><a href="randomforest.html#cb393-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),</span>
-<span id="cb393-24"><a href="randomforest.html#cb393-24" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)</span>
-<span id="cb393-25"><a href="randomforest.html#cb393-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb393-26"><a href="randomforest.html#cb393-26" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> <span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
-<span id="cb393-27"><a href="randomforest.html#cb393-27" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span></span>
-<span id="cb393-28"><a href="randomforest.html#cb393-28" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb393-29"><a href="randomforest.html#cb393-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF),</span>
-<span id="cb393-30"><a href="randomforest.html#cb393-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">TA_F =</span> <span class="fu">ifelse</span>(TA_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, TA_F),</span>
-<span id="cb393-31"><a href="randomforest.html#cb393-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">SW_IN_F =</span> <span class="fu">ifelse</span>(SW_IN_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, SW_IN_F),</span>
-<span id="cb393-32"><a href="randomforest.html#cb393-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">LW_IN_F =</span> <span class="fu">ifelse</span>(LW_IN_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, LW_IN_F),</span>
-<span id="cb393-33"><a href="randomforest.html#cb393-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">VPD_F =</span> <span class="fu">ifelse</span>(VPD_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, VPD_F),</span>
-<span id="cb393-34"><a href="randomforest.html#cb393-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">PA_F =</span> <span class="fu">ifelse</span>(PA_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, PA_F),</span>
-<span id="cb393-35"><a href="randomforest.html#cb393-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">P_F =</span> <span class="fu">ifelse</span>(P_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, P_F),</span>
-<span id="cb393-36"><a href="randomforest.html#cb393-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">WS_F =</span> <span class="fu">ifelse</span>(WS_F_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, WS_F)</span>
-<span id="cb393-37"><a href="randomforest.html#cb393-37" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
-<span id="cb393-38"><a href="randomforest.html#cb393-38" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb393-39"><a href="randomforest.html#cb393-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop QC variables (no longer needed)</span></span>
-<span id="cb393-40"><a href="randomforest.html#cb393-40" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span>
-<span id="cb393-41"><a href="randomforest.html#cb393-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb393-42"><a href="randomforest.html#cb393-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
-<span id="cb393-43"><a href="randomforest.html#cb393-43" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
-<span id="cb393-44"><a href="randomforest.html#cb393-44" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(daily_fluxes, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
-<span id="cb393-45"><a href="randomforest.html#cb393-45" aria-hidden="true" tabindex="-1"></a>daily_fluxes_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
-<span id="cb393-46"><a href="randomforest.html#cb393-46" aria-hidden="true" tabindex="-1"></a>daily_fluxes_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
-<span id="cb393-47"><a href="randomforest.html#cb393-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb393-48"><a href="randomforest.html#cb393-48" aria-hidden="true" tabindex="-1"></a><span class="co"># The same model formulation is in the previous chapter</span></span>
-<span id="cb393-49"><a href="randomforest.html#cb393-49" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(</span>
-<span id="cb393-50"><a href="randomforest.html#cb393-50" aria-hidden="true" tabindex="-1"></a>  GPP_NT_VUT_REF <span class="sc">~</span> TA_F <span class="sc">+</span> SW_IN_F <span class="sc">+</span> LW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> P_F <span class="sc">+</span> WS_F, </span>
-<span id="cb393-51"><a href="randomforest.html#cb393-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> daily_fluxes_train</span>
-<span id="cb393-52"><a href="randomforest.html#cb393-52" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb393-53"><a href="randomforest.html#cb393-53" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(</span>
-<span id="cb393-54"><a href="randomforest.html#cb393-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_numeric</span>(),</span>
-<span id="cb393-55"><a href="randomforest.html#cb393-55" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">all_outcomes</span>()</span>
-<span id="cb393-56"><a href="randomforest.html#cb393-56" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb393-57"><a href="randomforest.html#cb393-57" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(</span>
-<span id="cb393-58"><a href="randomforest.html#cb393-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_numeric</span>(),</span>
-<span id="cb393-59"><a href="randomforest.html#cb393-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_outcomes</span>()</span>
-<span id="cb393-60"><a href="randomforest.html#cb393-60" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="randomforest.html#cb394-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Train the model</span></span>
-<span id="cb394-2"><a href="randomforest.html#cb394-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
-<span id="cb394-3"><a href="randomforest.html#cb394-3" aria-hidden="true" tabindex="-1"></a>  pp, </span>
-<span id="cb394-4"><a href="randomforest.html#cb394-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
-<span id="cb394-5"><a href="randomforest.html#cb394-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(), </span>
-<span id="cb394-6"><a href="randomforest.html#cb394-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
-<span id="cb394-7"><a href="randomforest.html#cb394-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</span>
-<span id="cb394-8"><a href="randomforest.html#cb394-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(</span>
-<span id="cb394-9"><a href="randomforest.html#cb394-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;cv&quot;</span>,</span>
-<span id="cb394-10"><a href="randomforest.html#cb394-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">number =</span> <span class="dv">5</span>,</span>
-<span id="cb394-11"><a href="randomforest.html#cb394-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>),</span>
-<span id="cb394-12"><a href="randomforest.html#cb394-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb394-13"><a href="randomforest.html#cb394-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
-<span id="cb394-14"><a href="randomforest.html#cb394-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">5</span>,</span>
-<span id="cb394-15"><a href="randomforest.html#cb394-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.splitrule =</span> <span class="st">&quot;variance&quot;</span></span>
-<span id="cb394-16"><a href="randomforest.html#cb394-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb394-17"><a href="randomforest.html#cb394-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments specific to &quot;ranger&quot; method</span></span>
-<span id="cb394-18"><a href="randomforest.html#cb394-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb394-19"><a href="randomforest.html#cb394-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
-<span id="cb394-20"><a href="randomforest.html#cb394-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">2000</span>,          <span class="co"># high number ok since no hyperparam tuning</span></span>
-<span id="cb394-21"><a href="randomforest.html#cb394-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span>                <span class="co"># for reproducibility</span></span>
-<span id="cb394-22"><a href="randomforest.html#cb394-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;e1071&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:rsample&#39;:
-## 
-##     permutations</code></pre>
-<pre><code>## The following object is masked from &#39;package:terra&#39;:
-## 
-##     interpolate</code></pre>
-<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="randomforest.html#cb398-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
-<span id="cb398-2"><a href="randomforest.html#cb398-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod)</span></code></pre></div>
+<span id="cb393-19"><a href="randomforest.html#cb393-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb393-20"><a href="randomforest.html#cb393-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only the variables we are interested in</span></span>
+<span id="cb393-21"><a href="randomforest.html#cb393-21" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(TIMESTAMP,</span>
+<span id="cb393-22"><a href="randomforest.html#cb393-22" aria-hidden="true" tabindex="-1"></a>                GPP_NT_VUT_REF,    <span class="co"># the target</span></span>
+<span id="cb393-23"><a href="randomforest.html#cb393-23" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>),  <span class="co"># quality control info</span></span>
+<span id="cb393-24"><a href="randomforest.html#cb393-24" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),   <span class="co"># includes all all meteorological covariates</span></span>
+<span id="cb393-25"><a href="randomforest.html#cb393-25" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)   <span class="co"># weird useless variable</span></span>
+<span id="cb393-26"><a href="randomforest.html#cb393-26" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">|&gt;</span></span>
+<span id="cb393-27"><a href="randomforest.html#cb393-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb393-28"><a href="randomforest.html#cb393-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to a nice date object</span></span>
+<span id="cb393-29"><a href="randomforest.html#cb393-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> <span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
+<span id="cb393-30"><a href="randomforest.html#cb393-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set all -9999 to NA</span></span>
+<span id="cb393-31"><a href="randomforest.html#cb393-31" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span></span>
+<span id="cb393-32"><a href="randomforest.html#cb393-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb393-33"><a href="randomforest.html#cb393-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># retain only data based on &gt;=80% good-quality measurements</span></span>
+<span id="cb393-34"><a href="randomforest.html#cb393-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># overwrite bad data with NA (not dropping rows)</span></span>
+<span id="cb393-35"><a href="randomforest.html#cb393-35" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF),</span>
+<span id="cb393-36"><a href="randomforest.html#cb393-36" aria-hidden="true" tabindex="-1"></a>                <span class="at">TA_F           =</span> <span class="fu">ifelse</span>(TA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, TA_F),</span>
+<span id="cb393-37"><a href="randomforest.html#cb393-37" aria-hidden="true" tabindex="-1"></a>                <span class="at">SW_IN_F        =</span> <span class="fu">ifelse</span>(SW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, SW_IN_F),</span>
+<span id="cb393-38"><a href="randomforest.html#cb393-38" aria-hidden="true" tabindex="-1"></a>                <span class="at">LW_IN_F        =</span> <span class="fu">ifelse</span>(LW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, LW_IN_F),</span>
+<span id="cb393-39"><a href="randomforest.html#cb393-39" aria-hidden="true" tabindex="-1"></a>                <span class="at">VPD_F          =</span> <span class="fu">ifelse</span>(VPD_F_QC       <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, VPD_F),</span>
+<span id="cb393-40"><a href="randomforest.html#cb393-40" aria-hidden="true" tabindex="-1"></a>                <span class="at">PA_F           =</span> <span class="fu">ifelse</span>(PA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, PA_F),</span>
+<span id="cb393-41"><a href="randomforest.html#cb393-41" aria-hidden="true" tabindex="-1"></a>                <span class="at">P_F            =</span> <span class="fu">ifelse</span>(P_F_QC         <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, P_F),</span>
+<span id="cb393-42"><a href="randomforest.html#cb393-42" aria-hidden="true" tabindex="-1"></a>                <span class="at">WS_F           =</span> <span class="fu">ifelse</span>(WS_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, WS_F)) <span class="sc">|&gt;</span> </span>
+<span id="cb393-43"><a href="randomforest.html#cb393-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop QC variables (no longer needed)</span></span>
+<span id="cb393-44"><a href="randomforest.html#cb393-44" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span>
+<span id="cb393-45"><a href="randomforest.html#cb393-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb393-46"><a href="randomforest.html#cb393-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
+<span id="cb393-47"><a href="randomforest.html#cb393-47" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb393-48"><a href="randomforest.html#cb393-48" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(daily_fluxes, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
+<span id="cb393-49"><a href="randomforest.html#cb393-49" aria-hidden="true" tabindex="-1"></a>ddf_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
+<span id="cb393-50"><a href="randomforest.html#cb393-50" aria-hidden="true" tabindex="-1"></a>ddf_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
+<span id="cb393-51"><a href="randomforest.html#cb393-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb393-52"><a href="randomforest.html#cb393-52" aria-hidden="true" tabindex="-1"></a><span class="co"># The same model formulation is in the previous chapter</span></span>
+<span id="cb393-53"><a href="randomforest.html#cb393-53" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> TA_F <span class="sc">+</span> SW_IN_F <span class="sc">+</span> LW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> P_F <span class="sc">+</span> WS_F, </span>
+<span id="cb393-54"><a href="randomforest.html#cb393-54" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> ddf_train) <span class="sc">|&gt;</span> </span>
+<span id="cb393-55"><a href="randomforest.html#cb393-55" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb393-56"><a href="randomforest.html#cb393-56" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span>
+<span id="cb393-57"><a href="randomforest.html#cb393-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb393-58"><a href="randomforest.html#cb393-58" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">train</span>(</span>
+<span id="cb393-59"><a href="randomforest.html#cb393-59" aria-hidden="true" tabindex="-1"></a>  pp, </span>
+<span id="cb393-60"><a href="randomforest.html#cb393-60" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ddf_train <span class="sc">%&gt;%</span> </span>
+<span id="cb393-61"><a href="randomforest.html#cb393-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(), </span>
+<span id="cb393-62"><a href="randomforest.html#cb393-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;ranger&quot;</span>,</span>
+<span id="cb393-63"><a href="randomforest.html#cb393-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">5</span>, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>),</span>
+<span id="cb393-64"><a href="randomforest.html#cb393-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>( <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),</span>
+<span id="cb393-65"><a href="randomforest.html#cb393-65" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.min.node.size =</span> <span class="dv">5</span>,</span>
+<span id="cb393-66"><a href="randomforest.html#cb393-66" aria-hidden="true" tabindex="-1"></a>                          <span class="at">.splitrule =</span> <span class="st">&quot;variance&quot;</span>),</span>
+<span id="cb393-67"><a href="randomforest.html#cb393-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</span>
+<span id="cb393-68"><a href="randomforest.html#cb393-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb393-69"><a href="randomforest.html#cb393-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
+<span id="cb393-70"><a href="randomforest.html#cb393-70" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">2000</span>,           <span class="co"># high number ok since no hperparam tuning</span></span>
+<span id="cb393-71"><a href="randomforest.html#cb393-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span>                <span class="co"># for reproducibility</span></span>
+<span id="cb393-72"><a href="randomforest.html#cb393-72" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="randomforest.html#cb394-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
+<span id="cb394-2"><a href="randomforest.html#cb394-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod)</span></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 1910 samples
@@ -613,36 +628,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Summary of sample sizes: 1528, 1528, 1529, 1527, 1528 
 ## Resampling results:
 ## 
-##   RMSE       Rsquared   MAE      
-##   0.5452111  0.7046723  0.4135381
+##   RMSE      Rsquared   MAE     
+##   1.411155  0.7047382  1.070285
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 2
 ## Tuning
 ##  parameter &#39;splitrule&#39; was held constant at a value of variance
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5</code></pre>
-<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="randomforest.html#cb400-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot model fit</span></span>
-<span id="cb400-2"><a href="randomforest.html#cb400-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/eval_model.R&quot;</span>)</span>
-<span id="cb400-3"><a href="randomforest.html#cb400-3" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(</span>
-<span id="cb400-4"><a href="randomforest.html#cb400-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mod =</span> mod,</span>
-<span id="cb400-5"><a href="randomforest.html#cb400-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">df_train =</span> daily_fluxes_train,</span>
-<span id="cb400-6"><a href="randomforest.html#cb400-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">df_test =</span> daily_fluxes_test</span>
-<span id="cb400-7"><a href="randomforest.html#cb400-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="randomforest.html#cb396-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod, <span class="at">df_train =</span> ddf_train, <span class="at">df_test =</span> ddf_test)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-222-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-221-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>With this, you are equipped with a powerful method and the fundamental understanding of concepts and tools for supervised machine learning applications. This is the basis for your journey in Applied Geodata Science. Congratulations and have fun!</p>
 </div>
 </div>
 <div id="exercises-9" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> Exercises<a href="randomforest.html#exercises-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="fitting-a-random-forest" class="section level3 unnumbered hasAnchor">
 <h3>Fitting a Random Forest<a href="randomforest.html#fitting-a-random-forest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Fit a random forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (<code>num.trees</code>), each with a maximum depth of 4 (<code>max.depth</code>). You can consult the respective arguments for the <code>"ranger"</code> method typing <code>?ranger</code>.</p>
+<p>Fit a Random Forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (<code>num.trees</code>), each with a maximum depth of 4 (<code>max.depth</code>). You can consult the respective arguments for the <code>"ranger"</code> method typing <code>?ranger</code>.</p>
 <p>Repeat the fitting with 1000 decision trees and max depth of 4, then with 12 decision trees and a max depth of 6. Then, discuss the role that the number of decision trees and the maximum depth of a tree play in the bias-variance trade-off and in the computation time.</p>
 </div>
 <div id="hyperparameter-tuning" class="section level3 unnumbered hasAnchor">
 <h3>Hyperparameter tuning<a href="randomforest.html#hyperparameter-tuning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>In a previous tutorial, you learned how to tune the hyperparameter <span class="math inline">\(k\)</span> in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are more hyperparameters in a random forest. The {caret} package allows to vary three hyperparameters:</p>
+<p>In a previous tutorial, you learned how to tune the hyperparameter <span class="math inline">\(k\)</span> in a KNN by hand. Now you will do the hyperparameter tuning for a Random Forest model. The task gets more complicated because there are more hyperparameters in a Random Forest. The {caret} package allows to vary three hyperparameters:</p>
 <ul>
 <li><code>mtry</code>: The number of variables to consider to make decisions at each node, often taken as <span class="math inline">\(p/3\)</span> for regression, where <span class="math inline">\(p\)</span> is the number of predictors.</li>
 <li><code>min.node.size</code>: The number of data points at the “bottom” of each decision tree, i.e. the leaves.</li>
@@ -651,16 +661,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Answer the following questions, giving a reason for your responses:</p>
 <ol style="list-style-type: decimal">
 <li><p>Check the help for the <code>ranger()</code> function and identify which values each of the three hyperparameters/arguments can take. Select a sensible range of values for each hyperparameter, that you will use in the hyperparameter search.</p></li>
-<li><p>In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? For the next questions, it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the random forests.</p></li>
+<li><p>In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? For the next questions, it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the Random Forests.</p></li>
 <li><p><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
-&gt; Tip: Keep the number of trees low, otherwise it takes too long to fit each random forest model.</p></li>
+&gt; Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.</p></li>
 <li><p><em>Grid hyperparameter tuning</em>: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the <code>expand.grid()</code> function to create a data.frame of hyperparameter value combinations. This grid will be passed to <code>train()</code> via the <code>tuneGrid</code> argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of <code>train()</code> and the results of the hyperparameter search.</p></li>
 <li><p>Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?</p></li>
 </ol>
 </div>
 <div id="model-performance" class="section level3 unnumbered hasAnchor">
 <h3>Model performance<a href="randomforest.html#model-performance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>You have trained several random forest models. Evaluate the model performance on the best model (the one for the tuned hyperparameters) and on one of your worse models. If you compare the RMSE and <span class="math inline">\(R^2\)</span> on the training and the test set, does it show overfitting?</p>
+<p>You have trained several Random Forest models. Evaluate the model performance on the best model (the one for the tuned hyperparameters) and on one of your worse models. If you compare the RMSE and <span class="math inline">\(R^2\)</span> on the training and the test set, does it show overfitting?</p>
 
 </div>
 </div>

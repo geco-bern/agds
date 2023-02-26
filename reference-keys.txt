@@ -44,7 +44,13 @@ fig:lmknn-2
 fig:lossfunction
 fig:kfoldcv
 fig:trainvaltest
-tab:unnamed-chunk-279
+fig:unnamed-chunk-215-1
+fig:unnamed-chunk-215-2
+fig:unnamed-chunk-216-1
+fig:unnamed-chunk-216-2
+fig:unnamed-chunk-217-1
+fig:unnamed-chunk-217-2
+tab:unnamed-chunk-278
 gettingstarted
 learning-objectives-1
 tutorial
