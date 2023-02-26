@@ -646,8 +646,8 @@ running_mean <- function(
   for (idx in (left+1):(length(vec)-right)){
     
     # Define start and end of the box to average over
-		startbox <- idx - left
-		endbox   <- idx + right
+    startbox <- idx - left
+    endbox   <- idx + right
 		
 		vec_out[idx] <- mean(vec[startbox:endbox], na.rm = TRUE)
   }
@@ -672,23 +672,23 @@ plot_data <- ml_co2 |>
     date = lubridate::ymd(
       paste(as.character(year),
             "-",
-            as.character(month), "-15")
+            as.character(month), "-15")  # centering monthly mean on the 15th of each month
       )
     )
 
 plot_data |>
   ggplot() +
   
-  # First plot the measurements
+  # monthly means
   geom_line(
     aes(
       date,
       average,
-      color = "Measured"
+      color = "Monthly mean"
       )
   ) +
   
-  # Add running mean on top
+  # running mean
   geom_line(
     aes(
       date,
@@ -705,14 +705,14 @@ plot_data |>
   scale_color_manual(
     "", # Omit legend title
     values = c("tomato", "black"),
-    labels = c("Running mean", "Monthly mean")
+    labels = c("12-month running mean", "Monthly mean")
   ) +
   labs(
     title = expression(
       paste("Atmospheric CO"[2],
-            " concentrations at Manua Lao, Hawaii")
+            " concentrations on Manua Lao, Hawaii")
     ),
-    y     = expression(paste("CO"[2], "(ppm)")),
+    y     = expression(paste("CO"[2], " (ppm)")),
     x     = "Year"
   )
 ```
