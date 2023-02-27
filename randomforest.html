@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-26" />
+<meta name="date" content="2023-02-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -662,8 +662,12 @@ Figure 11.6: An overfitting decision tree.
 <ol style="list-style-type: decimal">
 <li><p>Check the help for the <code>ranger()</code> function and identify which values each of the three hyperparameters/arguments can take. Select a sensible range of values for each hyperparameter, that you will use in the hyperparameter search.</p></li>
 <li><p>In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? For the next questions, it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the Random Forests.</p></li>
-<li><p><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
-&gt; Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.</p></li>
+<li><p><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.</p></li>
+</ol>
+<blockquote>
+<p>Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.</p>
+</blockquote>
+<ol start="4" style="list-style-type: decimal">
 <li><p><em>Grid hyperparameter tuning</em>: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the <code>expand.grid()</code> function to create a data.frame of hyperparameter value combinations. This grid will be passed to <code>train()</code> via the <code>tuneGrid</code> argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of <code>train()</code> and the results of the hyperparameter search.</p></li>
 <li><p>Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?</p></li>
 </ol>

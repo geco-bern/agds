@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-26" />
+<meta name="date" content="2023-02-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1869,7 +1869,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  parameter &#39;splitrule&#39; was held constant at a value of variance
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5</code></pre>
-<p>** Interpretation of results**</p>
+<p><strong>Interpretation of results</strong></p>
 <div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb502-1"><a href="solutions.html#cb502-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check results</span></span>
 <span id="cb502-2"><a href="solutions.html#cb502-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(</span>
 <span id="cb502-3"><a href="solutions.html#cb502-3" aria-hidden="true" tabindex="-1"></a>  rf_12_4<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;12 Trees with depth 4&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup),</span>
@@ -1962,7 +1962,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb504-4"><a href="solutions.html#cb504-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1997</span>)   <span class="co"># for reproducibility</span></span>
 <span id="cb504-5"><a href="solutions.html#cb504-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb504-6"><a href="solutions.html#cb504-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Train models in a loop, save metrics</span></span>
-<span id="cb504-7"><a href="solutions.html#cb504-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(mtry_value <span class="cf">in</span> mtry_values){</span>
+<span id="cb504-7"><a href="solutions.html#cb504-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (mtry_value <span class="cf">in</span> mtry_values){</span>
 <span id="cb504-8"><a href="solutions.html#cb504-8" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
 <span id="cb504-9"><a href="solutions.html#cb504-9" aria-hidden="true" tabindex="-1"></a>    pp, </span>
 <span id="cb504-10"><a href="solutions.html#cb504-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
@@ -2005,7 +2005,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb506-4"><a href="solutions.html#cb506-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1997</span>)   <span class="co"># for reproducibility</span></span>
 <span id="cb506-5"><a href="solutions.html#cb506-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb506-6"><a href="solutions.html#cb506-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Train models in a loop, save metrics</span></span>
-<span id="cb506-7"><a href="solutions.html#cb506-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(min.node.size_value <span class="cf">in</span> min.node.size_values){</span>
+<span id="cb506-7"><a href="solutions.html#cb506-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (min.node.size_value <span class="cf">in</span> min.node.size_values){</span>
 <span id="cb506-8"><a href="solutions.html#cb506-8" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
 <span id="cb506-9"><a href="solutions.html#cb506-9" aria-hidden="true" tabindex="-1"></a>    pp, </span>
 <span id="cb506-10"><a href="solutions.html#cb506-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
@@ -2049,7 +2049,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb508-2"><a href="solutions.html#cb508-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
 <span id="cb508-3"><a href="solutions.html#cb508-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb508-4"><a href="solutions.html#cb508-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Train models in a loop, save metrics</span></span>
-<span id="cb508-5"><a href="solutions.html#cb508-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(splitrule_value <span class="cf">in</span> splitrule_values){</span>
+<span id="cb508-5"><a href="solutions.html#cb508-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (splitrule_value <span class="cf">in</span> splitrule_values){</span>
 <span id="cb508-6"><a href="solutions.html#cb508-6" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
 <span id="cb508-7"><a href="solutions.html#cb508-7" aria-hidden="true" tabindex="-1"></a>    pp, </span>
 <span id="cb508-8"><a href="solutions.html#cb508-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
@@ -2124,7 +2124,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <ol start="5" style="list-style-type: decimal">
 <li>Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?</li>
 </ol>
-<p>The best model according to the grid search, with lowest RMSE, is the one with <code>mtry = 4</code>, <code>min.node.size = 5</code> and <code>splitrule = "extratrees"</code> . This is not the “best model” we found with the greedy approach (different <code>mtry</code>) and also not the best according to Rsquared (<code>mtry = 4</code>, <code>min.node.size =</code> and <code>splitrule = ""</code>). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best <code>splitrule</code> is <code>"extratrees"</code> (and if you change the random seed, this result is consistent). The best <code>mtry</code> value is different for each split rule used, so having started with <code>"variance"</code> in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).</p>
+<p>The best model according to the grid search, with lowest RMSE, is the one with <code>mtry = 4</code>, <code>min.node.size = 5</code> and <code>splitrule = "extratrees"</code> . This is not the “best model” we found with the greedy approach (different <code>mtry</code>) and also not the best according to <span class="math inline">\(R^2\)</span> (indicates the same model as when considering RMSE). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best <code>splitrule</code> is <code>"extratrees"</code> (and if you change the random seed, this result is consistent). The best <code>mtry</code> value is different for each split rule used, so having started with <code>"variance"</code> in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).</p>
 </div>
 <div id="model-performance-1" class="section level3 unnumbered hasAnchor">
 <h3>Model performance<a href="solutions.html#model-performance-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
