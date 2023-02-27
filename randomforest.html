@@ -647,8 +647,8 @@ Figure 11.6: An overfitting decision tree.
 <h2><span class="header-section-number">11.3</span> Exercises<a href="randomforest.html#exercises-9" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="fitting-a-random-forest" class="section level3 unnumbered hasAnchor">
 <h3>Fitting a Random Forest<a href="randomforest.html#fitting-a-random-forest" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Fit a Random Forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (<code>num.trees</code>), each with a maximum depth of 4 (<code>max.depth</code>). You can consult the respective arguments for the <code>"ranger"</code> method typing <code>?ranger</code>.</p>
-<p>Repeat the fitting with 1000 decision trees and max depth of 4, then with 12 decision trees and a max depth of 6. Then, discuss the role that the number of decision trees and the maximum depth of a tree play in the bias-variance trade-off and in the computation time.</p>
+<p>Fit a Random Forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (<code>num.trees</code>), each with a minimum number of observations per leaf of 5 (<code>min.node.size</code>). You can consult the respective arguments for the <code>"ranger"</code> method typing <code>?ranger</code>.</p>
+<p>Repeat the fitting with 1000 decision trees and minimum node size of 5, then with 12 decision trees and a minimum node size of 1. Then, discuss the role that the number of decision trees and the minimum number of leaf observations of a tree play in the bias-variance trade-off and in the computation time.</p>
 </div>
 <div id="hyperparameter-tuning" class="section level3 unnumbered hasAnchor">
 <h3>Hyperparameter tuning<a href="randomforest.html#hyperparameter-tuning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -661,8 +661,8 @@ Figure 11.6: An overfitting decision tree.
 <p>Answer the following questions, giving a reason for your responses:</p>
 <ol style="list-style-type: decimal">
 <li><p>Check the help for the <code>ranger()</code> function and identify which values each of the three hyperparameters/arguments can take. Select a sensible range of values for each hyperparameter, that you will use in the hyperparameter search.</p></li>
-<li><p>In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? For the next questions, it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the Random Forests.</p></li>
-<li><p><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.</p></li>
+<li><p>In the previous exercise, you have seen how the minimum node size regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? Note that it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the Random Forests.</p></li>
+<li><p><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search. Implement the optimization routine yourself, using loops.</p></li>
 </ol>
 <blockquote>
 <p>Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.</p>

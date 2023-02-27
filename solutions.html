@@ -663,7 +663,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb436-22"><a href="solutions.html#cb436-22" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb436-23"><a href="solutions.html#cb436-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb436-24"><a href="solutions.html#cb436-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-235-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-236-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="solutions.html#cb437-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or short using the approx() function:</span></span>
 <span id="cb437-2"><a href="solutions.html#cb437-2" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">100</span>) <span class="co"># initialize vector of length 100 with NA</span></span>
 <span id="cb437-3"><a href="solutions.html#cb437-3" aria-hidden="true" tabindex="-1"></a>vec[<span class="dv">1</span><span class="sc">:</span><span class="dv">25</span>] <span class="ot">&lt;-</span> <span class="dv">6</span>      <span class="co"># populate first 25 elements of &#39;vec&#39; with 6. </span></span>
@@ -672,7 +672,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb437-6"><a href="solutions.html#cb437-6" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">approx</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, vec, <span class="at">xout =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>)</span>
 <span id="cb437-7"><a href="solutions.html#cb437-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb437-8"><a href="solutions.html#cb437-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(vec)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-235-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-236-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="data-wrangling" class="section level2 hasAnchor" number="12.3">
@@ -828,7 +828,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb449-21"><a href="solutions.html#cb449-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y     =</span> <span class="st">&quot;Fraction of total GPP entries [%]&quot;</span>,</span>
 <span id="cb449-22"><a href="solutions.html#cb449-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="st">&quot;Hour of Day&quot;</span></span>
 <span id="cb449-23"><a href="solutions.html#cb449-23" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-243-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-244-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Perform an aggregation of the half-hourly GPP data (variable <code>GPP_NT_VUT_REF</code>) to daily means of the unmodified data read from file <code>FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv</code>, and from cleaned data where only measured (not gap-filled) half-hourly data is kept and aggregated. This yields two data frames with daily GPP data. Calculate the overall mean GPP for the two data frames (across all days in the data frame). Are the overall mean GPP values equal? If not, why?</p>
 <div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb450-1"><a href="solutions.html#cb450-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes_all <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span></span>
 <span id="cb450-2"><a href="solutions.html#cb450-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
@@ -918,7 +918,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb456-22"><a href="solutions.html#cb456-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb456-23"><a href="solutions.html#cb456-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span> <span class="co"># inverse color scale is more intuitive here</span></span>
 <span id="cb456-24"><a href="solutions.html#cb456-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-245-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-246-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Then aggregate half-hourly to daily data, taking the mean of <code>GPP_NT_VUT_REF</code> and recording the proportion of underlying half-hourly data points that are “spurious”. Visualise the time series of daily <code>GPP_NT_VUT_REF</code> with the color scale indicating the proportion of spurious half-hourly data that was used for determining the respective date’s mean GPP.</p>
 <div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="solutions.html#cb457-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate</span></span>
 <span id="cb457-2"><a href="solutions.html#cb457-2" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> half_hourly_fluxes <span class="sc">|&gt;</span> </span>
@@ -937,7 +937,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb457-15"><a href="solutions.html#cb457-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb457-16"><a href="solutions.html#cb457-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span> <span class="co"># inverse color scale is more intuitive here</span></span>
 <span id="cb457-17"><a href="solutions.html#cb457-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-246-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-247-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="identifying-outliers-1" class="section level3 unnumbered hasAnchor">
 <h3>Identifying Outliers<a href="solutions.html#identifying-outliers-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -964,7 +964,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb458-13"><a href="solutions.html#cb458-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Shortwave radiation (W m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;)&quot;</span>)), </span>
 <span id="cb458-14"><a href="solutions.html#cb458-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb458-15"><a href="solutions.html#cb458-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-247-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-248-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Now, we want to “control” for the influence of shortwave radiation on GPP and define outliers with respect to the distribution of <em>residuals</em> of the linear regression between the two variables. Relax the definition of what is considered an outlier by setting adjusting their definition to falling outside <span class="math inline">\(( Q_1 - 5 (Q_3 - Q_1)\)</span> to <span class="math inline">\(Q_3 + 5 (Q_3 - Q_1)\)</span>. Again, plot <code>GPP_NT_VUT_REF</code> versus shortwave radiation and highlight outliers in red.</p>
 <blockquote>
 <p>Hint: Fit the linear regression model as <code>lm(GPP_NT_VUT_REF ~ SW_IN_F, data = half_hourly_fluxes)</code> and obtain the residuals from the object returned by the <code>lm()</code> function (see ‘Value’ in its help page).</p>
@@ -995,7 +995,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb459-21"><a href="solutions.html#cb459-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;Shortwave radiation (W m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;)&quot;</span>)), </span>
 <span id="cb459-22"><a href="solutions.html#cb459-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb459-23"><a href="solutions.html#cb459-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-248-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-249-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><strong>What do we see in this plot?</strong> We see that the red points, the outliers, fall outside the main point cloud of green points. The distribution of these outliers seems without systematic pattern or deviation. Nonetheless, it is good practice to go a step further and look at these data points in detail to find out whether they should be removed or not in your analysis. In later Chapters you will learn more on what disproportionate role outliers can play and how they may affect your statistical model and analysis.</p>
 </div>
 <div id="visualising-diurnal-and-seasonal-cycles-of-gpp-1" class="section level3 unnumbered hasAnchor">
@@ -1042,7 +1042,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb460-33"><a href="solutions.html#cb460-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># avoid having a small padding from the lowest values to the end of axes</span></span>
 <span id="cb460-34"><a href="solutions.html#cb460-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
 <span id="cb460-35"><a href="solutions.html#cb460-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-249-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-250-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Beautiful, isn’t it? We nicely see that on practically all days of the year we have the diurnal cycle of GPP which follows the sun’s cycle. And throughout a year, we see a rapid increase in GPP in the spring when all trees put out their leaves at once. After a highly productive summer, temperatures drop, sensescence kicks in and GPP gradually drops into its winter low.</p>
 </div>
 <div id="trend-in-carbon-dioxide-concentrations-1" class="section level3 unnumbered hasAnchor">
@@ -1077,7 +1077,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="solutions.html#cb462-1" aria-hidden="true" tabindex="-1"></a>ml_co2 <span class="sc">|&gt;</span> </span>
 <span id="cb462-2"><a href="solutions.html#cb462-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
 <span id="cb462-3"><a href="solutions.html#cb462-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(year_dec, average))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-251-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-252-1.png" width="672" style="display: block; margin: auto;" /></p>
 <ul>
 <li>Write a function that computes a 12-month running mean of the CO<span class="math inline">\(_2\)</span> time series. The running mean for month <span class="math inline">\(m\)</span> should consider values of <span class="math inline">\(m-5\)</span> to <span class="math inline">\(m+6\)</span>. Define arguments for the function that let the user specify the width of the running mean “box” (i.e., setting the <span class="math inline">\(5\)</span> and <span class="math inline">\(6\)</span> to any other integer of choice)</li>
 </ul>
@@ -1168,7 +1168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb464-48"><a href="solutions.html#cb464-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="st">&quot;Year&quot;</span></span>
 <span id="cb464-49"><a href="solutions.html#cb464-49" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## Warning: Removed 11 rows containing missing values (`geom_line()`).</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-253-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-254-1.png" width="672" style="display: block; margin: auto;" /></p>
 <!-- ### Telling a story from data {-} -->
 <!-- *No solutions provided because part of the final report.* -->
 </div>
@@ -1345,7 +1345,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb478-30"><a href="solutions.html#cb478-30" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
 <span id="cb478-31"><a href="solutions.html#cb478-31" aria-hidden="true" tabindex="-1"></a>sand <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span>
 <span id="cb478-32"><a href="solutions.html#cb478-32" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(sand)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-260-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-261-1.png" width="672" style="display: block; margin: auto;" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Consulting the original data pages or the package help files one can determine that the parameter “T_SAND” needs to be replaced by “T_SILT” in both the URL and the query.</li>
 </ol>
@@ -1381,7 +1381,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb479-30"><a href="solutions.html#cb479-30" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
 <span id="cb479-31"><a href="solutions.html#cb479-31" aria-hidden="true" tabindex="-1"></a>sand <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span>
 <span id="cb479-32"><a href="solutions.html#cb479-32" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(sand)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-261-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-262-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="dedicated-libraries" class="section level4 hasAnchor" number="12.5.1.2">
 <h4><span class="header-section-number">A.5.1.2</span> Dedicated libraries<a href="solutions.html#dedicated-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -1406,7 +1406,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb482-3"><a href="solutions.html#cb482-3" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
 <span id="cb482-4"><a href="solutions.html#cb482-4" aria-hidden="true" tabindex="-1"></a>sand <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span>
 <span id="cb482-5"><a href="solutions.html#cb482-5" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(sand)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-262-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-263-1.png" width="672" style="display: block; margin: auto;" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>You can easily list all {MODISTools} products using:</li>
 </ol>
@@ -1442,7 +1442,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="solutions.html#cb488-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to a raster map for plotting</span></span>
 <span id="cb488-2"><a href="solutions.html#cb488-2" aria-hidden="true" tabindex="-1"></a>land_cover <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_to_terra</span>(land_cover)</span>
 <span id="cb488-3"><a href="solutions.html#cb488-3" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(land_cover)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-264-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-265-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -1626,7 +1626,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb492-2"><a href="solutions.html#cb492-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(mae, ..count..)) <span class="sc">+</span></span>
 <span id="cb492-3"><a href="solutions.html#cb492-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">&quot;grey70&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
 <span id="cb492-4"><a href="solutions.html#cb492-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-269-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-270-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="cross-validation-vs.-test-error-1" class="section level3 unnumbered hasAnchor">
 <h3>Cross-validation vs. test error<a href="solutions.html#cross-validation-vs.-test-error-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1682,14 +1682,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb494-16"><a href="solutions.html#cb494-16" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb494-17"><a href="solutions.html#cb494-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;darkgoldenrod&quot;</span>, <span class="st">&quot;royalblue&quot;</span>)) <span class="sc">+</span></span>
 <span id="cb494-18"><a href="solutions.html#cb494-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-273-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-274-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="random-forest" class="section level2 hasAnchor" number="12.11">
 <h2><span class="header-section-number">A.11</span> Random Forest<a href="solutions.html#random-forest" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="fitting-a-random-forest-1" class="section level3 unnumbered hasAnchor">
 <h3>Fitting a Random Forest<a href="solutions.html#fitting-a-random-forest-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Fit a random forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (<code>num.trees</code>), each with a maximum depth of 4 (<code>max.depth</code>). You can consult the respective arguments for the <code>"ranger"</code> method typing <code>?ranger</code>.</p>
+<p>Fit a Random Forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (<code>num.trees</code>), each with a minimum number of observations per leaf of 5 (<code>min.node.size</code>). You can consult the respective arguments for the <code>"ranger"</code> method typing <code>?ranger</code>.</p>
 <div class="sourceCode" id="cb495"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb495-1"><a href="solutions.html#cb495-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data loading and cleaning</span></span>
 <span id="cb495-2"><a href="solutions.html#cb495-2" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb495-3"><a href="solutions.html#cb495-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -1733,7 +1733,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb495-41"><a href="solutions.html#cb495-41" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
 <span id="cb495-42"><a href="solutions.html#cb495-42" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
 <div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb496-1"><a href="solutions.html#cb496-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the first model of 12 trees and maximum depth 4</span></span>
-<span id="cb496-2"><a href="solutions.html#cb496-2" aria-hidden="true" tabindex="-1"></a>rf_12_4 <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb496-2"><a href="solutions.html#cb496-2" aria-hidden="true" tabindex="-1"></a>rf_12_5 <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
 <span id="cb496-3"><a href="solutions.html#cb496-3" aria-hidden="true" tabindex="-1"></a>  pp, </span>
 <span id="cb496-4"><a href="solutions.html#cb496-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
 <span id="cb496-5"><a href="solutions.html#cb496-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(), </span>
@@ -1746,19 +1746,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb496-12"><a href="solutions.html#cb496-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb496-13"><a href="solutions.html#cb496-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(</span>
 <span id="cb496-14"><a href="solutions.html#cb496-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),        <span class="co"># default p/3</span></span>
-<span id="cb496-15"><a href="solutions.html#cb496-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">5</span>,            <span class="co"># default 5</span></span>
+<span id="cb496-15"><a href="solutions.html#cb496-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">5</span>,          <span class="co"># set to 5</span></span>
 <span id="cb496-16"><a href="solutions.html#cb496-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">.splitrule =</span> <span class="st">&quot;variance&quot;</span>      <span class="co"># default &quot;variance&quot;</span></span>
 <span id="cb496-17"><a href="solutions.html#cb496-17" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb496-18"><a href="solutions.html#cb496-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments specific to &quot;ranger&quot; method</span></span>
 <span id="cb496-19"><a href="solutions.html#cb496-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb496-20"><a href="solutions.html#cb496-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.depth =</span> <span class="dv">4</span>,</span>
-<span id="cb496-21"><a href="solutions.html#cb496-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
-<span id="cb496-22"><a href="solutions.html#cb496-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">12</span>,       </span>
-<span id="cb496-23"><a href="solutions.html#cb496-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span>                                          <span class="co"># for reproducibility</span></span>
-<span id="cb496-24"><a href="solutions.html#cb496-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb496-25"><a href="solutions.html#cb496-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb496-26"><a href="solutions.html#cb496-26" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
-<span id="cb496-27"><a href="solutions.html#cb496-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_12_4)</span></code></pre></div>
+<span id="cb496-20"><a href="solutions.html#cb496-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
+<span id="cb496-21"><a href="solutions.html#cb496-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">12</span>,       </span>
+<span id="cb496-22"><a href="solutions.html#cb496-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span>                                          <span class="co"># for reproducibility</span></span>
+<span id="cb496-23"><a href="solutions.html#cb496-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb496-24"><a href="solutions.html#cb496-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb496-25"><a href="solutions.html#cb496-25" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
+<span id="cb496-26"><a href="solutions.html#cb496-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_12_5)</span></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 1910 samples
@@ -1770,17 +1769,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Resampling results:
 ## 
 ##   RMSE      Rsquared   MAE     
-##   1.501581  0.6680359  1.152593
+##   1.468118  0.6796483  1.116388
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 2
 ## Tuning
 ##  parameter &#39;splitrule&#39; was held constant at a value of variance
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5</code></pre>
-<p>Repeat the fitting with 1000 decision trees and max depth of 4, then with 12 decision trees and a max depth of 6. Then, discuss the role that the number of decision trees and the maximum depth of a tree play in the bias-variance trade-off and in the computation time.</p>
+<p>Repeat the fitting with 1000 decision trees and minimum node size of 5, then with 12 decision trees and a minimum node size of 1. Then, discuss the role that the number of decision trees and the minimum number of leaf observations of a tree play in the bias-variance trade-off and in the computation time.</p>
 <div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb498-1"><a href="solutions.html#cb498-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Directly fit the model again, with same data and model formulation</span></span>
 <span id="cb498-2"><a href="solutions.html#cb498-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Now train with 1000 trees and maximum depth 4</span></span>
-<span id="cb498-3"><a href="solutions.html#cb498-3" aria-hidden="true" tabindex="-1"></a>rf_1000_4 <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb498-3"><a href="solutions.html#cb498-3" aria-hidden="true" tabindex="-1"></a>rf_1000_5 <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
 <span id="cb498-4"><a href="solutions.html#cb498-4" aria-hidden="true" tabindex="-1"></a>  pp, </span>
 <span id="cb498-5"><a href="solutions.html#cb498-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
 <span id="cb498-6"><a href="solutions.html#cb498-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(), </span>
@@ -1793,19 +1792,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb498-13"><a href="solutions.html#cb498-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb498-14"><a href="solutions.html#cb498-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(</span>
 <span id="cb498-15"><a href="solutions.html#cb498-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),       <span class="co"># default p/3</span></span>
-<span id="cb498-16"><a href="solutions.html#cb498-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">5</span>,         <span class="co"># default 5</span></span>
+<span id="cb498-16"><a href="solutions.html#cb498-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">5</span>,         <span class="co"># set to 5</span></span>
 <span id="cb498-17"><a href="solutions.html#cb498-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">.splitrule =</span> <span class="st">&quot;variance&quot;</span>     <span class="co"># default variance</span></span>
 <span id="cb498-18"><a href="solutions.html#cb498-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb498-19"><a href="solutions.html#cb498-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments specific to &quot;ranger&quot; method</span></span>
 <span id="cb498-20"><a href="solutions.html#cb498-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb498-21"><a href="solutions.html#cb498-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.depth =</span> <span class="dv">4</span>,</span>
-<span id="cb498-22"><a href="solutions.html#cb498-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
-<span id="cb498-23"><a href="solutions.html#cb498-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">1000</span>,       </span>
-<span id="cb498-24"><a href="solutions.html#cb498-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span></span>
-<span id="cb498-25"><a href="solutions.html#cb498-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb498-26"><a href="solutions.html#cb498-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb498-27"><a href="solutions.html#cb498-27" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
-<span id="cb498-28"><a href="solutions.html#cb498-28" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_1000_4)</span></code></pre></div>
+<span id="cb498-21"><a href="solutions.html#cb498-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
+<span id="cb498-22"><a href="solutions.html#cb498-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">1000</span>,       </span>
+<span id="cb498-23"><a href="solutions.html#cb498-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span></span>
+<span id="cb498-24"><a href="solutions.html#cb498-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb498-25"><a href="solutions.html#cb498-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb498-26"><a href="solutions.html#cb498-26" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
+<span id="cb498-27"><a href="solutions.html#cb498-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_1000_5)</span></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 1910 samples
@@ -1817,7 +1815,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Resampling results:
 ## 
 ##   RMSE      Rsquared  MAE     
-##   1.483676  0.681084  1.138781
+##   1.415667  0.701975  1.078454
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 2
 ## Tuning
@@ -1825,7 +1823,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5</code></pre>
 <div class="sourceCode" id="cb500"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb500-1"><a href="solutions.html#cb500-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat model fit with 12 trees and maximum depth 6</span></span>
-<span id="cb500-2"><a href="solutions.html#cb500-2" aria-hidden="true" tabindex="-1"></a>rf_12_6 <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
+<span id="cb500-2"><a href="solutions.html#cb500-2" aria-hidden="true" tabindex="-1"></a>rf_12_1 <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(</span>
 <span id="cb500-3"><a href="solutions.html#cb500-3" aria-hidden="true" tabindex="-1"></a>  pp, </span>
 <span id="cb500-4"><a href="solutions.html#cb500-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> daily_fluxes_train <span class="sc">%&gt;%</span> </span>
 <span id="cb500-5"><a href="solutions.html#cb500-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">drop_na</span>(), </span>
@@ -1838,19 +1836,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb500-12"><a href="solutions.html#cb500-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb500-13"><a href="solutions.html#cb500-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(</span>
 <span id="cb500-14"><a href="solutions.html#cb500-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">.mtry =</span> <span class="fu">floor</span>(<span class="dv">6</span> <span class="sc">/</span> <span class="dv">3</span>),        <span class="co"># default p/3</span></span>
-<span id="cb500-15"><a href="solutions.html#cb500-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">5</span>,          <span class="co"># default 5</span></span>
+<span id="cb500-15"><a href="solutions.html#cb500-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">.min.node.size =</span> <span class="dv">1</span>,          <span class="co"># set to 1</span></span>
 <span id="cb500-16"><a href="solutions.html#cb500-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">.splitrule =</span> <span class="st">&quot;variance&quot;</span>      <span class="co"># default &quot;variance&quot;</span></span>
 <span id="cb500-17"><a href="solutions.html#cb500-17" aria-hidden="true" tabindex="-1"></a>  ),</span>
 <span id="cb500-18"><a href="solutions.html#cb500-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arguments specific to &quot;ranger&quot; method</span></span>
 <span id="cb500-19"><a href="solutions.html#cb500-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb500-20"><a href="solutions.html#cb500-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">max.depth =</span> <span class="dv">6</span>,</span>
-<span id="cb500-21"><a href="solutions.html#cb500-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
-<span id="cb500-22"><a href="solutions.html#cb500-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">12</span>,       </span>
-<span id="cb500-23"><a href="solutions.html#cb500-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span></span>
-<span id="cb500-24"><a href="solutions.html#cb500-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb500-25"><a href="solutions.html#cb500-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb500-26"><a href="solutions.html#cb500-26" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
-<span id="cb500-27"><a href="solutions.html#cb500-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_12_6)</span></code></pre></div>
+<span id="cb500-20"><a href="solutions.html#cb500-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample.fraction =</span> <span class="fl">0.5</span>,</span>
+<span id="cb500-21"><a href="solutions.html#cb500-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">num.trees =</span> <span class="dv">12</span>,       </span>
+<span id="cb500-22"><a href="solutions.html#cb500-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span></span>
+<span id="cb500-23"><a href="solutions.html#cb500-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb500-24"><a href="solutions.html#cb500-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb500-25"><a href="solutions.html#cb500-25" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
+<span id="cb500-26"><a href="solutions.html#cb500-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_12_1)</span></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 1910 samples
@@ -1861,32 +1858,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Summary of sample sizes: 1527, 1528, 1529, 1528, 1528 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared   MAE     
-##   1.456632  0.6847908  1.109273
+##   RMSE      Rsquared  MAE    
+##   1.470344  0.678954  1.11868
 ## 
 ## Tuning parameter &#39;mtry&#39; was held constant at a value of 2
 ## Tuning
 ##  parameter &#39;splitrule&#39; was held constant at a value of variance
 ## 
-## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5</code></pre>
+## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 1</code></pre>
 <p><strong>Interpretation of results</strong></p>
 <div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb502-1"><a href="solutions.html#cb502-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check results</span></span>
 <span id="cb502-2"><a href="solutions.html#cb502-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(</span>
-<span id="cb502-3"><a href="solutions.html#cb502-3" aria-hidden="true" tabindex="-1"></a>  rf_12_4<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;12 Trees with depth 4&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup),</span>
-<span id="cb502-4"><a href="solutions.html#cb502-4" aria-hidden="true" tabindex="-1"></a>  rf_1000_4<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;1000 Trees with depth 4&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup),</span>
-<span id="cb502-5"><a href="solutions.html#cb502-5" aria-hidden="true" tabindex="-1"></a>  rf_12_6<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;12 Trees with depth 6&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup)</span>
+<span id="cb502-3"><a href="solutions.html#cb502-3" aria-hidden="true" tabindex="-1"></a>  rf_12_5<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;12 Trees with at least 5 obs per leaf&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup),</span>
+<span id="cb502-4"><a href="solutions.html#cb502-4" aria-hidden="true" tabindex="-1"></a>  rf_1000_5<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;1000 Trees with at least 5 obs per leaf&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup),</span>
+<span id="cb502-5"><a href="solutions.html#cb502-5" aria-hidden="true" tabindex="-1"></a>  rf_12_1<span class="sc">$</span>results <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Setup =</span> <span class="st">&quot;12 Trees with at least 1 obs per leaf&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">relocate</span>(Setup)</span>
 <span id="cb502-6"><a href="solutions.html#cb502-6" aria-hidden="true" tabindex="-1"></a>)[,<span class="sc">-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)] <span class="sc">|&gt;</span></span>
 <span id="cb502-7"><a href="solutions.html#cb502-7" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">&quot;Comparison of cross-validated metrics across Random Forest setups.&quot;</span>)</span></code></pre></div>
 <table>
-<caption><span id="tab:unnamed-chunk-278">Table A.1: </span>Comparison of cross-validated metrics across Random Forest setups.</caption>
+<caption><span id="tab:unnamed-chunk-279">Table A.1: </span>Comparison of cross-validated metrics across Random Forest setups.</caption>
 <colgroup>
-<col width="28%" />
+<col width="40%" />
+<col width="9%" />
 <col width="10%" />
-<col width="12%" />
+<col width="9%" />
 <col width="10%" />
-<col width="12%" />
-<col width="13%" />
-<col width="12%" />
+<col width="11%" />
+<col width="10%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1901,36 +1898,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">12 Trees with depth 4</td>
-<td align="right">1.501581</td>
-<td align="right">0.6680359</td>
-<td align="right">1.152593</td>
-<td align="right">0.0459916</td>
-<td align="right">0.0180621</td>
-<td align="right">0.0269470</td>
+<td align="left">12 Trees with at least 5 obs per leaf</td>
+<td align="right">1.468118</td>
+<td align="right">0.6796483</td>
+<td align="right">1.116388</td>
+<td align="right">0.0631198</td>
+<td align="right">0.0243411</td>
+<td align="right">0.0436952</td>
 </tr>
 <tr class="even">
-<td align="left">1000 Trees with depth 4</td>
-<td align="right">1.483676</td>
-<td align="right">0.6810840</td>
-<td align="right">1.138781</td>
-<td align="right">0.0747796</td>
-<td align="right">0.0300692</td>
-<td align="right">0.0367361</td>
+<td align="left">1000 Trees with at least 5 obs per leaf</td>
+<td align="right">1.415667</td>
+<td align="right">0.7019750</td>
+<td align="right">1.078454</td>
+<td align="right">0.0661862</td>
+<td align="right">0.0228750</td>
+<td align="right">0.0308386</td>
 </tr>
 <tr class="odd">
-<td align="left">12 Trees with depth 6</td>
-<td align="right">1.456632</td>
-<td align="right">0.6847908</td>
-<td align="right">1.109273</td>
-<td align="right">0.0666895</td>
-<td align="right">0.0210008</td>
-<td align="right">0.0509939</td>
+<td align="left">12 Trees with at least 1 obs per leaf</td>
+<td align="right">1.470344</td>
+<td align="right">0.6789540</td>
+<td align="right">1.118680</td>
+<td align="right">0.0766487</td>
+<td align="right">0.0244763</td>
+<td align="right">0.0588226</td>
 </tr>
 </tbody>
 </table>
 <p>Increasing the number of decision trees leads to a decrease in error (e.g. RMSE) and in error variance in the random forest results, making the model more accurate, robust and generalisable. This can be seen by the smaller values of practically all the metrics above. In the bias-variance trade-off, higher <code>num.trees</code> shifts the balance towards both lower bias and lower variance.</p>
-<p>Increasing the number of variables considered for each split allows for a better fit of the data, but makes the model less generalisable. This is seen by a reduction in the error metrics but an increase in their estimated standard deviation. Hence, using high values for <code>mtry</code> may lead to overfitting.</p>
+<p>Decreasing the number of observations required to go to each split allows for a better fit of the data, but makes the model less generalisable. Actually, it would lead to a perfect fit of the training data. Since the error metrics are calcualted using cross-validation, the lack of generalisability is captured together with the model fit. This is seen by an increase in both the error metrics and their estimated standard deviation. Hence, using low values for <code>min.node.size</code> may lead to overfitting.</p>
 </div>
 <div id="hyperparameter-tuning-1" class="section level3 unnumbered hasAnchor">
 <h3>Hyperparameter tuning<a href="solutions.html#hyperparameter-tuning-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1948,13 +1945,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb503-2"><a href="solutions.html#cb503-2" aria-hidden="true" tabindex="-1"></a>min.node.size_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
 <span id="cb503-3"><a href="solutions.html#cb503-3" aria-hidden="true" tabindex="-1"></a>splitrule_values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;variance&quot;</span>, <span class="st">&quot;extratrees&quot;</span>, <span class="st">&quot;maxstat&quot;</span>)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? For the next questions, it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the random forests.</li>
+<li>In the previous exercise, you have seen how the minimum node size regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when <code>min.node.size = 1</code> and when <code>min.node.size = n</code> (<code>n</code> being the number of observations)? Note that it’s not necessary to provide the <code>max.depth</code> argument to <code>train()</code> because <code>min.node.size</code> is already limiting the size of the trees in the Random Forests.</li>
 </ol>
 <p><strong>Solution</strong>:
 The minimum node size is inversely related to the tree depth. The more nodes are required to be at the leaves, the shorter the tree will be, because not so many splits can be done. If we allowed each leave to correspond to a single observation, we would have a very large tree, such that each branch corresponds to one observation. If we force each leave to have at least <span class="math inline">\(n\)</span> observations, then the tree will not “grow”, that is, it will never even split.</p>
 <ol start="3" style="list-style-type: decimal">
-<li><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
-&gt; Tip: Keep the number of trees low, otherwise it takes too long to fit each random forest model.</li>
+<li><em>Greedy hyperparameter tuning</em>: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search. Implement the optimization routine yourself, using loops.
+&gt; Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.</li>
 </ol>
 <div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb504-1"><a href="solutions.html#cb504-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use data and model formulation created before</span></span>
 <span id="cb504-2"><a href="solutions.html#cb504-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2044,7 +2041,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 ## 2 0.005366239 0.03448577
 ## 3 0.034472910 0.07423081
 ## 4 0.015027167 0.03858145</code></pre>
-<p>The second hyperparameter should be either <code>min.node.size = 2</code> or <code>5</code> because they lead to the best metrics overall. Again, the differences are very small and each metric would lead to a different decision. By increasing <code>min.node.size</code>, we get more generalisability, but if it’s too high we will lose fit quality. If you change the random seed, you’ll see that the tuning results are not robust, so whichever hyperparameter we choose won’t make a big difference in the model fit (at least within the ranges searched). Let’s take <code>min.node.size = 5</code> for the next loop.</p>
+<p>The second hyperparameter should be either <code>min.node.size = 2</code> or <code>5</code> because they lead to the best metrics overall. Again, the differences are very small and each metric would lead to a different decision. By increasing <code>min.node.size</code>, we get more generalisability, but if it’s too high we will lose fit quality. If you change the random seed, you’ll see that the tuning results are not robust, so whichever hyperparameter we choose won’t make a big difference in the model fit (at least within the ranges searched). Let’s take <code>min.node.size = 2</code> for the next loop.</p>
 <div class="sourceCode" id="cb508"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb508-1"><a href="solutions.html#cb508-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the previous best models and tune last hyperparameter</span></span>
 <span id="cb508-2"><a href="solutions.html#cb508-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
 <span id="cb508-3"><a href="solutions.html#cb508-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2062,8 +2059,8 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb508-15"><a href="solutions.html#cb508-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span></span>
 <span id="cb508-16"><a href="solutions.html#cb508-16" aria-hidden="true" tabindex="-1"></a>      ),</span>
 <span id="cb508-17"><a href="solutions.html#cb508-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">tuneGrid =</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb508-18"><a href="solutions.html#cb508-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">.mtry =</span> <span class="dv">4</span>,                    <span class="co"># best mtry</span></span>
-<span id="cb508-19"><a href="solutions.html#cb508-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">.min.node.size =</span> <span class="dv">5</span>,             <span class="co"># best min.node.size</span></span>
+<span id="cb508-18"><a href="solutions.html#cb508-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">.mtry =</span> <span class="dv">2</span>,                    <span class="co"># best mtry</span></span>
+<span id="cb508-19"><a href="solutions.html#cb508-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">.min.node.size =</span> <span class="dv">2</span>,             <span class="co"># best min.node.size</span></span>
 <span id="cb508-20"><a href="solutions.html#cb508-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">.splitrule =</span> splitrule_value  <span class="co"># modify</span></span>
 <span id="cb508-21"><a href="solutions.html#cb508-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb508-22"><a href="solutions.html#cb508-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># arguments specific to &quot;ranger&quot; method</span></span>
@@ -2080,14 +2077,14 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb508-33"><a href="solutions.html#cb508-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb508-34"><a href="solutions.html#cb508-34" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
 <pre><code>##   mtry min.node.size  splitrule     RMSE  Rsquared      MAE     RMSESD
-## 1    4             5   variance 1.429526 0.6961773 1.084222 0.07154814
-## 2    4             5 extratrees 1.401250 0.7094276 1.067099 0.07570733
-## 3    4             5    maxstat 1.435566 0.6943093 1.093873 0.06907025
+## 1    2             2   variance 1.430041 0.6960092 1.089296 0.07545037
+## 2    2             2 extratrees 1.406141 0.7084745 1.067863 0.08168255
+## 3    2             2    maxstat 1.450796 0.6908389 1.109260 0.06738257
 ##   RsquaredSD      MAESD
-## 1 0.02130928 0.05505826
-## 2 0.01639622 0.03893171
-## 3 0.01968536 0.04358800</code></pre>
-<p>According to the last round of tuning, we should use <code>spliturle = "extratrees"</code>. With that, we found the best model so far.</p>
+## 1 0.02332409 0.05434451
+## 2 0.01930827 0.04337092
+## 3 0.01935027 0.04709398</code></pre>
+<p>According to the last round of tuning, we should use <code>splitrule = "extratrees"</code>. With that, we found the best model so far.</p>
 <ol start="4" style="list-style-type: decimal">
 <li><em>Grid hyperparameter tuning</em>: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the <code>expand.grid()</code> function to create a data.frame of hyperparameter value combinations. This grid will be passed to <code>train()</code> via the <code>tuneGrid</code> argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of <code>train()</code> and the results of the hyperparameter search.</li>
 </ol>
@@ -2118,13 +2115,13 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb510-25"><a href="solutions.html#cb510-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1982</span></span>
 <span id="cb510-26"><a href="solutions.html#cb510-26" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb511-1"><a href="solutions.html#cb511-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod, <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-286-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-287-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb512"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb512-1"><a href="solutions.html#cb512-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod, <span class="at">metric =</span> <span class="st">&quot;Rsquared&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-286-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-287-2.png" width="672" style="display: block; margin: auto;" /></p>
 <ol start="5" style="list-style-type: decimal">
 <li>Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?</li>
 </ol>
-<p>The best model according to the grid search, with lowest RMSE, is the one with <code>mtry = 4</code>, <code>min.node.size = 5</code> and <code>splitrule = "extratrees"</code> . This is not the “best model” we found with the greedy approach (different <code>mtry</code>) and also not the best according to <span class="math inline">\(R^2\)</span> (indicates the same model as when considering RMSE). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best <code>splitrule</code> is <code>"extratrees"</code> (and if you change the random seed, this result is consistent). The best <code>mtry</code> value is different for each split rule used, so having started with <code>"variance"</code> in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).</p>
+<p>The best model according to the grid search, with lowest RMSE and highest <span class="math inline">\(R^2\)</span>, is the one with <code>mtry = 6</code>, <code>min.node.size = 10</code> and <code>splitrule = "extratrees"</code> . This is not the “best model” we found with the greedy approach (with <code>mtry = 2</code> and <code>min.node.size = 2</code>) but actually this model is overall the second best model. The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best <code>splitrule</code> is <code>"extratrees"</code> (and if you change the random seed, this result is consistent). The best <code>mtry</code> value is different for each split rule used, so having started with <code>"variance"</code> in the greedy search lead the tuning in the wrong direction, moving us towards a local optimum rather than a global optimum. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).</p>
 </div>
 <div id="model-performance-1" class="section level3 unnumbered hasAnchor">
 <h3>Model performance<a href="solutions.html#model-performance-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -2193,7 +2190,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb513-62"><a href="solutions.html#cb513-62" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-287-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-288-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb515-1"><a href="solutions.html#cb515-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(</span>
 <span id="cb515-2"><a href="solutions.html#cb515-2" aria-hidden="true" tabindex="-1"></a>  mod_worst,</span>
 <span id="cb515-3"><a href="solutions.html#cb515-3" aria-hidden="true" tabindex="-1"></a>  daily_fluxes_train,</span>
@@ -2201,7 +2198,7 @@ The minimum node size is inversely related to the tree depth. The more nodes are
 <span id="cb515-5"><a href="solutions.html#cb515-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-287-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-288-2.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The performance on the test set for the best model is still close to the performance on the training set, so the model doesn’t seem to overfit. The same goes for the worse model, which leads to worse <span class="math inline">\(R^2\)</span> and RMSE and visually the fit is slightly worse.</p>
 
 </div>
