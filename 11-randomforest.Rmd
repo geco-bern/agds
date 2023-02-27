@@ -259,6 +259,7 @@ Answer the following questions, giving a reason for your responses:
 2.   In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when `min.node.size = 1` and when `min.node.size = n` (`n` being the number of observations)? For the next questions, it's not necessary to provide the `max.depth` argument to `train()` because `min.node.size` is already limiting the size of the trees in the Random Forests.
 
 3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
+
 > Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.
 
 4.   *Grid hyperparameter tuning*: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the `expand.grid()` function to create a data.frame of hyperparameter value combinations. This grid will be passed to `train()` via the `tuneGrid` argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of `train()` and the results of the hyperparameter search.

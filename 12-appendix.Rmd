@@ -1348,7 +1348,6 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + 
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
-
 ```{r message=FALSE}
 # Fit the first model of 12 trees and maximum depth 4
 rf_12_4 <- caret::train(
@@ -1442,7 +1441,7 @@ rf_12_6 <- caret::train(
 print(rf_12_6)
 ```
 
-** Interpretation of results**
+**Interpretation of results**
 
 ```{r}
 # check results
@@ -1491,7 +1490,7 @@ results <- c()   # initialise results
 set.seed(1997)   # for reproducibility
 
 # Train models in a loop, save metrics
-for(mtry_value in mtry_values){
+for (mtry_value in mtry_values){
   mod <- caret::train(
     pp, 
     data = daily_fluxes_train %>% 
@@ -1530,7 +1529,7 @@ results <- c()   # initialise results
 set.seed(1997)   # for reproducibility
 
 # Train models in a loop, save metrics
-for(min.node.size_value in min.node.size_values){
+for (min.node.size_value in min.node.size_values){
   mod <- caret::train(
     pp, 
     data = daily_fluxes_train %>% 
@@ -1568,7 +1567,7 @@ The second hyperparameter should be either `min.node.size = 2` or `5` because th
 results <- c()
 
 # Train models in a loop, save metrics
-for(splitrule_value in splitrule_values){
+for (splitrule_value in splitrule_values){
   mod <- caret::train(
     pp, 
     data = daily_fluxes_train %>% 
@@ -1647,7 +1646,7 @@ plot(mod, metric = "Rsquared")
 
 5.   Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?
 
-The best model according to the grid search, with lowest RMSE, is the one with `mtry = 4`, `min.node.size = 5` and `splitrule = "extratrees"` . This is not the "best model" we found with the greedy approach (different `mtry`) and also not the best according to Rsquared (`mtry = 4`, `min.node.size = ` and `splitrule = ""`). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best `splitrule` is `"extratrees"` (and if you change the random seed, this result is consistent). The best `mtry` value is different for each split rule used, so having started with `"variance"` in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).
+The best model according to the grid search, with lowest RMSE, is the one with `mtry = 4`, `min.node.size = 5` and `splitrule = "extratrees"` . This is not the "best model" we found with the greedy approach (different `mtry`) and also not the best according to $R^2$ (indicates the same model as when considering RMSE). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best `splitrule` is `"extratrees"` (and if you change the random seed, this result is consistent). The best `mtry` value is different for each split rule used, so having started with `"variance"` in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).
 
 ### Model performance {-}
 
