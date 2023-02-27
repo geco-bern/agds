@@ -119,7 +119,7 @@ temp_leaf <- f2c(temp_leaf)
 
 Functions are essential for efficient programming. Functions have their own environment, which means that variables inside functions are only defined and usable within that function and are not saved to the global environment. Functions restrict the scope of the domain in which variables are defined. Information flows inside the function only through its arguments, and flows out of the function only through its returned variable.
 
-Functions (particularly long ones) can be written to separate source files with a suffix `.R` and saved in your `./R` directory. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/f2c.R` and load it later by running `source("./R/f2c")`.
+Functions (particularly long ones) can be written to separate source files with a suffix `.R` and saved in your `./R` directory - "written" as in copy and paste the function text as in the code chunk above into a text file with `.R` suffix. Preferably, the file has the same name as the function. We can save the previous function in a script `./R/f2c.R` and load it later by running `source("./R/f2c")`. It's good practice to keep one file per function, unless a function calls another function that is called nowhere else. In that case, the "sub-ordinate" function can be placed inside the same `.R` file.
 
 ### Style your code
 
