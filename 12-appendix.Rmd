@@ -1,3 +1,11 @@
+```{r include = FALSE}
+RUN_MODEL <- ifelse(
+  length(system("echo $GITHUB_TOKEN", intern=TRUE)) <= 1,
+  TRUE,
+  FALSE
+  )
+```
+
 # (APPENDIX) Appendix {-}
 
 # Solutions {#solutions}
@@ -1301,7 +1309,7 @@ plot_data |>
 
 ### Fitting a Random Forest {-}
 
-Fit a random forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (`num.trees`), each with a maximum depth of 4 (`max.depth`). You can consult the respective arguments for the `"ranger"` method typing `?ranger`. 
+Fit a Random Forest model to the flux data used in the examples of this chapter. Implement bagging 12 decision trees (`num.trees`), each with a minimum number of observations per leaf of 5 (`min.node.size`). You can consult the respective arguments for the `"ranger"` method typing `?ranger`. 
 
 ```{r message=FALSE}
 # Data loading and cleaning
@@ -1351,7 +1359,7 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + 
 
 ```{r message=FALSE}
 # Fit the first model of 12 trees and maximum depth 4
-rf_12_4 <- caret::train(
+rf_12_5 <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -1364,27 +1372,26 @@ rf_12_4 <- caret::train(
     ),
   tuneGrid = expand.grid(
     .mtry = floor(6 / 3),        # default p/3
-    .min.node.size = 5,            # default 5
+    .min.node.size = 5,          # set to 5
     .splitrule = "variance"      # default "variance"
   ),
   # arguments specific to "ranger" method
   replace = FALSE,
-  max.depth = 4,
   sample.fraction = 0.5,
   num.trees = 12,       
   seed = 1982                                          # for reproducibility
 )
 
 # generic print
-print(rf_12_4)
+print(rf_12_5)
 ```
 
-Repeat the fitting with 1000 decision trees and max depth of 4, then with 12 decision trees and a max depth of 6. Then, discuss the role that the number of decision trees and the maximum depth of a tree play in the bias-variance trade-off and in the computation time. 
+Repeat the fitting with 1000 decision trees and minimum node size of 5, then with 12 decision trees and a minimum node size of 1. Then, discuss the role that the number of decision trees and the minimum number of leaf observations of a tree play in the bias-variance trade-off and in the computation time. 
 
 ```{r}
 # Directly fit the model again, with same data and model formulation
 # Now train with 1000 trees and maximum depth 4
-rf_1000_4 <- caret::train(
+rf_1000_5 <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -1397,24 +1404,23 @@ rf_1000_4 <- caret::train(
     ),
   tuneGrid = expand.grid(
     .mtry = floor(6 / 3),       # default p/3
-    .min.node.size = 5,         # default 5
+    .min.node.size = 5,         # set to 5
     .splitrule = "variance"     # default variance
     ),
   # arguments specific to "ranger" method
   replace = FALSE,
-  max.depth = 4,
   sample.fraction = 0.5,
   num.trees = 1000,       
   seed = 1982
 )
 
 # generic print
-print(rf_1000_4)
+print(rf_1000_5)
 ```
 
 ```{r}
 # Repeat model fit with 12 trees and maximum depth 6
-rf_12_6 <- caret::train(
+rf_12_1 <- caret::train(
   pp, 
   data = daily_fluxes_train %>% 
     drop_na(), 
@@ -1427,19 +1433,18 @@ rf_12_6 <- caret::train(
     ),
   tuneGrid = expand.grid(
     .mtry = floor(6 / 3),        # default p/3
-    .min.node.size = 5,          # default 5
+    .min.node.size = 1,          # set to 1
     .splitrule = "variance"      # default "variance"
   ),
   # arguments specific to "ranger" method
   replace = FALSE,
-  max.depth = 6,
   sample.fraction = 0.5,
   num.trees = 12,       
   seed = 1982
 )
 
 # generic print
-print(rf_12_6)
+print(rf_12_1)
 ```
 
 ** Interpretation of results**
@@ -1447,16 +1452,16 @@ print(rf_12_6)
 ```{r}
 # check results
 rbind(
-  rf_12_4$results |> mutate(Setup = "12 Trees with depth 4") |> relocate(Setup),
-  rf_1000_4$results |> mutate(Setup = "1000 Trees with depth 4") |> relocate(Setup),
-  rf_12_6$results |> mutate(Setup = "12 Trees with depth 6") |> relocate(Setup)
+  rf_12_5$results |> mutate(Setup = "12 Trees with at least 5 obs per leaf") |> relocate(Setup),
+  rf_1000_5$results |> mutate(Setup = "1000 Trees with at least 5 obs per leaf") |> relocate(Setup),
+  rf_12_1$results |> mutate(Setup = "12 Trees with at least 1 obs per leaf") |> relocate(Setup)
 )[,- c(2:4)] |>
   knitr::kable(caption = "Comparison of cross-validated metrics across Random Forest setups.")
 ```
 
 Increasing the number of decision trees leads to a decrease in error (e.g. RMSE) and in error variance in the random forest results, making the model more accurate, robust and generalisable. This can be seen by the smaller values of practically all the metrics above. In the bias-variance trade-off, higher `num.trees` shifts the balance towards both lower bias and lower variance.
 
-Increasing the number of variables considered for each split allows for a better fit of the data, but makes the model less generalisable. This is seen by a reduction in the error metrics but an increase in their estimated standard deviation. Hence, using high values for `mtry` may lead to overfitting.
+Decreasing the number of observations required to go to each split allows for a better fit of the data, but makes the model less generalisable. Actually, it would lead to a perfect fit of the training data. Since the error metrics are calcualted using cross-validation, the lack of generalisability is captured together with the model fit. This is seen by an increase in both the error metrics and their estimated standard deviation. Hence, using low values for `min.node.size` may lead to overfitting.
 
 ### Hyperparameter tuning {-}
 
@@ -1476,13 +1481,13 @@ min.node.size_values <- c(2, 5, 10, 20)
 splitrule_values <- c("variance", "extratrees", "maxstat")
 ```
 
-2.   In the previous exercise, you have seen how the maximum tree depth regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when `min.node.size = 1` and when `min.node.size = n` (`n` being the number of observations)? For the next questions, it's not necessary to provide the `max.depth` argument to `train()` because `min.node.size` is already limiting the size of the trees in the random forests.
+2.   In the previous exercise, you have seen how the minimum node size regulates fit quality and overfitting. How does the minimum node size relate to tree depth? What happens at the edge cases, when `min.node.size = 1` and when `min.node.size = n` (`n` being the number of observations)? Note that it's not necessary to provide the `max.depth` argument to `train()` because `min.node.size` is already limiting the size of the trees in the Random Forests.
 
 **Solution**:
 The minimum node size is inversely related to the tree depth. The more nodes are required to be at the leaves, the shorter the tree will be, because not so many splits can be done. If we allowed each leave to correspond to a single observation, we would have a very large tree, such that each branch corresponds to one observation. If we force each leave to have at least $n$ observations, then the tree will not "grow", that is, it will never even split.
 
-3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search.
-> Tip: Keep the number of trees low, otherwise it takes too long to fit each random forest model.
+3.   *Greedy hyperparameter tuning*: Sequentially optimize the choice of each hyperparameter, one at a time and keeping the other two constant. Take the code from the tutorial as a starting point, and those hyperparameter values as an initial point for the search. Implement the optimization routine yourself, using loops.
+> Tip: Keep the number of trees low, otherwise it takes too long to fit each Random Forest model.
 
 ```{r}
 # Use data and model formulation created before
@@ -1561,7 +1566,7 @@ for(min.node.size_value in min.node.size_values){
 results
 ```
 
-The second hyperparameter should be either `min.node.size = 2` or `5` because they lead to the best metrics overall. Again, the differences are very small and each metric would lead to a different decision. By increasing `min.node.size`, we get more generalisability, but if it's too high we will lose fit quality. If you change the random seed, you'll see that the tuning results are not robust, so whichever hyperparameter we choose won't make a big difference in the model fit (at least within the ranges searched). Let's take `min.node.size = 5` for the next loop.
+The second hyperparameter should be either `min.node.size = 2` or `5` because they lead to the best metrics overall. Again, the differences are very small and each metric would lead to a different decision. By increasing `min.node.size`, we get more generalisability, but if it's too high we will lose fit quality. If you change the random seed, you'll see that the tuning results are not robust, so whichever hyperparameter we choose won't make a big difference in the model fit (at least within the ranges searched). Let's take `min.node.size = 2` for the next loop.
 
 ```{r}
 # Take the previous best models and tune last hyperparameter
@@ -1581,8 +1586,8 @@ for(splitrule_value in splitrule_values){
       savePredictions = "final"
       ),
     tuneGrid = expand.grid(
-      .mtry = 4,                    # best mtry
-      .min.node.size = 5,             # best min.node.size
+      .mtry = 2,                    # best mtry
+      .min.node.size = 2,             # best min.node.size
       .splitrule = splitrule_value  # modify
     ),
     # arguments specific to "ranger" method
@@ -1600,11 +1605,11 @@ for(splitrule_value in splitrule_values){
 results
 ```
 
-According to the last round of tuning, we should use `spliturle = "extratrees"`. With that, we found the best model so far.
+According to the last round of tuning, we should use `splitrule = "extratrees"`. With that, we found the best model so far.
 
 4.   *Grid hyperparameter tuning*: Starting with the same range of values for each hyperparameter as before, look for the combination that leads to the best model performance among all combinations of hyperparameter values. This time, use the `expand.grid()` function to create a data.frame of hyperparameter value combinations. This grid will be passed to `train()` via the `tuneGrid` argument (see example in the tutorial). This will automatically do the hyperparameter search for you. Comment the output of `train()` and the results of the hyperparameter search.
 
-```{r eval=FALSE}
+```{r eval=RUN_MODEL}
 set.seed(1403)    # for reproducibility
 mod <- caret::train(
   pp, 
@@ -1633,7 +1638,7 @@ mod <- caret::train(
 )
 ```
 
-```{r, include = FALSE, eval = FALSE}
+```{r, include = FALSE, eval = RUN_MODEL}
 saveRDS(mod, "data/solutions/rf_mod_gridsearch.rds")
 ```
 ```{r, include = FALSE}
@@ -1647,7 +1652,7 @@ plot(mod, metric = "Rsquared")
 
 5.   Compare the results from the two hyperparameter tuning approaches. Do the optimal hyperparameters coincide? Are the corresponding RMSE estimates similar? What are the advantages and disadvantages of the greedy and the grid approaches?
 
-The best model according to the grid search, with lowest RMSE, is the one with `mtry = 4`, `min.node.size = 5` and `splitrule = "extratrees"` . This is not the "best model" we found with the greedy approach (different `mtry`) and also not the best according to Rsquared (`mtry = 4`, `min.node.size = ` and `splitrule = ""`). The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best `splitrule` is `"extratrees"` (and if you change the random seed, this result is consistent). The best `mtry` value is different for each split rule used, so having started with `"variance"` in the greedy search lead the tuning in the wrong direction. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).
+The best model according to the grid search, with lowest RMSE and highest $R^2$, is the one with `mtry = 6`, `min.node.size = 10` and `splitrule = "extratrees"` . This is not the "best model" we found with the greedy approach (with `mtry = 2` and `min.node.size = 2`) but actually this model is overall the second best model. The metric used for tuning matters, and looking at several of them at the same can help make decisions, if different metrics agree. All these hyperparameter tuning approaches agree that the best `splitrule` is `"extratrees"` (and if you change the random seed, this result is consistent). The best `mtry` value is different for each split rule used, so having started with `"variance"` in the greedy search lead the tuning in the wrong direction, moving us towards a local optimum rather than a global optimum. This highlights that hyperparameter values interact with each other and optimizing over grids is preferred (although it takes more time).
 
 ### Model performance {-}
 
