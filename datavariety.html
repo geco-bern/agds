@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -238,6 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.2.1</b> The grammar of graphics</a></li>
 <li class="chapter" data-level="4.2.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.2.2</b> Every data has its representation</a></li>
+<li class="chapter" data-level="4.2.3" data-path="datavis.html"><a href="datavis.html#writing-to-file"><i class="fa fa-check"></i><b>4.2.3</b> Writing to file</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#exercises-2"><i class="fa fa-check"></i><b>4.3</b> Exercises</a>
 <ul>
@@ -497,13 +498,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <blockquote>
 <p>TIP: If a file doesn’t read, it is always wise to try to open the file in a text editor and check the first few lines to verify if the data has a structure that corresponds to the file extension.</p>
-<div class="sourceCode" id="cb244"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb244-1"><a href="datavariety.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On a linux/macos system you can use the terminal command (using </span></span>
-<span id="cb244-2"><a href="datavariety.html#cb244-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the language bash) to show the first couple lines of a file</span></span>
-<span id="cb244-3"><a href="datavariety.html#cb244-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> your_file</span>
-<span id="cb244-4"><a href="datavariety.html#cb244-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb244-5"><a href="datavariety.html#cb244-5" aria-hidden="true" tabindex="-1"></a><span class="co"># alternatively you can show the last few lines</span></span>
-<span id="cb244-6"><a href="datavariety.html#cb244-6" aria-hidden="true" tabindex="-1"></a><span class="co"># of a file using</span></span>
-<span id="cb244-7"><a href="datavariety.html#cb244-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> your_file</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb245-1"><a href="datavariety.html#cb245-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On a linux/macos system you can use the terminal command (using </span></span>
+<span id="cb245-2"><a href="datavariety.html#cb245-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the language bash) to show the first couple lines of a file</span></span>
+<span id="cb245-3"><a href="datavariety.html#cb245-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> your_file</span>
+<span id="cb245-4"><a href="datavariety.html#cb245-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb245-5"><a href="datavariety.html#cb245-5" aria-hidden="true" tabindex="-1"></a><span class="co"># alternatively you can show the last few lines</span></span>
+<span id="cb245-6"><a href="datavariety.html#cb245-6" aria-hidden="true" tabindex="-1"></a><span class="co"># of a file using</span></span>
+<span id="cb245-7"><a href="datavariety.html#cb245-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> your_file</span></code></pre></div>
 </blockquote>
 </div>
 <div id="human-readable-data" class="section level4 hasAnchor" number="5.2.1.2">
@@ -524,44 +525,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="structured-data" class="section level5 unnumbered hasAnchor">
 <h5>Structured data<a href="datavariety.html#structured-data" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>Tabular data is row and column-oriented and therefore doesn’t allow complex structured content, e.g. tables within tables. This issue is sidestepped by the <a href="https://www.json.org/json-en.html">JSON format</a>. The JSON format uses attribute-value pairs to store data, and is therefore more flexible in terms of accommodating varying data structures. Below, you see an example of details describing a person, with entries being fo varying length and data types.</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb246-1"><a href="datavariety.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb246-2"><a href="datavariety.html#cb246-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstName&quot;</span><span class="fu">:</span> <span class="st">&quot;John&quot;</span><span class="fu">,</span></span>
-<span id="cb246-3"><a href="datavariety.html#cb246-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;lastName&quot;</span><span class="fu">:</span> <span class="st">&quot;Smith&quot;</span><span class="fu">,</span></span>
-<span id="cb246-4"><a href="datavariety.html#cb246-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;isAlive&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
-<span id="cb246-5"><a href="datavariety.html#cb246-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="dv">27</span><span class="fu">,</span></span>
-<span id="cb246-6"><a href="datavariety.html#cb246-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb246-7"><a href="datavariety.html#cb246-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;streetAddress&quot;</span><span class="fu">:</span> <span class="st">&quot;21 2nd Street&quot;</span><span class="fu">,</span></span>
-<span id="cb246-8"><a href="datavariety.html#cb246-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;city&quot;</span><span class="fu">:</span> <span class="st">&quot;New York&quot;</span><span class="fu">,</span></span>
-<span id="cb246-9"><a href="datavariety.html#cb246-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;state&quot;</span><span class="fu">:</span> <span class="st">&quot;NY&quot;</span><span class="fu">,</span></span>
-<span id="cb246-10"><a href="datavariety.html#cb246-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postalCode&quot;</span><span class="fu">:</span> <span class="st">&quot;10021-3100&quot;</span></span>
-<span id="cb246-11"><a href="datavariety.html#cb246-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb246-12"><a href="datavariety.html#cb246-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;phoneNumbers&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb246-13"><a href="datavariety.html#cb246-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb246-14"><a href="datavariety.html#cb246-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;home&quot;</span><span class="fu">,</span></span>
-<span id="cb246-15"><a href="datavariety.html#cb246-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="st">&quot;212 555-1234&quot;</span></span>
-<span id="cb246-16"><a href="datavariety.html#cb246-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb246-17"><a href="datavariety.html#cb246-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb246-18"><a href="datavariety.html#cb246-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;office&quot;</span><span class="fu">,</span></span>
-<span id="cb246-19"><a href="datavariety.html#cb246-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="st">&quot;646 555-4567&quot;</span></span>
-<span id="cb246-20"><a href="datavariety.html#cb246-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb246-21"><a href="datavariety.html#cb246-21" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb246-22"><a href="datavariety.html#cb246-22" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;children&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb246-23"><a href="datavariety.html#cb246-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Catherine&quot;</span><span class="ot">,</span></span>
-<span id="cb246-24"><a href="datavariety.html#cb246-24" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Thomas&quot;</span><span class="ot">,</span></span>
-<span id="cb246-25"><a href="datavariety.html#cb246-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trevor&quot;</span></span>
-<span id="cb246-26"><a href="datavariety.html#cb246-26" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb246-27"><a href="datavariety.html#cb246-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;spouse&quot;</span><span class="fu">:</span> <span class="kw">null</span></span>
-<span id="cb246-28"><a href="datavariety.html#cb246-28" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb247-1"><a href="datavariety.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb247-2"><a href="datavariety.html#cb247-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;firstName&quot;</span><span class="fu">:</span> <span class="st">&quot;John&quot;</span><span class="fu">,</span></span>
+<span id="cb247-3"><a href="datavariety.html#cb247-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;lastName&quot;</span><span class="fu">:</span> <span class="st">&quot;Smith&quot;</span><span class="fu">,</span></span>
+<span id="cb247-4"><a href="datavariety.html#cb247-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;isAlive&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb247-5"><a href="datavariety.html#cb247-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="dv">27</span><span class="fu">,</span></span>
+<span id="cb247-6"><a href="datavariety.html#cb247-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;address&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb247-7"><a href="datavariety.html#cb247-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;streetAddress&quot;</span><span class="fu">:</span> <span class="st">&quot;21 2nd Street&quot;</span><span class="fu">,</span></span>
+<span id="cb247-8"><a href="datavariety.html#cb247-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;city&quot;</span><span class="fu">:</span> <span class="st">&quot;New York&quot;</span><span class="fu">,</span></span>
+<span id="cb247-9"><a href="datavariety.html#cb247-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;state&quot;</span><span class="fu">:</span> <span class="st">&quot;NY&quot;</span><span class="fu">,</span></span>
+<span id="cb247-10"><a href="datavariety.html#cb247-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;postalCode&quot;</span><span class="fu">:</span> <span class="st">&quot;10021-3100&quot;</span></span>
+<span id="cb247-11"><a href="datavariety.html#cb247-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb247-12"><a href="datavariety.html#cb247-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;phoneNumbers&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb247-13"><a href="datavariety.html#cb247-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb247-14"><a href="datavariety.html#cb247-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;home&quot;</span><span class="fu">,</span></span>
+<span id="cb247-15"><a href="datavariety.html#cb247-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="st">&quot;212 555-1234&quot;</span></span>
+<span id="cb247-16"><a href="datavariety.html#cb247-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb247-17"><a href="datavariety.html#cb247-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb247-18"><a href="datavariety.html#cb247-18" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;office&quot;</span><span class="fu">,</span></span>
+<span id="cb247-19"><a href="datavariety.html#cb247-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;number&quot;</span><span class="fu">:</span> <span class="st">&quot;646 555-4567&quot;</span></span>
+<span id="cb247-20"><a href="datavariety.html#cb247-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb247-21"><a href="datavariety.html#cb247-21" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb247-22"><a href="datavariety.html#cb247-22" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;children&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb247-23"><a href="datavariety.html#cb247-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Catherine&quot;</span><span class="ot">,</span></span>
+<span id="cb247-24"><a href="datavariety.html#cb247-24" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Thomas&quot;</span><span class="ot">,</span></span>
+<span id="cb247-25"><a href="datavariety.html#cb247-25" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Trevor&quot;</span></span>
+<span id="cb247-26"><a href="datavariety.html#cb247-26" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb247-27"><a href="datavariety.html#cb247-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;spouse&quot;</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb247-28"><a href="datavariety.html#cb247-28" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <blockquote>
 <p>NOTE: Despite being human-readable, a JSON file is considerably harder to read than a comma separated file. Editing such a file is therefore more prone to errors if not automated.</p>
 </blockquote>
 <p>Other human-readable structured data formats include the eXtensible Markup Language (XML), which is commonly used in web infrastructure. XML is used for storing, transmitting, and reconstructing arbitrary data but uses (text) markup instead of attribute-value pairs.</p>
-<div class="sourceCode" id="cb247"><pre class="sourceCode xml"><code class="sourceCode xml"><span id="cb247-1"><a href="datavariety.html#cb247-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">note</span>&gt;</span>
-<span id="cb247-2"><a href="datavariety.html#cb247-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">to</span>&gt;Tove&lt;/<span class="kw">to</span>&gt;</span>
-<span id="cb247-3"><a href="datavariety.html#cb247-3" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">from</span>&gt;Jani&lt;/<span class="kw">from</span>&gt;</span>
-<span id="cb247-4"><a href="datavariety.html#cb247-4" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">heading</span>&gt;Reminder&lt;/<span class="kw">heading</span>&gt;</span>
-<span id="cb247-5"><a href="datavariety.html#cb247-5" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">body</span>&gt;Don&#39;t forget me this weekend!&lt;/<span class="kw">body</span>&gt;</span>
-<span id="cb247-6"><a href="datavariety.html#cb247-6" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">note</span>&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode xml"><code class="sourceCode xml"><span id="cb248-1"><a href="datavariety.html#cb248-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">note</span>&gt;</span>
+<span id="cb248-2"><a href="datavariety.html#cb248-2" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">to</span>&gt;Tove&lt;/<span class="kw">to</span>&gt;</span>
+<span id="cb248-3"><a href="datavariety.html#cb248-3" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">from</span>&gt;Jani&lt;/<span class="kw">from</span>&gt;</span>
+<span id="cb248-4"><a href="datavariety.html#cb248-4" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">heading</span>&gt;Reminder&lt;/<span class="kw">heading</span>&gt;</span>
+<span id="cb248-5"><a href="datavariety.html#cb248-5" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">body</span>&gt;Don&#39;t forget me this weekend!&lt;/<span class="kw">body</span>&gt;</span>
+<span id="cb248-6"><a href="datavariety.html#cb248-6" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">note</span>&gt;</span></code></pre></div>
 </div>
 </div>
 <div id="writing-and-reading-human-readable-files-in-r" class="section level4 hasAnchor" number="5.2.1.3">
@@ -573,54 +574,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Note: In Chapter <a href="datawrangling.html#datawrangling">3</a>, we used the {readr} (tidyverse) function <code>read_csv()</code>. It serves the same purpose as <code>read.csv()</code>, but is faster and reads data into a tidyverse-data frame (a <em>tibble</em>) which has some useful additional characteristics, on top of a common R data frame. For particularly large data, you may consider even better solutions for fast reading, see <a href="https://cran.rstudio.com/web/packages/vroom/vignettes/benchmarks.html">here</a>.</p>
 </blockquote>
 <p>Below, you find and example in which a file is written to a temporary location, and read in again using the above mentioned functions.</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="datavariety.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame with demo data</span></span>
-<span id="cb248-2"><a href="datavariety.html#cb248-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb248-3"><a href="datavariety.html#cb248-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_1 =</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>),</span>
-<span id="cb248-4"><a href="datavariety.html#cb248-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_2 =</span> <span class="fu">c</span>(<span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>),</span>
-<span id="cb248-5"><a href="datavariety.html#cb248-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_3 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
-<span id="cb248-6"><a href="datavariety.html#cb248-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb248-7"><a href="datavariety.html#cb248-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb248-8"><a href="datavariety.html#cb248-8" aria-hidden="true" tabindex="-1"></a><span class="co"># write table as CSV to disk</span></span>
-<span id="cb248-9"><a href="datavariety.html#cb248-9" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(</span>
-<span id="cb248-10"><a href="datavariety.html#cb248-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df,</span>
-<span id="cb248-11"><a href="datavariety.html#cb248-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_file.csv&quot;</span>),</span>
-<span id="cb248-12"><a href="datavariety.html#cb248-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>,</span>
-<span id="cb248-13"><a href="datavariety.html#cb248-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
-<span id="cb248-14"><a href="datavariety.html#cb248-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb248-15"><a href="datavariety.html#cb248-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb248-16"><a href="datavariety.html#cb248-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Read a CSV file</span></span>
-<span id="cb248-17"><a href="datavariety.html#cb248-17" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
-<span id="cb248-18"><a href="datavariety.html#cb248-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_file.csv&quot;</span>),</span>
-<span id="cb248-19"><a href="datavariety.html#cb248-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb248-20"><a href="datavariety.html#cb248-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
-<span id="cb248-21"><a href="datavariety.html#cb248-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb248-22"><a href="datavariety.html#cb248-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb248-23"><a href="datavariety.html#cb248-23" aria-hidden="true" tabindex="-1"></a><span class="co"># help files of both functions can be accessed by</span></span>
-<span id="cb248-24"><a href="datavariety.html#cb248-24" aria-hidden="true" tabindex="-1"></a><span class="co"># typing ?write.table or ?read.table in the R console</span></span></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="datavariety.html#cb249-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a data frame with demo data</span></span>
+<span id="cb249-2"><a href="datavariety.html#cb249-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb249-3"><a href="datavariety.html#cb249-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_1 =</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>),</span>
+<span id="cb249-4"><a href="datavariety.html#cb249-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_2 =</span> <span class="fu">c</span>(<span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;f&quot;</span>),</span>
+<span id="cb249-5"><a href="datavariety.html#cb249-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_3 =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span>
+<span id="cb249-6"><a href="datavariety.html#cb249-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb249-7"><a href="datavariety.html#cb249-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb249-8"><a href="datavariety.html#cb249-8" aria-hidden="true" tabindex="-1"></a><span class="co"># write table as CSV to disk</span></span>
+<span id="cb249-9"><a href="datavariety.html#cb249-9" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(</span>
+<span id="cb249-10"><a href="datavariety.html#cb249-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df,</span>
+<span id="cb249-11"><a href="datavariety.html#cb249-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_file.csv&quot;</span>),</span>
+<span id="cb249-12"><a href="datavariety.html#cb249-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>,</span>
+<span id="cb249-13"><a href="datavariety.html#cb249-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb249-14"><a href="datavariety.html#cb249-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb249-15"><a href="datavariety.html#cb249-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb249-16"><a href="datavariety.html#cb249-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Read a CSV file</span></span>
+<span id="cb249-17"><a href="datavariety.html#cb249-17" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb249-18"><a href="datavariety.html#cb249-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_file.csv&quot;</span>),</span>
+<span id="cb249-19"><a href="datavariety.html#cb249-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb249-20"><a href="datavariety.html#cb249-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb249-21"><a href="datavariety.html#cb249-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb249-22"><a href="datavariety.html#cb249-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb249-23"><a href="datavariety.html#cb249-23" aria-hidden="true" tabindex="-1"></a><span class="co"># help files of both functions can be accessed by</span></span>
+<span id="cb249-24"><a href="datavariety.html#cb249-24" aria-hidden="true" tabindex="-1"></a><span class="co"># typing ?write.table or ?read.table in the R console</span></span></code></pre></div>
 <p>In this example, a data frame is generated with three columns. This file is then written to a temporary file in the temporary file directory <code>tempdir()</code>. Here, <code>tempdir()</code> returns the location of the temporary R directory, which you can use to store intermediate files.</p>
 <p>We use the <code>file.path()</code> function to combine the path (<code>tempdir()</code>) with the file name (<code>your_file.csv</code>). Using <code>file.path()</code> is good practice as directory structures are denoted differently between operating systems, e.g., using a backslash (<code>\</code>) on Windows vs. a slash (<code>/</code>) on Unix-based systems (Linux/macOS). The <code>file.path()</code> function ensures that the correct directory separator is used.</p>
 <p>Note that in this command, we have to manually set the separator (<code>sep = ","</code>) and whether a header is present (<code>header = TRUE</code>). Depending on the content of a file, you will have to alter these parameters. Additional parameters of the <code>read.table()</code> function allow you to specify comment characters, skip empty lines, etc.</p>
 <p>Similar to this simple <code>CSV</code> file, we can generate and read <code>JSON</code> files. For this, we do need an additional library, as default R install does not provide this capability. However, the rest of the example follows the above workflow.</p>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="datavariety.html#cb249-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we&#39;ll re-use the data frame as generated for the CSV</span></span>
-<span id="cb249-2"><a href="datavariety.html#cb249-2" aria-hidden="true" tabindex="-1"></a><span class="co"># example, so walk through the above example if you</span></span>
-<span id="cb249-3"><a href="datavariety.html#cb249-3" aria-hidden="true" tabindex="-1"></a><span class="co"># skipped ahead</span></span>
-<span id="cb249-4"><a href="datavariety.html#cb249-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb249-5"><a href="datavariety.html#cb249-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
-<span id="cb249-6"><a href="datavariety.html#cb249-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;jsonlite&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="datavariety.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write the file to a temporary location</span></span>
-<span id="cb250-2"><a href="datavariety.html#cb250-2" aria-hidden="true" tabindex="-1"></a>jsonlite<span class="sc">::</span><span class="fu">write_json</span>(</span>
-<span id="cb250-3"><a href="datavariety.html#cb250-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df,</span>
-<span id="cb250-4"><a href="datavariety.html#cb250-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_json_file.json&quot;</span>)</span>
-<span id="cb250-5"><a href="datavariety.html#cb250-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="datavariety.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read the freshly generated json file</span></span>
-<span id="cb251-2"><a href="datavariety.html#cb251-2" aria-hidden="true" tabindex="-1"></a>df_json <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(</span>
-<span id="cb251-3"><a href="datavariety.html#cb251-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_json_file.json&quot;</span>),</span>
-<span id="cb251-4"><a href="datavariety.html#cb251-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">simplifyVector =</span> <span class="cn">TRUE</span></span>
-<span id="cb251-5"><a href="datavariety.html#cb251-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb251-6"><a href="datavariety.html#cb251-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb251-7"><a href="datavariety.html#cb251-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check if the two data sets</span></span>
-<span id="cb251-8"><a href="datavariety.html#cb251-8" aria-hidden="true" tabindex="-1"></a><span class="co"># are identical (they should be)</span></span>
-<span id="cb251-9"><a href="datavariety.html#cb251-9" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(df, df_json)</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="datavariety.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we&#39;ll re-use the data frame as generated for the CSV</span></span>
+<span id="cb250-2"><a href="datavariety.html#cb250-2" aria-hidden="true" tabindex="-1"></a><span class="co"># example, so walk through the above example if you</span></span>
+<span id="cb250-3"><a href="datavariety.html#cb250-3" aria-hidden="true" tabindex="-1"></a><span class="co"># skipped ahead</span></span>
+<span id="cb250-4"><a href="datavariety.html#cb250-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb250-5"><a href="datavariety.html#cb250-5" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
+<span id="cb250-6"><a href="datavariety.html#cb250-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;jsonlite&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="datavariety.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write the file to a temporary location</span></span>
+<span id="cb251-2"><a href="datavariety.html#cb251-2" aria-hidden="true" tabindex="-1"></a>jsonlite<span class="sc">::</span><span class="fu">write_json</span>(</span>
+<span id="cb251-3"><a href="datavariety.html#cb251-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> df,</span>
+<span id="cb251-4"><a href="datavariety.html#cb251-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_json_file.json&quot;</span>)</span>
+<span id="cb251-5"><a href="datavariety.html#cb251-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="datavariety.html#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read the freshly generated json file</span></span>
+<span id="cb252-2"><a href="datavariety.html#cb252-2" aria-hidden="true" tabindex="-1"></a>df_json <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(</span>
+<span id="cb252-3"><a href="datavariety.html#cb252-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;your_json_file.json&quot;</span>),</span>
+<span id="cb252-4"><a href="datavariety.html#cb252-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">simplifyVector =</span> <span class="cn">TRUE</span></span>
+<span id="cb252-5"><a href="datavariety.html#cb252-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb252-6"><a href="datavariety.html#cb252-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-7"><a href="datavariety.html#cb252-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check if the two data sets</span></span>
+<span id="cb252-8"><a href="datavariety.html#cb252-8" aria-hidden="true" tabindex="-1"></a><span class="co"># are identical (they should be)</span></span>
+<span id="cb252-9"><a href="datavariety.html#cb252-9" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(df, df_json)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Note that the reading and writing <code>JSON</code> data is easier, as the structure of the data (e.g., field separators) are more strictly defined. While reading the data, we use the <code>simplifyVector</code> argument to return a data frame rather than a nested list. This works as our data has a tabular structure, but this might not always be the case. Finally, we compare the original data with the data read in using <code>identical()</code>.</p>
 <blockquote>
@@ -702,18 +703,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">5.2.2</span> Meta-data<a href="datavariety.html#meta-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Meta-data is data that is associated with the main data file and is key to understanding the file content and the context of the data. In some cases, you will find this data only as a general description referencing the file(s) itself. In other cases, meta-data is included in the file itself.</p>
 <p>For example, many tabular CSV data files contain a header specifying the content of each column, and at times a couple of lines of data specifying the content of the file itself - or context within which the data should be considered.</p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb253-1"><a href="datavariety.html#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is meta-data associated with the tabular CSV file</span></span>
-<span id="cb253-2"><a href="datavariety.html#cb253-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for which the data is listed below.</span></span>
-<span id="cb253-3"><a href="datavariety.html#cb253-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb253-4"><a href="datavariety.html#cb253-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In addition to some meta-data, the first row of the data</span></span>
-<span id="cb253-5"><a href="datavariety.html#cb253-5" aria-hidden="true" tabindex="-1"></a><span class="co"># contains the column header data</span></span>
-<span id="cb253-6"><a href="datavariety.html#cb253-6" aria-hidden="true" tabindex="-1"></a><span class="ex">column_one,</span> column_two, column_three</span>
-<span id="cb253-7"><a href="datavariety.html#cb253-7" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span>
-<span id="cb253-8"><a href="datavariety.html#cb253-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span>
-<span id="cb253-9"><a href="datavariety.html#cb253-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb254-1"><a href="datavariety.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is meta-data associated with the tabular CSV file</span></span>
+<span id="cb254-2"><a href="datavariety.html#cb254-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for which the data is listed below.</span></span>
+<span id="cb254-3"><a href="datavariety.html#cb254-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb254-4"><a href="datavariety.html#cb254-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In addition to some meta-data, the first row of the data</span></span>
+<span id="cb254-5"><a href="datavariety.html#cb254-5" aria-hidden="true" tabindex="-1"></a><span class="co"># contains the column header data</span></span>
+<span id="cb254-6"><a href="datavariety.html#cb254-6" aria-hidden="true" tabindex="-1"></a><span class="ex">column_one,</span> column_two, column_three</span>
+<span id="cb254-7"><a href="datavariety.html#cb254-7" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span>
+<span id="cb254-8"><a href="datavariety.html#cb254-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span>
+<span id="cb254-9"><a href="datavariety.html#cb254-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1,</span> 2, 3</span></code></pre></div>
 <p>In the case of binary files it will not be possible to read the meta-data directly as plain text. In this case, specific commands can be used to read the meta-data included in a file. The example below shows how you would list the meta-data of a GeoTiff file using the bash.</p>
-<div class="sourceCode" id="cb254"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb254-1"><a href="datavariety.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list geospatial data for a geotiff file</span></span>
-<span id="cb254-2"><a href="datavariety.html#cb254-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gdalinfo</span> your_geotiff.tiff</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb255-1"><a href="datavariety.html#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list geospatial data for a geotiff file</span></span>
+<span id="cb255-2"><a href="datavariety.html#cb255-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gdalinfo</span> your_geotiff.tiff</span></code></pre></div>
 <blockquote>
 <p>TIP: Always keep track of your meta-data by including it, if possible, in the file itself. If this is not possible, meta data is often provided in a file called <code>README</code>. Meta-data is key in making science reproducible and guaranteeing consistency between projects. Key meta-data to retain are:</p>
 <ul>
@@ -749,16 +750,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4><span class="header-section-number">5.2.4.1</span> Direct downloads<a href="datavariety.html#direct-downloads" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Before diving into a description of APIs, we remind you that some file reading functions in R are web-aware, and can not only read local files but also remote ones (i.e., URLs). Getting ahead of ourselves a bit (see tutorials below), the example code shows you how to read the content of a URL directly into your R environment.</p>
 <p>Although using this functionality isn’t equivalent to using an API, the concept is the same. I.e., you load a remote data source.</p>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="datavariety.html#cb255-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define a URL with data of interest</span></span>
-<span id="cb255-2"><a href="datavariety.html#cb255-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in this case annual mean CO2 levels at Mauna Loa</span></span>
-<span id="cb255-3"><a href="datavariety.html#cb255-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv&quot;</span></span>
-<span id="cb255-4"><a href="datavariety.html#cb255-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb255-5"><a href="datavariety.html#cb255-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data directly from URL</span></span>
-<span id="cb255-6"><a href="datavariety.html#cb255-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
-<span id="cb255-7"><a href="datavariety.html#cb255-7" aria-hidden="true" tabindex="-1"></a>  url,</span>
-<span id="cb255-8"><a href="datavariety.html#cb255-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb255-9"><a href="datavariety.html#cb255-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
-<span id="cb255-10"><a href="datavariety.html#cb255-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="datavariety.html#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define a URL with data of interest</span></span>
+<span id="cb256-2"><a href="datavariety.html#cb256-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in this case annual mean CO2 levels at Mauna Loa</span></span>
+<span id="cb256-3"><a href="datavariety.html#cb256-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.csv&quot;</span></span>
+<span id="cb256-4"><a href="datavariety.html#cb256-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb256-5"><a href="datavariety.html#cb256-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data directly from URL</span></span>
+<span id="cb256-6"><a href="datavariety.html#cb256-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.table</span>(</span>
+<span id="cb256-7"><a href="datavariety.html#cb256-7" aria-hidden="true" tabindex="-1"></a>  url,</span>
+<span id="cb256-8"><a href="datavariety.html#cb256-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb256-9"><a href="datavariety.html#cb256-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb256-10"><a href="datavariety.html#cb256-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="apis" class="section level4 hasAnchor" number="5.2.4.2">
 <h4><span class="header-section-number">5.2.4.2</span> APIs<a href="datavariety.html#apis" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -767,15 +768,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="dedicated-api-libraries" class="section level5 unnumbered hasAnchor">
 <h5>Dedicated API libraries<a href="datavariety.html#dedicated-api-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>As an example of a dedicated library, we use the <a href="https://github.com/bluegreen-labs/MODISTools">{MODISTools} R package</a> which queries remote sensing data generated by the MODIS remote sensing (satellite) mission from the Oak Ridge National Laboratories data archive.</p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="datavariety.html#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
-<span id="cb256-2"><a href="datavariety.html#cb256-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;MODISTools&quot;</span>)</span>
-<span id="cb256-3"><a href="datavariety.html#cb256-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb256-4"><a href="datavariety.html#cb256-4" aria-hidden="true" tabindex="-1"></a><span class="co"># list all available products</span></span>
-<span id="cb256-5"><a href="datavariety.html#cb256-5" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_products</span>()</span>
-<span id="cb256-6"><a href="datavariety.html#cb256-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb256-7"><a href="datavariety.html#cb256-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print the first few lines</span></span>
-<span id="cb256-8"><a href="datavariety.html#cb256-8" aria-hidden="true" tabindex="-1"></a><span class="co"># of available products</span></span>
-<span id="cb256-9"><a href="datavariety.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(products))</span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="datavariety.html#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the library</span></span>
+<span id="cb257-2"><a href="datavariety.html#cb257-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;MODISTools&quot;</span>)</span>
+<span id="cb257-3"><a href="datavariety.html#cb257-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-4"><a href="datavariety.html#cb257-4" aria-hidden="true" tabindex="-1"></a><span class="co"># list all available products</span></span>
+<span id="cb257-5"><a href="datavariety.html#cb257-5" aria-hidden="true" tabindex="-1"></a>products <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_products</span>()</span>
+<span id="cb257-6"><a href="datavariety.html#cb257-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-7"><a href="datavariety.html#cb257-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print the first few lines</span></span>
+<span id="cb257-8"><a href="datavariety.html#cb257-8" aria-hidden="true" tabindex="-1"></a><span class="co"># of available products</span></span>
+<span id="cb257-9"><a href="datavariety.html#cb257-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(products))</span></code></pre></div>
 <pre><code>##        product
 ## 1       Daymet
 ## 2 ECO4ESIPTJPL
@@ -797,28 +798,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4  One time              1000
 ## 5  One time              1000
 ## 6    1 year               500</code></pre>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="datavariety.html#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download a demo dataset</span></span>
-<span id="cb258-2"><a href="datavariety.html#cb258-2" aria-hidden="true" tabindex="-1"></a><span class="co"># specifying a location, a product,</span></span>
-<span id="cb258-3"><a href="datavariety.html#cb258-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a band (subset of the product)</span></span>
-<span id="cb258-4"><a href="datavariety.html#cb258-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and a date range and a geographic</span></span>
-<span id="cb258-5"><a href="datavariety.html#cb258-5" aria-hidden="true" tabindex="-1"></a><span class="co"># area (1 km above/below and left/right).</span></span>
-<span id="cb258-6"><a href="datavariety.html#cb258-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Data is returned internally and the</span></span>
-<span id="cb258-7"><a href="datavariety.html#cb258-7" aria-hidden="true" tabindex="-1"></a><span class="co"># progress bar of the download is not shown.</span></span>
-<span id="cb258-8"><a href="datavariety.html#cb258-8" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_subset</span>(</span>
-<span id="cb258-9"><a href="datavariety.html#cb258-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">product =</span> <span class="st">&quot;MOD11A2&quot;</span>,</span>
-<span id="cb258-10"><a href="datavariety.html#cb258-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="dv">40</span>,</span>
-<span id="cb258-11"><a href="datavariety.html#cb258-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="sc">-</span><span class="dv">110</span>,</span>
-<span id="cb258-12"><a href="datavariety.html#cb258-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">band =</span> <span class="st">&quot;LST_Day_1km&quot;</span>,</span>
-<span id="cb258-13"><a href="datavariety.html#cb258-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,</span>
-<span id="cb258-14"><a href="datavariety.html#cb258-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">end =</span> <span class="st">&quot;2004-02-01&quot;</span>,</span>
-<span id="cb258-15"><a href="datavariety.html#cb258-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">km_lr =</span> <span class="dv">1</span>,</span>
-<span id="cb258-16"><a href="datavariety.html#cb258-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">km_ab =</span> <span class="dv">1</span>,</span>
-<span id="cb258-17"><a href="datavariety.html#cb258-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">internal =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb258-18"><a href="datavariety.html#cb258-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">progress =</span> <span class="cn">FALSE</span></span>
-<span id="cb258-19"><a href="datavariety.html#cb258-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb258-20"><a href="datavariety.html#cb258-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb258-21"><a href="datavariety.html#cb258-21" aria-hidden="true" tabindex="-1"></a><span class="co"># print the dowloaded data</span></span>
-<span id="cb258-22"><a href="datavariety.html#cb258-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(subset))</span></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="datavariety.html#cb259-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download a demo dataset</span></span>
+<span id="cb259-2"><a href="datavariety.html#cb259-2" aria-hidden="true" tabindex="-1"></a><span class="co"># specifying a location, a product,</span></span>
+<span id="cb259-3"><a href="datavariety.html#cb259-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a band (subset of the product)</span></span>
+<span id="cb259-4"><a href="datavariety.html#cb259-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and a date range and a geographic</span></span>
+<span id="cb259-5"><a href="datavariety.html#cb259-5" aria-hidden="true" tabindex="-1"></a><span class="co"># area (1 km above/below and left/right).</span></span>
+<span id="cb259-6"><a href="datavariety.html#cb259-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Data is returned internally and the</span></span>
+<span id="cb259-7"><a href="datavariety.html#cb259-7" aria-hidden="true" tabindex="-1"></a><span class="co"># progress bar of the download is not shown.</span></span>
+<span id="cb259-8"><a href="datavariety.html#cb259-8" aria-hidden="true" tabindex="-1"></a>subset <span class="ot">&lt;-</span> MODISTools<span class="sc">::</span><span class="fu">mt_subset</span>(</span>
+<span id="cb259-9"><a href="datavariety.html#cb259-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">product =</span> <span class="st">&quot;MOD11A2&quot;</span>,</span>
+<span id="cb259-10"><a href="datavariety.html#cb259-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="dv">40</span>,</span>
+<span id="cb259-11"><a href="datavariety.html#cb259-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="sc">-</span><span class="dv">110</span>,</span>
+<span id="cb259-12"><a href="datavariety.html#cb259-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">band =</span> <span class="st">&quot;LST_Day_1km&quot;</span>,</span>
+<span id="cb259-13"><a href="datavariety.html#cb259-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">start =</span> <span class="st">&quot;2004-01-01&quot;</span>,</span>
+<span id="cb259-14"><a href="datavariety.html#cb259-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">end =</span> <span class="st">&quot;2004-02-01&quot;</span>,</span>
+<span id="cb259-15"><a href="datavariety.html#cb259-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">km_lr =</span> <span class="dv">1</span>,</span>
+<span id="cb259-16"><a href="datavariety.html#cb259-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">km_ab =</span> <span class="dv">1</span>,</span>
+<span id="cb259-17"><a href="datavariety.html#cb259-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">internal =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb259-18"><a href="datavariety.html#cb259-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">progress =</span> <span class="cn">FALSE</span></span>
+<span id="cb259-19"><a href="datavariety.html#cb259-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb259-20"><a href="datavariety.html#cb259-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-21"><a href="datavariety.html#cb259-21" aria-hidden="true" tabindex="-1"></a><span class="co"># print the dowloaded data</span></span>
+<span id="cb259-22"><a href="datavariety.html#cb259-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(subset))</span></code></pre></div>
 <pre><code>##       xllcorner  yllcorner         cellsize nrows ncols        band  units
 ## 1.1 -9370963.05 4445948.79 926.625433055834     3     3 LST_Day_1km Kelvin
 ## 2.1 -9370963.05 4445948.79 926.625433055834     3     3 LST_Day_1km Kelvin
@@ -845,78 +846,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="get" class="section level5 unnumbered hasAnchor">
 <h5>GET<a href="datavariety.html#get" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>Depending on your data source, you will either need to rely on a dedicated R package to query the API or study the API documentation. The general scheme for using an API follows the use of the <code>GET()</code> command of the {httr} R library. You define a query using API parameters, as a named list, and then use a <code>GET()</code> statement to download the data from the endpoint (<code>url</code>).</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="datavariety.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formulate a named list query to pass to httr</span></span>
-<span id="cb260-2"><a href="datavariety.html#cb260-2" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb260-3"><a href="datavariety.html#cb260-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;argument&quot;</span> <span class="ot">=</span> <span class="st">&quot;2&quot;</span>,</span>
-<span id="cb260-4"><a href="datavariety.html#cb260-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;another_argument&quot;</span> <span class="ot">=</span> <span class="st">&quot;3&quot;</span></span>
-<span id="cb260-5"><a href="datavariety.html#cb260-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb260-6"><a href="datavariety.html#cb260-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb260-7"><a href="datavariety.html#cb260-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The URL of the API (varies per product / param)</span></span>
-<span id="cb260-8"><a href="datavariety.html#cb260-8" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://your.service.endpoint.com&quot;</span></span>
-<span id="cb260-9"><a href="datavariety.html#cb260-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb260-10"><a href="datavariety.html#cb260-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download data using the</span></span>
-<span id="cb260-11"><a href="datavariety.html#cb260-11" aria-hidden="true" tabindex="-1"></a><span class="co"># API endpoint and query data</span></span>
-<span id="cb260-12"><a href="datavariety.html#cb260-12" aria-hidden="true" tabindex="-1"></a><span class="co"># status variable will include if</span></span>
-<span id="cb260-13"><a href="datavariety.html#cb260-13" aria-hidden="true" tabindex="-1"></a><span class="co"># the download was successful or not</span></span>
-<span id="cb260-14"><a href="datavariety.html#cb260-14" aria-hidden="true" tabindex="-1"></a><span class="co"># the write_disk() function captures</span></span>
-<span id="cb260-15"><a href="datavariety.html#cb260-15" aria-hidden="true" tabindex="-1"></a><span class="co"># data if available and writes it to</span></span>
-<span id="cb260-16"><a href="datavariety.html#cb260-16" aria-hidden="true" tabindex="-1"></a><span class="co"># disk</span></span>
-<span id="cb260-17"><a href="datavariety.html#cb260-17" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
-<span id="cb260-18"><a href="datavariety.html#cb260-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
-<span id="cb260-19"><a href="datavariety.html#cb260-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> query,</span>
-<span id="cb260-20"><a href="datavariety.html#cb260-20" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">write_disk</span>(</span>
-<span id="cb260-21"><a href="datavariety.html#cb260-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="st">&quot;/where/to/store/data/filename.ext&quot;</span>,</span>
-<span id="cb260-22"><a href="datavariety.html#cb260-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">overwrite =</span> <span class="cn">TRUE</span></span>
-<span id="cb260-23"><a href="datavariety.html#cb260-23" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb260-24"><a href="datavariety.html#cb260-24" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="datavariety.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formulate a named list query to pass to httr</span></span>
+<span id="cb261-2"><a href="datavariety.html#cb261-2" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb261-3"><a href="datavariety.html#cb261-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;argument&quot;</span> <span class="ot">=</span> <span class="st">&quot;2&quot;</span>,</span>
+<span id="cb261-4"><a href="datavariety.html#cb261-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;another_argument&quot;</span> <span class="ot">=</span> <span class="st">&quot;3&quot;</span></span>
+<span id="cb261-5"><a href="datavariety.html#cb261-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb261-6"><a href="datavariety.html#cb261-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-7"><a href="datavariety.html#cb261-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The URL of the API (varies per product / param)</span></span>
+<span id="cb261-8"><a href="datavariety.html#cb261-8" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://your.service.endpoint.com&quot;</span></span>
+<span id="cb261-9"><a href="datavariety.html#cb261-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb261-10"><a href="datavariety.html#cb261-10" aria-hidden="true" tabindex="-1"></a><span class="co"># download data using the</span></span>
+<span id="cb261-11"><a href="datavariety.html#cb261-11" aria-hidden="true" tabindex="-1"></a><span class="co"># API endpoint and query data</span></span>
+<span id="cb261-12"><a href="datavariety.html#cb261-12" aria-hidden="true" tabindex="-1"></a><span class="co"># status variable will include if</span></span>
+<span id="cb261-13"><a href="datavariety.html#cb261-13" aria-hidden="true" tabindex="-1"></a><span class="co"># the download was successful or not</span></span>
+<span id="cb261-14"><a href="datavariety.html#cb261-14" aria-hidden="true" tabindex="-1"></a><span class="co"># the write_disk() function captures</span></span>
+<span id="cb261-15"><a href="datavariety.html#cb261-15" aria-hidden="true" tabindex="-1"></a><span class="co"># data if available and writes it to</span></span>
+<span id="cb261-16"><a href="datavariety.html#cb261-16" aria-hidden="true" tabindex="-1"></a><span class="co"># disk</span></span>
+<span id="cb261-17"><a href="datavariety.html#cb261-17" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
+<span id="cb261-18"><a href="datavariety.html#cb261-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
+<span id="cb261-19"><a href="datavariety.html#cb261-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> query,</span>
+<span id="cb261-20"><a href="datavariety.html#cb261-20" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">write_disk</span>(</span>
+<span id="cb261-21"><a href="datavariety.html#cb261-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="st">&quot;/where/to/store/data/filename.ext&quot;</span>,</span>
+<span id="cb261-22"><a href="datavariety.html#cb261-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">overwrite =</span> <span class="cn">TRUE</span></span>
+<span id="cb261-23"><a href="datavariety.html#cb261-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb261-24"><a href="datavariety.html#cb261-24" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>Below, we provide an example of using the <code>GET</code> command to download data from the <a href="https://daac.ornl.gov/cgi-bin/dsviewer.pl?ds_id=1247">Regridded Harmonized World Soil Database (v1.2)</a> as hosted on the Oak Ridge National Laboratory computer infrastructure. In this case we download a subset of a global map of topsoil sand content (<code>T_SAND</code>).</p>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="datavariety.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set API URL endpoint</span></span>
-<span id="cb261-2"><a href="datavariety.html#cb261-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for the total sand content</span></span>
-<span id="cb261-3"><a href="datavariety.html#cb261-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SAND.nc4&quot;</span></span>
-<span id="cb261-4"><a href="datavariety.html#cb261-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb261-5"><a href="datavariety.html#cb261-5" aria-hidden="true" tabindex="-1"></a><span class="co"># formulate query to pass to httr</span></span>
-<span id="cb261-6"><a href="datavariety.html#cb261-6" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb261-7"><a href="datavariety.html#cb261-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="st">&quot;T_SAND&quot;</span>,</span>
-<span id="cb261-8"><a href="datavariety.html#cb261-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;south&quot;</span> <span class="ot">=</span> <span class="dv">32</span>,</span>
-<span id="cb261-9"><a href="datavariety.html#cb261-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;west&quot;</span> <span class="ot">=</span> <span class="sc">-</span><span class="dv">81</span>,</span>
-<span id="cb261-10"><a href="datavariety.html#cb261-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;east&quot;</span> <span class="ot">=</span> <span class="sc">-</span><span class="dv">80</span>,</span>
-<span id="cb261-11"><a href="datavariety.html#cb261-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;north&quot;</span> <span class="ot">=</span> <span class="dv">34</span>,</span>
-<span id="cb261-12"><a href="datavariety.html#cb261-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;disableProjSubset&quot;</span> <span class="ot">=</span> <span class="st">&quot;on&quot;</span>,</span>
-<span id="cb261-13"><a href="datavariety.html#cb261-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;horizStride&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb261-14"><a href="datavariety.html#cb261-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;accept&quot;</span> <span class="ot">=</span> <span class="st">&quot;netcdf4&quot;</span></span>
-<span id="cb261-15"><a href="datavariety.html#cb261-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb261-16"><a href="datavariety.html#cb261-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb261-17"><a href="datavariety.html#cb261-17" aria-hidden="true" tabindex="-1"></a><span class="co"># download data using the</span></span>
-<span id="cb261-18"><a href="datavariety.html#cb261-18" aria-hidden="true" tabindex="-1"></a><span class="co"># API endpoint and query data</span></span>
-<span id="cb261-19"><a href="datavariety.html#cb261-19" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
-<span id="cb261-20"><a href="datavariety.html#cb261-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
-<span id="cb261-21"><a href="datavariety.html#cb261-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> query,</span>
-<span id="cb261-22"><a href="datavariety.html#cb261-22" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">write_disk</span>(</span>
-<span id="cb261-23"><a href="datavariety.html#cb261-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>),</span>
-<span id="cb261-24"><a href="datavariety.html#cb261-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">overwrite =</span> <span class="cn">TRUE</span></span>
-<span id="cb261-25"><a href="datavariety.html#cb261-25" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb261-26"><a href="datavariety.html#cb261-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb261-27"><a href="datavariety.html#cb261-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb261-28"><a href="datavariety.html#cb261-28" aria-hidden="true" tabindex="-1"></a><span class="co"># to visualize the data</span></span>
-<span id="cb261-29"><a href="datavariety.html#cb261-29" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to load the {terra}</span></span>
-<span id="cb261-30"><a href="datavariety.html#cb261-30" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
-<span id="cb261-31"><a href="datavariety.html#cb261-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;terra&quot;</span>)</span>
-<span id="cb261-32"><a href="datavariety.html#cb261-32" aria-hidden="true" tabindex="-1"></a>sand <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span>
-<span id="cb261-33"><a href="datavariety.html#cb261-33" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(sand)</span></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="datavariety.html#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set API URL endpoint</span></span>
+<span id="cb262-2"><a href="datavariety.html#cb262-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for the total sand content</span></span>
+<span id="cb262-3"><a href="datavariety.html#cb262-3" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;https://thredds.daac.ornl.gov/thredds/ncss/ornldaac/1247/T_SAND.nc4&quot;</span></span>
+<span id="cb262-4"><a href="datavariety.html#cb262-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-5"><a href="datavariety.html#cb262-5" aria-hidden="true" tabindex="-1"></a><span class="co"># formulate query to pass to httr</span></span>
+<span id="cb262-6"><a href="datavariety.html#cb262-6" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb262-7"><a href="datavariety.html#cb262-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;var&quot;</span> <span class="ot">=</span> <span class="st">&quot;T_SAND&quot;</span>,</span>
+<span id="cb262-8"><a href="datavariety.html#cb262-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;south&quot;</span> <span class="ot">=</span> <span class="dv">32</span>,</span>
+<span id="cb262-9"><a href="datavariety.html#cb262-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;west&quot;</span> <span class="ot">=</span> <span class="sc">-</span><span class="dv">81</span>,</span>
+<span id="cb262-10"><a href="datavariety.html#cb262-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;east&quot;</span> <span class="ot">=</span> <span class="sc">-</span><span class="dv">80</span>,</span>
+<span id="cb262-11"><a href="datavariety.html#cb262-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;north&quot;</span> <span class="ot">=</span> <span class="dv">34</span>,</span>
+<span id="cb262-12"><a href="datavariety.html#cb262-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;disableProjSubset&quot;</span> <span class="ot">=</span> <span class="st">&quot;on&quot;</span>,</span>
+<span id="cb262-13"><a href="datavariety.html#cb262-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;horizStride&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb262-14"><a href="datavariety.html#cb262-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;accept&quot;</span> <span class="ot">=</span> <span class="st">&quot;netcdf4&quot;</span></span>
+<span id="cb262-15"><a href="datavariety.html#cb262-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb262-16"><a href="datavariety.html#cb262-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-17"><a href="datavariety.html#cb262-17" aria-hidden="true" tabindex="-1"></a><span class="co"># download data using the</span></span>
+<span id="cb262-18"><a href="datavariety.html#cb262-18" aria-hidden="true" tabindex="-1"></a><span class="co"># API endpoint and query data</span></span>
+<span id="cb262-19"><a href="datavariety.html#cb262-19" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">GET</span>(</span>
+<span id="cb262-20"><a href="datavariety.html#cb262-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
+<span id="cb262-21"><a href="datavariety.html#cb262-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">query =</span> query,</span>
+<span id="cb262-22"><a href="datavariety.html#cb262-22" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">write_disk</span>(</span>
+<span id="cb262-23"><a href="datavariety.html#cb262-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>),</span>
+<span id="cb262-24"><a href="datavariety.html#cb262-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">overwrite =</span> <span class="cn">TRUE</span></span>
+<span id="cb262-25"><a href="datavariety.html#cb262-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb262-26"><a href="datavariety.html#cb262-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb262-27"><a href="datavariety.html#cb262-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-28"><a href="datavariety.html#cb262-28" aria-hidden="true" tabindex="-1"></a><span class="co"># to visualize the data</span></span>
+<span id="cb262-29"><a href="datavariety.html#cb262-29" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to load the {terra}</span></span>
+<span id="cb262-30"><a href="datavariety.html#cb262-30" aria-hidden="true" tabindex="-1"></a><span class="co"># library</span></span>
+<span id="cb262-31"><a href="datavariety.html#cb262-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;terra&quot;</span>)</span>
+<span id="cb262-32"><a href="datavariety.html#cb262-32" aria-hidden="true" tabindex="-1"></a>sand <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;T_SAND.nc&quot;</span>))</span>
+<span id="cb262-33"><a href="datavariety.html#cb262-33" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(sand)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-139-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="authentication" class="section level5 unnumbered hasAnchor">
 <h5>Authentication<a href="datavariety.html#authentication" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>Depending on the API, authentication using a user name and a key or password is required. Then, the template should be slightly altered to accommodate for these requirements. Note that instead of the <code>GET()</code> command we use <code>POST()</code> as we need to post some authentication data before we can get the data in return.</p>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="datavariety.html#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="co"># an authenticated API query</span></span>
-<span id="cb262-2"><a href="datavariety.html#cb262-2" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">POST</span>(</span>
-<span id="cb262-3"><a href="datavariety.html#cb262-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
-<span id="cb262-4"><a href="datavariety.html#cb262-4" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">authenticate</span>(user, key),</span>
-<span id="cb262-5"><a href="datavariety.html#cb262-5" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">add_headers</span>(<span class="st">&quot;Accept&quot;</span> <span class="ot">=</span> <span class="st">&quot;application/json&quot;</span>,</span>
-<span id="cb262-6"><a href="datavariety.html#cb262-6" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Content-Type&quot;</span> <span class="ot">=</span> <span class="st">&quot;application/json&quot;</span>),</span>
-<span id="cb262-7"><a href="datavariety.html#cb262-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">body =</span> query,</span>
-<span id="cb262-8"><a href="datavariety.html#cb262-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">encode =</span> <span class="st">&quot;json&quot;</span></span>
-<span id="cb262-9"><a href="datavariety.html#cb262-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="datavariety.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="co"># an authenticated API query</span></span>
+<span id="cb263-2"><a href="datavariety.html#cb263-2" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> httr<span class="sc">::</span><span class="fu">POST</span>(</span>
+<span id="cb263-3"><a href="datavariety.html#cb263-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">url =</span> url,</span>
+<span id="cb263-4"><a href="datavariety.html#cb263-4" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">authenticate</span>(user, key),</span>
+<span id="cb263-5"><a href="datavariety.html#cb263-5" aria-hidden="true" tabindex="-1"></a>  httr<span class="sc">::</span><span class="fu">add_headers</span>(<span class="st">&quot;Accept&quot;</span> <span class="ot">=</span> <span class="st">&quot;application/json&quot;</span>,</span>
+<span id="cb263-6"><a href="datavariety.html#cb263-6" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;Content-Type&quot;</span> <span class="ot">=</span> <span class="st">&quot;application/json&quot;</span>),</span>
+<span id="cb263-7"><a href="datavariety.html#cb263-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">body =</span> query,</span>
+<span id="cb263-8"><a href="datavariety.html#cb263-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">encode =</span> <span class="st">&quot;json&quot;</span></span>
+<span id="cb263-9"><a href="datavariety.html#cb263-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -928,15 +929,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="reading-and-writing-human-readable-files" class="section level4 unnumbered hasAnchor">
 <h4>Reading and writing human-readable files<a href="datavariety.html#reading-and-writing-human-readable-files" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>While <strong>not leaving your R session</strong>, download and open the files at the following locations:</p>
-<div class="sourceCode" id="cb263"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb263-1"><a href="datavariety.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="ex">https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_1.csv</span></span>
-<span id="cb263-2"><a href="datavariety.html#cb263-2" aria-hidden="true" tabindex="-1"></a><span class="ex">https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_2.csv</span></span>
-<span id="cb263-3"><a href="datavariety.html#cb263-3" aria-hidden="true" tabindex="-1"></a><span class="ex">https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_3.csv</span></span></code></pre></div>
+<div class="sourceCode" id="cb264"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb264-1"><a href="datavariety.html#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="ex">https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_1.csv</span></span>
+<span id="cb264-2"><a href="datavariety.html#cb264-2" aria-hidden="true" tabindex="-1"></a><span class="ex">https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_2.csv</span></span>
+<span id="cb264-3"><a href="datavariety.html#cb264-3" aria-hidden="true" tabindex="-1"></a><span class="ex">https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_3.csv</span></span></code></pre></div>
 <p>Once loaded into your R environment, combine and save all data as a <strong>temporary</strong> <code>CSV</code> file. Read in the new temporary <code>CSV</code> file, and save it as a <code>JSON</code> file in your current working directory.</p>
 </div>
 <div id="reading-and-writing-binary-files" class="section level4 unnumbered hasAnchor">
 <h4>Reading and writing binary files<a href="datavariety.html#reading-and-writing-binary-files" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Download and open the following file:</p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="datavariety.html#cb264-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>raw.githubusercontent.com<span class="sc">/</span>geco<span class="sc">-</span>bern<span class="sc">/</span>agds<span class="sc">/</span>main<span class="sc">/</span>data<span class="sc">/</span>demo_data.nc</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="datavariety.html#cb265-1" aria-hidden="true" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>raw.githubusercontent.com<span class="sc">/</span>geco<span class="sc">-</span>bern<span class="sc">/</span>agds<span class="sc">/</span>main<span class="sc">/</span>data<span class="sc">/</span>demo_data.nc</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>What file format are we dealing with?</li>
 <li>What library would you use to read this kind of data?</li>

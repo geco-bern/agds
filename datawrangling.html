@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -238,6 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.2.1</b> The grammar of graphics</a></li>
 <li class="chapter" data-level="4.2.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.2.2</b> Every data has its representation</a></li>
+<li class="chapter" data-level="4.2.3" data-path="datavis.html"><a href="datavis.html#writing-to-file"><i class="fa fa-check"></i><b>4.2.3</b> Writing to file</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#exercises-2"><i class="fa fa-check"></i><b>4.3</b> Exercises</a>
 <ul>
@@ -519,6 +520,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To import the data into the R environment, we use the function <code>read_csv()</code> from the {readr} package (part of tidyverse). In other R code, you will also encounter the base R <code>read.csv()</code> function. However, <code>read_csv()</code> is much faster and reads data into a tidyverse-data frame (a <em>tibble</em>) which has some useful additional characteristics, on top of a common R data frame. For example, <em>tibbles</em> generate a nicely readable output when printing the object as is done below.</p>
 <div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="datawrangling.html#cb118-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv&quot;</span>)</span>
 <span id="cb118-2"><a href="datawrangling.html#cb118-2" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes</span></code></pre></div>
+<blockquote>
+<p>To reproduce this code chunk, you can download the file <code>FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv</code> from <a href="https://raw.githubusercontent.com/geco-bern/agds/main/data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv">here</a> and read it from the local path where the file is stored on your machine. All data files used in this tutorials are stored <a href="https://github.com/geco-bern/agds/tree/main/data">here</a>.</p>
+</blockquote>
 <p>Since the file is properly formatted, with variable names given in the first line of the file, the function <code>read_csv()</code> identifies them correctly as column names and interprets values in each column as values of a consistent type (as numeric <code>&lt;dbl&gt;</code>). The file is also automatically machine-readable because it has no merged cells and only one value per cell.</p>
 </div>
 <div id="variable-selection" class="section level3 hasAnchor" number="3.2.4">
@@ -1047,6 +1051,9 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ## [2] &quot;./data/FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv&quot;
 ## [3] &quot;./data/FLX_FI-Hyy_FLUXNET2015_FULLSET_DD_1996-2014_1-3.csv&quot;
 ## [4] &quot;./data/FLX_FR-Pue_FLUXNET2015_FULLSET_DD_2000-2014_2-3.csv&quot;</code></pre>
+<blockquote>
+<p>To reproduce this code chunk, you can download the files <code>FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv</code> from <a href="https://github.com/geco-bern/agds/tree/main/data">here</a> and read it from the local path where the file is stored on your machine.</p>
+</blockquote>
 <p><code>vec_files</code> is now a vector of three files paths as character strings. To read in the three files and combine the three data frames (<code>list_df</code> below) into a list of data frames, we could use a <code>for</code> loop:</p>
 <div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="datawrangling.html#cb188-1" aria-hidden="true" tabindex="-1"></a>list_df <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
 <span id="cb188-2"><a href="datawrangling.html#cb188-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ifil <span class="cf">in</span> vec_files){</span>

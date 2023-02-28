@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -238,6 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.2.1</b> The grammar of graphics</a></li>
 <li class="chapter" data-level="4.2.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.2.2</b> Every data has its representation</a></li>
+<li class="chapter" data-level="4.2.3" data-path="datavis.html"><a href="datavis.html#writing-to-file"><i class="fa fa-check"></i><b>4.2.3</b> Writing to file</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#exercises-2"><i class="fa fa-check"></i><b>4.3</b> Exercises</a>
 <ul>
@@ -477,47 +478,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-and-the-modelling-challenge-1" class="section level3 hasAnchor" number="10.2.1">
 <h3><span class="header-section-number">10.2.1</span> Data and the modelling challenge<a href="supervisedmlii.html#data-and-the-modelling-challenge-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We’re using the same data and address the same modelling challenge as in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. Let’s load the data, wrangle a bit, specify the same model formulation, and the same pre-processing steps as in the previous Chapter <a href="supervisedmli.html#supervisedmli">9</a>.</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="supervisedmlii.html#cb384-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;</span>) <span class="sc">|&gt;</span>  </span>
-<span id="cb384-2"><a href="supervisedmlii.html#cb384-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb384-3"><a href="supervisedmlii.html#cb384-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only the variables we are interested in</span></span>
-<span id="cb384-4"><a href="supervisedmlii.html#cb384-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(TIMESTAMP,</span>
-<span id="cb384-5"><a href="supervisedmlii.html#cb384-5" aria-hidden="true" tabindex="-1"></a>                GPP_NT_VUT_REF,    <span class="co"># the target</span></span>
-<span id="cb384-6"><a href="supervisedmlii.html#cb384-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>),  <span class="co"># quality control info</span></span>
-<span id="cb384-7"><a href="supervisedmlii.html#cb384-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),   <span class="co"># includes all all meteorological covariates</span></span>
-<span id="cb384-8"><a href="supervisedmlii.html#cb384-8" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)   <span class="co"># weird useless variable</span></span>
-<span id="cb384-9"><a href="supervisedmlii.html#cb384-9" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">|&gt;</span></span>
-<span id="cb384-10"><a href="supervisedmlii.html#cb384-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb384-11"><a href="supervisedmlii.html#cb384-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to a nice date object</span></span>
-<span id="cb384-12"><a href="supervisedmlii.html#cb384-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> <span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
-<span id="cb384-13"><a href="supervisedmlii.html#cb384-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb384-14"><a href="supervisedmlii.html#cb384-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set all -9999 to NA</span></span>
-<span id="cb384-15"><a href="supervisedmlii.html#cb384-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span></span>
-<span id="cb384-16"><a href="supervisedmlii.html#cb384-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb384-17"><a href="supervisedmlii.html#cb384-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># retain only data based on &gt;=80% good-quality measurements</span></span>
-<span id="cb384-18"><a href="supervisedmlii.html#cb384-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># overwrite bad data with NA (not dropping rows)</span></span>
-<span id="cb384-19"><a href="supervisedmlii.html#cb384-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF),</span>
-<span id="cb384-20"><a href="supervisedmlii.html#cb384-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">TA_F           =</span> <span class="fu">ifelse</span>(TA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, TA_F),</span>
-<span id="cb384-21"><a href="supervisedmlii.html#cb384-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">SW_IN_F        =</span> <span class="fu">ifelse</span>(SW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, SW_IN_F),</span>
-<span id="cb384-22"><a href="supervisedmlii.html#cb384-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">LW_IN_F        =</span> <span class="fu">ifelse</span>(LW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, LW_IN_F),</span>
-<span id="cb384-23"><a href="supervisedmlii.html#cb384-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">VPD_F          =</span> <span class="fu">ifelse</span>(VPD_F_QC       <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, VPD_F),</span>
-<span id="cb384-24"><a href="supervisedmlii.html#cb384-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">PA_F           =</span> <span class="fu">ifelse</span>(PA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, PA_F),</span>
-<span id="cb384-25"><a href="supervisedmlii.html#cb384-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">P_F            =</span> <span class="fu">ifelse</span>(P_F_QC         <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, P_F),</span>
-<span id="cb384-26"><a href="supervisedmlii.html#cb384-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">WS_F           =</span> <span class="fu">ifelse</span>(WS_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, WS_F)) <span class="sc">|&gt;</span> </span>
-<span id="cb384-27"><a href="supervisedmlii.html#cb384-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb384-28"><a href="supervisedmlii.html#cb384-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop QC variables (no longer needed)</span></span>
-<span id="cb384-29"><a href="supervisedmlii.html#cb384-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span>
-<span id="cb384-30"><a href="supervisedmlii.html#cb384-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb384-31"><a href="supervisedmlii.html#cb384-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
-<span id="cb384-32"><a href="supervisedmlii.html#cb384-32" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
-<span id="cb384-33"><a href="supervisedmlii.html#cb384-33" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(daily_fluxes, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
-<span id="cb384-34"><a href="supervisedmlii.html#cb384-34" aria-hidden="true" tabindex="-1"></a>daily_fluxes_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
-<span id="cb384-35"><a href="supervisedmlii.html#cb384-35" aria-hidden="true" tabindex="-1"></a>daily_fluxes_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
-<span id="cb384-36"><a href="supervisedmlii.html#cb384-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb384-37"><a href="supervisedmlii.html#cb384-37" aria-hidden="true" tabindex="-1"></a><span class="co"># The same model formulation is in the previous chapter</span></span>
-<span id="cb384-38"><a href="supervisedmlii.html#cb384-38" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
-<span id="cb384-39"><a href="supervisedmlii.html#cb384-39" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> daily_fluxes_train) <span class="sc">|&gt;</span> </span>
-<span id="cb384-40"><a href="supervisedmlii.html#cb384-40" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb384-41"><a href="supervisedmlii.html#cb384-41" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="supervisedmlii.html#cb385-1" aria-hidden="true" tabindex="-1"></a>daily_fluxes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv&quot;</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb385-2"><a href="supervisedmlii.html#cb385-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb385-3"><a href="supervisedmlii.html#cb385-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select only the variables we are interested in</span></span>
+<span id="cb385-4"><a href="supervisedmlii.html#cb385-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(TIMESTAMP,</span>
+<span id="cb385-5"><a href="supervisedmlii.html#cb385-5" aria-hidden="true" tabindex="-1"></a>                GPP_NT_VUT_REF,    <span class="co"># the target</span></span>
+<span id="cb385-6"><a href="supervisedmlii.html#cb385-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>),  <span class="co"># quality control info</span></span>
+<span id="cb385-7"><a href="supervisedmlii.html#cb385-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ends_with</span>(<span class="st">&quot;_F&quot;</span>),   <span class="co"># includes all all meteorological covariates</span></span>
+<span id="cb385-8"><a href="supervisedmlii.html#cb385-8" aria-hidden="true" tabindex="-1"></a>                <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>)   <span class="co"># weird useless variable</span></span>
+<span id="cb385-9"><a href="supervisedmlii.html#cb385-9" aria-hidden="true" tabindex="-1"></a>                ) <span class="sc">|&gt;</span></span>
+<span id="cb385-10"><a href="supervisedmlii.html#cb385-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb385-11"><a href="supervisedmlii.html#cb385-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># convert to a nice date object</span></span>
+<span id="cb385-12"><a href="supervisedmlii.html#cb385-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">TIMESTAMP =</span> <span class="fu">ymd</span>(TIMESTAMP)) <span class="sc">|&gt;</span></span>
+<span id="cb385-13"><a href="supervisedmlii.html#cb385-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb385-14"><a href="supervisedmlii.html#cb385-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># set all -9999 to NA</span></span>
+<span id="cb385-15"><a href="supervisedmlii.html#cb385-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span></span>
+<span id="cb385-16"><a href="supervisedmlii.html#cb385-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb385-17"><a href="supervisedmlii.html#cb385-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># retain only data based on &gt;=80% good-quality measurements</span></span>
+<span id="cb385-18"><a href="supervisedmlii.html#cb385-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># overwrite bad data with NA (not dropping rows)</span></span>
+<span id="cb385-19"><a href="supervisedmlii.html#cb385-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">GPP_NT_VUT_REF =</span> <span class="fu">ifelse</span>(NEE_VUT_REF_QC <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, GPP_NT_VUT_REF),</span>
+<span id="cb385-20"><a href="supervisedmlii.html#cb385-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">TA_F           =</span> <span class="fu">ifelse</span>(TA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, TA_F),</span>
+<span id="cb385-21"><a href="supervisedmlii.html#cb385-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">SW_IN_F        =</span> <span class="fu">ifelse</span>(SW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, SW_IN_F),</span>
+<span id="cb385-22"><a href="supervisedmlii.html#cb385-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">LW_IN_F        =</span> <span class="fu">ifelse</span>(LW_IN_F_QC     <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, LW_IN_F),</span>
+<span id="cb385-23"><a href="supervisedmlii.html#cb385-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">VPD_F          =</span> <span class="fu">ifelse</span>(VPD_F_QC       <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, VPD_F),</span>
+<span id="cb385-24"><a href="supervisedmlii.html#cb385-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">PA_F           =</span> <span class="fu">ifelse</span>(PA_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, PA_F),</span>
+<span id="cb385-25"><a href="supervisedmlii.html#cb385-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">P_F            =</span> <span class="fu">ifelse</span>(P_F_QC         <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, P_F),</span>
+<span id="cb385-26"><a href="supervisedmlii.html#cb385-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">WS_F           =</span> <span class="fu">ifelse</span>(WS_F_QC        <span class="sc">&lt;</span> <span class="fl">0.8</span>, <span class="cn">NA</span>, WS_F)) <span class="sc">|&gt;</span> </span>
+<span id="cb385-27"><a href="supervisedmlii.html#cb385-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb385-28"><a href="supervisedmlii.html#cb385-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># drop QC variables (no longer needed)</span></span>
+<span id="cb385-29"><a href="supervisedmlii.html#cb385-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">ends_with</span>(<span class="st">&quot;_QC&quot;</span>))</span>
+<span id="cb385-30"><a href="supervisedmlii.html#cb385-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb385-31"><a href="supervisedmlii.html#cb385-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Data splitting</span></span>
+<span id="cb385-32"><a href="supervisedmlii.html#cb385-32" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
+<span id="cb385-33"><a href="supervisedmlii.html#cb385-33" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">initial_split</span>(daily_fluxes, <span class="at">prop =</span> <span class="fl">0.7</span>, <span class="at">strata =</span> <span class="st">&quot;VPD_F&quot;</span>)</span>
+<span id="cb385-34"><a href="supervisedmlii.html#cb385-34" aria-hidden="true" tabindex="-1"></a>daily_fluxes_train <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">training</span>(split)</span>
+<span id="cb385-35"><a href="supervisedmlii.html#cb385-35" aria-hidden="true" tabindex="-1"></a>daily_fluxes_test <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">testing</span>(split)</span>
+<span id="cb385-36"><a href="supervisedmlii.html#cb385-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb385-37"><a href="supervisedmlii.html#cb385-37" aria-hidden="true" tabindex="-1"></a><span class="co"># The same model formulation is in the previous chapter</span></span>
+<span id="cb385-38"><a href="supervisedmlii.html#cb385-38" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> recipes<span class="sc">::</span><span class="fu">recipe</span>(GPP_NT_VUT_REF <span class="sc">~</span> SW_IN_F <span class="sc">+</span> VPD_F <span class="sc">+</span> TA_F, </span>
+<span id="cb385-39"><a href="supervisedmlii.html#cb385-39" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data =</span> daily_fluxes_train) <span class="sc">|&gt;</span> </span>
+<span id="cb385-40"><a href="supervisedmlii.html#cb385-40" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_center</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb385-41"><a href="supervisedmlii.html#cb385-41" aria-hidden="true" tabindex="-1"></a>  recipes<span class="sc">::</span><span class="fu">step_scale</span>(<span class="fu">all_numeric</span>(), <span class="sc">-</span><span class="fu">all_outcomes</span>())</span></code></pre></div>
+<blockquote>
+<p>To reproduce this code chunk, you can download the file <code>FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv</code> from <a href="https://raw.githubusercontent.com/geco-bern/agds/main/data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv">here</a> and read it from the local path where the file is stored on your machine. All data files used in this tutorials are stored <a href="https://github.com/geco-bern/agds/tree/main/data">here</a>.</p>
+</blockquote>
 </div>
 <div id="training" class="section level3 hasAnchor" number="10.2.2">
 <h3><span class="header-section-number">10.2.2</span> Loss function<a href="supervisedmlii.html#training" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -559,19 +563,19 @@ Figure 10.2: K-fold cross validation. From Boehmke and Greenwell (2020).
 <p>To do a k-fold cross validation during model training in R, we don’t have to implement the loops around folds ourselves. The resampling procedure can be specified in the {caret} function <code>train()</code> with the argument <code>trControl</code>. The object that this argument takes is the output of a function call to <code>trainControl()</code>. This can be implemented in two steps. For example, to do a 10-fold cross-validation, we can write:</p>
 <!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
 <!-- SAVE DATA WHEN RUNNING LOCALLY BY SETTING EVAL = TRUE, PUSH ONLY WITH EVAL = FALSE -->
-<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="supervisedmlii.html#cb385-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>)</span>
-<span id="cb385-2"><a href="supervisedmlii.html#cb385-2" aria-hidden="true" tabindex="-1"></a>mod_cv <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(pp, </span>
-<span id="cb385-3"><a href="supervisedmlii.html#cb385-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> daily_fluxes_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
-<span id="cb385-4"><a href="supervisedmlii.html#cb385-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
-<span id="cb385-5"><a href="supervisedmlii.html#cb385-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
-<span id="cb385-6"><a href="supervisedmlii.html#cb385-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">100</span>)),</span>
-<span id="cb385-7"><a href="supervisedmlii.html#cb385-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">metric =</span> <span class="st">&quot;MAE&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="supervisedmlii.html#cb386-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1982</span>)</span>
+<span id="cb386-2"><a href="supervisedmlii.html#cb386-2" aria-hidden="true" tabindex="-1"></a>mod_cv <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">train</span>(pp, </span>
+<span id="cb386-3"><a href="supervisedmlii.html#cb386-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> daily_fluxes_train <span class="sc">|&gt;</span> <span class="fu">drop_na</span>(), </span>
+<span id="cb386-4"><a href="supervisedmlii.html#cb386-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">method =</span> <span class="st">&quot;knn&quot;</span>,</span>
+<span id="cb386-5"><a href="supervisedmlii.html#cb386-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">trControl =</span> caret<span class="sc">::</span><span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>),</span>
+<span id="cb386-6"><a href="supervisedmlii.html#cb386-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">100</span>)),</span>
+<span id="cb386-7"><a href="supervisedmlii.html#cb386-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">metric =</span> <span class="st">&quot;MAE&quot;</span>)</span></code></pre></div>
 <!-- >>> END OF CHECK <<< -->
-<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="supervisedmlii.html#cb386-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic plot of the caret model object</span></span>
-<span id="cb386-2"><a href="supervisedmlii.html#cb386-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mod_cv)</span></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="supervisedmlii.html#cb387-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic plot of the caret model object</span></span>
+<span id="cb387-2"><a href="supervisedmlii.html#cb387-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mod_cv)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-211-1.png" width="80%" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="supervisedmlii.html#cb387-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
-<span id="cb387-2"><a href="supervisedmlii.html#cb387-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod_cv)</span></code></pre></div>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="supervisedmlii.html#cb388-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generic print</span></span>
+<span id="cb388-2"><a href="supervisedmlii.html#cb388-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mod_cv)</span></code></pre></div>
 <pre><code>## k-Nearest Neighbors 
 ## 
 ## 1910 samples
@@ -598,16 +602,16 @@ Figure 10.2: K-fold cross validation. From Boehmke and Greenwell (2020).
 ## MAE was used to select the optimal model using the smallest value.
 ## The final value used for the model was k = 25.</code></pre>
 <p>From the output of <code>print(mod_cv)</code>, we get information about model performance for each hyperparameter choice. The values reported are means of respective metrics determined across the ten folds. Also the optimal choice of <span class="math inline">\(k\)</span> (25) is reported. Does this correspond to the <span class="math inline">\(k\)</span> with the best performance determined on the test set? If resampling was a good approach to estimating out-of-sample model performance, then it should!</p>
-<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="supervisedmlii.html#cb389-1" aria-hidden="true" tabindex="-1"></a>df_mae <span class="sc">|&gt;</span></span>
-<span id="cb389-2"><a href="supervisedmlii.html#cb389-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(set <span class="sc">==</span> <span class="st">&quot;test&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb389-3"><a href="supervisedmlii.html#cb389-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.estimate <span class="sc">==</span> <span class="fu">min</span>(.estimate))</span></code></pre></div>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="supervisedmlii.html#cb390-1" aria-hidden="true" tabindex="-1"></a>df_mae <span class="sc">|&gt;</span></span>
+<span id="cb390-2"><a href="supervisedmlii.html#cb390-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(set <span class="sc">==</span> <span class="st">&quot;test&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb390-3"><a href="supervisedmlii.html#cb390-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.estimate <span class="sc">==</span> <span class="fu">min</span>(.estimate))</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 6
 ##     idx .metric .estimator .estimate     k set  
 ##   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
 ## 1     7 mae     standard        1.15    30 test</code></pre>
 <p>The evaluation on the test set suggests that <span class="math inline">\(k=30\)</span> is optimal, while 10-fold cross-validation yielded an optimal <span class="math inline">\(k = 25\)</span>. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is probably a result of randomness in the data.</p>
 <p>Let’s look at the results as we did in Chapter <a href="supervisedmli.html#supervisedmli">9</a>. The model object <code>mod_cv</code> contains information about the whole hyperparameter search and also about the choice of the best hyperparameter value. When using the object in the <code>predict()</code> function (as used inside <code>eval_model()</code>), it automatically uses the model trained with the optimal <span class="math inline">\(k\)</span>.</p>
-<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="supervisedmlii.html#cb391-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_cv, <span class="at">df_train =</span> daily_fluxes_train, <span class="at">df_test =</span> daily_fluxes_test)</span></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="supervisedmlii.html#cb392-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eval_model</span>(<span class="at">mod =</span> mod_cv, <span class="at">df_train =</span> daily_fluxes_train, <span class="at">df_test =</span> daily_fluxes_test)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
 ## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="_main_files/figure-html/unnamed-chunk-213-1.png" width="672" style="display: block; margin: auto;" /></p>

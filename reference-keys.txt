@@ -14,6 +14,7 @@ fig:copysshrepo
 fig:clonerepo
 fig:reportmarkdown
 fig:tidy
+fig:laegerndemo
 fig:common-aesthetics
 fig:regressionplots
 fig:repromatrix
@@ -136,9 +137,10 @@ use-of-colors
 vis_regr_cat
 time-series
 periodic-data
-density-along-two-continuous-variables
+regressiondensity
 raster-data
 geospatial-data
+writing-to-file
 exercises-2
 report-exercises
 datavariety

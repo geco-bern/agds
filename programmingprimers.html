@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-27" />
+<meta name="date" content="2023-02-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -238,6 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="datavis.html"><a href="datavis.html#the-grammar-of-graphics"><i class="fa fa-check"></i><b>4.2.1</b> The grammar of graphics</a></li>
 <li class="chapter" data-level="4.2.2" data-path="datavis.html"><a href="datavis.html#every-data-has-its-representation"><i class="fa fa-check"></i><b>4.2.2</b> Every data has its representation</a></li>
+<li class="chapter" data-level="4.2.3" data-path="datavis.html"><a href="datavis.html#writing-to-file"><i class="fa fa-check"></i><b>4.2.3</b> Writing to file</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="datavis.html"><a href="datavis.html#exercises-2"><i class="fa fa-check"></i><b>4.3</b> Exercises</a>
 <ul>
@@ -554,7 +555,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb111-8"><a href="programmingprimers.html#cb111-8" aria-hidden="true" tabindex="-1"></a>temp_air  <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_air)</span>
 <span id="cb111-9"><a href="programmingprimers.html#cb111-9" aria-hidden="true" tabindex="-1"></a>temp_leaf <span class="ot">&lt;-</span> <span class="fu">f2c</span>(temp_leaf)</span></code></pre></div>
 <p>Functions are essential for efficient programming. Functions have their own environment, which means that variables inside functions are only defined and usable within that function and are not saved to the global environment. Functions restrict the scope of the domain in which variables are defined. Information flows inside the function only through its arguments, and flows out of the function only through its returned variable.</p>
-<p>Functions (particularly long ones) can be written to separate source files with a suffix <code>.R</code> and saved in your <code>./R</code> directory. Preferably, the file has the same name as the function. We can save the previous function in a script <code>./R/f2c.R</code> and load it later by running <code>source("./R/f2c")</code>.</p>
+<p>Functions (particularly long ones) can be written to separate source files with a suffix <code>.R</code> and saved in your <code>./R</code> directory - “written” as in copy and paste the function text as in the code chunk above into a text file with <code>.R</code> suffix. Preferably, the file has the same name as the function. We can save the previous function in a script <code>./R/f2c.R</code> and load it later by running <code>source("./R/f2c")</code>. It’s good practice to keep one file per function, unless a function calls another function that is called nowhere else. In that case, the “sub-ordinate” function can be placed inside the same <code>.R</code> file.</p>
 </div>
 </div>
 <div id="style-your-code" class="section level3 hasAnchor" number="2.2.2">
