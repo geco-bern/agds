@@ -222,6 +222,8 @@ daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3
   dplyr::select(-ends_with("_QC"))
 ```
 
+> To reproduce this code chunk, you can download the file `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` from [here](https://raw.githubusercontent.com/geco-bern/agds/main/data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv) and read it from the local path where the file is stored on your machine. All data files used in this tutorials are stored [here](https://github.com/geco-bern/agds/tree/main/data).
+
 The steps above are considered data *wrangling* and are *not* part of the modelling process. After completing this tutorial, you will understand this distinction.
 
 ### K-nearest neighbours

@@ -9,9 +9,11 @@
  
 eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
   
+  require(magrittr)  # part of dplyr, required for the "old" pipe
+  
   # add predictions to the data frames----
   df_train <- df_train %>% 
-    drop_na() %>% 
+    drop_na() %>%  # magrittr pipe necessary here for the dot ('.') evaluation
     mutate(fitted =  predict(mod, newdata = .))
   
   df_test <- df_test %>% 

@@ -58,6 +58,8 @@ pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F,
   recipes::step_scale(all_numeric(), -all_outcomes())
 ```
 
+> To reproduce this code chunk, you can download the file `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` from [here](https://raw.githubusercontent.com/geco-bern/agds/main/data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv) and read it from the local path where the file is stored on your machine. All data files used in this tutorials are stored [here](https://github.com/geco-bern/agds/tree/main/data).
+
 ### Loss function {#training}
 
 Model training in supervised machine learning is guided by the match (or mismatch) between the predicted and observed target variable(s), that is, between $\hat{Y}$ and $Y$. The *loss* function quantifies this mismatch ($L(\hat{Y}, Y)$), and the algorithm ("optimiser" in Fig. 10.1 of Chapter \@ref(supervisedmli)) takes care of progressively reducing the loss during model training.

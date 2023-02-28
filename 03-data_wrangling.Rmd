@@ -69,6 +69,8 @@ half_hourly_fluxes <- readr::read_csv("./data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_
 half_hourly_fluxes
 ```
 
+> To reproduce this code chunk, you can download the file `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` from [here](https://raw.githubusercontent.com/geco-bern/agds/main/data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv) and read it from the local path where the file is stored on your machine. All data files used in this tutorials are stored [here](https://github.com/geco-bern/agds/tree/main/data).
+
 Since the file is properly formatted, with variable names given in the first line of the file, the function `read_csv()` identifies them correctly as column names and interprets values in each column as values of a consistent type (as numeric `<dbl>`). The file is also automatically machine-readable because it has no merged cells and only one value per cell.
 
 ### Variable selection
@@ -530,6 +532,8 @@ Our aim is to read a set of files into R data frames and apply transformation st
 vec_files <- list.files("./data", pattern = "_FLUXNET2015_FULLSET_DD_", full.names = TRUE)
 print(vec_files)
 ```
+
+> To reproduce this code chunk, you can download the files  `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` from [here](https://github.com/geco-bern/agds/tree/main/data) and read it from the local path where the file is stored on your machine.
 
 `vec_files` is now a vector of three files paths as character strings. To read in the three files and combine the three data frames (`list_df` below) into a list of data frames, we could use a `for` loop:
 
