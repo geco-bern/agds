@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -323,7 +323,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4" data-path="regressionclassification.html"><a href="regressionclassification.html#exercises-6"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
 <li class="chapter" data-level="8.5" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-1"><i class="fa fa-check"></i><b>8.5</b> Report Exercise</a>
 <ul>
-<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#deliverables-for-the-report"><i class="fa fa-check"></i>Deliverables for the report</a></li>
+<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#deliverables-for-the-report-1"><i class="fa fa-check"></i>Deliverables for the report</a></li>
 <li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#guide-for-your-implementation"><i class="fa fa-check"></i>Guide for your implementation</a></li>
 </ul></li>
 </ul></li>
@@ -1327,16 +1327,19 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 <p>“Database S1” contains data of soil organic carbon measurements in experiments, where ecosystems are exposed to ambient (low) and elevated (high) CO2 concentrations. The mean soil organic carbon of multiple samples (“n”) is recorded within each experiment for different sample dates. Information is provided for the time in years since the start of the experiment (“Time (years)”).</p>
 <p>A log-response ratio (treatment effect on variable <span class="math inline">\(x\)</span>) can be calculated as:</p>
 <p><span class="math display">\[
-R = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
+\text{RR} = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
 \]</span></p>
 <p>Perform the following steps:</p>
-<ul>
+<ol style="list-style-type: decimal">
 <li><p>Manually clean the data in the tab “Database S1” and save it as a CSV file that can be read into R.</p></li>
 <li><p>In R, aggregate data per experiment and calculate the log-response ratio within each experiment.</p></li>
 <li><p>Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (&lt;3 years since start), a mid-phase (3-6 years since start), and a late phase (&gt;6 years since start). Calculate the log-response ratio for each phase.</p></li>
-</ul>
-<p>Document and describe your workflow step-by-step in an RMarkdown file (cleaning, reading, wrangling, aggregating). Use R code chunks to run your code and present your results as tables using the <code>knitr::kable()</code> function. Knit your RMarkdown file to HTML and ensure reproducibility of your code (more on this in later Chapters).</p>
+</ol>
+<div id="deliverables-for-the-report" class="section level4 unnumbered hasAnchor">
+<h4>Deliverables for the report<a href="datawrangling.html#deliverables-for-the-report" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Document and describe the workflow of steps 2 and 3 in an RMarkdown file. Use R code chunks to run your code and present your results as tables using the <code>knitr::kable()</code> function. Knit your RMarkdown file to HTML and ensure reproducibility of your code (more on this in later Chapters). Add the the RMarkdown as file <code>./vignettes/re_tidy.Rmd</code> to your <em>git</em> repository which you set up following instructions in Section <a href="gettingstarted.html#setupreport">1.2.8.4</a>. Make sure to add also the file that you cleaned “by hand” following step 1 to your repository. You can name it however you like (as long as you read it in correctly) - we will only look at the reproducibility of the RMarkdown notebook. For the final report, you will point us to the URL of your repository. We will fork your repository and reproduce the workflow implemented in your notebook.</p>
 
+</div>
 </div>
 </div>
 </div>

@@ -80,7 +80,7 @@ setup
 packages
 other-libraries-and-applications
 git-1
-preparation-for-your-report
+setupreport
 exercises
 programmingprimers
 learning-objectives-2

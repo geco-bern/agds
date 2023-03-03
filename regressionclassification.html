@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -323,7 +323,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4" data-path="regressionclassification.html"><a href="regressionclassification.html#exercises-6"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
 <li class="chapter" data-level="8.5" data-path="regressionclassification.html"><a href="regressionclassification.html#report-exercise-1"><i class="fa fa-check"></i><b>8.5</b> Report Exercise</a>
 <ul>
-<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#deliverables-for-the-report"><i class="fa fa-check"></i>Deliverables for the report</a></li>
+<li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#deliverables-for-the-report-1"><i class="fa fa-check"></i>Deliverables for the report</a></li>
 <li class="chapter" data-level="" data-path="regressionclassification.html"><a href="regressionclassification.html#guide-for-your-implementation"><i class="fa fa-check"></i>Guide for your implementation</a></li>
 </ul></li>
 </ul></li>
@@ -1283,8 +1283,8 @@ F1= 2 \times \frac{\text{precision} \times \text{recall}}{\text{precision} + \te
 <h2><span class="header-section-number">8.5</span> Report Exercise<a href="regressionclassification.html#report-exercise-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Although there are a lot of helpful packages and user-friendly functions available, you will often have to write your own data analysis routine. This requires good understanding of statistical knowledge, algorithmic thinking and problem-solving skills. While writing your code, you will face many questions and bugs that you need to solve. And knowing where and how to ask for help properly are crucial parts of this process (see <a href="programmingprimers.html#findinghelp">2.2.3</a> for more on getting help).</p>
 <p>In this Report Exercise, stepwise forward regression is to be performed for the task of modelling GPP as a function of predictors available in the dataset of half-hourly ecosystem fluxes. To learn the skills mentioned above, you will (attempt to) write your own stepwise forward regression from scratch based on the algorithm description of stepwise forward regression in Section <a href="regressionclassification.html#variableselection">8.2.3.1</a>. The data of half-hourly fluxes can be downloaded from <a href="https://raw.githubusercontent.com/geco-bern/agds/main/data/df_for_stepwise_regression.csv">here</a>.</p>
-<div id="deliverables-for-the-report" class="section level3 unnumbered hasAnchor">
-<h3>Deliverables for the report<a href="regressionclassification.html#deliverables-for-the-report" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="deliverables-for-the-report-1" class="section level3 unnumbered hasAnchor">
+<h3>Deliverables for the report<a href="regressionclassification.html#deliverables-for-the-report-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The complete workflow of reading the data, performing the stepwise forward regression, visualising and discussing the results should be implemented in an RMarkdown notebook file and added as file <code>./vignettes/re_stepwise.Rmd</code> to your <em>git</em> repository. You will then point us to the URL of your repository. We will fork your repository and reproduce the workflow implemented in your notebook. The following aspects should be covered in your notebook:</p>
 <ol style="list-style-type: decimal">
 <li><p>An evaluation of all bivariate models (single predictor), implementing just steps 1-3 of the algorithm described in <a href="regressionclassification.html#variableselection">8.2.3.1</a>. This should be complemented by visualisation and brief discussion the results.</p></li>
