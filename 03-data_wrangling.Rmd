@@ -810,15 +810,17 @@ Download the data file (`.xlsx`) from the Supplementary Material of the followin
 A log-response ratio (treatment effect on variable $x$) can be calculated as:
 
 $$
-R = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
+\text{RR} = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
 $$
 
 Perform the following steps:
 
-- Manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
+1. Manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
 
-- In R, aggregate data per experiment and calculate the log-response ratio within each experiment.
+2. In R, aggregate data per experiment and calculate the log-response ratio within each experiment.
 
-- Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (<3 years since start), a mid-phase (3-6 years since start), and a late phase (>6 years since start). Calculate the log-response ratio for each phase.
+3. Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (<3 years since start), a mid-phase (3-6 years since start), and a late phase (>6 years since start). Calculate the log-response ratio for each phase.
 
-Document and describe your workflow step-by-step in an RMarkdown file (cleaning, reading, wrangling, aggregating). Use R code chunks to run your code and present your results as tables using the `knitr::kable()` function. Knit your RMarkdown file to HTML and ensure reproducibility of your code (more on this in later Chapters).
+#### Deliverables for the report {.unnumbered}
+
+Document and describe the workflow of steps 2 and 3 in an RMarkdown file. Use R code chunks to run your code and present your results as tables using the `knitr::kable()` function. Knit your RMarkdown file to HTML and ensure reproducibility of your code (more on this in later Chapters). Add the the RMarkdown as file `./vignettes/re_tidy.Rmd` to your *git* repository which you set up following instructions in Section \@ref(setupreport). Make sure to add also the file that you cleaned "by hand" following step 1 to your repository. You can name it however you like (as long as you read it in correctly) - we will only look at the reproducibility of the RMarkdown notebook. For the final report, you will point us to the URL of your repository. We will fork your repository and reproduce the workflow implemented in your notebook.

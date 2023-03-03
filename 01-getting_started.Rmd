@@ -608,7 +608,7 @@ knitr::include_graphics("./figures/copy_public_key.png")
     -   Go back to your browser and open your GitHub account. At the top right, open your profile's menu and choose **Settings > SSH and GPG Keys**. Then select **Add new SSH key**. Give your SSH connection a name, for example "My laptop" and paste the *public key* that you copied from RStudio. If you have problems, check out [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) to add a new SSH key to your GitHub account. 
     -   Finally, you can test your SSH connection following [these instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection). Note that, at the top of these websites, there's an option to choose your OS because the steps vary depending on the type of computer your work with.
 
-#### Preparation for your report
+#### Preparation for your report {#setupreport}
 
 Your performance assessment for Applied Geodata Science will be in the form of a report. You will approach the writing of this report as if you were working on a clean, structured and reproducible data science project. This section is meant to guide you through the preparation of your report workspace, such that it's in the form that you will submit it. Following the next steps, you will set up a git repository containing an R project and an R Markdown file. 
 
