@@ -184,7 +184,7 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
     - A comprehensive resource for data visualisation - not specific to any programming language, but specific about the *grammar of graphics*. Covers concepts of Chapter \@ref(datavis) - but in more depth. The go-to resource for the *implementation* of data visualisation using the {ggplot2} R library is Wickham and Grolemund (see above).
     
-- Crameri, F., Shephard, G.E. & Heron, P.J. The misuse of colour in science communication. Nat Commun 11, 5444 (2020). https://doi.org/10.1038/s41467-020-19160-7
+- Crameri, F., Shephard, G.E. & Heron, P.J. The misuse of colour in science communication. *Nature Communications* 11, 5444 (2020). https://doi.org/10.1038/s41467-020-19160-7
 
     - A systematic approach to why some color scales are better than others.    
 
@@ -194,7 +194,7 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
     - A great entry point for machine learning in R. It demonstrates concepts and a range of algorithms of varying complexity - from linear regression to Random Forest - with examples in R. This book served as an inspiration and starting point for the (in some ways reduced) contents of this course, covered in Chapters \@ref(regressionclassification)-\@ref(randomforest).
     
-- Pichler, M., & Hartig, F. (2023). Machine learning and deep learning—A review for ecologists. Methods in Ecology and Evolution, 00, 1– 23. https://doi.org/10.1111/2041-210X.14061
+- Pichler, M., & Hartig, F. (2023). Machine learning and deep learning—A review for ecologists. *Methods in Ecology and Evolution*, 00, 1– 23. https://doi.org/10.1111/2041-210X.14061
 
     - A review paper that provides an instructive overview of machine learning and deep learning for a general readership (not just scientists in Ecology and Evolution). The paper explains also the fundamental assumptions of different methodological approaches and provides an intuitive understanding of the sometimes surprising power of machine learning algorithms.
 
