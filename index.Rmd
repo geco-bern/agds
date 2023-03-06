@@ -183,6 +183,10 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 - Claus O. Wilke: "Fundamentals of Data Visualization", https://clauswilke.com/dataviz/
 
     - A comprehensive resource for data visualisation - not specific to any programming language, but specific about the *grammar of graphics*. Covers concepts of Chapter \@ref(datavis) - but in more depth. The go-to resource for the *implementation* of data visualisation using the {ggplot2} R library is Wickham and Grolemund (see above).
+    
+- Crameri, F., Shephard, G.E. & Heron, P.J. The misuse of colour in science communication. Nat Commun 11, 5444 (2020). https://doi.org/10.1038/s41467-020-19160-7
+
+    - A systematic approach to why some color scales are better than others.    
 
 **Machine learning**
 
