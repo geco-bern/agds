@@ -189,6 +189,10 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 - Bradley Boehmke and Brandon Greenwell: "Hands-On Machine Learning with R", https://bradleyboehmke.github.io/HOML/
 
     - A great entry point for machine learning in R. It demonstrates concepts and a range of algorithms of varying complexity - from linear regression to Random Forest - with examples in R. This book served as an inspiration and starting point for the (in some ways reduced) contents of this course, covered in Chapters \@ref(regressionclassification)-\@ref(randomforest).
+    
+- Pichler, M., & Hartig, F. (2023). Machine learning and deep learning—A review for ecologists. Methods in Ecology and Evolution, 00, 1– 23. https://doi.org/10.1111/2041-210X.14061
+
+    - A review paper that provides an instructive overview of machine learning and deep learning for a general readership (not just scientists in Ecology and Evolution). The paper explains also the fundamental assumptions of different methodological approaches and provides an intuitive understanding of the sometimes surprising power of machine learning algorithms.
 
 -   Chollet & Allaire "Deep learning with R", Manning Publications, Accessed February 17, 2023. https://www.manning.com/books/deep-learning-with-r.
 
