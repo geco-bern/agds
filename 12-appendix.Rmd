@@ -370,7 +370,7 @@ daily_fluxes |>
   theme_classic() +                  # Pick a nice theme
   scale_color_brewer(                # Pick a nice color palette
     "Quality",                       # Give legend a title
-    labels = c("Good", "Measured", "Medium", "Poor"), # Give legend levels a label
+    labels = c("Good gap filled data", "Measured data", "Medium gap filled data", "Poor gap filled data"), # Give legend levels a label
     palette = 3,                     # Pick color palette
     direction = -1                   # Inverse order of color palette
   ) +
