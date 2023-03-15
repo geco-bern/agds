@@ -1,3 +1,4 @@
+
 # Data visualisation {#datavis}
 
 **Chapter lead author: Benjamin Stocker**
@@ -93,7 +94,7 @@ Probably the simplest case of data visualization is where a single value is show
 ```{r results=FALSE, messages=FALSE, warning=FALSE}
 # read in demo daily data
 # as saved in the previous chapter
-daily_fluxes <- read_csv("data/daily_fluxes.csv")
+daily_fluxes <- readr::read_csv("data/daily_fluxes.csv")
 
 # Aggregate to monthly
 mdf <- daily_fluxes |> 
@@ -484,8 +485,13 @@ ggplot(
 # density hexagonal bins
 ggplot(
     data = daily_fluxes,
-    aes(x = SW_IN_F, y = GPP_NT_VUT_REF)) +
-  geom_hex() +
+    aes(
+        x = SW_IN_F,
+        y = GPP_NT_VUT_REF
+      )
+    ) +
+  geom_hex(
+    ) +
   scale_fill_viridis_c() +
   labs(x = expression(paste("Shortwave radiation (W m"^-2, ")")), 
        y = expression(paste("GPP (", mu,"mol CO"[2], " m"^-2, "s"^-1, ")")) ) +
