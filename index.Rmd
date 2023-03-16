@@ -45,9 +45,11 @@ Images and other materials used here were made available under non-restrictive l
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 
-### How to cite this book
+### How to cite this book {-}
 
-Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). *Applied Geodata Science*. Zenodo. https://doi.org/10.5281/zenodo.7740494
+[![DOI](https://zenodo.org/badge/569245031.svg)](https://zenodo.org/badge/latestdoi/569245031)
+
+Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). Applied Geodata Science (v1.0). Zenodo. {latest DOI, see above}
 
 <br>
 
