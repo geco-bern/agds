@@ -18,3 +18,7 @@ The course introduces the typical data science workflow using various examples o
 ## Issues: bugs and errors
 
 Should you encounter bugs, errors, typos or want to make other contributions please raise an issue in the repository or fix the issue and provide a pull request. We refer to our [contributions guidelines](CONTRIBUTING.md) and [code of conduct](CONDUCT.md) for more details on writing style and formatting / syntax.
+
+## How to cite this book
+
+Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). *Applied Geodata Science (v1.0)*. Zenodo. https://doi.org/10.5281/zenodo.7740560
