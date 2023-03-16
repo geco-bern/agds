@@ -21,4 +21,6 @@ Should you encounter bugs, errors, typos or want to make other contributions ple
 
 ## How to cite this book
 
-Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). *Applied Geodata Science (v1.0)*. Zenodo. https://doi.org/10.5281/zenodo.7740560
+[![DOI](https://zenodo.org/badge/569245031.svg)](https://zenodo.org/badge/latestdoi/569245031)
+
+Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). Applied Geodata Science (v1.0). Zenodo. {latest DOI, see above}
