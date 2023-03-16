@@ -52,6 +52,7 @@ fig:unnamed-chunk-216-2
 fig:unnamed-chunk-217-1
 fig:unnamed-chunk-217-2
 tab:unnamed-chunk-279
+how-to-cite-this-book
 gettingstarted
 learning-objectives-1
 tutorial
