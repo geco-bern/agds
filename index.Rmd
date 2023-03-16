@@ -47,7 +47,7 @@ Images and other materials used here were made available under non-restrictive l
 
 ### How to cite this book
 
-Stocker, Hufkens, Aran, Schneider, *Applied Geodata Science*, DOI (TBC)
+Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). *Applied Geodata Science*: v0.1 Initial release. Zenodo. https://doi.org/10.5281/zenodo.7740494
 
 <br>
 
