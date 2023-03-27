@@ -99,7 +99,7 @@ half_hourly_fluxes <- select(
   )
 ```
 
-This reduces our dataset from 235 available variables to 59 variables. As you can see, `select()` is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with `starts_with()`, `ends_with()`, `contains()`, `matches()`, etc. Using these functions within `select()` can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (`-`) is added in front of a column name or one of the mentioned functions within `select()`, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the `select()` function call. You can find the complete reference for selecting variables [here](https://dplyr.tidyverse.org/reference/select.html).
+This reduces our dataset from 235 available variables to 20 variables. As you can see, `select()` is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with `starts_with()`, `ends_with()`, `contains()`, `matches()`, etc. Using these functions within `select()` can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (`-`) is added in front of a column name or one of the mentioned functions within `select()`, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the `select()` function call. You can find the complete reference for selecting variables [here](https://dplyr.tidyverse.org/reference/select.html).
 
 ### Time objects
 
@@ -326,6 +326,8 @@ daily_fluxes <- half_hourly_fluxes |>
 write_csv(daily_fluxes, file = "data/daily_fluxes.csv")
 daily_fluxes
 ```
+
+Note that above, we specified the argument `.groups = 'drop'` to "un-group" the resulting data frame. The same can also be achieved by a separate function call `ungroup()` after the `summarise()` step.
 
 More info on how to group values using summarise functions [here](https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise), or a summary on the inputs the function [group_by()](https://dplyr.tidyverse.org/reference/group_by.html) and [summarise()](https://dplyr.tidyverse.org/reference/summarise.html) take.
 

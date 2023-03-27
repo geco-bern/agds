@@ -378,7 +378,9 @@ The function `save()` allows to save multiple R objects of any form as a single 
 save(df, df_small, file = "./data/data_frames.RData")
 ```
 
-To tell the function where the data is located, pass the data's path as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility. To determine your current working directory, run `getwd()`.
+To tell the function where the data is located, pass the data's *path* as an argument. You can either use an *absolute path*, starting from `C:/` on a Windows computer or `~/` on a Mac or Linux. Or, alternatively, you can provide a *relative path*, where `./` points to the present working directory (like above) and `../` is one level up, or `../../` is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person's computer, helping with reproducibility.
+
+In the example above, we provided a relative path, starting at the current working directory (`./`). The file `data_frames.RData` sits in a sub-directory of the current working directory, called `data/`. What is the current working directory? Unfortunately, the answer is "it depends...". You'll learn more about this in Section \@ref(rprojects).
 
 `.RData` files are read into your environment using the `load()` function. This function loads the objects with the name that they were saved with.
 
@@ -506,6 +508,10 @@ To read and write from/to files you should use relative paths (relative to the p
     
     > source("~/my_project/my_r_script.R")
     
+Note that when a path is specified, e.g,. in a script or RMarkdown file that sits itself in a sub-directory, then the effective current working directory is that sub-directory, and not the top-level project directory. 
+
+> Hint: Use `here::here()` to obtain the path to the top-level. Paths can then be specified relative to that, irrespective of where the code lives that uses that path. For example, a file in sub-directory `data/` can be read by `read.csv(paste0(here::here(), "/data/a_file.rds"))`.
+
 R sessions in RStudio that are connected to such project directories are *R projects*. To create a new R project, go to the **File** menu and select **New Project...**. This will open the *New Project* dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.
 
 ```{r label="projectmenu", echo=FALSE, fig.cap="R project menu.", out.width="30%", fig.align='center'}
