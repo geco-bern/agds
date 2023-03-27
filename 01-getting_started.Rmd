@@ -628,7 +628,7 @@ knitr::include_graphics("./figures/copy_ssh_repo.png")
 knitr::include_graphics("./figures/clone_repo_ssh.png")
 ```
 - With this, you're set up. If your R project `agds_report_yourname` is open, you should see a **Git** panel in RStudio (next to **Environment**) and also be able to use Git in the **Terminal** panel in RStudio. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.
-- You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, keep adding the report content to this R project folder. Create a new **R Markdown** file called `report.Rmd`. This is where you will include the solutions to the \*\*\* Exercises and incrementally write your report.
+- You'll see a detailed explanation of the *git* workflows in Chapter \@ref(codemgmt). For now, add your solutions to each report exercise into a separate RMarkdown file, placed in a subdirectory named `./vignettes/`. The first Report Exercise will be the one for Chapter \@ref(datawrangling) where you will be asked to implement your solutions in a file called `re_tidy.Rmd`. At that stage, your repository should look like this:
 
 ```{r label="reportmarkdown", echo=FALSE, fig.cap="At first, the R Markdown for your report will look something like this.", out.width="75%", fig.align='center'}
 knitr::include_graphics("./figures/Rmd_report.png")
