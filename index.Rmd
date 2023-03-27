@@ -10,7 +10,7 @@ bibliography: [book.bib, packages.bib]
 description: |
   This course prepares you to benefit from the general data richness in environmental and geo-sciences.
 link-citations: yes
-github-repo: geco-bern/agsd
+github-repo: "geco-bern/agsd"
 favicon: "figures/favicon.ico"
 apple-touch-icon: "figures/apple-touch-icon.png"
 apple-touch-icon-size: 120
@@ -39,17 +39,21 @@ The target of this book are people interested in applying data science methods f
 
 We also use this book as a reference and on-boarding resource for group members of [Geocomputation and Earth Observation (GECO)](https://geco-group.org/), at the Institute of Geography, University of Bern.
 
-<br>
+### Links {-}
 
-Images and other materials used here were made available under non-restrictive licenses. Original sources are attributed. Content without attribution is our own and shared under the license below. If there are any errors or any content you find concerning with regard to licensing or other, please [contact us](https://geco-group.org/contact/). Any feedback, positive or negative, is welcome and can be posted [here](https://github.com/stineb/agds/issues).
+[Browse the source code](https://github.com/geco-bern/agds)
+
+[Report an issue](https://github.com/geco-bern/agds/issues)
+
+### License {-}
+
+Images and other materials used here were made available under non-restrictive licenses. Original sources are attributed. Content without attribution is our own and shared under the license below. If there are any errors or any content you find concerning with regard to licensing or other, please [contact us](https://geco-group.org/contact/) or [report an issue](https://github.com/geco-bern/agds/issues). Any feedback, positive or negative, is welcome.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" alt="Creative Commons License" style="border-width:0"/></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 
 ### How to cite this book {-}
 
-[![DOI](https://zenodo.org/badge/569245031.svg)](https://zenodo.org/badge/latestdoi/569245031)
-
-Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). Applied Geodata Science (v1.0). Zenodo. {latest DOI, see above}
+Benjamin Stocker, Koen Hufkens, Pepa Arán, & Pascal Schneider. (2023). Applied Geodata Science (v1.0). Zenodo. [![DOI](https://zenodo.org/badge/569245031.svg)](https://zenodo.org/badge/latestdoi/569245031)
 
 <br>
 
