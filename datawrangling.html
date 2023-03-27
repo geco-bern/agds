@@ -141,6 +141,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-book"><i class="fa fa-check"></i>About this book</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#links"><i class="fa fa-check"></i>Links</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i>How to cite this book</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-course"><i class="fa fa-check"></i>About this course</a>
@@ -570,7 +572,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb120-8"><a href="datawrangling.html#cb120-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fu">contains</span>(<span class="st">&quot;JSB&quot;</span>),</span>
 <span id="cb120-9"><a href="datawrangling.html#cb120-9" aria-hidden="true" tabindex="-1"></a>  NIGHT</span>
 <span id="cb120-10"><a href="datawrangling.html#cb120-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p>This reduces our dataset from 235 available variables to 59 variables. As you can see, <code>select()</code> is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with <code>starts_with()</code>, <code>ends_with()</code>, <code>contains()</code>, <code>matches()</code>, etc. Using these functions within <code>select()</code> can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (<code>-</code>) is added in front of a column name or one of the mentioned functions within <code>select()</code>, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the <code>select()</code> function call. You can find the complete reference for selecting variables <a href="https://dplyr.tidyverse.org/reference/select.html">here</a>.</p>
+<p>This reduces our dataset from 235 available variables to 20 variables. As you can see, <code>select()</code> is a powerful tool to apply multiple selection criteria on your data frame in one step. It takes many functions that make filtering the columns easier. For example, criteria can be formulated based on the variable names with <code>starts_with()</code>, <code>ends_with()</code>, <code>contains()</code>, <code>matches()</code>, etc. Using these functions within <code>select()</code> can help if several column names start with the same characters or contain the same pattern and all need to be selected. If a minus (<code>-</code>) is added in front of a column name or one of the mentioned functions within <code>select()</code>, then R will not include the stated column(s). Note that the selection criteria are evaluated in the order we write them in the <code>select()</code> function call. You can find the complete reference for selecting variables <a href="https://dplyr.tidyverse.org/reference/select.html">here</a>.</p>
 </div>
 <div id="time-objects" class="section level3 hasAnchor" number="3.2.5">
 <h3><span class="header-section-number">3.2.5</span> Time objects<a href="datawrangling.html#time-objects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -807,6 +809,7 @@ Figure 3.1: Rules for tidy data. Figure from <a href="https://r4ds.had.co.nz/tid
 ##  9 2004-01-09         1.44             48          0    11.9          0
 ## 10 2004-01-10         0.364            48          0    27.6          0
 ## # … with 1,086 more rows</code></pre>
+<p>Note that above, we specified the argument <code>.groups = 'drop'</code> to “un-group” the resulting data frame. The same can also be achieved by a separate function call <code>ungroup()</code> after the <code>summarise()</code> step.</p>
 <p>More info on how to group values using summarise functions <a href="https://r4ds.had.co.nz/transform.html#grouped-summaries-with-summarise">here</a>, or a summary on the inputs the function <a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a> and <a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a> take.</p>
 <p>Aggregating is related to <em>nesting</em> performed by the {tidyr} function <code>nest()</code>:</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="datawrangling.html#cb155-1" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="sc">|&gt;</span>  </span>

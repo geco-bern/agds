@@ -141,6 +141,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-book"><i class="fa fa-check"></i>About this book</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#links"><i class="fa fa-check"></i>Links</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-cite-this-book"><i class="fa fa-check"></i>How to cite this book</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-this-course"><i class="fa fa-check"></i>About this course</a>
@@ -779,7 +781,8 @@ Figure 1.1: RStudio interface.
 <h4><span class="header-section-number">1.2.2.8</span> Read and save objects<a href="gettingstarted.html#read-and-save-objects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The function <code>save()</code> allows to save multiple R objects of any form as a single <code>.RData</code> file. This is how the environment of your R session is saved. This is how we would save several R objects:</p>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="gettingstarted.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(df, df_small, <span class="at">file =</span> <span class="st">&quot;./data/data_frames.RData&quot;</span>)</span></code></pre></div>
-<p>To tell the function where the data is located, pass the data’s path as an argument. You can either use an <em>absolute path</em>, starting from <code>C:/</code> on a Windows computer or <code>~/</code> on a Mac or Linux. Or, alternatively, you can provide a <em>relative path</em>, where <code>./</code> points to the present working directory (like above) and <code>../</code> is one level up, or <code>../../</code> is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person’s computer, helping with reproducibility. To determine your current working directory, run <code>getwd()</code>.</p>
+<p>To tell the function where the data is located, pass the data’s <em>path</em> as an argument. You can either use an <em>absolute path</em>, starting from <code>C:/</code> on a Windows computer or <code>~/</code> on a Mac or Linux. Or, alternatively, you can provide a <em>relative path</em>, where <code>./</code> points to the present working directory (like above) and <code>../</code> is one level up, or <code>../../</code> is two levels up, etc. We recommend that you work with R projects and use relative paths, because the working directory is set to the root directory of the R project and relative paths will also work on another person’s computer, helping with reproducibility.</p>
+<p>In the example above, we provided a relative path, starting at the current working directory (<code>./</code>). The file <code>data_frames.RData</code> sits in a sub-directory of the current working directory, called <code>data/</code>. What is the current working directory? Unfortunately, the answer is “it depends…”. You’ll learn more about this in Section <a href="gettingstarted.html#rprojects">1.2.7.1</a>.</p>
 <p><code>.RData</code> files are read into your environment using the <code>load()</code> function. This function loads the objects with the name that they were saved with.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="gettingstarted.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;./data/data_frames.RData&quot;</span>)</span></code></pre></div>
 <p>Alternatively, the function <code>saveRDS()</code> allows you save single R objects that can then be read into R with a specific (potentially new) variable name. This is more transparent than using <code>save()</code> and <code>load()</code>, and thus is preferred, as it gives the user more control over variable names.</p>
@@ -871,6 +874,10 @@ Figure 1.4: Create a new RMarkdown file
 &gt; source(&quot;R/my_r_script.R&quot;)</code></pre>
 <p>… and not:</p>
 <pre><code>&gt; source(&quot;~/my_project/my_r_script.R&quot;)</code></pre>
+<p>Note that when a path is specified, e.g,. in a script or RMarkdown file that sits itself in a sub-directory, then the effective current working directory is that sub-directory, and not the top-level project directory.</p>
+<blockquote>
+<p>Hint: Use <code>here::here()</code> to obtain the path to the top-level. Paths can then be specified relative to that, irrespective of where the code lives that uses that path. For example, a file in sub-directory <code>data/</code> can be read by <code>read.csv(paste0(here::here(), "/data/a_file.rds"))</code>.</p>
+</blockquote>
 <p>R sessions in RStudio that are connected to such project directories are <em>R projects</em>. To create a new R project, go to the <strong>File</strong> menu and select <strong>New Project…</strong>. This will open the <em>New Project</em> dialog, where you can choose where to save your project and what type of project to create. The current project that you are working on is shown on the upper right corner of the RStudio interface. Here you can also switch between existing projects or create a new one.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:projectmenu"></span>
 <img src="figures/RStudio_RProject_screenshot.png" alt="R project menu." width="30%" />
@@ -1034,7 +1041,7 @@ Figure 1.11: Clone your repository and create an R project.
 </div>
 <ul>
 <li>With this, you’re set up. If your R project <code>agds_report_yourname</code> is open, you should see a <strong>Git</strong> panel in RStudio (next to <strong>Environment</strong>) and also be able to use Git in the <strong>Terminal</strong> panel in RStudio. As mentioned above, we will start working with these tools in a few weeks and they will be a crucial part of the course.</li>
-<li>You’ll see a detailed explanation of the <em>git</em> workflows in Chapter <a href="codemgmt.html#codemgmt">7</a>. For now, keep adding the report content to this R project folder. Create a new <strong>R Markdown</strong> file called <code>report.Rmd</code>. This is where you will include the solutions to the *** Exercises and incrementally write your report.</li>
+<li>You’ll see a detailed explanation of the <em>git</em> workflows in Chapter <a href="codemgmt.html#codemgmt">7</a>. For now, add your solutions to each report exercise into a separate RMarkdown file, placed in a subdirectory named <code>./vignettes/</code>. The first Report Exercise will be the one for Chapter <a href="datawrangling.html#datawrangling">3</a> where you will be asked to implement your solutions in a file called <code>re_tidy.Rmd</code>. At that stage, your repository should look like this:</li>
 </ul>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:reportmarkdown"></span>
 <img src="figures/Rmd_report.png" alt="At first, the R Markdown for your report will look something like this." width="75%" />
