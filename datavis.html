@@ -12,7 +12,7 @@
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
-  <meta name="github-repo" content="stineb/agsd" />
+  <meta name="github-repo" content="geco-bern/agsd" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 4 Data visualisation | Applied Geodata Science" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-03-16" />
+<meta name="date" content="2023-03-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -819,7 +819,7 @@ Figure 4.3: Regression plots.
 <span id="cb237-7"><a href="datavis.html#cb237-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&quot;GPP (&quot;</span>, mu,<span class="st">&quot;mol CO&quot;</span>[<span class="dv">2</span>], <span class="st">&quot; m&quot;</span><span class="sc">^-</span><span class="dv">2</span>, <span class="st">&quot;s&quot;</span><span class="sc">^-</span><span class="dv">1</span>, <span class="st">&quot;)&quot;</span>))) <span class="sc">+</span></span>
 <span id="cb237-8"><a href="datavis.html#cb237-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-124-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter <a href="datawrangling.html#datawrangling">3</a>, we aggregated the half-hourly <code>half_hourly_fluxes</code> data frame to a daily data frame <code>daily_fluxes</code> from which data is visualized above. The aggregation kept a record of the fraction fraction of actually measured (not gap-filled) half-hourly data points per day (<code>f_measured</code>). This yields a “data quality axis”. Is there a pattern between <code>f_measured</code> and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?</p>
+<p>In the line plot above, we see a spurious-looking part of the time series in the first third of year 2004. Is this bad data that should be removed? Also, in winter of 2005/2005, some daily GPP values appear as high as a typical summer level of GPP. Is this bad data? Remember, that in Chapter <a href="datawrangling.html#datawrangling">3</a>, we aggregated the half-hourly <code>half_hourly_fluxes</code> data frame to a daily data frame <code>daily_fluxes</code> from which data is visualized above. The aggregation kept a record of the fraction of actually measured (not gap-filled) half-hourly data points per day (<code>f_measured</code>). This yields a “data quality axis”. Is there a pattern between <code>f_measured</code> and the presumably bad data? Discerning such patterns is often only possible with a suitable visualization. What is suitable here?</p>
 <p>A solution is to “map” <code>f_measured</code> to the color axis. When adding such an additional mapping to visualisation dimensions (“aesthetics”), we have to specify it using <code>aes()</code>. This only affects the points and the color of points, while the lines and points and their position in x-y space is shared. Hence, we write <code>aes(x = date, y = GPP_NT_VUT_REF)</code> in the <code>ggplot()</code> function call (indicating that all subsequent additions of <code>geom_</code> layers share this x-y mapping); while <code>aes(color = f_measured)</code> is specified only in the <code>geom_point()</code> layer.</p>
 <div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="datavis.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
 <span id="cb238-2"><a href="datavis.html#cb238-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> daily_fluxes,</span>
