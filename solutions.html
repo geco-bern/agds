@@ -888,11 +888,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="solutions.html#cb456-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read and wrangle data</span></span>
 <span id="cb456-2"><a href="solutions.html#cb456-2" aria-hidden="true" tabindex="-1"></a>half_hourly_fluxes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&quot;data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb456-3"><a href="solutions.html#cb456-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb456-4"><a href="solutions.html#cb456-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># interpret -9999 as missing value</span></span>
-<span id="cb456-5"><a href="solutions.html#cb456-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb456-6"><a href="solutions.html#cb456-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb456-7"><a href="solutions.html#cb456-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># interpret all variables starting with TIMESTAMP as a date-time object</span></span>
-<span id="cb456-8"><a href="solutions.html#cb456-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP_&quot;</span>)), lubridate<span class="sc">::</span>ymd_hm)</span></code></pre></div>
+<span id="cb456-4"><a href="solutions.html#cb456-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># set all -9999 to NA</span></span>
+<span id="cb456-5"><a href="solutions.html#cb456-5" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">9999</span>) <span class="sc">|&gt;</span> <span class="co"># </span><span class="al">NOTE</span><span class="co">: Newer tidyverse version no longer support this statement</span></span>
+<span id="cb456-6"><a href="solutions.html#cb456-6" aria-hidden="true" tabindex="-1"></a>                           <span class="co"># instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |&gt; ` </span></span>
+<span id="cb456-7"><a href="solutions.html#cb456-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb456-8"><a href="solutions.html#cb456-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># interpret all variables starting with TIMESTAMP as a date-time object</span></span>
+<span id="cb456-9"><a href="solutions.html#cb456-9" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate_at</span>(<span class="fu">vars</span>(<span class="fu">starts_with</span>(<span class="st">&quot;TIMESTAMP_&quot;</span>)), lubridate<span class="sc">::</span>ymd_hm)</span></code></pre></div>
 <pre><code>## Rows: 52608 Columns: 235
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -1076,7 +1077,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb463-17"><a href="solutions.html#cb463-17" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="fl">9.99</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb463-18"><a href="solutions.html#cb463-18" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="fl">0.99</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb463-19"><a href="solutions.html#cb463-19" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">na_if</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb463-20"><a href="solutions.html#cb463-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">year_dec =</span> <span class="st">`</span><span class="at">decimal date</span><span class="st">`</span>)</span></code></pre></div>
+<span id="cb463-20"><a href="solutions.html#cb463-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">year_dec =</span> <span class="st">`</span><span class="at">decimal date</span><span class="st">`</span>)</span>
+<span id="cb463-21"><a href="solutions.html#cb463-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb463-22"><a href="solutions.html#cb463-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: Newer tidyverse version no longer support statements like `dplyr::na_if(-9.99)`</span></span>
+<span id="cb463-23"><a href="solutions.html#cb463-23" aria-hidden="true" tabindex="-1"></a><span class="co"># instead, use `mutate(across(where(is.numeric), ~na_if(., -9.99))) |&gt; ` </span></span></code></pre></div>
 <ul>
 <li>Make a simple graph for visualizing the monthly CO<span class="math inline">\(_2\)</span> time series.</li>
 </ul>
@@ -1268,8 +1272,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In R:</p>
 <div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="solutions.html#cb476-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read unknown netcdf file using the {terra} library</span></span>
 <span id="cb476-2"><a href="solutions.html#cb476-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb476-3"><a href="solutions.html#cb476-3" aria-hidden="true" tabindex="-1"></a>unkown_netcdf <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(</span>
-<span id="cb476-4"><a href="solutions.html#cb476-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc&quot;</span></span>
+<span id="cb476-3"><a href="solutions.html#cb476-3" aria-hidden="true" tabindex="-1"></a>unknown_netcdf <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(</span>
+<span id="cb476-4"><a href="solutions.html#cb476-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc&quot;</span></span>
 <span id="cb476-5"><a href="solutions.html#cb476-5" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb476-6"><a href="solutions.html#cb476-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb476-7"><a href="solutions.html#cb476-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print the meta-data by calling the variable</span></span>
@@ -1278,7 +1282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb476-10"><a href="solutions.html#cb476-10" aria-hidden="true" tabindex="-1"></a><span class="co"># visually plot the data</span></span>
 <span id="cb476-11"><a href="solutions.html#cb476-11" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(unknown_netcdf)</span></code></pre></div>
 <p>From your terminal (when the file is located in the current working directory:</p>
-<div class="sourceCode" id="cb477"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb477-1"><a href="solutions.html#cb477-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ncdump</span> <span class="at">-h</span> some_data.nc</span></code></pre></div>
+<div class="sourceCode" id="cb477"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb477-1"><a href="solutions.html#cb477-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ncdump</span> <span class="at">-h</span> demo_data.nc</span></code></pre></div>
 <p>When printing the object in R, we get: <code>varname     : t2m (2 metre temperature)</code>.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Write this file to disk in a different geospatial format you desire (use the R documentation of the library used to read the file and the chapter information).</li>
@@ -1294,8 +1298,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="solutions.html#cb479-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read unknown tif file using the {terra} library</span></span>
 <span id="cb479-2"><a href="solutions.html#cb479-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb479-3"><a href="solutions.html#cb479-3" aria-hidden="true" tabindex="-1"></a>unkown_tif <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(</span>
-<span id="cb479-4"><a href="solutions.html#cb479-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif&quot;</span></span>
+<span id="cb479-3"><a href="solutions.html#cb479-3" aria-hidden="true" tabindex="-1"></a>unknown_tif <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(</span>
+<span id="cb479-4"><a href="solutions.html#cb479-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif&quot;</span></span>
 <span id="cb479-5"><a href="solutions.html#cb479-5" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb479-6"><a href="solutions.html#cb479-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb479-7"><a href="solutions.html#cb479-7" aria-hidden="true" tabindex="-1"></a><span class="co"># print the meta-data by calling the variable</span></span>
@@ -1308,7 +1312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb479-14"><a href="solutions.html#cb479-14" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(unknown_tif <span class="sc">-</span> unknown_netcdf)</span>
 <span id="cb479-15"><a href="solutions.html#cb479-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb479-16"><a href="solutions.html#cb479-16" aria-hidden="true" tabindex="-1"></a><span class="co"># or...</span></span>
-<span id="cb479-17"><a href="solutions.html#cb479-17" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(unkown_netcdf, unknown_tif)</span></code></pre></div>
+<span id="cb479-17"><a href="solutions.html#cb479-17" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(unknown_netcdf, unknown_tif)</span></code></pre></div>
 <p>Looks similar to the NetCDF data, but temperature appears to be given in Celsius in the GeoTIFF file and in Kelvin in the NetCDF file.</p>
 </div>
 </div>
