@@ -421,6 +421,11 @@ library(tidyverse)
 
 You can now use the functions and features provided by the {tidyverse} package in your R scripts.
 
+> Imagine that you have loaded two packages named {lib1} and {lib2} with the `library()` function. Now, all the functions in those two packages are available for use in R. But if both of them have a function called `fun()` and you run the command `fun(my_vector)`, how does R know from which package that function comes? Normally, the package loaded last will "mask" the previous packages, such that their functions (if names are repeated) are used by R. 
+    
+> If you want to specify from which library to take a function, you can use the `::` notation. So in our imaginary example we would use `lib1::fun()`. Furthermore, using the `::` notation allows to access a function without the package not being loaded. In general, it's a good practice to specify the package from which a function comes with `::`.
+
+
 At any time, you can see a list of your installed packages on the source panel with the following command:
 
 ```{r eval=FALSE}

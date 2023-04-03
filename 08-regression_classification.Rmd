@@ -878,7 +878,7 @@ In this Report Exercise, stepwise forward regression is to be performed for the 
 
 The complete workflow of reading the data, performing the stepwise forward regression, visualising and discussing the results should be implemented in an RMarkdown notebook file and added as file `./vignettes/re_stepwise.Rmd` to your *git* repository. You will then point us to the URL of your repository. We will fork your repository and reproduce the workflow implemented in your notebook. The following aspects should be covered in your notebook:
 
-1. An evaluation of all bivariate models (single predictor), implementing just steps 1-3 of the algorithm described in \@ref(variableselection). This should be complemented by visualisation and brief discussion the results.
+1. An evaluation of all bivariate models (single predictor), implementing just steps 1-3 of the algorithm described in \@ref(variableselection). This should be complemented by a visualisation and a brief discussion of the results.
 
 2. An implementation of stepwise forward regression, and a visualisation and discussion of its results. If you face unsurmountable challenges and/or errors you didn't manage to resolve, your notebook may implement a minimum reproducible example of your code that produces the error or of your *attempted* implementation of stepwise forward regression.
 
