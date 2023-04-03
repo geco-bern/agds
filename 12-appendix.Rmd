@@ -831,7 +831,7 @@ In R:
 ```{r eval=FALSE}
 # read unknown netcdf file using the {terra} library
 library(terra)
-unkown_netcdf <- terra::rast(
+unknown_netcdf <- terra::rast(
   "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc"
   )
 
@@ -865,7 +865,7 @@ terra::writeRaster(
 ```{r eval=FALSE}
 # read unknown tif file using the {terra} library
 library(terra)
-unkown_tif <- terra::rast(
+unknown_tif <- terra::rast(
   "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif"
   )
 
@@ -879,7 +879,7 @@ terra::plot(unknown_tif)
 terra::plot(unknown_tif - unknown_netcdf)
 
 # or...
-identical(unkown_netcdf, unknown_tif)
+identical(unknown_netcdf, unknown_tif)
 ```
 
 Looks similar to the NetCDF data, but temperature appears to be given in Celsius in the GeoTIFF file and in Kelvin in the NetCDF file.
