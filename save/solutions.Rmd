@@ -323,8 +323,9 @@ library(lubridate)  # not part of the automatic load of tidyverse
 # read half-hourly data
 hhdf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |> 
   
-    # interpret -9999 as missing value
-    na_if(-9999) |> 
+      # set all -9999 to NA
+      dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
+                             # instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |> `  
   
     # interpret timestamp as a date-time object
     mutate_at(vars(starts_with("TIMESTAMP_")), ymd_hm)
