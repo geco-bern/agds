@@ -832,7 +832,7 @@ In R:
 # read unknown netcdf file using the {terra} library
 library(terra)
 unknown_netcdf <- terra::rast(
-  "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.nc"
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc"
   )
 
 # print the meta-data by calling the variable
@@ -844,7 +844,7 @@ terra::plot(unknown_netcdf)
 
 From your terminal (when the file is located in the current working directory:
 ``` bash
-ncdump -h some_data.nc
+ncdump -h demo_data.nc
 ```
 
 When printing the object in R, we get: `varname     : t2m (2 metre temperature)`.
@@ -866,7 +866,7 @@ terra::writeRaster(
 # read unknown tif file using the {terra} library
 library(terra)
 unknown_tif <- terra::rast(
-  "https://raw.githubusercontent.com/geco-bern/agds/main/data/some_data.tif"
+  "https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.tif"
   )
 
 # print the meta-data by calling the variable
