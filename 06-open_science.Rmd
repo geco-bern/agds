@@ -67,6 +67,9 @@ analysis/
 │  ├─ complex_process_visualization.R
 ```
 
+The code-chunk above is a visualisation of a folder (aka. directory) structure on your computer. The lines and indents denote folder levels. In this example, you have a folder `analysis` which holds two more folders `statistics` and `figures`, and in both sub-folders, you have different `*.R` files (`*` is a so-called "wild-card" which is a placeholder for any text). Note that different people may use different symbols to visualise folder structures but generally, folder levels are shown with indents, and files are identifiable by their suffixes.
+
+
 #### Automating and visualizing workflows with targets
 
 To sidestep some of the manual management in R you can use a dedicated pipeline tool like the {targets} package in R. The package learns how your pipeline fits together, skips tasks that are already up-to-date, and runs only the necessary computation. {targets} can also visualize the progress of your workflow.
