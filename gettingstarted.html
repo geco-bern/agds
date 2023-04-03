@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-03-27" />
+<meta name="date" content="2023-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -804,6 +804,12 @@ Figure 1.1: RStudio interface.
 <p>Then, you can load it with the following code. Note that now the name of the package is not in quotation marks.</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="gettingstarted.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <p>You can now use the functions and features provided by the {tidyverse} package in your R scripts.</p>
+<blockquote>
+<p>Imagine that you have loaded two packages named {lib1} and {lib2} with the <code>library()</code> function. Now, all the functions in those two packages are available for use in R. But if both of them have a function called <code>fun()</code> and you run the command <code>fun(my_vector)</code>, how does R know from which package that function comes? Normally, the package loaded last will “mask” the previous packages, such that their functions (if names are repeated) are used by R.</p>
+</blockquote>
+<blockquote>
+<p>If you want to specify from which library to take a function, you can use the <code>::</code> notation. So in our imaginary example we would use <code>lib1::fun()</code>. Furthermore, using the <code>::</code> notation allows to access a function without the package not being loaded. In general, it’s a good practice to specify the package from which a function comes with <code>::</code>.</p>
+</blockquote>
 <p>At any time, you can see a list of your installed packages on the source panel with the following command:</p>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="gettingstarted.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>()</span></code></pre></div>
 <p>And a list of the packages currently loaded:</p>
