@@ -515,19 +515,19 @@ One must be careful not to keep training or improving models until they fit the 
 
 #### Variable selection {#variableselection}
 
-Let's think of variable selection in the context of linear regression. A brute force approach to variable selection would be: Fit a linear regression for each combination of available predictors, calculate a metric (e.g., AIC) and choose the best one (lowest AIC). The problem is, if you have 8 predictors, you would fit 40320 different regression models. This can be very computationally expensive.
+Let's think of variable selection in the context of linear regression. A brute force approach to variable selection would be: Fit a linear regression for each combination of all available predictors, calculate a metric (e.g., AIC) and choose the best one (lowest AIC). The problem is, if you have, say, eight predictors, you would fit 40320 different regression models. This can be very computationally expensive.
 
-Instead, take a hierarchical, or "greedy", approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called *stepwise forward regression*. The algorithm goes as follows
+Instead, take a hierarchical, or "greedy", approach, starting with an empty model (just an intercept) and adding one variable at a time. This is called *stepwise forward regression*. The algorithm goes as follows:
 
 1. Set the number of predictors to be considered to $p=1$.
 2. Fit all regression models with $p$ predictors and compute their $R^2$.
 3. Select the model with $p$ predictors that achieves the highest $R^2$ (best fitting model) and compute its AIC.
-4. Increment to $p+1$. Fit all regression models with $p+1$ predictors and compute their $R^2$. Select the best fitting model and compute its AIC.
+4. Increment to $p+1$. Fit all regression models with $p+1$ predictors that include the predictor selected at the previous step and compute their $R^2$. Select the best fitting model and compute its AIC.
 6. If the AIC of the model with $p+1$ predictors is poorer than the AIC of the model with $p$ predictors, retain the model with $p$ predictors and quit. You have found the (presumably) optimal model. Otherwise, continue with with step 4.
 
 Instead of the AIC, you may also use the BIC for model comparison. Note that algorithm doesn't consider all possible combinations of predictors and it is possible that the globally optimal model is thus not found. The function `stats::step()` implements the stepwise algorithm in R.
 
-This stepwise approach can also be done backwards, starting with a full model (all available variables) and removing one at a time. Or even with a back-and-forth approach, where you look at both including a new or removing an existing variable at each step (optimizing AIC). Furthermore, this algorithm can be applied to fitting a polynomial regression. We want to increase the degree of the polynomials unit by unit. For a model with categorical variables, interaction terms should only be considered after having the involved variables as "intercept only".
+This stepwise approach can also be done backwards, starting with a full model (all available variables) and removing one at a time. Or even with a back-and-forth approach, where you look at both including a new or removing an existing variable at each step (optimizing AIC). Furthermore, this algorithm can be applied to fitting a polynomial regression whereby the aim si to increase the *degree* of the polynomials - step by step. For a model with categorical variables, interaction terms should only be considered after having the involved variables as "intercept only".
 
 **Multicollinearity** exists when there is a correlation between multiple predictors in a multivariate regression model. This is problematic because it makes the estimated coefficients corresponding to the correlated variables unstable. Since correlated variables contain similar information, it doesn't matter whether we include one or the other in the model or even if we include both of them. The performance metrics will be similar. Hence, it becomes difficult to conclude which variables actually influence the target.
 
