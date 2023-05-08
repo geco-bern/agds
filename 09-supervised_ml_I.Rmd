@@ -696,7 +696,7 @@ The figures above show the evaluation of the model performances of the linear re
 1.  Adopt the code from this Chapter for fitting and evaluating the linear regression model and the KNN into your own RMarkdown notebook. Name the file `./vignettes/re_ml_01.Rmd`. Keep larger functions in a separate file in an appropriate directory and load the function definition as part of the RMarkdown notebook.
 2.  Interpret observed differences in the context of the bias-variance trade-off:
   - Why is the difference between the evaluation on the training and the test set larger for the KNN model than for the linear regression model?
-  - Why is the does the evaluation on the test set indicate a better model performance of the KNN model than the linear regression model?
+  - Why does the evaluation on the test set indicate a better model performance of the KNN model than the linear regression model?
   - How would you position the KNN and the linear regression model along the spectrum of the bias-variance trade-off?
 3.  Visualise temporal variations of observed and modelled GPP for both models, covering all available dates.
 
