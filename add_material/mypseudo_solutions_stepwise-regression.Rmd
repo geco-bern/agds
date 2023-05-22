@@ -1,0 +1,50 @@
+This was written in class for demonstration. No guarantee that this is correct ;-).
+
+```{r}
+# specify the target
+
+# 
+
+# initialise vector of selected variables
+all_vars_selected <- c()
+
+
+for (pred in preds_all){
+
+
+	# 
+
+	# initialise candidate models
+	linmod_candidate <- list()
+
+	for (pred_candidate in remaining_candidates){
+
+		# specify model formula
+
+		# fit model
+
+		# extract R-squared
+
+
+	}
+
+	# determine highest R-squared and corresponding variable name -> var_selected, linmod_current
+
+
+	# update vector of selected variables
+	all_vars_selected <- c(all_vars_selected, var_selected)
+
+	# drop selected variable (var_selected) from candidate predictors (remaining_candidates)
+	remaining_candidates <- remaining_candidates[-which(remaining_candidates==var_selected)]
+
+	# determine whether AIC improved
+	AIC_current <- AIC(linmod_current)
+
+	# if it hasn't improved, quit
+	if (AIC_current > AIC_last) break()
+
+}
+
+
+
+```
