@@ -26,7 +26,7 @@ daily_fluxes <- readr::read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2
                 ) |>
 
   # convert to a nice date object
-  dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
+  dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
 
   # set all -9999 to NA
   dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
@@ -87,7 +87,7 @@ source("R/eval_model.R")
 
 # specify the set of K
 df_k <- data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)) |> 
-  mutate(idx = 1:n())
+  dplyr::mutate(idx = 1:dplyr::n())
 ```
 
 <!-- >>> CHECK FOR REDUCING COMPUTATIONAL COST TO RENDER BOOK ONLINE <<< -->
@@ -97,7 +97,7 @@ df_k <- data.frame(k = c(2, 5, 10, 15, 20, 25, 30, 35, 40, 60, 100, 200, 300)) |
 list_mod_knn <- purrr::map(
   df_k$k,
   ~caret::train(pp, 
-                data = daily_fluxes_train |> drop_na(), 
+                data = daily_fluxes_train |> tidyr::drop_na(), 
                 method = "knn",
                 trControl = caret::trainControl(method = "none"),
                 tuneGrid = data.frame(k = .),   # '.' evaulates k
@@ -218,10 +218,12 @@ print(mod_cv)
 From the output of `print(mod_cv)`, we get information about model performance for each hyperparameter choice. The values reported are means of respective metrics determined across the ten folds. Also the optimal choice of $k$ (25) is reported. Does this correspond to the $k$ with the best performance determined on the test set? If resampling was a good approach to estimating out-of-sample model performance, then it should!
 
 ```{r}
-df_mae |>
+df_mae |>    # see hint
   filter(set == "test") |> 
   filter(.estimate == min(.estimate))
 ```
+
+> The object `df_mae` is created above, recording metrics determined on the training and the validation set for differen choices of $k$. The respective code is hidden for the book. Explore the source code [here](https://github.com/geco-bern/agds/blob/3fc03645cf4831ebf29dc0fcce4d032d01fced8a/10-supervised_ml_II.Rmd#L147).
 
 The evaluation on the test set suggests that $k=30$ is optimal, while 10-fold cross-validation yielded an optimal $k = 25$. Apparently, cross-validation suggested a model that is slightly more on the variance side along the bias-variance trade-off than the evaluation on the test set did. This (relatively small) mismatch is probably a result of randomness in the data.
 

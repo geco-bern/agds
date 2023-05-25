@@ -202,7 +202,7 @@ daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3
                 ) |>
 
   # convert to a nice date object
-  dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
+  dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
 
   # set all -9999 to NA
   dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
