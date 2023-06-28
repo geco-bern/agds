@@ -331,8 +331,8 @@ The [{recipes}](https://recipes.tidymodels.org/) package provides an even more p
 
 ```{r warning=FALSE, message=FALSE}
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 ```
 
 The first line with the `recipe()` function call assigns *roles* to the different variables. `GPP_NT_VUT_REF` is an *outcome* (in "{recipes} speak"). Then, we used selectors to apply the recipe step to several variables at once. The first selector, `all_numeric()`, selects all variables that are either integers or real values. The second selector, `-all_outcomes()` removes any outcome (target) variables from this recipe step. The returned object `pp` does *not* contain a normalized version of the data frame `daily_fluxes_train`, but rather the information that allows us to apply a specific set of pre-processing steps also to any other data set.
@@ -531,14 +531,14 @@ $$
 $\lambda$ is treated as a parameter that is fitted such that the resulting distribution of values $Y$ approaches the normal distribution. To specify a Box-Cox-transformation as part of the pre-processing, we can use `step_BoxCox()` from the {recipes} package.
 
 ```{r warning=FALSE, message=FALSE}
-pp <- recipe(WS_F ~ ., data = daily_fluxes_train) |>
-  step_BoxCox(all_outcomes())
+pp <- recipes::recipe(WS_F ~ ., data = daily_fluxes_train) |>
+  recipes::step_BoxCox(all_outcomes())
 ```
 
 How do transformed values look like?
 
 ```{r warning=FALSE, message=FALSE}
-prep_pp <- prep(pp, training = daily_fluxes_train |> drop_na())
+prep_pp <- recipes::prep(pp, training = daily_fluxes_train |> drop_na())
 daily_fluxes_baked <- bake(prep_pp, new_data = daily_fluxes_test |> drop_na())
 daily_fluxes_baked |>
   ggplot(aes(x = WS_F, y = ..density..)) +
@@ -549,8 +549,8 @@ daily_fluxes_baked |>
 Note that the Box-Cox-transformation can only be applied to values that are strictly positive. In our example, wind speed (`WS_F`) is. If this is not satisfied, a Yeo-Johnson transformation can be applied.
 
 ```{r warning=FALSE, message=FALSE}
-recipe(WS_F ~ ., data = daily_fluxes) |>
-  step_YeoJohnson(all_outcomes())
+recipes::recipe(WS_F ~ ., data = daily_fluxes) |>
+  recipes::step_YeoJohnson(all_outcomes())
 ```
 
 ### Putting it all together (half-way)
@@ -587,9 +587,9 @@ daily_fluxes_test <- rsample::testing(split)
 # Model and pre-processing formulation, use all variables but LW_IN_F
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
                       data = daily_fluxes_train |> drop_na()) |> 
-  recipes::step_BoxCox(all_predictors()) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_BoxCox(recipes::all_predictors()) |> 
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 
 # Fit linear regression model
 mod_lm <- caret::train(
@@ -692,7 +692,7 @@ There are no exercises with provided solutions for this Chapter.
 
 The figures above show the evaluation of the model performances of the linear regression and the KNN model, evaluated on the training and test set. This exercise is to interpret and understand the observed differences. Implement the following points:
 
-1.  Adopt the code from this Chapter for fitting and evaluating the linear regression model and the KNN into your own RMarkdown notebook. Name the file `./vignettes/re_ml_01.Rmd`. Keep larger functions in a separate file in an appropriate directory and load the function definition as part of the RMarkdown notebook.
+1.  Adopt the code from this Chapter for fitting and evaluating the linear regression model and the KNN into your own RMarkdown file. Name the file `./vignettes/re_ml_01.Rmd`. Keep larger functions in a separate file in an appropriate directory and load the function definition as part of the RMarkdown.
 2.  Interpret observed differences in the context of the bias-variance trade-off:
   - Why is the difference between the evaluation on the training and the test set larger for the KNN model than for the linear regression model?
   - Why does the evaluation on the test set indicate a better model performance of the KNN model than the linear regression model?
@@ -712,6 +712,10 @@ Let's look at the role of $k$ in a KNN. Answer the following questions:
 
 Add code and text for addressing this exercise to the file `./vignettes/re_ml_01.Rmd` and give the notebook a suitable structure for easy navigation with a table of content (`toc`) by modifying its YAML header:
 
+> **Important:** to find an optimal $k$, you will have to use daily data and not half-hourly data!
+> Hint: Do not produce various of the "Training - Test" Figures shown above to find an optimal $k$. Find a suitable plot that shows the optimal $k$ (maybe you can find one in this or another Chapter...).
+
+
 ``` bash
 ---
 title: "Report Exercise Chapter 10"
@@ -721,3 +725,7 @@ output:
     toc: true
 ---
 ```
+
+### Deliverables for the report {.unnumbered}
+
+Present your solutions in a file called `re_ml01.Rmd`, save it in your `vignettes` folder alongside the HTML version, and make sure that your code is reproducible (make sure your .rmd is knittable, that all data is available, that paths to that data work, etc.).
