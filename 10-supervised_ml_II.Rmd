@@ -55,8 +55,8 @@ daily_fluxes_test <- rsample::testing(split)
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
                       data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 ```
 
 > To reproduce this code chunk, you can download the file `FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv` from [here](https://raw.githubusercontent.com/geco-bern/agds/main/data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv) and read it from the local path where the file is stored on your machine. All data files used in this tutorials are stored [here](https://github.com/geco-bern/agds/tree/main/data).

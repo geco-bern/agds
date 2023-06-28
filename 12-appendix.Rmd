@@ -1247,8 +1247,8 @@ daily_fluxes_test <- rsample::testing(split)
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
                       data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 
 mod <- caret::train(pp, 
                     data = daily_fluxes_train |> drop_na(), 
@@ -1352,8 +1352,8 @@ daily_fluxes_test <- rsample::testing(split)
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
                       data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 ```
 
 ```{r message=FALSE}
