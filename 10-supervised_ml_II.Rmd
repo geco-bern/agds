@@ -289,16 +289,43 @@ In your visual comparison, add a plot layer showing the distribution of validati
 
 > Hint: The returned model object from a `caret::train()` call is a list with fold-wise metrics in its element `results`.
 
+## Report Exercise
 
-## Report Exercises
+Here, we explore the role of structure in the data for model generalisability and how to best estimate a "true" out-of-sample error that corresponds to the prediction task. The task here is to train a KNN-model on ecosystem flux observations from one site and predict to another site. In previous examples and exercises, we always trained and predicted within the same site. How well is a model generalisable to a new site; can we use our model for spatial upscaling? Solve these task and save your reproducible solution in `./vignettes/re_ml02.rmd` (don\`t forget to upload the data and html):
 
-Here, we explore the role of structure in the data for model generalisability and how to best estimate a "true" out-of-sample error that corresponds to the prediction task. The task here is to train a model on ecosystem flux observations from one site and predict to another site (spatially upscaling). In previous examples and exercises, we always trained and predicted within the same site. How well is a model generalisable to a new site?
+1.  To investigate the concept of generalisability, we use flux data from two sites: [Davos (CH-Dav)](https://fluxnet.org/sites/siteinfo/CH-Dav) (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`), and [Laegern (CH-Lae)](https://fluxnet.org/sites/siteinfo/CH-Lae) (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Gather information on the characteristics of these sites - how do they differ regarding climate, vegetation, altitude, etc.
 
-We investigate this question using ecosystem flux data from two distinct sites: [Davos (CH-Dav)](https://fluxnet.org/sites/siteinfo/CH-Dav) (`FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3.csv`), and  [Laegern (CH-Lae)](https://fluxnet.org/sites/siteinfo/CH-Lae) (`FLX_CH-Lae_FLUXNET2015_FULLSET_DD_2004-2014_1-4.csv`). Again, use KNN and tune K for each model. Both sites are registered in the FLUXNET network.
+2.  Train three KNN-models on each dataset: Davos only, Laegern only, both together. For each model: Use 80% of the data to train a KNN-model with an optimal $k$ and set aside the remaining 20% for testing.
 
-Proceed as follows:
+3.  Test your models on each of the three test datasets that you set aside. Create three tables (see example below), one for each model and display the evaluation metrics on all test sets.
 
-- Set aside 20% of the data of each site for testing.
-- Compare within-site predictions and across-site predictions on the test set for both sites, considering different metrics. For across-site predictions, make sure to implement a train and test setup that enables a true out-of-sample prediction test.
-- Train a single model with training data pooled from both sites and predict with this single model on the test data of both sites. How do the model metrics on the test set compare to the true out-of-sample setup above? Interpret differences. Is it a valid approach to perform model training like this? Use your knowledge about structure in the data and its relevance for the model training setup.
-- Get information about the characteristics of the two sites. What are the differences in terms of climate, vegetation, altitude, etc. between the Davos and Laegern sites? Interpret biases of the out-of-sample predictions with a view to the site characteristics.
+**Example table:**
+
+|                                             |       |        |
+|---------------------------------------------|-------|--------|
+| Model trained on data from [insert sitename/s]              | $R^2$ | $RMSE$ |
+| Evaluation against Laegern test set         |       |        |
+| Evaluation against Davos test set           |       |        |
+| Evaluation against Laegern & Davos test set |       |        |
+
+4.  Use your knowledge on statistical learning and on the different sites to answer the following questions:
+
+    -   What are the patterns that you see in the tables?
+    
+    -   How well do models trained on one site perform on another site? Why is this the case?
+    
+        -   To answer this think of the differences between the sites! Interpret the models' biases on the out-of-sample prediction with respect to the site's charactersitics. Perhaps you could identify such biases by comparing the time-series of both models on the same test set?
+    
+    -   How does the model trained on both sites perform on the three test sets? Why is this the case?
+    
+    -   When training and testing on both sites, is this a true 'out-of-sample' setup? What would you expect if your model was tested against data from a site in Spain?
+
+> Hint: To make the models comparable, make sure that you are using the same variables during training. Check your data before you start modelling!
+
+> Hint: Do not produce multiple "Training-Test" plots shown throughout this course. Find a way to convey your message in concise way and pick these plots only when you really need them to support you answer.
+
+> Hint: Consult the [RMarkdown cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown-2.0.pdf) or other online resources to learn how to create a Markdown table.
+
+### Deliverables for the report {.unnumbered}
+
+Present your solutions in a file called `re_ml02.Rmd`, save it in your `vignettes` folder alongside the HTML version, and make sure that your code is reproducible (make sure your .rmd is knittable, that all data is available, that paths to that data work, etc.).
