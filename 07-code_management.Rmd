@@ -238,7 +238,7 @@ Create a new R project using the *git* R project template shown above.
 
 ### Collaborative Work on Github {-}
 
-This is a team exercise, so team up with someone else in the classroom. You will learn about how to collaborate online using *git* and Github. **Note** that this is part of your final performance assessment. In your report, you have to provide the links to the two repositories on your GitHub account (see exercise instructions below): One to your own repository that your friend forked, and one to the repository that you forked from your friend. We will check each repositories' commit history to see whether this pair-coding exercise was done correctly. Therefore, follow these steps precisely:
+This is a team exercise, so team up with someone else in the classroom. You will learn about how to collaborate online using *git* and Github. 
 
 > Important: When creating your repositories, make sure that you set the repository to be public and not private.
 
@@ -259,3 +259,9 @@ This is a team exercise, so team up with someone else in the classroom. You will
 -  *Voluntary:* Can you force a merge conflict, for example by editing the same file at once, and resolve?
 
 To complete the exercise, reverse rolls between Person 1 and Person 2.
+
+### Deliverables for the report {.unnumbered}
+
+This pair-coding exercise is part of your final performance assessment.  We will check each repositories' commit history to see whether this pair-coding exercise was done correctly. So, follow the steps above precisely!
+
+When you submit your report by mail at the end of the course, you have to provide the links to your GitHub account, to your report repositories that holds all other report exercises, and to the two repositories that you created during this pair-coding work exercise (your repository that your friend forked and the repository that you forked from your friend). Alternatively you can also create a `./vignettes/re_paircoding.Rmd` in your report repository, where you provide these links.
