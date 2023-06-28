@@ -323,12 +323,11 @@ library(lubridate)  # not part of the automatic load of tidyverse
 # read half-hourly data
 hhdf <- read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |> 
   
-      # set all -9999 to NA
-      dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
-                             # instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |> `  
-  
-    # interpret timestamp as a date-time object
-    mutate_at(vars(starts_with("TIMESTAMP_")), ymd_hm)
+  # set all -9999 to NA
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
+
+  # interpret timestamp as a date-time object
+  mutate_at(vars(starts_with("TIMESTAMP_")), ymd_hm)
 
 # aggregate to daily
 ddf <- hhdf |> 
@@ -613,7 +612,7 @@ names(list_df) <- vec_files
 
 clean_fluxnet_dd <- function(df){
     
-    df %>%
+    df |>
         
         ## select only the variables we're interested in
         select(starts_with("TIMESTAMP"),
@@ -630,29 +629,29 @@ clean_fluxnet_dd <- function(df){
                -starts_with("LE_"),
                -starts_with("H_"),
                -contains("JSB")
-        ) %>%
+        ) |>
         
         ## convert to a nice date object
-        mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) %>%
+        mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
         
         ## not setting heavily gapfilled data to zero
         
         ## set all -9999 to NA
-        na_if(-9999) %>% 
+        dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
     
         # drop NAs
-        drop_na() %>% 
+        drop_na() |> 
     
         ## filter bad data (at least 80% must be measured or good quality gapfilled)
-        mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) %>% 
+        mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) |> 
         
         ## drop QC variables (no longer needed), except NEE_VUT_REF_QC
         select(-ends_with("_QC"))
     
 }
 
-df <- purrr::map(list_df, ~clean_fluxnet_dd(.)) %>% 
-    dplyr::bind_rows(.id = "siteid") %>% 
+df <- purrr::map(list_df, ~clean_fluxnet_dd(.)) |> 
+    dplyr::bind_rows(.id = "siteid") |> 
     dplyr::mutate(siteid = str_sub(siteid, start = 10, end = 15))
 
 readr::write_csv(df, "data/df_for_stepwise_regression.csv")
@@ -664,8 +663,8 @@ readr::write_csv(df, "data/df_for_stepwise_regression.csv")
 target <- 'GPP_NT_VUT_REF'
 
 ## determine predictors as all except date, siteid and target
-preds <- df %>% 
-  dplyr::select(-target, -TIMESTAMP, -siteid) %>% 
+preds <- df |> 
+  dplyr::select(-target, -TIMESTAMP, -siteid) |> 
   names()
 
 # This is the vector of candidate predictors to be added in the model. To begin with, consider all as candidates.
@@ -707,10 +706,10 @@ for (k_index in 1:length(preds)){
   
   ## get name of candidate predictor that achieved the highest R2.
   pred_add <- 
-    df_rsq_candidates %>%  # when storing R2 in a data frame
-    arrange(desc(rsq)) %>% 
-    slice(1) %>% 
-    pull(pred) %>% 
+    df_rsq_candidates |>  # when storing R2 in a data frame
+    arrange(desc(rsq)) |> 
+    slice(1) |> 
+    pull(pred) |> 
     as.character()
   
   # pred_add <- preds_candidate[ which.max(rsq_candidates) ]   # when storing R2 as a vector
@@ -719,7 +718,7 @@ for (k_index in 1:length(preds)){
   preds_retained <- c(preds_retained, pred_add)
   
   # record AIC and BIC and adjusted-R2 of the respective model
-  df_metrics <- df_metrics %>% 
+  df_metrics <- df_metrics |> 
     bind_rows(
       data.frame( pred = pred_add,
                   rsq = summary(linmod_candidates[[ pred_add ]])[["r.squared"]],
@@ -740,8 +739,8 @@ for (k_index in 1:length(preds)){
 
 data.frame(df_metrics$pred) # order in which variables enter the model
 
-df_metrics %>% 
-  arrange(desc(rsq)) %>% 
+df_metrics |> 
+  arrange(desc(rsq)) |> 
   knitr::kable()
 ```
 
