@@ -165,7 +165,7 @@ You can create a local copy of your remote repository that's hosted on GitHub us
 
 ``` bash
 # create a local copy of the remote github repository
-git clone https://github.com/khufkens/YOUR_PROJECT.git
+git clone git@github.com:khufkens/YOUR_PROJECT.git
 ```
 
 You can then start working on this repository by using the modify -\> staged -\> commit -\> push workflow.
