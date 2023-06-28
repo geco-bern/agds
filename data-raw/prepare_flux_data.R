@@ -27,8 +27,7 @@ daily_fluxes <- readr::read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2
   dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
   
   # set all -9999 to NA
-  dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
-                         # instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |> ` 
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
   
   # retain only data based on >=80% good-quality measurements
   # overwrite bad data with NA (not dropping rows)
@@ -86,21 +85,21 @@ clean_fluxnet_dd <- function(df){
     ## not setting heavily gapfilled data to zero
     
     ## set all -9999 to NA
-    na_if(-9999) %>% 
+    dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
     
     # drop NAs
-    # drop_na() %>% 
+    # drop_na() |>
     
     ## filter bad data (at least 80% must be measured or good quality gapfilled)
-    mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) %>% 
+    mutate(GPP_NT_VUT_REF = ifelse(NEE_VUT_REF_QC < 0.8, NA, GPP_NT_VUT_REF)) |>
     
     ## drop QC variables (no longer needed), except NEE_VUT_REF_QC
     select(-ends_with("_QC"))
   
 }
 
-df <- purrr::map(list_df, ~clean_fluxnet_dd(.)) %>% 
-  dplyr::bind_rows(.id = "siteid") %>% 
+df <- purrr::map(list_df, ~clean_fluxnet_dd(.)) |>
+  dplyr::bind_rows(.id = "siteid") |>
   dplyr::mutate(siteid = str_sub(siteid, start = 39, end = 44))
 
 readr::write_csv(df, paste0(here::here(), "/data/df_for_stepwise_regression.csv"))
