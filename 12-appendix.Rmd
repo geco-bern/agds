@@ -434,8 +434,7 @@ In Section \@ref(baddata), we discovered that certain values of `GPP_NT_VUT_REF`
 half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |> 
   
     # set all -9999 to NA
-    dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
-                           # instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |> ` 
+    dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
   
     # interpret all variables starting with TIMESTAMP as a date-time object
     dplyr::mutate_at(vars(starts_with("TIMESTAMP_")), lubridate::ymd_hm)
@@ -622,13 +621,10 @@ ml_co2 <- readr::read_csv(
 # interpret missing values
 # rename to avoid white space in column name
 ml_co2 <- ml_co2 |>
-  dplyr::na_if(-9.99) |> 
-  dplyr::na_if(-0.99) |> 
-  dplyr::na_if(-1) |>
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9.99))) |>
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -0.99))) |>
+  mutate(across(where(is.numeric), ~na_if(., -1))) |>
   rename(year_dec = `decimal date`)
-
-# NOTE: Newer tidyverse version no longer support statements like `dplyr::na_if(-9.99)`
-# instead, use `mutate(across(where(is.numeric), ~na_if(., -9.99))) |> ` 
 ```
 
 -   Make a simple graph for visualizing the monthly CO$_2$ time series.
@@ -1251,8 +1247,8 @@ daily_fluxes_test <- rsample::testing(split)
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ SW_IN_F + VPD_F + TA_F, 
                       data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 
 mod <- caret::train(pp, 
                     data = daily_fluxes_train |> drop_na(), 
@@ -1331,7 +1327,7 @@ daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3
   dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
   
   # set all -9999 to NA
-  dplyr::na_if(-9999) |>
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
   
   # retain only data based on >=80% good-quality measurements
   # overwrite bad data with NA (not dropping rows)
@@ -1356,8 +1352,8 @@ daily_fluxes_test <- rsample::testing(split)
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
                       data = daily_fluxes_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 ```
 
 ```{r message=FALSE}

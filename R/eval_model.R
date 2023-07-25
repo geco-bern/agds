@@ -9,7 +9,16 @@
  
 eval_model <- function(mod, df_train, df_test, return_metrics = FALSE){
   
-  require(magrittr)  # part of dplyr, required for the "old" pipe
+  
+  # Require caret to avoid errors if a caret-based model is entered without having caret loaded globally
+  if (!require("caret", character.only = TRUE)) {
+    stop("Error: Could not load the library {caret}. Please install it and try again.")
+  }
+  
+  # Require magrittr because script uses %>% pipe 
+  if (!require("magrittr", character.only = TRUE)) {
+    stop("Error: Could not load the library {caret}. Please install it and try again.")
+  }
   
   # add predictions to the data frames----
   df_train <- df_train %>% 

@@ -572,12 +572,13 @@ To install the `netCDF` command-line tools, follow these instructions:
      -    Restart RStudio if it was open during the steps above. Enter `install.packages("ncdf4")` and see if it installs it correctly.
           -    If installation failed, there should be a message "Installation of package ... had non-zero exit status". If so, check with teaching assistance.
 
-> Note: *Terminal* allows you to interact with your Mac through the command line. You can open it through the Finder if you go to **Applications > Utilities > Terminal**.
+> Note: The programm *Terminal* allows you to interact with your Mac through the command line and is installed automatically. You can open it through the Finder if you go to **Applications > Utilities > Terminal**.
 
 -    For MacOS users, via *MacPorts*:
-     -    Install *xcode* via Terminal by typing in `xcode-select --install` (if not installed already).
-     -    Check your OS Version (Apple icon in menu bar, then choose **About this Mac** and the **macOS** should be displayed). Click on the respective version for MacPorts [here](https://www.macports.org/install.php) and run the downloaded `.pkg` file.
-     -    Install *netcdf* using `sudo port install netcdf` in the Terminal, as explained [here](https://ports.macports.org/port/netcdf/).
+     -    Install *xcode* via the Terminal by typing in `xcode-select --install` (if not installed already).
+     -    Then, install the package manager _Homebrew_ via the terminal code `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`.
+     -    Then, install _netcdf_ via the terminal code `brew install netcdf`.
+     -    It is possible that you still cannot install {terra} because you are missing _gdal_. If so, run `brew install gdal` in the terminal.
      
 -    For Linux users:
      -    Since the package is pre-installed in Linux, just type `sudo apt install gdal-bin libgdal-dev` in the terminal.

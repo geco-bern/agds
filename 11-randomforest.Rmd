@@ -172,8 +172,7 @@ daily_fluxes <- daily_fluxes |>
   dplyr::mutate(TIMESTAMP = ymd(TIMESTAMP)) |>
   
   # set all -9999 to NA
-  dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
-                         # instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |> ` 
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
   
   # retain only data based on >=80% good-quality measurements
   # overwrite bad data with NA (not dropping rows)
@@ -197,8 +196,8 @@ ddf_test <- rsample::testing(split)
 # The same model formulation is in the previous chapter
 pp <- recipes::recipe(GPP_NT_VUT_REF ~ TA_F + SW_IN_F + LW_IN_F + VPD_F + P_F + WS_F, 
                       data = ddf_train) |> 
-  recipes::step_center(all_numeric(), -all_outcomes()) |>
-  recipes::step_scale(all_numeric(), -all_outcomes())
+  recipes::step_center(recipes::all_numeric(), -recipes::all_outcomes()) |>
+  recipes::step_scale(recipes::all_numeric(), -recipes::all_outcomes())
 
 mod <- train(
   pp, 

@@ -22,8 +22,7 @@ df <- read_csv(paste0(here::here(), "/data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_199
   dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
   
   # set all -9999 to NA
-  dplyr::na_if(-9999) |> # NOTE: Newer tidyverse version no longer support this statement
-  # instead, use `mutate(across(where(is.numeric), ~na_if(., -9999))) |> `
+  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
   
   # retain only data based on >=80% good-quality measurements
   # overwrite bad data with NA (not dropping rows)

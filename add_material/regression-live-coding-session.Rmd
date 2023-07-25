@@ -1,0 +1,173 @@
+---
+title: "Regression Live Coding"
+author: "Pepa Aran"
+date: "2023-04-24"
+output: html_document
+---
+
+# Session 9 - Regression
+
+Live-coding example of a modeling workflow. 
+
+```{r}
+# Load necessary packages
+library(ggplot2)
+```
+
+## Load data
+
+Example `CO2` dataset from the R `datasets` package. 
+```{r}
+?CO2
+CO2
+```
+
+## Exploratory data analysis
+
+Take a look at the structure of the data: types of variables, ranges, etc.
+Visualize relationships between variables, with the modelling task in mind.
+We want to regress CO2 uptake against other covariates.
+```{r}
+summary(CO2)
+```
+
+```{r}
+ggplot(data = CO2) +
+  geom_point(aes(
+    x = conc,
+    y = uptake,
+    color = Treatment,
+    shape = Type
+  )) +
+  labs(x = "Concentration", y = "CO2 uptake")
+```
+
+## First simple model: Linear regression
+
+Task: Regress CO2 uptake on ambient CO2 concentration.
+```{r}
+mod_linear <- lm(uptake ~ conc,
+                 data = CO2)
+
+summary(mod_linear)
+```
+
+```{r}
+ggplot(data = CO2) +
+  geom_point(aes(
+    x = conc,
+    y = uptake,
+    color = Treatment,
+    shape = Type
+  )) +
+  labs(x = "Concentration", y = "CO2 uptake") +
+  geom_smooth(
+    aes(x = conc,
+        y = uptake),
+    method = "lm",
+    se = FALSE
+  )
+```
+
+### Model diagnosis
+
+How does the linear regression fit the data? 
+```{r}
+plot(mod_linear, 1) # residuals vs fitted
+plot(mod_linear, 2) # QQplot
+plot(mod_linear, 5) # residuals vs leverage
+
+?plot.lm            # easy diagnostic plots for linear regression
+```
+
+## Improve model fit
+
+Instead of a straight line, can we use another funcional form?
+```{r}
+curve(log)
+curve(x^2, xlim = c(-2, 2))
+```
+
+Model the CO2 uptake usign a logarithmic transformation of the ambient
+concentration of CO2.
+```{r}
+mod_log <- lm(uptake ~ log(conc), data = CO2)
+
+summary(mod_log)
+```
+
+Plot regression and check diagnostic plots (now the residuals shouldn't show
+the curved trend we saw before).
+```{r}
+ggplot(data = CO2) +
+  geom_point(aes(
+    x = conc,
+    y = uptake,
+    color = Treatment,
+    shape = Type
+  )) +
+  labs(x = "Concentration", y = "CO2 uptake") +
+  geom_smooth(
+    aes(x = conc,
+        y = uptake),
+    method = "lm",
+    formula = y ~ log(x),
+    se = FALSE
+  )
+
+plot(lm_log, 1)
+plot(lm_log, 2)
+plot(lm_log, 5)
+```
+
+## Include categorical covariates
+
+Use sensible categorical covariates as predictive variables.
+Pay attention to the encoding of the parameters.
+```{r}
+mod_cat <- lm(uptake ~ log(conc) + Treatment + Type, data = CO2)
+
+summary(mod_cat)
+```
+
+```{r}
+ggplot(data = CO2) +
+  geom_point(aes(
+    x = conc,
+    y = uptake,
+    color = Treatment,
+    shape = Type
+  )) +
+  labs(x = "Concentration", y = "CO2 uptake") +
+  geom_smooth(
+    aes(x = conc,
+        y = uptake,
+        color = Treatment,
+        lty = Type),
+    method = "lm",
+    formula = y ~ log(x),
+    se = FALSE
+  )
+# Note: This code produces the plot for the regression with interactions.
+# See how the logarithmic curves are not parallel and and have different
+# rates of increase? For a model without interaction terms, we would have
+# parallel curves (only an intercept is fit for the categorical variables).
+```
+
+Let's finally also include interaction terms.
+```{r}
+mod_cat_interaction <- lm(uptake ~ log(conc) * Treatment * Type, data = CO2)
+
+summary(mod_cat_interaction)
+```
+
+## Stepwise regression
+
+Automatically search for the best fitting regression.
+```{r}
+step(
+  object = lm(uptake ~ 1, data = CO2),                     # lowest bound model (empty)
+  scope = uptake ~ conc * log(conc) * Type * Treatment ,   # upper bound (all interactions)
+  direction = "forward"
+)
+```

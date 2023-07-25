@@ -10,3 +10,10 @@ _bookdown_files
 
 # data which shouldn't be tracked
 data/ddf.csv
+data/co2_mm_mlo.csv
+data/daily_fluxes.csv
+data/ddf_allsites_nested_joined.rds
+data/solutions/rf_mod_gridsearch.rds
+data/solutions/rf_mod.rds
+
+data/tutorials/rf_mod.rds

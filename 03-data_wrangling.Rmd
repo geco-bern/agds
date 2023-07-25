@@ -8,12 +8,11 @@ In this chapter you will learn how to manipluate and transform data, a curcial p
 
 You will learn how to:
 
-- read and transform tabulated data
-- understand the 'tidy' data concept
-- select variables
-- Aggregate data
-- handle bad and/or missing data
-
+-   read and transform tabulated data
+-   understand the 'tidy' data concept
+-   select variables
+-   Aggregate data
+-   handle bad and/or missing data
 
 ## Tutorial
 
@@ -56,7 +55,7 @@ From this design principles, even the most convoluted code and implementation of
 
 ### Reading tabular data
 
-Tabular data are organised in rows and columns. R data frames are tabular data. As introduced in Chapter \@ref(gettingstarted), each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance or data record - for example a record of simultaneously taken measurements of different variables, along with some attributes and meta information (e.g., the date). In Chapter \@ref(datavariety), you will be introduced to other types of data. 
+Tabular data are organised in rows and columns. R data frames are tabular data. As introduced in Chapter \@ref(gettingstarted), each column can be regarded as a vector of a certain type. Each row contains the same number of columns and each column contains the same type of values (for example numeric, or characters). Each row can be regarded as a separate instance or data record - for example a record of simultaneously taken measurements of different variables, along with some attributes and meta information (e.g., the date). In Chapter \@ref(datavariety), you will be introduced to other types of data.
 
 The most common format for tabular data are CSV (comma-separated-values), typically indicated by the file name suffix `.csv`. CSV is a text-based file format, readable across platforms and does not rely on proprietary software (as opposed to, for example, `.xlsx`). The first row in a CSV file typically specifies the name of the variable provided in the respective column.
 
@@ -149,7 +148,9 @@ half_hourly_fluxes <- mutate(
   )
 ```
 
-Note that in the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `half_hourly_fluxes`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
+> Note: Avoid using whitespaces ('Leerzeichen') to name columns in a dataframe because it can cause troubles down the line. Instead, use `_` to separate words in one name.
+
+In the code chunk above, the function `mutate()` is from the tidyverse package {dplyr}. It takes a dataframe as its first argument (here `half_hourly_fluxes`) and returns a dataframe as its output. You will encounter an alternative, but equivalent, syntax in the following form:
 
 ```{r, eval=FALSE}
 half_hourly_fluxes <- half_hourly_fluxes |> 
@@ -265,13 +266,16 @@ knitr::include_graphics("./figures/tidy_data.png")
 ```
 
 The {tidyr} package provides powerful functions to make data tidy. In the examples above, `co2_concentration_monthly` and and `co2_concentration_yearly` are not tidy. In `co2_concentration_monthly`, the same variable (CO2 concentration) appears in multiple columns. Organising columns by months leads to a "wide" table format. We can convert it to a "long" format by:
+
 ```{r}
 co2_concentration_monthly |> 
   pivot_longer(cols = 2:13, names_to = "month", values_to = "co2")
 ```
+
 This corresponds to the format of `co2_concentration` and is tidy. A long format of data frames is required to visualise data using the plotting functions of the {ggplot2} package which will be introduced in Chapter \@ref(datavis).
 
 Either way, for certain applications, it may be advantageous to work with a wide format. We can convert from a long to a wide format by:
+
 ```{r}
 co2_concentration |> 
   pivot_wider(names_from = year, values_from = co2_concentration)
@@ -400,7 +404,6 @@ Other processes may lead to spurious trends or *drift* in the data, for example 
 #### Handling missing data
 
 The question about when data are "bad" and whether to remove it is often critical. Such decisions are important to keep track of and should be reported as transparently as possible in publications. In reality, where the data generation process may start in the field with actual human beings writing notes in a lab book, and where the human collecting the data is often not the same as the human analyzing the data or writing the paper, it's often more difficult to keep track of such decisions. As a general principle, it is advisable to design data records such that decisions made during the data collection process remain transparent throughout all stages of the workflow and that sufficient information be collected to enable later revisions of particularly critical decisions. In practice, this means that the removal of data and entire rows should be avoided and implemented only at the very last step if necessary (e.g., when passing the data into a model fitting function). Instead, information about whether data are bad should be kept in a separate, categorical, variable (a *quality control* variable, like `*_QC` variables in our example data `half_hourly_fluxes`).
-
 
 Data may be missing for several reasons. Some yield random patterns of missing data, others not. In the latter case, we can speak of *informative missingness* ([Kuhn and Johnson, 2019](http://www.feat.engineering/)) and its information can be used for modelling. For categorical data, we may replace such data with `"none"` (instead of `NA`). Some machine learning algorithms (mainly tree-based methods, e.g., Random Forest) can handle missing values. However, when comparing the performance of alternative ML algorithms, they should be tested with the same data and removing missing data should be done beforehand.
 
@@ -763,68 +766,78 @@ write_rds(
 
 > *Hint*: For all exercises remember the resources we provided on finding help in section \@ref(findinghelp).
 
-### Star wars {-}
+### Star wars {.unnumbered}
 
 {dplyr} comes with a toy dataset `dplyr::starwars` (just type it into the console to see its content). Have a look at the dataset with `View()`. Play around with the dataset to get familiar with the {tidyverse} coding style. Use (possibly among others) the functions `dplyr::filter()`, `dplyr::arrange()`, `dplyr::pull()`, `dplyr::select()`, `dplyr::desc()` and `dplyr::slice()` to answer the following questions:
 
-- How many pale characters come from the planets Ryloth and Naboo?
-- Who is the oldest among the tallest thirty characters?
-- What is the name of the smallest character and their starship in "Return of the Jedi"
+-   How many pale characters come from the planets Ryloth and Naboo?
+-   Who is the oldest among the tallest thirty characters?
+-   What is the name of the smallest character and their starship in "Return of the Jedi"
 
-> Hint: Use `unnest()` to expand columns that contain lists inside cells. The expansion of such columns creates additional rows in the data frame if the cell contained a list with more than one element. 
+> Hint: Use `unnest()` to expand columns that contain lists inside cells. The expansion of such columns creates additional rows in the data frame if the cell contained a list with more than one element.
 
-### Aggregating {-}
+### Aggregating {.unnumbered}
 
 You have learned about aggregating in the {tidyverse}. Let's put it in practice.
 
-- Reuse the code in the tutorial to read, reduce, and aggregate the `half_hourly_fluxes` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values within each day: mean, 25% quantile, and 75% quantile. 
+-   Reuse the code in the tutorial to read, reduce, and aggregate the `half_hourly_fluxes` dataset to the daily scale, calculating the following metrics across half-hourly `VPD_F` values within each day: mean, 25% quantile, and 75% quantile.
 
-- Retain only the daily data for which the daily mean VPD is among the upper or the lower 10% quantiles.
+-   Retain only the daily data for which the daily mean VPD is among the upper or the lower 10% quantiles.
 
-- Calculate the mean of the 25% and the mean of the 75% quantiles of half-hourly VPD within the upper and lower 10% quantiles of mean daily VPD.
+-   Calculate the mean of the 25% and the mean of the 75% quantiles of half-hourly VPD within the upper and lower 10% quantiles of mean daily VPD.
 
-
-### Patterns in data quality {-}
+### Patterns in data quality {.unnumbered}
 
 The uncleaned dataset `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv` holds half-hourly data that is sometimes of poor quality. Investigate whether NEE data quality is randomly spread across hours in a day by calculating the proportion of (i) actually measured data, (ii) good quality gap-filled data, (iii) medium quality data, and (iv) poor quality data within each hour-of-day (24 hours per day).
 
 > Hint: `summarise(total = n())` aggregates by counting the number of values.
 
-> Hint: `summarise(count_0 = sum(x == 0))` aggregates by counting the number of values for which the evaluation is `TRUE`. 
+> Hint: `summarise(count_0 = sum(x == 0))` aggregates by counting the number of values for which the evaluation is `TRUE`.
 
-Interpret your findings: Are the proportions evenly spread across hours in a day? 
+Interpret your findings: Are the proportions evenly spread across hours in a day?
 
 Perform an aggregation of the half-hourly GPP data (variable `GPP_NT_VUT_REF`) to daily means of the unmodified data read from file `FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv`, and from cleaned data where only measured (not gap-filled) data is kept. This yields two data frames with daily GPP data. Calculate the overall mean GPP for the two data frames (across all days in the data frame). Are the overall mean GPP values equal? If not, why?
 
+## Report Exercise {#retidy}
 
-## Report Exercise
+### Analyzing changes in soil organic matter during elevated CO$_2$ experiments {.unnumbered}
 
-### Cleaning data from elevated CO$_2$ experiments {-}
+Open Science requires that data underlying published research articles is made available upon publication of the article. A separate aspect is the format of the shared data. Is it provided in an open-access data format? How easy is it to use the data for your own analyses? In this exercise, you will encounter data that was made freely available, but not in an open access format. Although it is "nice-looking" data, you will encounter that it is not tidy.
 
-Open Science requires that data underlying published research articles is made available upon publication of the article. A separate aspect is the format of the shared data. Is it provided in an open-access data format? How easy is it to use the data for your own analyses? In this exercise, you will encounter data that was made freely available, but not in an open access format. Although it is "nice-looking" data, you will encounter that it is not tidy. 
+In this exercise, you will investigate the data published by Groeningen et al. (2014), where they looked at how soil carbon stocks may change due to the anthropogenic increase in $CO_2$. They gathered data on changes in the soil organic matter content from experiments where ecosystems were exposed to elevated CO$_2$ concentrations and your task is to have a high-level look at this dataset. So, perform the following steps:
 
-Download the data file (`.xlsx`) from the Supplementary Material of the following paper: 
+1.  Download the data file (`.xlsx`) from the Supplementary Material of the following paper: *Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.*
 
-*Groenigen, Kees Jan van, Xuan Qi, Craig W. Osenberg, Yiqi Luo, and Bruce A. Hungate. "Faster Decomposition Under Increased Atmospheric CO2 Limits Soil Carbon Storage." Science 344, no. 6183 (May 2, 2014): 508--9. <https://doi.org/10.1126/science.1249534>.*
+2.  Manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
 
-"Database S1" contains data of soil organic carbon measurements in experiments, where ecosystems are exposed to ambient (low) and elevated (high) CO2 concentrations. The mean soil organic carbon of multiple samples ("n") is recorded within each experiment for different sample dates. Information is provided for the time in years since the start of the experiment ("Time (years)").
+    -   "Database S1" contains data of soil organic carbon measurements in experiments, where ecosystems are exposed to ambient (low) and elevated (high) CO$_2$ concentrations. The mean soil organic carbon of multiple samples ("n") is recorded within each experiment for different sample dates. Information is provided for the time in years since the start of the experiment ("Time (years)").
+    <!-- -   _Bonus (not part of the assessment): If you feel like challenging yourself, you could try cleaning the data directly within R and never touching Excel! Can you find a way to do this with `readxl::read_xlsx()`?_ -->
 
-A log-response ratio (treatment effect on variable $x$) can be calculated as:
+3.  In RStudio, create RMarkdown file. Then, write your code into the R chunks of the file to aggregate the data per experiment and calculate the log-response ratio within each experiment, as specified below.
 
-$$
-\text{RR} = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)
-$$
+    -   A log-response ratio can be used to quantify the effect that a treatment (e.g., elevated CO$_2$) can have on your target variable $x$ (e.g., soil organic matter content). The log-response ratio can be calculated as: $\text{RR} = \ln \left( \frac{x_\text{elevated}}{x_\text{ambient}} \right)$
 
-Perform the following steps:
+    -   Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (\<3 years since start), a mid-phase (3-6 years since start), and a late phase (\>6 years since start). Calculate the log-response ratio for each phase. Calculate the log-response ratio for each parallel observation of SOC under ambient and elevated CO$_2$, and then aggregate log response ratios by taking their mean (and not the other way round).
 
-1. Manually clean the data in the tab "Database S1" and save it as a CSV file that can be read into R.
+    -   Present your results as tables using the `knitr::kable()` function.
+    
+    -   _Tip: Depending on your Excel settings, your exported csv is separated using `,` or `;`. The `read_csv()` function only works with `,`. So, if your file is separated with `;`, either change the export settings or use `read_csv2()`.Where would it have been useful if more information had been available._
 
-2. In R, aggregate data per experiment and calculate the log-response ratio within each experiment.
+4.  Answer the following questions:
 
-3. Aggregate data across all experiments for different years since the start of the experiment, distinguishing an early phase (<3 years since start), a mid-phase (3-6 years since start), and a late phase (>6 years since start). Calculate the log-response ratio for each phase.
+    -   What are the data that you are looking at?
+    -   What do you expect your analysis to show, what is your hypothesis? How should soil organic matter content change under elevated CO$_2$?
+    -   Interpret your results after aggregating the data: What do your final numbers mean? Do they support your initial hypothesis? Why so, why not?
+    -   _Tip: Skim the paper and its references to better understand the data and processes you are looking at!``_
 
-> Calculate the log-response ratio for each parallel observation of SOC under ambient and elevated CO2, and then aggregate log response ratios by taking their mean (and not the other way round).
+### Deliverables for the report {.unnumbered}
 
-#### Deliverables for the report {.unnumbered}
+A key learning of this course is that you know how to create reproducible workflows and we pay a lot of attention on this during the assessment. You will learn more about the specific aspects to do so in Chapters \@ref(openscience) and \@ref(codemgmt). So, if the following instructions for submitting this report exercise may sound cryptic, hang tight! It will make more sense as you work through this course.
 
-Document and describe the workflow of steps 2 and 3 in an RMarkdown file. Use R code chunks to run your code and present your results as tables using the `knitr::kable()` function. Knit your RMarkdown file to HTML and ensure reproducibility of your code (more on this in later Chapters). Add the the RMarkdown as file `./vignettes/re_tidy.Rmd` to your *git* repository which you set up following instructions in Section \@ref(setupreport). Make sure to add also the file that you cleaned "by hand" following step 1 to your repository. You can name it however you like (as long as you read it in correctly) - we will only look at the reproducibility of the RMarkdown notebook. For the final report, you will point us to the URL of your repository. We will fork your repository and reproduce the workflow implemented in your notebook. A reproducible and well-documented workflow is most important for our assessment. If you are unsure about methodological aspects (statistics), you may document alternative choices and their influence on the final results. 
+You have to submit all report exercises via your GitHub repository that you created in \@ref(setupreport). For now, save this report exercise as a RMarkdown file with the name `re_tidy.Rmd` and place that file in a sub-directory called `vignettes` (a directory is simply a folder), which is located in your project directory (in full notation that means save your RMarkdown as `./vignettes/re_tidy.Rmd`). Additionally, produce a HTML version of your solution by knitting your RMarkdown file (see the `Knit` command in the panel below the files tabs in RStudio). Save this HTML file in the same `vignettes` directory (`./vignettes/re_tidy.html`). For your cleaned dataset, pick a sensible name and put it into a sub-direcory called `./data`. As with all other report exercises, make sure that your work is reproducible, for example, by letting another student download your repository from GitHub and knit your RMarkdown files on their computer.
+
+> **Important**: Structure your RMarkdown so that you first load necessary libraries, load your data and then write down your solution. **Remember to access files with relative paths and not with hard-coded paths**. So, access your file via `here::here('data/tidy_data.csv`), where `here` starts at the position of your `.Rproj` file. **Never** write hard-coded paths that looks like this: `"~/Desktop/Studium/.../tidy_data.csv"` or `"C:/Users/.../tidy_data.csv"` (see Chapter \@ref(wspmgmt)).
+
+> Tip: Your results do not have to match the results from the paper. It is important that you make your code reproducible, aggregate the data as instructed, and interpret your results.
+    
+> Tip: If you are new to using RMarkdown, check out this [guide](https://www.dataquest.io/blog/r-markdown-guide-cheatsheet/).

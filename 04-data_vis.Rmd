@@ -588,22 +588,29 @@ This exercise explores the longest available atmospheric CO$_2$ record, obtained
 -   Write a function that computes a 12-month running mean of the CO$_2$ time series. The running mean for month $m$ should consider values of $m-5$ to $m+6$. Define arguments for the function that let the user specify the width of the running mean "box" (i.e., setting the $5$ and $6$ to any other integer of choice) 
 -   Make a publication-ready figure that shows the monthly and the 12-month running mean time series of the CO$_2$ record.
 
-> *Hint*: You don't need to clean the .txt file, find a suitable function in R.
+> Hint: You don't need to clean the .txt file by hand, find a suitable function in R.
 
-> *Hint*: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
+> Hint: Arguments to your function may be a vector of the original (monthly) data and a parameter defining the number of elements over which the mean is to be taken.
 
-> *Hint*: To automatically render the time axis with ggplot, you can create a time object by combining the year and month columns: `lubridate::ymd(paste(as.character(year), "-", as.character(month), "-15"))`
+> Hint: To automatically render the time axis with ggplot, you can create a time object by combining the year and month columns: `lubridate::ymd(paste(as.character(year), "-", as.character(month), "-15"))`
 
 ## Report Exercises
 
 ### Telling a story from data {-}
 
-In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to tell a story about the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console).
+In the previous exercises and tutorials, you have learned how to wrangle data, fit simple linear regression models and identify outliers, create figures for temporal patterns, and develop and test hypotheses. Use these skills to analyze the `airquality` dataset (directly available in R, just type `datasets::airquality` into the console). The target variable of this dataset is the ozone concentration and your task is to tell a story about it. Look at the other variables in the dataset and become creative! Think of what patterns and relationships could be interesting to talk about. Your report must include the following elements:
 
-Your solution has to include:
+-   A description of the `airquality` dataset (where is it from, what are the variables' units, etc.).
+-   A specific question that you want to answer through analyzing the data. 
+-   At least three statistical metrics from your dataset that aid you in answering your question (e.g., mean values, ranges, etc.).
+-   At least three publishable figures or tables that show important relationships that aid you in answering your question (e.g., outliers, temporal patterns, scatterplots, etc.).
+-   Make sure to interpret and discuss your results and hypotheses. Why were you right / why were you wrong?
 
--   At least three publishable figures that show important patterns (e.g., outliers, temporal patterns, scatterplots of correlations, etc.)
--   A description of the data that includes at least three statistical metrics that are relevant for the problem (argue for why you chose these metrics).
--   Interpretation and discussion of your results and hypotheses. The text alone should not exceed one A4 page (max. 400 words).
+> Important: The text alone should not exceed one A4 page (max. 400 words).
+> Hint: Metrics, figures, tables, etc. without any written-out explanation what they show do not count.
+<!-- > Hint: Knit your file and check the html-version. Is it a readable report? If not, make it prettier and more readable! -->
+> Hint: To get more background information on the data, use the help functionalities in RStudio.
 
-> *Hint*: To get more background information on the data, use the help functionalities in RStudio.
+### Deliverables for the report {.unnumbered}
+
+Following the same requirements as mentioned in \@ref(retidy), present your solutions in a file called `re_airquality.Rmd`, save it in your `vignettes` folder alongside the HTML version, and make sure that your code is reproducible (make sure your .rmd is knittable, that all data is available, that paths to that data work, etc.).
