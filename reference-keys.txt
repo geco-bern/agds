@@ -123,7 +123,7 @@ functional-programming-i
 strings
 functional-programming-ii
 exerciseswrangling
-report-exercise
+retidy
 datavis
 learning-objectives-4
 tutorial-3
@@ -206,7 +206,7 @@ classification
 logistic-regression
 metrics-for-classification
 exercises-6
-report-exercise-1
+report-exercise
 supervisedmli
 learning-objectives-9
 tutorial-8
@@ -239,7 +239,7 @@ validation-versus-testing-data
 modeling-with-structured-data
 exercises-8
 cross-validation-vs.-test-error
-report-exercises-3
+report-exercise-1
 randomforest
 learning-objectives-11
 tutorial-10
