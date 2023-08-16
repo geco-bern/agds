@@ -77,7 +77,7 @@ These PDPs show that the variables `VPD_F`, `P_F`, and `WS_F` have a relatively 
 
 The PDPs discussed above give us a general feeling of how important a variable is in our model but they do not quantify this importance directly (but see measures for the "flatness" of a PDP [here](https://arxiv.org/abs/1805.04755)). However, we can measure variable importance directly through a permutation procedure. Put simply, this means that we replace values in our training dataset with random values (i.e., we permute the dataset) and assess how this permutation affects the model's performance.
 
-Permuting an important variable with random values will destroy any relationship between that variable and the response variable. The model's performance given by a loss function, e.g. its RMSE, will be compared between the non-permuted and permuted model to assess how influential the permuted variable is. A variable is considered to be important, when its permutation increases the model error relative to other variables. Vice versa, permuting an unimportant variable does not lead to a (strong) increase in model error. The algorithm works as follows (adapted from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
+Permuting an important variable with random values will destroy any relationship between that variable and the response variable. The model's performance given by a loss function, e.g. its RMSE, will be compared between the non-permuted and permuted model to assess how influential the permuted variable is. A variable is considered to be important, when its permutation increases the model error relative to other variables. Vice versa, permuting an unimportant variable does not lead to a (strong) increase in model error. The algorithm works as follows (taken from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
 
 ```         
 For any given loss function do the following:
@@ -112,15 +112,35 @@ In line with the results from the PDPs, we see that the variables `SW_IN_F`, `TA
 
 ### Shapley method
 
-The VIP approach described above is already a powerful tool but by focusing only on one variable, it ignores interactions between variables. Meaning that the importance of a variable could be amplified by the presence of another variable. One solution to account for this is to use the [Shapley value](https://en.wikipedia.org/wiki/Shapley_value). Originally, the Shapley value comes from the field of game theory and was used to attribute the output of a group of people to each member, while taking interactions between members into account.
+The PDP and VIP approaches described above are powerful tools. However, they focus only on the effect of a single variable ignore interactions between variables. Yet, it is possible that the effect of a variable on the response may be amplified or diminished by the presence of another variable. One solution to account for such interactions is to use [Shapley values](https://en.wikipedia.org/wiki/Shapley_value). Originally, the Shapley value is based on game theory and was used to attribute the output of a group (e.g., a company's revenue) to each member (e.g., employee), while taking interactions between members into account. In other words, the Shapley value quantifies the contribution of each member to a given output.
 
-To assess such "fair" attribution of variable importance, the Shapley method needs to check all possible combination of predictors and compare for each combination how the model performs with and without the variable of interest. So, if we have four variables, we have $2^4 = 16$ possibilities[^12-model-interpretation-1]. If we have 32 variables, we have 4.3 billion combinations and assessing every single one becomes computationally unfeasible. The CONTINUE
+This idea translates directly to machine learning by asking which variable contributed how much to any given prediction. For models such as linear models, the may be obvious because each variable has its parameter that shows its contribution. But in the case of a Random Forest, this attribution of contribution becomes less obvious.
 
-[^12-model-interpretation-1]: Number of possible models with four variables: (4 choose 4) + (4 choose 3) + (4 choose 2) + (4 choose 1) + (4 choose 0) = 1 + 4 + 6 + 4 + 1 = 16
+To assess the contribution of a variable, the idea is to check all possible combinations of predictors and compare for each combination how the model performs with and without the variable of interest. So, if we have four variables, we have $2^4 = 16$ possibilities[^12-interpretable-ml-1] but if we have 32 variables, we have 4.3 billion combinations. Calculating this becomes computationally unfeasible, which is why there is an approximation to the Shapley value. This approximation circles around randomly picking a 10-100 possible combination of variables instead of actually sampling all possible combinations. The algorithm works as follows (modified from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
+
+[^12-interpretable-ml-1]: Number of possible models with four variables: (4 choose 4) + (4 choose 3) + (4 choose 2) + (4 choose 1) + (4 choose 0) = 1 + 4 + 6 + 4 + 1 = 16
+
+```         
+1. For each variable j in {1, ..., p} do:
+    | Randomly select a number of variables to stay constant
+    | The remaining variables will not stay constant
+    | Pick an original sample and a permuted sample and create two vectors:
+      | In vector_1: Take original sample but for variables marked as non-constant
+        replace their value with the permuted sample.
+      | In vecotr_2: Take original sample but for variables marked as non-constant
+        *and for variable j* replace their value with the permuted sample.
+    | Let model compute predictions for vector_1: f(vector_1) = pred_1
+    | Let model compute predictions for vector_2: f(vector_2) = pred_2
+    | Calculate shapley value: shap = pred_1 - pred_2
+    End
+2. Collect all shapley values per variable and take the mean value.
+```
+
+Whereas individual Shapley values tell how much a variable contributed to a given observation, taking the mean per variable gives us SHAP: SHapley Additive exPlanations - which is essentially a measure of variable importance.
 
 ```{r}
 # Define model-agnostic components for {iml}
-# {iml} needs date variable to be excluded explicitly
+# {iml} needs date variables to be excluded explicitly
 comps <- iml::Predictor$new(
   model = rf_mod,
   data  = rf_mod$trainingData |> dplyr::select(-GPP_NT_VUT_REF, -TIMESTAMP),
@@ -141,5 +161,6 @@ shap
 ### Further Resources
 
 -   Good explanation of variable importance in the {vip} vignette [here](https://koalaverse.github.io/vip/articles/vip.html#model-agnostic-vi).
+-   Youtube Tutorial [Shapley Values : Data Science Concepts](https://www.youtube.com/watch?v=NBg7YirBTN8)
 
 <!--# What to do with boruta, where does it fit in? -->
