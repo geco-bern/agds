@@ -51,7 +51,8 @@ fig:unnamed-chunk-216-1
 fig:unnamed-chunk-216-2
 fig:unnamed-chunk-217-1
 fig:unnamed-chunk-217-2
-tab:unnamed-chunk-279
+fig:unnamed-chunk-223
+tab:unnamed-chunk-283
 gettingstarted
 learning-objectives-1
 tutorial
@@ -247,6 +248,9 @@ decision-trees
 bagging
 from-trees-to-a-forest
 exercises-9
+interpretableml
+partial-dependence-plots
+variable-importance-from-permutation
 solutions
 getting-started
 programming-primers
