@@ -592,6 +592,15 @@ You can check if the installation was successful by running the following code i
 terra::rast("https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc")
 ```
 
+Or, to be independent of R and the {terra} package, you can test it by running the following code in your bash terminal (on Mac or Linux):
+```sh
+# download file demo_data.nc
+curl --output demo_data.nc https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc
+
+# show header of file
+ncdump -h demo_data.nc
+```
+
 #### git
 
 In this section, you will install *git*, create a GitHub account and connect it to RStudio. This should set up your laptop so that you can do version control of your code (with an easy to use interface) and upload changes to an online copy of your R project (on GitHub) directly from RStudio. Follow these instructions:
