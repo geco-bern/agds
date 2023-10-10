@@ -174,9 +174,14 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
 
 **Foundations**
 
--   Leo Breiman: "Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, August 2001. <https://doi.org/10.1214/ss/1009213726>
+-   Leo Breiman: Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author)." Statist. Sci. 16 (3) 199 - 231, 2001. https://doi.org/10.1214/ss/1009213726
 
     -   A paper describing the paradigm shift in statistical modelling - from traditional approaches to machine learning. Written in accessible language by the inventor of the Random Forest algorithm.
+    
+- Marquet, P. A., Allen, A. P., Brown, J. H., Dunne, J. A., Enquist, B. J., Gillooly, J. F., Gowaty, P. A., Green, J. L., Harte, J., Hubbell, S. P., O’Dwyer, J., Okie, J. G., Ostling, A., Ritchie, M., Storch, D., & West, G. B.: On Theory in Ecology. BioScience, 64(8), 701–710, 2014. https://doi.org/10.1093/biosci/biu098
+
+    - A key statement of this paper summarises its content: "Some have suggested that theories are irrelevant in the big data era—that correlations are sufficient to build a vigorous science [...]. We disagree." 
+    
     
 **Data wrangling**
 
