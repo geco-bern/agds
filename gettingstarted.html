@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Getting started | Applied Geodata Science</title>
   <meta name="description" content="This course prepares you to benefit from the general data richness in environmental and geo-sciences." />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Getting started | Applied Geodata Science" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Benjamin Stocker, Koen Hufkens, Pepa Arán, and Pascal Schneider" />
 
 
-<meta name="date" content="2023-08-22" />
+<meta name="date" content="2023-11-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -120,6 +120,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -983,6 +987,12 @@ Figure 1.5: R project menu.
 ## name        : t2m 
 ## unit        :   K 
 ## time        : 2022-01-01 12:00:00 UTC</code></pre>
+<p>Or, to be independent of R and the {terra} package, you can test it by running the following code in your bash terminal (on Mac or Linux):</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb103-1"><a href="gettingstarted.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download file demo_data.nc</span></span>
+<span id="cb103-2"><a href="gettingstarted.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">--output</span> demo_data.nc https://raw.githubusercontent.com/geco-bern/agds/main/data/demo_data.nc</span>
+<span id="cb103-3"><a href="gettingstarted.html#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-4"><a href="gettingstarted.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co"># show header of file</span></span>
+<span id="cb103-5"><a href="gettingstarted.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ncdump</span> <span class="at">-h</span> demo_data.nc</span></code></pre></div>
 </div>
 <div id="git-1" class="section level4 hasAnchor" number="1.2.8.3">
 <h4><span class="header-section-number">1.2.8.3</span> git<a href="gettingstarted.html#git-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
