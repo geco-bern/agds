@@ -151,10 +151,10 @@ for (i in seq(100)) {
   
   # Check if the current number a muliple of three and seven
   # The modulo operator '%%' returns the remainder of a division
-	if (i %% 3 == 0 && i %% 7 == 0 ) {
-		sum <- sum + i
-	}	
-}	
+  if (i %% 3 == 0 && i %% 7 == 0 ) {
+    sum <- sum + i
+  } 
+} 
 print(paste0("The sum of multiples of 3 and 7 within 1-100 is: ", sum))
 ```
 
@@ -200,7 +200,7 @@ while (!is.na(vec[last_non_na+1])) last_non_na <- last_non_na + 1
 
 # determine index of first non-missing value after gap
 first_non_na <- last_non_na + 1
-while (is.na(vec[first_non_na])) first_non_na <- first_non_na + 1	
+while (is.na(vec[first_non_na])) first_non_na <- first_non_na + 1 
 
 # Get the increment that is needed for interpolation
 last_value  <- vec[last_non_na]  # Last non-NA value
@@ -433,8 +433,9 @@ In Section \@ref(baddata), we discovered that certain values of `GPP_NT_VUT_REF`
 # Read and wrangle data
 half_hourly_fluxes <- readr::read_csv("data/FLX_CH-Lae_FLUXNET2015_FULLSET_HH_2004-2006.csv") |> 
   
-    # set all -9999 to NA
-    dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
+  # set all -9999 to NA
+  dplyr::mutate(dplyr::across(dplyr::where(is.numeric), 
+                              ~dplyr::na_if(., -9999))) |> 
   
     # interpret all variables starting with TIMESTAMP as a date-time object
     dplyr::mutate_at(vars(starts_with("TIMESTAMP_")), lubridate::ymd_hm)
@@ -614,24 +615,27 @@ download.file(
 # read in the data
 ml_co2 <- readr::read_csv(
   "data/co2_mm_mlo.csv",
-  skip = 56
+  skip = 40
   )
 
 # wrangle the data
 # interpret missing values
 # rename to avoid white space in column name
 ml_co2 <- ml_co2 |>
-  dplyr::mutate(across(where(is.numeric), ~na_if(., -9.99))) |>
-  dplyr::mutate(across(where(is.numeric), ~na_if(., -0.99))) |>
-  mutate(across(where(is.numeric), ~na_if(., -1))) |>
-  rename(year_dec = `decimal date`)
+  dplyr::mutate(dplyr::across(dplyr::where(is.numeric), 
+                              ~dplyr::na_if(., -9.99))) |> 
+  dplyr::mutate(dplyr::across(dplyr::where(is.numeric), 
+                              ~dplyr::na_if(., -0.99))) |> 
+  dplyr::mutate(dplyr::across(dplyr::where(is.numeric), 
+                              ~dplyr::na_if(., -1))) |> 
+  dplyr::rename(year_dec = `decimal date`)
 ```
 
 -   Make a simple graph for visualizing the monthly CO$_2$ time series.
 ```{r}
 ml_co2 |> 
-  ggplot() + 
-  geom_line(aes(year_dec, average))
+  ggplot2::ggplot() + 
+  ggplot2::geom_line(aes(year_dec, average))
 ```
 
 -   Write a function that computes a 12-month running mean of the CO$_2$ time series. The running mean for month $m$ should consider values of $m-5$ to $m+6$. Define arguments for the function that let the user specify the width of the running mean "box" (i.e., setting the $5$ and $6$ to any other integer of choice) 
@@ -656,8 +660,8 @@ running_mean <- function(
     # Define start and end of the box to average over
     startbox <- idx - left
     endbox   <- idx + right
-		
-		vec_out[idx] <- mean(vec[startbox:endbox], na.rm = TRUE)
+    
+    vec_out[idx] <- mean(vec[startbox:endbox], na.rm = TRUE)
   }
   
   return(vec_out)
@@ -1327,7 +1331,8 @@ daily_fluxes <- read_csv("./data/FLX_CH-Dav_FLUXNET2015_FULLSET_DD_1997-2014_1-3
   dplyr::mutate(TIMESTAMP = lubridate::ymd(TIMESTAMP)) |>
   
   # set all -9999 to NA
-  dplyr::mutate(across(where(is.numeric), ~na_if(., -9999))) |> 
+  dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~dplyr::na_if(., -9999))) |> 
+  # dplyr::na_if(-9999) |> xxxxx
   
   # retain only data based on >=80% good-quality measurements
   # overwrite bad data with NA (not dropping rows)
