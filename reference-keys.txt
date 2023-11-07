@@ -51,8 +51,8 @@ fig:unnamed-chunk-216-1
 fig:unnamed-chunk-216-2
 fig:unnamed-chunk-217-1
 fig:unnamed-chunk-217-2
-fig:unnamed-chunk-223
-tab:unnamed-chunk-283
+fig:unnamed-chunk-224
+tab:unnamed-chunk-284
 gettingstarted
 learning-objectives-1
 tutorial
@@ -247,6 +247,7 @@ tutorial-10
 decision-trees
 bagging
 from-trees-to-a-forest
+out-of-bag-prediction
 exercises-9
 interpretableml
 partial-dependence-plots

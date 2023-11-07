@@ -391,6 +391,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.2.1" data-path="randomforest.html"><a href="randomforest.html#decision-trees"><i class="fa fa-check"></i><b>11.2.1</b> Decision trees</a></li>
 <li class="chapter" data-level="11.2.2" data-path="randomforest.html"><a href="randomforest.html#bagging"><i class="fa fa-check"></i><b>11.2.2</b> Bagging</a></li>
 <li class="chapter" data-level="11.2.3" data-path="randomforest.html"><a href="randomforest.html#from-trees-to-a-forest"><i class="fa fa-check"></i><b>11.2.3</b> From trees to a forest</a></li>
+<li class="chapter" data-level="11.2.4" data-path="randomforest.html"><a href="randomforest.html#out-of-bag-prediction"><i class="fa fa-check"></i><b>11.2.4</b> Out-of-bag prediction</a></li>
 </ul></li>
 <li class="chapter" data-level="11.3" data-path="randomforest.html"><a href="randomforest.html#exercises-9"><i class="fa fa-check"></i><b>11.3</b> Exercises</a>
 <ul>
@@ -490,12 +491,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 12</span> Interpretable Machine Learning<a href="interpretableml.html#interpretableml" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>A great advantage of machine learning models such as Random Forests or Neural Networks is that they can capture non-linear relationships and faint but relevant patterns in the dataset. However, this complexity comes with the trade-off that models turn into black-box models that cannot be interpreted easily. Therefore, model interpretation is crucial to demystify the decision-making processes of complex algorithms. In this chapter, we introduce you to a few key techniques to investigate the inner workings of your models.</p>
 <p>To give examples for model interpretation, we re-use the Random Forest model that we created in Chapter <a href="randomforest.html#randomforest">11</a>. As a reminder, we predicted GPP from different environmental variables such as temperature, short-wave radiation, vapor pressure deficit, and others.</p>
-<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="interpretableml.html#cb396-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The Random Forest model requires the following models to be loaded:</span></span>
-<span id="cb396-2"><a href="interpretableml.html#cb396-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(caret)</span>
-<span id="cb396-3"><a href="interpretableml.html#cb396-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ranger)</span>
-<span id="cb396-4"><a href="interpretableml.html#cb396-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb396-5"><a href="interpretableml.html#cb396-5" aria-hidden="true" tabindex="-1"></a>rf_mod <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/tutorials/rf_mod.rds&quot;</span>)</span>
-<span id="cb396-6"><a href="interpretableml.html#cb396-6" aria-hidden="true" tabindex="-1"></a>rf_mod</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="interpretableml.html#cb400-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The Random Forest model requires the following models to be loaded:</span></span>
+<span id="cb400-2"><a href="interpretableml.html#cb400-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(caret)</span>
+<span id="cb400-3"><a href="interpretableml.html#cb400-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ranger)</span>
+<span id="cb400-4"><a href="interpretableml.html#cb400-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb400-5"><a href="interpretableml.html#cb400-5" aria-hidden="true" tabindex="-1"></a>rf_mod <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/tutorials/rf_mod.rds&quot;</span>)</span>
+<span id="cb400-6"><a href="interpretableml.html#cb400-6" aria-hidden="true" tabindex="-1"></a>rf_mod</span></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 1910 samples
@@ -529,40 +530,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    End
 3. Plot the averaged predictions against x1, x2, ..., xj</code></pre>
 <p>Written-out, this means that we create a vector <span class="math inline">\(j\)</span> of length <span class="math inline">\(i\)</span> that holds evenly spaced values of our variable of interest <span class="math inline">\(x\)</span>. E.g., if the temperature in our dataset varies from 1 to 20, and we choose <span class="math inline">\(i=20\)</span>, we get a vector <span class="math inline">\([j_1 = 1, j_2 =2, ..., j_{20} = 20 ]\)</span>. Now, we create <span class="math inline">\(i\)</span> copies of our training dataset and for each copy, we over-write the temperature data with the respective value in our vector. The first copy will have all temperature values set to 1, the second to 2, etc. Then, we use the model to calculate the response value for each entry in all copies. Per copy, we take the average response (<span class="math inline">\(\text{mean}(\hat{Y})\)</span>) and plot that average against the value of the variable of interest. This gives us the response across a range of our variable of interest, whilst all other variables to not change. Therefore, we get the partial dependence of the response on the variable of interest. Here’s an illustration to make this clearer:</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-223"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-224"></span>
 <img src="figures/pdp-illustration.png" alt="Visualisation of Partial Dependence Plot algorithm from [Boehmke &amp; Greenwell (2019)](https://bradleyboehmke.github.io/HOML/index.html#acknowledgments). Here, `Gr_Liv_Area` is the variable of interest $x$."  />
 <p class="caption">
 Figure 12.1: Visualisation of Partial Dependence Plot algorithm from <a href="https://bradleyboehmke.github.io/HOML/index.html#acknowledgments">Boehmke &amp; Greenwell (2019)</a>. Here, <code>Gr_Liv_Area</code> is the variable of interest <span class="math inline">\(x\)</span>.
 </p>
 </div>
 <p>Luckily, we do not have to write the algorithm ourselves but can directly use the {pdp} packages:</p>
-<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="interpretableml.html#cb399-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The predictor variables are saved in our model&#39;s recipe</span></span>
-<span id="cb399-2"><a href="interpretableml.html#cb399-2" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> </span>
-<span id="cb399-3"><a href="interpretableml.html#cb399-3" aria-hidden="true" tabindex="-1"></a>  rf_mod<span class="sc">$</span>recipe<span class="sc">$</span>var_info <span class="sc">|&gt;</span> </span>
-<span id="cb399-4"><a href="interpretableml.html#cb399-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(role <span class="sc">==</span> <span class="st">&quot;predictor&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb399-5"><a href="interpretableml.html#cb399-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(variable)</span>
-<span id="cb399-6"><a href="interpretableml.html#cb399-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb399-7"><a href="interpretableml.html#cb399-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The partial() function can take n=3 predictors at max and will try to create</span></span>
-<span id="cb399-8"><a href="interpretableml.html#cb399-8" aria-hidden="true" tabindex="-1"></a><span class="co"># a n-dimensional visulaisation to show interactive effects. However, </span></span>
-<span id="cb399-9"><a href="interpretableml.html#cb399-9" aria-hidden="true" tabindex="-1"></a><span class="co"># this is computational intensive, so we only look at the simple </span></span>
-<span id="cb399-10"><a href="interpretableml.html#cb399-10" aria-hidden="true" tabindex="-1"></a><span class="co"># response-predictor plots</span></span>
-<span id="cb399-11"><a href="interpretableml.html#cb399-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb399-12"><a href="interpretableml.html#cb399-12" aria-hidden="true" tabindex="-1"></a>all_plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb399-13"><a href="interpretableml.html#cb399-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb399-14"><a href="interpretableml.html#cb399-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> preds) {</span>
-<span id="cb399-15"><a href="interpretableml.html#cb399-15" aria-hidden="true" tabindex="-1"></a>  all_plots[[p]] <span class="ot">&lt;-</span></span>
-<span id="cb399-16"><a href="interpretableml.html#cb399-16" aria-hidden="true" tabindex="-1"></a>    pdp<span class="sc">::</span><span class="fu">partial</span>(</span>
-<span id="cb399-17"><a href="interpretableml.html#cb399-17" aria-hidden="true" tabindex="-1"></a>      rf_mod,       <span class="co"># Model to use</span></span>
-<span id="cb399-18"><a href="interpretableml.html#cb399-18" aria-hidden="true" tabindex="-1"></a>      p,            <span class="co"># Predictor to assess</span></span>
-<span id="cb399-19"><a href="interpretableml.html#cb399-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot =</span> <span class="cn">TRUE</span>   <span class="co"># Whether output should be a plot or dataframe</span></span>
-<span id="cb399-20"><a href="interpretableml.html#cb399-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb399-21"><a href="interpretableml.html#cb399-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb399-22"><a href="interpretableml.html#cb399-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb399-23"><a href="interpretableml.html#cb399-23" aria-hidden="true" tabindex="-1"></a>pdps <span class="ot">&lt;-</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(all_plots[[<span class="dv">1</span>]], all_plots[[<span class="dv">2</span>]], all_plots[[<span class="dv">3</span>]], </span>
-<span id="cb399-24"><a href="interpretableml.html#cb399-24" aria-hidden="true" tabindex="-1"></a>                           all_plots[[<span class="dv">4</span>]], all_plots[[<span class="dv">5</span>]], all_plots[[<span class="dv">6</span>]])</span>
-<span id="cb399-25"><a href="interpretableml.html#cb399-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb399-26"><a href="interpretableml.html#cb399-26" aria-hidden="true" tabindex="-1"></a>pdps</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-224-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="interpretableml.html#cb403-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The predictor variables are saved in our model&#39;s recipe</span></span>
+<span id="cb403-2"><a href="interpretableml.html#cb403-2" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> </span>
+<span id="cb403-3"><a href="interpretableml.html#cb403-3" aria-hidden="true" tabindex="-1"></a>  rf_mod<span class="sc">$</span>recipe<span class="sc">$</span>var_info <span class="sc">|&gt;</span> </span>
+<span id="cb403-4"><a href="interpretableml.html#cb403-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(role <span class="sc">==</span> <span class="st">&quot;predictor&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb403-5"><a href="interpretableml.html#cb403-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(variable)</span>
+<span id="cb403-6"><a href="interpretableml.html#cb403-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb403-7"><a href="interpretableml.html#cb403-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The partial() function can take n=3 predictors at max and will try to create</span></span>
+<span id="cb403-8"><a href="interpretableml.html#cb403-8" aria-hidden="true" tabindex="-1"></a><span class="co"># a n-dimensional visulaisation to show interactive effects. However, </span></span>
+<span id="cb403-9"><a href="interpretableml.html#cb403-9" aria-hidden="true" tabindex="-1"></a><span class="co"># this is computational intensive, so we only look at the simple </span></span>
+<span id="cb403-10"><a href="interpretableml.html#cb403-10" aria-hidden="true" tabindex="-1"></a><span class="co"># response-predictor plots</span></span>
+<span id="cb403-11"><a href="interpretableml.html#cb403-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb403-12"><a href="interpretableml.html#cb403-12" aria-hidden="true" tabindex="-1"></a>all_plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb403-13"><a href="interpretableml.html#cb403-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb403-14"><a href="interpretableml.html#cb403-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> preds) {</span>
+<span id="cb403-15"><a href="interpretableml.html#cb403-15" aria-hidden="true" tabindex="-1"></a>  all_plots[[p]] <span class="ot">&lt;-</span></span>
+<span id="cb403-16"><a href="interpretableml.html#cb403-16" aria-hidden="true" tabindex="-1"></a>    pdp<span class="sc">::</span><span class="fu">partial</span>(</span>
+<span id="cb403-17"><a href="interpretableml.html#cb403-17" aria-hidden="true" tabindex="-1"></a>      rf_mod,       <span class="co"># Model to use</span></span>
+<span id="cb403-18"><a href="interpretableml.html#cb403-18" aria-hidden="true" tabindex="-1"></a>      p,            <span class="co"># Predictor to assess</span></span>
+<span id="cb403-19"><a href="interpretableml.html#cb403-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot =</span> <span class="cn">TRUE</span>   <span class="co"># Whether output should be a plot or dataframe</span></span>
+<span id="cb403-20"><a href="interpretableml.html#cb403-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb403-21"><a href="interpretableml.html#cb403-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb403-22"><a href="interpretableml.html#cb403-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb403-23"><a href="interpretableml.html#cb403-23" aria-hidden="true" tabindex="-1"></a>pdps <span class="ot">&lt;-</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(all_plots[[<span class="dv">1</span>]], all_plots[[<span class="dv">2</span>]], all_plots[[<span class="dv">3</span>]], </span>
+<span id="cb403-24"><a href="interpretableml.html#cb403-24" aria-hidden="true" tabindex="-1"></a>                           all_plots[[<span class="dv">4</span>]], all_plots[[<span class="dv">5</span>]], all_plots[[<span class="dv">6</span>]])</span>
+<span id="cb403-25"><a href="interpretableml.html#cb403-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb403-26"><a href="interpretableml.html#cb403-26" aria-hidden="true" tabindex="-1"></a>pdps</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-225-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>These PDPs show that the variables <code>VPD_F</code>, <code>P_F</code>, and <code>WS_F</code> have a relatively small marginal effect as indicated by the small range in <code>yhat</code>. The other three variables however have quite an influence. For example, between 0 and 10 <span class="math inline">\(^\circ\)</span>C, the temperature variable <code>TA_F</code> causes a rapid increase in <code>yhat</code>, so the model predicts that temperature drives GPP strongly within this range but not much below 0 or above 10 <span class="math inline">\(^\circ\)</span>C. The pattern is relatively similar for <code>LW_IN_F</code>, which is sensible because long-wave radiation is highly correlated with temperature. For the short-wave radiation <code>SW_IN_F</code>, we see the saturating effect of light on GPP that we saw in previous chapters.</p>
 <!--#  TODO: Why does VPD have no negative effect on GPP at high values? Maybe this could be discussed in terms of a model not necessarily being able to capture physical processes.-->
 <!--# Should we include ICE? -->
@@ -582,16 +583,16 @@ Figure 12.1: Visualisation of Partial Dependence Plot algorithm from <a href="ht
    End
 3. Sort variables by descending feature importance</code></pre>
 <p>Again, we can rely on others who have already implemented this algorithm in the {vip} package. Note that the {vip} package has model-specific algorithms implemented but also takes model-agnostic arguments as done below.</p>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="interpretableml.html#cb401-1" aria-hidden="true" tabindex="-1"></a>vip<span class="sc">::</span><span class="fu">vip</span>(rf_mod,                        <span class="co"># Model to use</span></span>
-<span id="cb401-2"><a href="interpretableml.html#cb401-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">train =</span> rf_mod<span class="sc">$</span>trainingData,   <span class="co"># Training data used in the model</span></span>
-<span id="cb401-3"><a href="interpretableml.html#cb401-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">&quot;permute&quot;</span>,            <span class="co"># VIP method</span></span>
-<span id="cb401-4"><a href="interpretableml.html#cb401-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">target =</span> <span class="st">&quot;GPP_NT_VUT_REF&quot;</span>,     <span class="co"># Target variable</span></span>
-<span id="cb401-5"><a href="interpretableml.html#cb401-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">nsim =</span> <span class="dv">5</span>,                      <span class="co"># Number of simulations</span></span>
-<span id="cb401-6"><a href="interpretableml.html#cb401-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>,               <span class="co"># Metric to assess quantify permutation</span></span>
-<span id="cb401-7"><a href="interpretableml.html#cb401-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">sample_frac =</span> <span class="fl">0.75</span>,             <span class="co"># Fraction of training data to use</span></span>
-<span id="cb401-8"><a href="interpretableml.html#cb401-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">pred_wrapper =</span> predict         <span class="co"># Prediction function to use</span></span>
-<span id="cb401-9"><a href="interpretableml.html#cb401-9" aria-hidden="true" tabindex="-1"></a>         )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-225-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="interpretableml.html#cb405-1" aria-hidden="true" tabindex="-1"></a>vip<span class="sc">::</span><span class="fu">vip</span>(rf_mod,                        <span class="co"># Model to use</span></span>
+<span id="cb405-2"><a href="interpretableml.html#cb405-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">train =</span> rf_mod<span class="sc">$</span>trainingData,   <span class="co"># Training data used in the model</span></span>
+<span id="cb405-3"><a href="interpretableml.html#cb405-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">&quot;permute&quot;</span>,            <span class="co"># VIP method</span></span>
+<span id="cb405-4"><a href="interpretableml.html#cb405-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">target =</span> <span class="st">&quot;GPP_NT_VUT_REF&quot;</span>,     <span class="co"># Target variable</span></span>
+<span id="cb405-5"><a href="interpretableml.html#cb405-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">nsim =</span> <span class="dv">5</span>,                      <span class="co"># Number of simulations</span></span>
+<span id="cb405-6"><a href="interpretableml.html#cb405-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>,               <span class="co"># Metric to assess quantify permutation</span></span>
+<span id="cb405-7"><a href="interpretableml.html#cb405-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">sample_frac =</span> <span class="fl">0.75</span>,             <span class="co"># Fraction of training data to use</span></span>
+<span id="cb405-8"><a href="interpretableml.html#cb405-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">pred_wrapper =</span> predict         <span class="co"># Prediction function to use</span></span>
+<span id="cb405-9"><a href="interpretableml.html#cb405-9" aria-hidden="true" tabindex="-1"></a>         )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-226-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>In line with the results from the PDPs, we see that the variables <code>SW_IN_F</code>, <code>TA_F</code>, and <code>LW_IN_F</code> are most influential.</p>
 
 </div>
