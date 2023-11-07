@@ -1,8 +1,10 @@
 # Interpretable Machine Learning {#interpretableml}
 
-A great advantage of machine learning models such as Random Forests or Neural Networks is that they can capture non-linear relationships and faint but relevant patterns in the dataset. However, this complexity comes with the trade-off that models turn into black-box models that cannot be interpreted easily. Therefore, model interpretation is crucial to demystify the decision-making processes of complex algorithms. In this chapter, we introduce you to a few key techniques to investigate the inner workings of your models.
+A great advantage of machine learning models is that they can capture non-linear relationships and interactions between predictors, and that they are effective at making use of large data volumes for learning even faint but relevant patterns thanks to their flexibility (high variance). However, their flexibility, and thus complexity, comes with the trade-off that models are hard to interpret. They are essentially black-box models - we know what goes in and we know what comes out and we can make sure that predictions are reliable (as described in previous chapters). However, we don't understand what the model learned. In contrast, a linear regression model can be easily interpreted by looking at the fitted coefficients and their statistics. 
 
-To give examples for model interpretation, we re-use the Random Forest model that we created in Chapter \@ref(randomforest). As a reminder, we predicted GPP from different environmental variables such as temperature, short-wave radiation, vapor pressure deficit, and others.
+This motivates *interpretable machine learning*. There are two types of model interpretation methods: model-specific and model-agnostic interpretation. A simple example for a model-specific interpretation method is to compare the *t*-values of the fitted coefficients in a least squares linear regression model. Here, we will focus on the model-agnostic machine learning model interpretation and cover two types of model interpretations: quantifying variable importance, and determining partial dependencies (functional relationships between the target variable and a single predictor, while all other predictors are held constant).
+
+We re-use the Random Forest model object which we created in Chapter \@ref(randomforest). As a reminder, we predicted GPP from different environmental variables such as temperature, short-wave radiation, vapor pressure deficit, and others.
 
 ```{r, message=FALSE}
 # The Random Forest model requires the following models to be loaded:
@@ -13,16 +15,50 @@ rf_mod <- readRDS("data/tutorials/rf_mod.rds")
 rf_mod
 ```
 
-> Sidenote: There are two types of model interpretation: model-specific and model-agnostic interpretation. Here, we will focus on the latter as they can be applied to most machine learning models.
+## Variable importance
+
+A model-agnostic way to quantify variable importance is to permute (shuffle) the values of an individual predictor, re-train the model, and measure by how much the skill of the re-trained model has degraded in comparison to the model trained on the un-manipulated data. The metric, or loss function, for quantifying the model degradation can be any suitable metric for the respective model type. For a model predicting a continuous variable, we may use the RMSE. The algorithm works as follows (taken from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
+
+<!-- Permuting an important variable with random values will destroy any relationship between that variable and the response variable. The model's performance given by a loss function, e.g. its RMSE, will be compared between the non-permuted and permuted model to assess how influential the permuted variable is. A variable is considered to be important, when its permutation increases the model error relative to other variables. Vice versa, permuting an unimportant variable does not lead to a (strong) increase in model error. -->
+
+<!-- The PDPs discussed above give us a general feeling of how important a variable is in our model but they do not quantify this importance directly (but see measures for the "flatness" of a PDP [here](https://arxiv.org/abs/1805.04755)). However, we can measure variable importance directly through a permutation procedure. Put simply, this means that we replace values in our training dataset with random values (i.e., we permute the dataset) and assess how this permutation affects the model's performance. -->
+
+```         
+1. Compute loss function L for model trained on un-manipulated data
+2. For predictor variable i in {1,...,p} do
+     | Permute values of variable i.
+     | Fit model.
+     | Estimate loss function Li.
+     | Compute variable importance as Ii = Li/L or Ii = Li - L0.
+   End
+3. Sort variables by descending values of Ii.
+```
+
+This is implemented by the {vip} package. Note that the {vip} package has model-specific algorithms implemented but also takes model-agnostic arguments as done below.
+
+```{r}
+vip::vip(rf_mod,                        # Fitted model object
+         train = rf_mod$trainingData |> 
+           dplyr::select(-TIMESTAMP),   # Training data used in the model
+         method = "permute",            # VIP method
+         target = "GPP_NT_VUT_REF",     # Target variable
+         nsim = 5,                      # Number of simulations
+         metric = "RMSE",               # Metric to assess quantify permutation
+         sample_frac = 0.75,            # Fraction of training data to use
+         pred_wrapper = predict         # Prediction function to use
+         )
+```
+
+This indicates that shortwave radiation ('SW_IN_F') is the most important variable for modelling GPP here. I.e., the model performance degrades most (the RMSE increases most) if the information in shortwave radiation is lost. On the other extreme, atmospheric pressure adds practically no information to the model. This variable may therefore well be dropped from the model.
 
 ## Partial dependence plots
 
-Partial dependence plots (PDP) give insight on the marginal effect of a single predictor variable on the response when all other predictors are kept constant. The algorithm to create PDPs goes as follows (adapted from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
+We may not only want to know how important a certain variable is for modelling, but also how it influences the predictions. Is the relationship positive or negative? Is the sensitivity of predictions equal across the full range of the predictor? Again, model-agnostic approaches exist for determining the functional relationships (or partial dependencies) for predictors in a model. Partial dependence plots (PDP) give insight on the marginal effect of a single predictor variable on the response - all else equal. The algorithm to create PDPs goes as follows (adapted from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
 
 ```         
 For a selected predictor (x)
-1. Construct a grid of j evenly spaced values across the range of x: {x1, x2, ..., xj}
-2. For i in {1,...,j} do
+1. Construct a grid of N evenly spaced values across the range of x: {x1, x2, ..., xN}
+2. For i in {1,...,N} do
      | Copy the training data and replace the original values of x with the constant xi
      | Apply the fitted ML model to obtain vector of predictions for each data point.
      | Average predictions across all data points.
@@ -30,13 +66,11 @@ For a selected predictor (x)
 3. Plot the averaged predictions against x1, x2, ..., xj
 ```
 
-Written-out, this means that we create a vector $j$ of length $i$ that holds evenly spaced values of our variable of interest $x$. E.g., if the temperature in our dataset varies from 1 to 20, and we choose $i=20$, we get a vector $[j_1 = 1, j_2 =2, ..., j_{20} = 20 ]$. Now, we create $i$ copies of our training dataset and for each copy, we over-write the temperature data with the respective value in our vector. The first copy will have all temperature values set to 1, the second to 2, etc. Then, we use the model to calculate the response value for each entry in all copies. Per copy, we take the average response ($\text{mean}(\hat{Y})$) and plot that average against the value of the variable of interest. This gives us the response across a range of our variable of interest, whilst all other variables to not change. Therefore, we get the partial dependence of the response on the variable of interest. Here's an illustration to make this clearer:
-
 ```{r echo=FALSE, fig.cap="Visualisation of Partial Dependence Plot algorithm from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/index.html#acknowledgments). Here, `Gr_Liv_Area` is the variable of interest $x$."}
 knitr::include_graphics("figures/pdp-illustration.png")
 ```
 
-Luckily, we do not have to write the algorithm ourselves but can directly use the {pdp} packages:
+This algorithm is implemented by the {pdp} package:
 
 ```{r}
 # The predictor variables are saved in our model's recipe
@@ -49,17 +83,15 @@ preds <-
 # a n-dimensional visulaisation to show interactive effects. However, 
 # this is computational intensive, so we only look at the simple 
 # response-predictor plots
-
-all_plots <- list()
-
-for (p in preds) {
-  all_plots[[p]] <-
-    pdp::partial(
+all_plots <- purrr::map(
+  preds,
+  ~pdp::partial(
       rf_mod,       # Model to use
-      p,            # Predictor to assess
-      plot = TRUE   # Whether output should be a plot or dataframe
+      .,            # Predictor to assess
+      plot = TRUE,  # Whether output should be a plot or dataframe
+      plot.engine = "ggplot2"  # to return ggplot objects
     )
-}
+)
 
 pdps <- cowplot::plot_grid(all_plots[[1]], all_plots[[2]], all_plots[[3]], 
                            all_plots[[4]], all_plots[[5]], all_plots[[6]])
@@ -67,43 +99,10 @@ pdps <- cowplot::plot_grid(all_plots[[1]], all_plots[[2]], all_plots[[3]],
 pdps
 ```
 
-These PDPs show that the variables `VPD_F`, `P_F`, and `WS_F` have a relatively small marginal effect as indicated by the small range in `yhat`. The other three variables however have quite an influence. For example, between 0 and 10 $^\circ$C, the temperature variable `TA_F` causes a rapid increase in `yhat`, so the model predicts that temperature drives GPP strongly within this range but not much below 0 or above 10 $^\circ$C. The pattern is relatively similar for `LW_IN_F`, which is sensible because long-wave radiation is highly correlated with temperature. For the short-wave radiation `SW_IN_F`, we see the saturating effect of light on GPP that we saw in previous chapters.
+These PDPs show that the variables `TA_F`, `SW_IN_F`, and `LW_IN_F` have a strong effect, while `VPD_F`, `P_F`, and `WS_F` have a relatively small marginal effect as indicated by the small range in `yhat` - in line with the variable importance analysis shown above. In addition to the variable importance analysis, here we also see the *direction* of the effect and that how the sensitivity varies across the range of the respective predictor. For example, GPP is positively influenced by temperature (`TA_F`), but the effect really only starts to be expressed for temperatures above about -5$^\circ$C, and the positive effect disappears above about 10$^\circ$C. The pattern is relatively similar for `LW_IN_F`, which is sensible because long-wave radiation is highly correlated with temperature. For the short-wave radiation `SW_IN_F`, we see the saturating effect of light on GPP that we saw in previous chapters.
 
 <!--#  TODO: Why does VPD have no negative effect on GPP at high values? Maybe this could be discussed in terms of a model not necessarily being able to capture physical processes.-->
 
 <!--# Should we include ICE? -->
 
-## Variable importance from permutation
 
-The PDPs discussed above give us a general feeling of how important a variable is in our model but they do not quantify this importance directly (but see measures for the "flatness" of a PDP [here](https://arxiv.org/abs/1805.04755)). However, we can measure variable importance directly through a permutation procedure. Put simply, this means that we replace values in our training dataset with random values (i.e., we permute the dataset) and assess how this permutation affects the model's performance.
-
-Permuting an important variable with random values will destroy any relationship between that variable and the response variable. The model's performance given by a loss function, e.g. its RMSE, will be compared between the non-permuted and permuted model to assess how influential the permuted variable is. A variable is considered to be important, when its permutation increases the model error relative to other variables. Vice versa, permuting an unimportant variable does not lead to a (strong) increase in model error. The algorithm works as follows (taken from [Boehmke & Greenwell (2019)](https://bradleyboehmke.github.io/HOML/iml.html#partial-dependence)):
-
-```         
-For any given loss function do the following:
-1. Compute loss function for original model
-2. For variable i in {1,...,p} do
-     | randomize values
-     | apply given ML model
-     | estimate loss function
-     | compute feature importance (some difference/ratio measure 
-       between permuted loss & original loss)
-   End
-3. Sort variables by descending feature importance
-```
-
-Again, we can rely on others who have already implemented this algorithm in the {vip} package. Note that the {vip} package has model-specific algorithms implemented but also takes model-agnostic arguments as done below.
-
-```{r}
-vip::vip(rf_mod,                        # Model to use
-         train = rf_mod$trainingData,   # Training data used in the model
-         method = "permute",            # VIP method
-         target = "GPP_NT_VUT_REF",     # Target variable
-         nsim = 5,                      # Number of simulations
-         metric = "RMSE",               # Metric to assess quantify permutation
-         sample_frac = 0.75,             # Fraction of training data to use
-         pred_wrapper = predict         # Prediction function to use
-         )
-```
-
-In line with the results from the PDPs, we see that the variables `SW_IN_F`, `TA_F`, and `LW_IN_F` are most influential.
