@@ -201,7 +201,11 @@ Chapters \@ref(regressionclassification)-\@ref(randomforest) lead into the world
     
 - Crameri, F., Shephard, G.E. & Heron, P.J. The misuse of colour in science communication. *Nature Communications* 11, 5444 (2020). https://doi.org/10.1038/s41467-020-19160-7
 
-    - A systematic approach to why some color scales are better than others.    
+    - A systematic approach to why some color scales are better than others.  
+    
+- https://exts.ggplot2.tidyverse.org/gallery/ 
+
+    - An overview of {ggplot2} extensions for special visualisations and solutions for publication-ready graphs.  
 
 **Machine learning**
 
