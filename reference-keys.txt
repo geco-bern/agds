@@ -51,7 +51,7 @@ fig:unnamed-chunk-216-1
 fig:unnamed-chunk-216-2
 fig:unnamed-chunk-217-1
 fig:unnamed-chunk-217-2
-fig:unnamed-chunk-224
+fig:unnamed-chunk-225
 tab:unnamed-chunk-284
 gettingstarted
 learning-objectives-1
@@ -250,8 +250,8 @@ from-trees-to-a-forest
 out-of-bag-prediction
 exercises-9
 interpretableml
+variable-importance
 partial-dependence-plots
-variable-importance-from-permutation
 solutions
 getting-started
 programming-primers
