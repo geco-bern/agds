@@ -1,3 +1,5 @@
+NOTE February 2025: the book content has moved to: http://github.com/geco-bern/agds_book and is now published at https://geco-bern.github.io/agds_book/
+
 # Applied Geodata Science
 
 This repository contains the source code for the textbook and tutorial of the course *Applied Geodata Science*, taught as part of the Geography and the Climate Sciences study programs at the University of Bern, Switzerland.
